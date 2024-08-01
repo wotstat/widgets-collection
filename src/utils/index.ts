@@ -4,13 +4,13 @@ export function pascalCaseToKebabCase(str: string) {
 }
 
 export function getAllWidgets() {
-  const widgets = import.meta.glob('../widgets/**/Index.md');
+  const widgets = import.meta.glob('../widgets/**/Widget.vue');
 
   return Object.keys(widgets).map((key) => {
-    const path = key.replace('../widgets/', '').replace('/Index.md', '');
+    const path = key.replace('../widgets/', '').replace('/Widget.vue', '');
     return {
       path: '/' + pascalCaseToKebabCase(path),
-      component: () => import('../widgets/' + path + '/Index.vue'),
+      component: widgets[key],
     };
   });
 }
