@@ -26,5 +26,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 .widgets-sdk-styles {
   position: relative;
+  color: var(--wotstat-primary)
 }
 </style>

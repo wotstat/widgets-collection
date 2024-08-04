@@ -1,7 +1,5 @@
 <template>
-  <div class="content">
-    <slot></slot>
-  </div>
+  <slot></slot>
   <Transition>
     <WidgetCard class="warning-text" v-if="!shouldShowContent">
       <div v-if="!isReady">
@@ -72,14 +70,8 @@ ellipsisLoop()
   opacity: 0;
 }
 
-.content {
-  &.hidden {
-    visibility: hidden;
-    min-height: 30vw;
-  }
-}
-
 .warning-text {
+  min-height: 30vw;
   position: absolute;
   left: 0;
   right: 0;
