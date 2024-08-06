@@ -1,6 +1,6 @@
 
 import { onUnmounted, provide, ref, shallowRef } from 'vue';
-import { WidgetSDK, type State, WidgetMetaTags } from '../../../wotstat-widgets-sdk/lib/main';
+import { WidgetSDK, type State, WidgetMetaTags, Trigger } from '../../../wotstat-widgets-sdk/lib/main';
 
 export { WidgetMetaTags }
 
@@ -29,4 +29,9 @@ export function useReactiveState<T>(state: State<T>) {
   const unmount = state.watch(t => stateRef.value = t)
   onUnmounted(() => unmount())
   return stateRef
+}
+
+export function useReactiveTrigger<T>(trigger: Trigger<T>, callback: (t: T) => void) {
+  const unmount = trigger.watch(callback)
+  onUnmounted(() => unmount())
 }

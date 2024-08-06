@@ -64,6 +64,10 @@ div.vr {
   &.ver {
     flex-direction: column;
   }
+
+  &.start {
+    justify-content: start;
+  }
 }
 
 .flex-1 {

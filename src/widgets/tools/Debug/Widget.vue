@@ -7,18 +7,20 @@
           <div class="flex flex-1 ver">
             <Line name="Version" :value="gameVersion" />
             <Line name="Region" :value="gameRegion" />
+            <Line name="State" :value="gameState" />
           </div>
           <div class="vr"></div>
           <div class="flex flex-1 ver">
             <Line name="Language" :value="gameLanguage" />
             <Line name="Server" :value="gameServer" />
+            <Line name="ServerTime" :value="serverTime ? Math.round(serverTime * 10) / 10 : ''" />
           </div>
         </div>
       </WidgetCard>
 
-      <div class="spacer" />
+      <div class="spacer" v-if="isInHangar"></div>
 
-      <WidgetCard>
+      <WidgetCard v-if="isInHangar">
         <h3 class="secondary bold">PLAYER</h3>
         <div class="flex">
           <div class="flex flex-1 ver">
@@ -33,9 +35,9 @@
         </div>
       </WidgetCard>
 
-      <div class="spacer" />
+      <div class="spacer" v-if="isInHangar"></div>
 
-      <WidgetCard>
+      <WidgetCard v-if="isInHangar">
         <h3 class="secondary bold">ACCOUNT</h3>
         <div class="flex">
           <div class="flex flex-1 ver">
@@ -59,7 +61,22 @@
         </div>
       </WidgetCard>
 
-      <div class="spacer" />
+      <div class="spacer" v-if="isInHangar"></div>
+
+      <WidgetCard v-if="isInHangar">
+        <h3 class="secondary bold">HANGAR</h3>
+        <div class="flex">
+          <div class="flex-2">
+            <Line name="BattleMode" :value="hangarBattleMode" />
+          </div>
+          <div class="vr"></div>
+          <div class="flex-1">
+            <Line name="IsInQueue" :value="isInQueue" />
+          </div>
+        </div>
+      </WidgetCard>
+
+      <div class="spacer"></div>
 
       <WidgetCard>
         <h3 class="secondary bold">PLATOON</h3>
@@ -84,9 +101,9 @@
         </template>
       </WidgetCard>
 
-      <div class="spacer" />
+      <div class="spacer" v-if="isInHangar"></div>
 
-      <WidgetCard>
+      <WidgetCard v-if="isInHangar">
 
         <h3 class="secondary bold">TANK</h3>
 
@@ -116,11 +133,11 @@
 
         <div class="flex">
           <div class="flex-1">
-            <Line name="InBattle" :value="isInBattle ? '+' : '-'" />
+            <Line name="InBattle" :value="hangarTankIsInBattle ? '+' : '-'" />
           </div>
           <div class="vr"></div>
           <div class="flex-1">
-            <Line name="IsBroken" :value="isBroken ? '+' : '-'" />
+            <Line name="IsBroken" :value="hangarTankIsBroken ? '+' : '-'" />
           </div>
           <div class="vr"></div>
           <div class="flex-1">
@@ -145,8 +162,6 @@
         <div class="flex post-progression">
           <p v-for="(item, i) in postProgression?.selectedModifications">
             {{ getModificationIcon(item, i) }}
-            <!-- {{ item ? item.endsWith('_1') ? '&leftarrow;' : '&rightarrow;' :
-              postProgression?.unlockedModifications.includes(item) }} -->
           </p>
         </div>
 
@@ -190,6 +205,71 @@
         </div>
 
       </WidgetCard>
+
+      <div class="spacer" v-if="isInBattle"></div>
+
+      <WidgetCard v-if="isInBattle">
+        <h3 class="secondary bold">BATTLE</h3>
+        <div class="flex">
+          <div class="flex flex-3 ver">
+            <Line name="Id" :value="arenaId" />
+            <Line name="Arena" :value="arena?.tag" />
+            <Line name="Mode" :value="arena?.mode" />
+            <Line name="Gameplay" :value="arena?.gameplay" />
+          </div>
+          <div class="vr"></div>
+          <div class="flex flex-2 ver start">
+            <Line name="Team" :value="arena?.team" />
+            <Line name="Period" :value="arenaPeriod?.tag" />
+            <Line v-if="arenaPeriod && serverTime" name="Length" :value="arenaPeriod.length" />
+            <Line v-if="arenaPeriod && serverTime" name="Left" :value="Math.round(arenaPeriod.endTime - serverTime)" />
+          </div>
+        </div>
+      </WidgetCard>
+
+      <div class="spacer" v-if="isInBattle"></div>
+
+      <WidgetCard v-if="isInBattle">
+
+        <h3 class="secondary bold">TANK</h3>
+
+        <div class="flex ver">
+          <Line name="Tag" :value="battleTank?.tag" />
+        </div>
+
+        <div class="flex">
+          <div class="flex-3">
+            <Line name="Name" :value="battleTank?.localizedName" />
+            <Line name="Role" :value="battleTank?.role" />
+            <Line name="Health" :value="`${health}/${maxHealth}`" />
+          </div>
+          <div class="vr"></div>
+          <div class="flex-2">
+            <Line name="Level" :value="battleTank?.level" />
+            <Line name="Class" :value="battleTank?.class" />
+            <Line name="Pos" :value="battleTankPosition" />
+          </div>
+        </div>
+
+      </WidgetCard>
+
+      <div class="spacer" v-if="isInBattle"></div>
+
+      <WidgetCard v-if="isInBattle">
+        <h3 class="secondary bold">Damages</h3>
+        <div class="flex">
+          <div class="flex flex-1 ver team-colors">
+            <p v-for="item in damages">
+              <span :class="classByTeam(item.from[1])">{{ item.from[0] }}</span>
+              →
+              <span :class="classByTeam(item.to[1])">{{ item.to[0] }}</span>
+              :
+              {{ item.dmg }} / {{ (item.health + item.dmg) }}
+            </p>
+          </div>
+        </div>
+      </WidgetCard>
+
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -200,8 +280,8 @@ import WidgetRoot from "@/components/WidgetRoot.vue";
 import WidgetCard from "@/components/WidgetCard.vue";
 import WidgetStatusWrapper from "@/components/WidgetStatusWrapper.vue";
 import Line from "./Line.vue";
-import { useWidgetSdk, useReactiveState } from '@/composition/widgetSdk';
-import { onMounted } from "vue";
+import { useWidgetSdk, useReactiveState, useReactiveTrigger } from '@/composition/widgetSdk';
+import { onMounted, ref } from "vue";
 
 // @ts-ignore
 // onMounted(() => window.wotstatEmulator.connectAndInit())
@@ -210,10 +290,11 @@ import { onMounted } from "vue";
 const ctx = useWidgetSdk()
 const sdk = ctx.sdk
 
+console.log('sdk', sdk);
+
+
 function getModificationIcon(mod: string, i: number) {
   if (mod) return mod.endsWith('_1') ? `←` : '→'
-  console.log(postProgression.value?.unlockedModifications, mod);
-
   if (postProgression.value?.unlockedModifications.find(t => t.endsWith(`_${i + 1}`))) return '–'
   return '⨯'
 }
@@ -226,6 +307,8 @@ const gameVersion = useReactiveState(sdk.data.game.version)
 const gameRegion = useReactiveState(sdk.data.game.region)
 const gameLanguage = useReactiveState(sdk.data.game.language)
 const gameServer = useReactiveState(sdk.data.game.server)
+const gameState = useReactiveState(sdk.data.game.state)
+const serverTime = useReactiveState(sdk.data.game.serverTime)
 
 const accountCredits = useReactiveState(sdk.data.account.credits)
 const accountGold = useReactiveState(sdk.data.account.gold)
@@ -233,6 +316,7 @@ const accountCrystal = useReactiveState(sdk.data.account.crystal)
 const accountFreeXp = useReactiveState(sdk.data.account.freeXp)
 const accountPremium = useReactiveState(sdk.data.account.premium)
 
+const isInHangar = useReactiveState(sdk.data.hangar.isInHangar)
 const hangarTankInfo = useReactiveState(sdk.data.hangar.vehicle.info)
 const hangarTankShells = useReactiveState(sdk.data.hangar.vehicle.shells)
 const optDevices = useReactiveState(sdk.data.hangar.vehicle.optDevices)
@@ -240,17 +324,50 @@ const consumables = useReactiveState(sdk.data.hangar.vehicle.consumables)
 const boosters = useReactiveState(sdk.data.hangar.vehicle.boosters)
 const crew = useReactiveState(sdk.data.hangar.vehicle.crew)
 const postProgression = useReactiveState(sdk.data.hangar.vehicle.postProgression)
-const isBroken = useReactiveState(sdk.data.hangar.vehicle.isBroken)
-const isInBattle = useReactiveState(sdk.data.hangar.vehicle.isInBattle)
+const hangarTankIsBroken = useReactiveState(sdk.data.hangar.vehicle.isBroken)
+const hangarTankIsInBattle = useReactiveState(sdk.data.hangar.vehicle.isInBattle)
 const xp = useReactiveState(sdk.data.hangar.vehicle.xp)
+const hangarBattleMode = useReactiveState(sdk.data.hangar.battleMode)
+const isInQueue = useReactiveState(sdk.data.hangar.isInQueue)
 
 const isInPlatoon = useReactiveState(sdk.data.platoon.isInPlatoon)
 const platoonCommander = useReactiveState(sdk.data.platoon.commander)
 const platoonSlots = useReactiveState(sdk.data.platoon.slots)
 
+const arena = useReactiveState(sdk.data.battle.arena)
+const arenaId = useReactiveState(sdk.data.battle.arenaId)
+const arenaPeriod = useReactiveState(sdk.data.battle.period)
+
+const battleTank = useReactiveState(sdk.data.battle.vehicle)
+const health = useReactiveState(sdk.data.battle.health)
+const maxHealth = useReactiveState(sdk.data.battle.maxHealth)
+const battleTankPosition = useReactiveState(sdk.data.battle.position)
+
+const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
+
+const damages = ref<{ from: [string, number], to: [string, number], dmg: number, health: number }[]>([])
+sdk.data.battle.onDamage.watch(t => {
+  damages.value.push({
+    from: [t.attacker?.localizedShortName ?? '?', t.attacker?.team ?? -1],
+    to: [t.target?.localizedShortName ?? '?', t.target?.team ?? -1],
+    dmg: t.damage,
+    health: t.health
+  })
+
+  if (damages.value.length > 5) damages.value.shift()
+})
+
+function classByTeam(team: number) {
+  if (team == -1) return 'unknown'
+  return team == arena?.value?.team ? 'ally' : 'enemy'
+}
 
 sdk.onAnyChange((path, value) => {
   console.log('onAnyChange', path, value)
+})
+
+sdk.onAnyTrigger((path, value) => {
+  console.log('onAnyTrigger', path, value)
 })
 
 function last<T>(t: T[]) {
@@ -278,7 +395,7 @@ br {
   margin: 1em;
 }
 
-.flex {
+.flex:not(.start) {
   justify-content: space-between;
 }
 
@@ -327,6 +444,16 @@ br {
     padding-bottom: 0.15em;
     border: calc(0.05em/2) solid var(--wotstat-separator);
     border-radius: 0.2em;
+  }
+}
+
+.team-colors {
+  .enemy {
+    color: rgb(255, 138, 138);
+  }
+
+  .ally {
+    color: rgb(132, 225, 132);
   }
 }
 </style>
