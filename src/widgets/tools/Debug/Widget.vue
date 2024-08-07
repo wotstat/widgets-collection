@@ -8,12 +8,14 @@
             <Line name="Version" :value="gameVersion" />
             <Line name="Region" :value="gameRegion" />
             <Line name="State" :value="gameState" />
+            <Line v-if="fps" name="Fps" :value="Math.round(fps)" />
           </div>
           <div class="vr"></div>
           <div class="flex flex-1 ver">
             <Line name="Language" :value="gameLanguage" />
             <Line name="Server" :value="gameServer" />
             <Line name="ServerTime" :value="serverTime ? Math.round(serverTime * 10) / 10 : ''" />
+            <Line v-if="ping" name="Ping" :value="`${Math.round(ping * 1000)}ms`" />
           </div>
         </div>
       </WidgetCard>
@@ -230,6 +232,24 @@
       <div class="spacer" v-if="isInBattle"></div>
 
       <WidgetCard v-if="isInBattle">
+        <h3 class="secondary bold">AIMING</h3>
+        <div class="flex">
+          <div class="flex flex-1 ver">
+            <Line name="isAutoAim" :value="isAutoAim" />
+          </div>
+          <div class="vr"></div>
+          <div class="flex flex-1 ver">
+            <Line name="isServerAim" :value="isServerAim" />
+          </div>
+        </div>
+        <Line name="IdealDisp" :value="(idealDispersion ?? 0).toFixed(7)" />
+        <Line name="ClientDisp" :value="(clientDispersion ?? 0).toFixed(7)" />
+        <Line name="ServerDisp" :value="(serverDispersion ?? 0).toFixed(7)" />
+      </WidgetCard>
+
+      <div class="spacer" v-if="isInBattle"></div>
+
+      <WidgetCard v-if="isInBattle">
 
         <h3 class="secondary bold">TANK</h3>
 
@@ -241,15 +261,65 @@
           <div class="flex-3">
             <Line name="Name" :value="battleTank?.localizedName" />
             <Line name="Role" :value="battleTank?.role" />
-            <Line name="Health" :value="`${health}/${maxHealth}`" />
           </div>
           <div class="vr"></div>
           <div class="flex-2">
             <Line name="Level" :value="battleTank?.level" />
             <Line name="Class" :value="battleTank?.class" />
-            <Line name="Pos" :value="battleTankPosition" />
           </div>
         </div>
+        <div class="hp-progress-bar">
+          {{ `${health}/${maxHealth}` }}
+          <div class="progress" :style="{ right: `${100 - (health! / maxHealth!) * 100}%` }"></div>
+        </div>
+
+        <div class="rotation-circles" v-if="battleTankRotation && turretYaw != null && gunPitch != null">
+          <div>
+            <div class="circle">
+              <div class="tank-container">
+                <RightTank :body-angle="-radToRoundDec(battleTankRotation[0])" :gun-angle="-radToDec(gunPitch)" />
+              </div>
+            </div>
+            <p class="center">{{ radToRoundDec(battleTankRotation[0]) }}</p>
+          </div>
+
+          <div>
+            <div class="circle">
+              <div class="tank-container">
+                <TopTank :body-angle="90 - radToDec(battleTankRotation[1])" :turret-angle="-radToDec(turretYaw)" />
+              </div>
+            </div>
+            <p class="center">{{ radToRoundDec(battleTankRotation[1]) }}</p>
+          </div>
+
+
+          <div>
+            <div class="circle">
+              <div class="tank-container">
+                <FrontTank :body-angle="radToDec(battleTankRotation[2])" />
+              </div>
+            </div>
+            <p class="center">{{ radToRoundDec(battleTankRotation[2]) }}</p>
+          </div>
+        </div>
+
+        <Line v-if="battleTankVelocity" name="Tank Speed" :value="Math.round(battleTankVelocity[0] * 3.6 * 10) / 10" />
+        <Line v-if="battleTankVelocity" name="Rotation Speed" :value="radToRoundDec(battleTankVelocity[1])" />
+        <Line v-if="turretRotationSpeed != null" name="Turret Rotation Speed"
+          :value="radToRoundDec(turretRotationSpeed)" />
+
+        <div class="flex" v-if="battleTankPosition">
+          <div class="flex-1">
+            <Line name="X" :value="Math.round(battleTankPosition[0] * 10) / 10" />
+          </div>
+          <div class="flex-1">
+            <Line name="Y" :value="Math.round(battleTankPosition[1] * 10) / 10" />
+          </div>
+          <div class="flex-1">
+            <Line name="Z" :value="Math.round(battleTankPosition[2] * 10) / 10" />
+          </div>
+        </div>
+
 
       </WidgetCard>
 
@@ -270,6 +340,32 @@
         </div>
       </WidgetCard>
 
+      <div class="spacer" v-if="isInBattle"></div>
+
+      <WidgetCard v-if="isInBattle && battleBases">
+        <h3 class="secondary bold">Bases</h3>
+        <div class="flex ver">
+          <div class="team-base-progress team-colors" v-for="[team, bases] in Object.entries(battleBases)">
+            <div class="team-base" :class="team == arena?.team.toString() ? 'enemy' : 'ally'" v-for="base in bases">
+
+              <p class="bold center" v-if="base.invadersCount">
+                {{ base.points }}%
+                ({{ base.invadersCount }})
+                Осталось {{ base.timeLeft }}с
+                {{ base.capturingStopped ? '[Заблокирован]' : '' }}
+              </p>
+              <p v-else class="bold center">-</p>
+
+              <div class="progress" :style="{
+                right: `${100 - base.points}%`,
+              }"></div>
+
+            </div>
+
+          </div>
+        </div>
+      </WidgetCard>
+
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -283,8 +379,20 @@ import Line from "./Line.vue";
 import { useWidgetSdk, useReactiveState, useReactiveTrigger } from '@/composition/widgetSdk';
 import { onMounted, ref } from "vue";
 
+import RightTank from '@/components/tank/RightView.vue'
+import TopTank from '@/components/tank/TopView.vue'
+import FrontTank from '@/components/tank/FrontView.vue'
+
 // @ts-ignore
 // onMounted(() => window.wotstatEmulator.connectAndInit())
+
+function radToRoundDec(rad: number) {
+  return Math.round(radToDec(rad) * 10) / 10
+}
+
+function radToDec(rad: number) {
+  return rad * 180 / Math.PI
+}
 
 
 const ctx = useWidgetSdk()
@@ -309,6 +417,8 @@ const gameLanguage = useReactiveState(sdk.data.game.language)
 const gameServer = useReactiveState(sdk.data.game.server)
 const gameState = useReactiveState(sdk.data.game.state)
 const serverTime = useReactiveState(sdk.data.game.serverTime)
+const fps = useReactiveState(sdk.data.game.fps)
+const ping = useReactiveState(sdk.data.game.ping)
 
 const accountCredits = useReactiveState(sdk.data.account.credits)
 const accountGold = useReactiveState(sdk.data.account.gold)
@@ -342,8 +452,20 @@ const battleTank = useReactiveState(sdk.data.battle.vehicle)
 const health = useReactiveState(sdk.data.battle.health)
 const maxHealth = useReactiveState(sdk.data.battle.maxHealth)
 const battleTankPosition = useReactiveState(sdk.data.battle.position)
+const battleTankRotation = useReactiveState(sdk.data.battle.rotation)
+const battleTankVelocity = useReactiveState(sdk.data.battle.velocity)
+const turretYaw = useReactiveState(sdk.data.battle.turretYaw)
+const gunPitch = useReactiveState(sdk.data.battle.gunPitch)
+const turretRotationSpeed = useReactiveState(sdk.data.battle.turretRotationSpeed)
+const battleBases = useReactiveState(sdk.data.battle.teamBases)
 
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
+
+const isAutoAim = useReactiveState(sdk.data.battle.aiming.isAutoAim)
+const isServerAim = useReactiveState(sdk.data.battle.aiming.isServerAim)
+const serverDispersion = useReactiveState(sdk.data.battle.aiming.serverDispersion)
+const clientDispersion = useReactiveState(sdk.data.battle.aiming.clientDispersion)
+const idealDispersion = useReactiveState(sdk.data.battle.aiming.idealDispersion)
 
 const damages = ref<{ from: [string, number], to: [string, number], dmg: number, health: number }[]>([])
 sdk.data.battle.onDamage.watch(t => {
@@ -362,9 +484,9 @@ function classByTeam(team: number) {
   return team == arena?.value?.team ? 'ally' : 'enemy'
 }
 
-sdk.onAnyChange((path, value) => {
-  console.log('onAnyChange', path, value)
-})
+// sdk.onAnyChange((path, value) => {
+//   console.log('onAnyChange', path, value)
+// })
 
 sdk.onAnyTrigger((path, value) => {
   console.log('onAnyTrigger', path, value)
@@ -454,6 +576,70 @@ br {
 
   .ally {
     color: rgb(132, 225, 132);
+  }
+}
+
+.hp-progress-bar {
+  text-align: center;
+  font-weight: bold;
+  margin: 0.5em 0;
+  position: relative;
+
+  border: 0.1em solid var(--wotstat-separator);
+  border-radius: 0.4em;
+  overflow: hidden;
+
+  .progress {
+    background: var(--wotstat-separator);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.rotation-circles {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 1em;
+  justify-content: space-around;
+
+  .circle {
+    width: 4em;
+    height: 4em;
+    border: 0.1em solid var(--wotstat-separator);
+    border-radius: 50%;
+
+    .tank-container {
+      width: 100%;
+      height: 100%;
+      scale: 1.3;
+    }
+  }
+}
+
+.team-base-progress {
+  // display: flex;
+  margin-bottom: 0.5em;
+
+  .team-base {
+    position: relative;
+    border: 0.1em solid var(--wotstat-separator);
+    border-radius: 0.4em;
+
+    p {
+      position: relative;
+      z-index: 2;
+    }
+
+    .progress {
+      background: var(--wotstat-separator);
+      position: absolute;
+      border-radius: 0.4em;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
   }
 }
 </style>
