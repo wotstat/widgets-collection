@@ -58,6 +58,10 @@ div.vr {
   border-radius: 1em;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .flex {
   display: flex;
 
@@ -67,6 +71,10 @@ div.vr {
 
   &.start {
     justify-content: start;
+  }
+
+  &.space-between {
+    justify-content: space-between;
   }
 }
 
