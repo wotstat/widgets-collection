@@ -1,8 +1,8 @@
 
 import { onUnmounted, provide, ref, shallowRef } from 'vue';
-import { WidgetSDK, type State, WidgetMetaTags, Trigger } from '../../../wotstat-widgets-sdk/lib/main';
+import { WidgetSDK, type State, WidgetMetaTags, Trigger, I18n } from '../../../wotstat-widgets-sdk/lib/main';
 
-export { WidgetMetaTags }
+export { WidgetMetaTags, I18n }
 
 export function useWidgetSdk() {
   const sdk = new WidgetSDK()

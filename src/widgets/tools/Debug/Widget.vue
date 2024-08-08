@@ -61,7 +61,13 @@
       <div class="spacer" v-if="isInBattle"></div>
 
       <WidgetCard v-if="isInBattle">
-        <AnyDamagesLog v-bind="anyDamagesLogProps" />
+        <DamageLog v-bind="damageLogProps" />
+      </WidgetCard>
+
+      <div class="spacer" v-if="isInBattle"></div>
+
+      <WidgetCard v-if="isInBattle">
+        <FeedbackLog :feedbacks="feedbacks" />
       </WidgetCard>
 
       <div class="spacer" v-if="isInBattle"></div>
@@ -79,8 +85,8 @@
 import WidgetRoot from "@/components/WidgetRoot.vue";
 import WidgetCard from "@/components/WidgetCard.vue";
 import WidgetStatusWrapper from "@/components/WidgetStatusWrapper.vue";
-import { useWidgetSdk, useReactiveState } from '@/composition/widgetSdk';
-import { computed, onMounted, ref } from "vue";
+import { useWidgetSdk, useReactiveState, useReactiveTrigger, I18n } from '@/composition/widgetSdk';
+import { computed, onMounted, ref, shallowRef, triggerRef } from "vue";
 
 import Game from './panels/Game.vue'
 import Player from './panels/Player.vue'
@@ -92,8 +98,9 @@ import Battle from './panels/Battle.vue'
 import Aiming from './panels/Aiming.vue'
 import BattleTank from "./panels/BattleTank.vue";
 import Efficiency from "./panels/Efficiency.vue";
-import AnyDamagesLog from "./panels/AnyDamagesLog.vue";
+import DamageLog from "./panels/DamageLog.vue";
 import Bases from "./panels/Bases.vue";
+import FeedbackLog from "./panels/FeedbackLog.vue";
 
 
 // @ts-ignore
@@ -258,9 +265,10 @@ const efficiencyProps = computed(() => ({
   totalStun: totalStun.value,
 }))
 
-const anyDamagesLogProps = computed(() => ({
+const damageLogProps = computed(() => ({
   damages: damages.value,
   playerTeam: arena.value?.team,
+  playerId: playerId.value,
 }))
 
 const basesProps = computed(() => ({
@@ -269,11 +277,12 @@ const basesProps = computed(() => ({
 }))
 
 
-const damages = ref<{ from: [string, number], to: [string, number], dmg: number, health: number }[]>([])
-sdk.data.battle.onDamage.watch(t => {
+const damages = ref<{ from: [tag: string, team: number, player: number], to: [tag: string, team: number, player: number], dmg: number, health: number }[]>([])
+
+useReactiveTrigger(sdk.data.battle.onDamage, t => {
   damages.value.push({
-    from: [t.attacker?.localizedShortName ?? '?', t.attacker?.team ?? -1],
-    to: [t.target?.localizedShortName ?? '?', t.target?.team ?? -1],
+    from: [t.attacker?.localizedShortName ?? '?', t.attacker?.team ?? -1, t.attacker?.playerId ?? -1],
+    to: [t.target?.localizedShortName ?? '?', t.target?.team ?? -1, t.target?.playerId ?? -1],
     dmg: t.damage,
     health: t.health
   })
@@ -281,13 +290,32 @@ sdk.data.battle.onDamage.watch(t => {
   if (damages.value.length > 5) damages.value.shift()
 })
 
-sdk.data.battle.onPlayerFeedback.watch(t => {
-  console.log('onPlayerFeedback', t)
+const feedbacks = ref<{ eventType: string, text: string }[]>([])
+
+useReactiveTrigger(sdk.data.battle.onPlayerFeedback, t => {
+  const eventType = t.type
+  let text = ''
+
+  if (t.data) {
+    if ('attackReason' in t.data) text += `${t.data.attackReason} `
+    if ('damage' in t.data) {
+      if ('shellType' in t.data && t.data.shellType) text += `${t.data.damage} (${I18n.shortShellName(t.data.shellType, 'ru')}) `
+      else text += `${t.data.damage} `
+    }
+    if ('critsCount' in t.data) text += `${t.data.critsCount} `
+    if ('vehicle' in t.data) text += `→ ${t.data.vehicle.localizedShortName}`
+  }
+
+
+  feedbacks.value.push({ eventType, text })
+  if (feedbacks.value.length > 5) feedbacks.value.shift()
 })
 
-// sdk.onAnyTrigger((path, value) => {
-//   console.log('onAnyTrigger', path, value)
-// })
+
+useReactiveTrigger(sdk.data.battle.isInBattle, t => {
+  damages.value = []
+  feedbacks.value = []
+})
 
 </script>
 
@@ -336,6 +364,10 @@ br {
 
   .ally {
     color: rgb(132, 225, 132);
+  }
+
+  .self {
+    color: rgb(255 221 132);
   }
 }
 </style>
