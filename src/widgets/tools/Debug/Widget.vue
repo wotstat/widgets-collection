@@ -76,6 +76,12 @@
         <Bases v-bind="basesProps" />
       </WidgetCard>
 
+      <div class="spacer"></div>
+
+      <WidgetCard>
+        <Keyboard :pressed="[...pressedKeys.values()]" />
+      </WidgetCard>
+
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -101,6 +107,7 @@ import Efficiency from "./panels/Efficiency.vue";
 import DamageLog from "./panels/DamageLog.vue";
 import Bases from "./panels/Bases.vue";
 import FeedbackLog from "./panels/FeedbackLog.vue";
+import Keyboard from "./panels/Keyboard.vue";
 
 
 // @ts-ignore
@@ -304,6 +311,8 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, t => {
     }
     if ('critsCount' in t.data) text += `${t.data.critsCount} `
     if ('vehicle' in t.data) text += `→ ${t.data.vehicle.localizedShortName}`
+
+    if ('extra' in t.data) text += `(${t.data.extra})`
   }
 
 
@@ -315,6 +324,16 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, t => {
 useReactiveTrigger(sdk.data.battle.isInBattle, t => {
   damages.value = []
   feedbacks.value = []
+})
+
+useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
+  console.log('result', result);
+})
+
+const pressedKeys = ref<Set<string>>(new Set())
+useReactiveTrigger(sdk.data.keyboard.onAnyKey, key => {
+  if (key.isKeyDown) pressedKeys.value.add(key.key)
+  else pressedKeys.value.delete(key.key)
 })
 
 </script>
