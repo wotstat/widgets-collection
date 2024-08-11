@@ -1,6 +1,6 @@
 <template>
-  <h3 class="secondary bold">PLAYER</h3>
-  <div class="flex">
+  <h3 class="secondary bold">PLAYER <span class="float-right">{{ localizedKeys }}</span></h3>
+  <div class="flex" v-if="visible">
     <div class="flex flex-1 ver">
       <Line name="Name" :value="playerName" />
       <Line name="Clan" :value="playerClan ?? '-'" />
@@ -16,13 +16,17 @@
 
 <script setup lang="ts">
 import Line from "../Line.vue";
+import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
 
-defineProps<{
-  playerName?: string;
-  playerClan?: string;
-  playerId?: number;
-  playerClanId?: number;
+const props = defineProps<{
+  playerName?: string
+  playerClan?: string
+  playerId?: number
+  playerClanId?: number
+  collapseKeys: KeyBindingSetting
 }>();
+
+const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>
 
 

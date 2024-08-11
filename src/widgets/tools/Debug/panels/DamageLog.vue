@@ -1,7 +1,7 @@
 <template>
 
-  <h3 class="secondary bold">Damages</h3>
-  <div class="flex">
+  <h3 class="secondary bold">DAMAGES <span class="float-right">{{ localizedKeys }}</span></h3>
+  <div class="flex" v-if="visible">
     <div class="flex flex-1 ver team-colors">
       <p v-for="item in damages">
         <span :class="classByTeam(item.from[1], item.from[2])">{{ item.from[0] }}</span>
@@ -16,16 +16,18 @@
 
 
 <script setup lang="ts">
+import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
 
 const props = defineProps<{
   damages?: {
-    from: [tag: string, team: number, player: number];
-    to: [tag: string, team: number, player: number];
-    dmg: number;
-    health: number;
+    from: [tag: string, team: number, player: number]
+    to: [tag: string, team: number, player: number]
+    dmg: number
+    health: number
   }[];
-  playerTeam?: number;
-  playerId?: number;
+  playerTeam?: number
+  playerId?: number
+  collapseKeys: KeyBindingSetting
 }>();
 
 function classByTeam(team: number, id: number) {
@@ -34,6 +36,7 @@ function classByTeam(team: number, id: number) {
   return team == props.playerTeam ? 'ally' : 'enemy'
 }
 
+const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>
 
 

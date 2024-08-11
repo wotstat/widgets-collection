@@ -1,15 +1,20 @@
 <template>
-  <h3 class="secondary bold">KEYBOARD <span class="float-right">H+7</span></h3>
-  <div class="keys">
+  <h3 class="secondary bold">KEYBOARD <span class="float-right">{{ localizedKeys }}</span></h3>
+  <div class="keys" v-if="visible">
     <div v-for="key in pressed" :key="key" class="key">{{ key.replace('KEY_', '') }}</div>
   </div>
 </template>
 
 
 <script setup lang="ts">
-defineProps<{
-  pressed: string[];
+import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+
+const props = defineProps<{
+  pressed: string[]
+  collapseKeys: KeyBindingSetting
 }>();
+
+const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>
 
 

@@ -2,84 +2,87 @@
   <WidgetRoot auto-scale auto-height>
     <WidgetStatusWrapper :ctx>
       <WidgetCard>
-        <Game v-bind="gameProps" />
+        <Game v-bind="gameProps" :collapse-keys="['game', ['KEY_H', 'KEY_1'], ['KEY_H', 'KEY_1']]" />
       </WidgetCard>
 
       <template v-if="isInHangar">
         <div class="spacer"></div>
         <WidgetCard>
-          <Player v-bind="playerProps" />
+          <Player v-bind="playerProps" :collapse-keys="['player', ['KEY_H', 'KEY_2'], null]" />
         </WidgetCard>
 
         <div class="spacer"></div>
         <WidgetCard>
-          <Account v-bind="accountProps" />
+          <Account v-bind="accountProps" :collapse-keys="['account', ['KEY_H', 'KEY_3'], null]" />
         </WidgetCard>
 
         <div class="spacer"></div>
         <WidgetCard>
-          <Hangar v-bind="hangarProps" />
+          <Hangar v-bind="hangarProps" :collapse-keys="['hangar', ['KEY_H', 'KEY_4'], null]" />
         </WidgetCard>
       </template>
 
       <div class="spacer"></div>
       <WidgetCard>
-        <Platoon v-bind="platoonProps" />
+        <Platoon v-bind="platoonProps" :collapse-keys="['platoon', ['KEY_H', 'KEY_5'], ['KEY_H', 'KEY_2']]" />
       </WidgetCard>
 
       <template v-if="isInHangar">
         <div class="spacer"></div>
         <WidgetCard>
-          <HangarTank v-bind="hangarTankProps" />
+          <HangarTank v-bind="hangarTankProps" :collapse-keys="['hangar-tank', ['KEY_H', 'KEY_6'], null]" />
         </WidgetCard>
       </template>
 
-      <div class="spacer" v-if="isInBattle"></div>
+      <template v-if="isInBattle">
+        <div class="spacer"></div>
 
-      <WidgetCard v-if="isInBattle">
-        <Battle v-bind="battleProps" />
-      </WidgetCard>
+        <WidgetCard>
+          <Battle v-bind="battleProps" :collapse-keys="['battle', null, ['KEY_H', 'KEY_3']]" />
+        </WidgetCard>
 
-      <div class="spacer" v-if="isInBattle"></div>
+        <div class="spacer"></div>
 
-      <WidgetCard v-if="isInBattle">
-        <Aiming v-bind="aimingProps" />
-      </WidgetCard>
+        <WidgetCard>
+          <Aiming v-bind="aimingProps" :collapse-keys="['aiming', null, ['KEY_H', 'KEY_4']]" />
+        </WidgetCard>
 
-      <div class="spacer" v-if="isInBattle"></div>
+        <div class="spacer"></div>
 
-      <WidgetCard v-if="isInBattle">
-        <BattleTank v-bind="battleTankProps" />
-      </WidgetCard>
+        <WidgetCard>
+          <BattleTank v-bind="battleTankProps" :collapse-keys="['battle-tank', null, ['KEY_H', 'KEY_5']]" />
+        </WidgetCard>
 
-      <div class="spacer" v-if="isInBattle"></div>
+        <div class="spacer"></div>
 
-      <WidgetCard v-if="isInBattle">
-        <Efficiency v-bind="efficiencyProps" />
-      </WidgetCard>
+        <WidgetCard>
+          <Efficiency v-bind="efficiencyProps" :collapse-keys="['efficiency', null, ['KEY_H', 'KEY_6']]" />
+        </WidgetCard>
 
-      <div class="spacer" v-if="isInBattle"></div>
+        <div class="spacer"></div>
 
-      <WidgetCard v-if="isInBattle">
-        <DamageLog v-bind="damageLogProps" />
-      </WidgetCard>
+        <WidgetCard>
+          <DamageLog v-bind="damageLogProps" :collapse-keys="['damage-log', null, ['KEY_H', 'KEY_7']]" />
+        </WidgetCard>
 
-      <div class="spacer" v-if="isInBattle"></div>
+        <div class="spacer"></div>
 
-      <WidgetCard v-if="isInBattle">
-        <FeedbackLog :feedbacks="feedbacks" />
-      </WidgetCard>
+        <WidgetCard>
+          <FeedbackLog :feedbacks="feedbacks" :collapse-keys="['feedback-log', null, ['KEY_H', 'KEY_8']]" />
+        </WidgetCard>
 
-      <div class="spacer" v-if="isInBattle"></div>
+        <div class="spacer"></div>
 
-      <WidgetCard v-if="isInBattle && battleBases">
-        <Bases v-bind="basesProps" />
-      </WidgetCard>
+        <WidgetCard v-if="battleBases">
+          <Bases v-bind="basesProps" :collapse-keys="['bases', null, ['KEY_H', 'KEY_9']]" />
+        </WidgetCard>
+      </template>
 
       <div class="spacer"></div>
 
       <WidgetCard>
-        <Keyboard :pressed="[...pressedKeys.values()]" />
+        <Keyboard :pressed="[...pressedKeys.values()]"
+          :collapse-keys="['keyboard', ['KEY_H', 'KEY_7'], ['KEY_H', 'KEY_0']]" />
       </WidgetCard>
 
     </WidgetStatusWrapper>
@@ -92,7 +95,7 @@ import WidgetRoot from "@/components/WidgetRoot.vue";
 import WidgetCard from "@/components/WidgetCard.vue";
 import WidgetStatusWrapper from "@/components/WidgetStatusWrapper.vue";
 import { useWidgetSdk, useReactiveState, useReactiveTrigger, I18n } from '@/composition/widgetSdk';
-import { computed, onMounted, ref, shallowRef, triggerRef } from "vue";
+import { computed, provide, ref } from "vue";
 
 import Game from './panels/Game.vue'
 import Player from './panels/Player.vue'
@@ -108,6 +111,7 @@ import DamageLog from "./panels/DamageLog.vue";
 import Bases from "./panels/Bases.vue";
 import FeedbackLog from "./panels/FeedbackLog.vue";
 import Keyboard from "./panels/Keyboard.vue";
+import { onAnyKeyPressKey } from "./useToggleKeyBinding";
 
 
 // @ts-ignore
@@ -131,7 +135,8 @@ const gameState = useReactiveState(sdk.data.game.state)
 const serverTime = useReactiveState(sdk.data.game.serverTime)
 const fps = useReactiveState(sdk.data.game.fps)
 const ping = useReactiveState(sdk.data.game.ping)
-const IsInReplay = useReactiveState(sdk.data.game.isInReplay)
+const isInReplay = useReactiveState(sdk.data.game.isInReplay)
+const dataProviderVersion = useReactiveState(sdk.data.game.dataProviderVersion)
 
 const accountCredits = useReactiveState(sdk.data.account.credits)
 const accountGold = useReactiveState(sdk.data.account.gold)
@@ -203,7 +208,8 @@ const gameProps = computed(() => ({
   serverTime: serverTime.value ?? 0,
   ping: ping.value,
   fps: fps.value,
-  IsInReplay: IsInReplay.value,
+  isInReplay: isInReplay.value,
+  dataProviderVersion: dataProviderVersion.value,
 }))
 
 const playerProps = computed(() => ({
@@ -331,6 +337,9 @@ useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
 })
 
 const pressedKeys = ref<Set<string>>(new Set())
+provide(onAnyKeyPressKey, pressedKeys)
+provide('isInBattle', isInBattle)
+
 useReactiveTrigger(sdk.data.keyboard.onAnyKey, key => {
   if (key.isKeyDown) pressedKeys.value.add(key.key)
   else pressedKeys.value.delete(key.key)

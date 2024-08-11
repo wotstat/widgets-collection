@@ -1,30 +1,36 @@
 <template>
-  <h3 class="secondary bold">AIMING</h3>
-  <div class="flex">
-    <div class="flex flex-1 ver">
-      <Line name="isAutoAim" :value="isAutoAim" />
-      <Line name="ClientDisp" :value="(clientDispersion ?? 0).toFixed(7)" />
+  <h3 class="secondary bold">AIMING <span class="float-right">{{ localizedKeys }}</span></h3>
+  <template v-if="visible">
+    <div class="flex">
+      <div class="flex flex-1 ver">
+        <Line name="isAutoAim" :value="isAutoAim" />
+        <Line name="ClientDisp" :value="(clientDispersion ?? 0).toFixed(7)" />
+      </div>
+      <div class="vr"></div>
+      <div class="flex flex-1 ver">
+        <Line name="isServerAim" :value="isServerAim" />
+        <Line name="ServerDisp" :value="(serverDispersion ?? 0).toFixed(7)" />
+      </div>
     </div>
-    <div class="vr"></div>
-    <div class="flex flex-1 ver">
-      <Line name="isServerAim" :value="isServerAim" />
-      <Line name="ServerDisp" :value="(serverDispersion ?? 0).toFixed(7)" />
-    </div>
-  </div>
-  <Line name="IdealDisp" :value="(idealDispersion ?? 0).toFixed(7)" />
+    <Line name="IdealDisp" :value="(idealDispersion ?? 0).toFixed(7)" />
+  </template>
 </template>
 
 
 <script setup lang="ts">
 import Line from '../Line.vue';
+import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
 
-defineProps<{
-  isAutoAim?: boolean;
-  clientDispersion?: number;
-  isServerAim?: boolean;
-  serverDispersion?: number;
-  idealDispersion?: number;
-}>();
+const props = defineProps<{
+  isAutoAim?: boolean
+  clientDispersion?: number
+  isServerAim?: boolean
+  serverDispersion?: number
+  idealDispersion?: number
+  collapseKeys: KeyBindingSetting
+}>()
+
+const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>
 
 

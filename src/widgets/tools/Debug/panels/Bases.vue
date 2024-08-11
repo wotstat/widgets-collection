@@ -1,6 +1,6 @@
 <template>
-  <h3 class="secondary bold">Bases</h3>
-  <div class="flex ver">
+  <h3 class="secondary bold">BASES <span class="float-right">{{ localizedKeys }}</span></h3>
+  <div class="flex ver" v-if="visible">
     <div class="team-base-progress team-colors" v-if="battleBases" v-for="[team, bases] in Object.entries(battleBases)">
       <div class="team-base" :class="team == playerTeam?.toString() ? 'enemy' : 'ally'" v-for="base in bases">
 
@@ -17,24 +17,28 @@
         }"></div>
 
       </div>
-
     </div>
   </div>
 </template>
 
 
 <script setup lang="ts">
-defineProps<{
+import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+
+const props = defineProps<{
   battleBases?: {
     [team: string]: {
-      points: number;
-      invadersCount: number;
-      timeLeft: number;
-      capturingStopped: boolean;
-    }[];
-  };
-  playerTeam?: number;
-}>();
+      points: number
+      invadersCount: number
+      timeLeft: number
+      capturingStopped: boolean
+    }[]
+  }
+  playerTeam?: number
+  collapseKeys: KeyBindingSetting
+}>()
+
+const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>
 
 

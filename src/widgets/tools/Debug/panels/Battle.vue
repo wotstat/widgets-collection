@@ -1,7 +1,7 @@
 <template>
 
-  <h3 class="secondary bold">BATTLE</h3>
-  <div class="flex">
+  <h3 class="secondary bold">BATTLE <span class="float-right">{{ localizedKeys }}</span></h3>
+  <div class="flex" v-show="visible">
     <div class="flex flex-3 ver">
       <Line name="Id" :value="arenaId" />
       <Line name="Arena" :value="arena?.tag" />
@@ -22,7 +22,9 @@
 
 <script setup lang="ts">
 import Line from '../Line.vue';
-defineProps<{
+import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+
+const props = defineProps<{
   arenaId?: number;
   arena?: {
     tag: string;
@@ -37,7 +39,10 @@ defineProps<{
   };
   serverTime?: number;
   isAlive?: boolean;
+  collapseKeys: KeyBindingSetting;
 }>();
+
+const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>
 
 

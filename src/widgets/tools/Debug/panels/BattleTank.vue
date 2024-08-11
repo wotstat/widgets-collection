@@ -1,72 +1,74 @@
 <template>
 
-  <h3 class="secondary bold">TANK</h3>
+  <h3 class="secondary bold">TANK<span class="float-right">{{ localizedKeys }}</span></h3>
+  <template v-if="visible">
 
-  <div class="flex ver">
-    <Line name="Tag" :value="battleTank?.tag" />
-  </div>
-
-  <div class="flex">
-    <div class="flex-3">
-      <Line name="Name" :value="battleTank?.localizedName" />
-      <Line name="Role" :value="battleTank?.role" />
+    <div class="flex ver">
+      <Line name="Tag" :value="battleTank?.tag" />
     </div>
-    <div class="vr"></div>
-    <div class="flex-2">
-      <Line name="Level" :value="battleTank?.level" />
-      <Line name="Class" :value="battleTank?.class" />
-    </div>
-  </div>
-  <div class="hp-progress-bar">
-    {{ `${health}/${maxHealth}` }}
-    <div class="progress" :style="{ right: `${100 - (health! / maxHealth!) * 100}%` }"></div>
-  </div>
 
-  <div class="rotation-circles" v-if="battleTankRotation && turretYaw != null && gunPitch != null">
-    <div>
-      <div class="circle">
-        <div class="tank-container">
-          <RightTank :body-angle="-radToRoundDec(battleTankRotation[0])" :gun-angle="-radToDec(gunPitch)" />
-        </div>
+    <div class="flex">
+      <div class="flex-3">
+        <Line name="Name" :value="battleTank?.localizedName" />
+        <Line name="Role" :value="battleTank?.role" />
       </div>
-      <p class="center">{{ radToRoundDec(battleTankRotation[0]) }}</p>
-    </div>
-
-    <div>
-      <div class="circle">
-        <div class="tank-container">
-          <TopTank :body-angle="90 - radToDec(battleTankRotation[1])" :turret-angle="-radToDec(turretYaw)" />
-        </div>
+      <div class="vr"></div>
+      <div class="flex-2">
+        <Line name="Level" :value="battleTank?.level" />
+        <Line name="Class" :value="battleTank?.class" />
       </div>
-      <p class="center">{{ radToRoundDec(battleTankRotation[1]) }}</p>
+    </div>
+    <div class="hp-progress-bar">
+      {{ `${health}/${maxHealth}` }}
+      <div class="progress" :style="{ right: `${100 - (health! / maxHealth!) * 100}%` }"></div>
     </div>
 
-
-    <div>
-      <div class="circle">
-        <div class="tank-container">
-          <FrontTank :body-angle="radToDec(battleTankRotation[2])" />
+    <div class="rotation-circles" v-if="battleTankRotation && turretYaw != null && gunPitch != null">
+      <div>
+        <div class="circle">
+          <div class="tank-container">
+            <RightTank :body-angle="-radToRoundDec(battleTankRotation[0])" :gun-angle="-radToDec(gunPitch)" />
+          </div>
         </div>
+        <p class="center">{{ radToRoundDec(battleTankRotation[0]) }}</p>
       </div>
-      <p class="center">{{ radToRoundDec(battleTankRotation[2]) }}</p>
-    </div>
-  </div>
 
-  <Line v-if="battleTankVelocity" name="Tank Speed" :value="Math.round(battleTankVelocity[0] * 3.6 * 10) / 10" />
-  <Line v-if="battleTankVelocity" name="Rotation Speed" :value="radToRoundDec(battleTankVelocity[1])" />
-  <Line v-if="turretRotationSpeed != null" name="Turret Rotation Speed" :value="radToRoundDec(turretRotationSpeed)" />
+      <div>
+        <div class="circle">
+          <div class="tank-container">
+            <TopTank :body-angle="90 - radToDec(battleTankRotation[1])" :turret-angle="-radToDec(turretYaw)" />
+          </div>
+        </div>
+        <p class="center">{{ radToRoundDec(battleTankRotation[1]) }}</p>
+      </div>
 
-  <div class="flex" v-if="battleTankPosition">
-    <div class="flex-1">
-      <Line name="X" :value="Math.round(battleTankPosition[0] * 10) / 10" />
+
+      <div>
+        <div class="circle">
+          <div class="tank-container">
+            <FrontTank :body-angle="radToDec(battleTankRotation[2])" />
+          </div>
+        </div>
+        <p class="center">{{ radToRoundDec(battleTankRotation[2]) }}</p>
+      </div>
     </div>
-    <div class="flex-1">
-      <Line name="Y" :value="Math.round(battleTankPosition[1] * 10) / 10" />
+
+    <Line v-if="battleTankVelocity" name="Tank Speed" :value="Math.round(battleTankVelocity[0] * 3.6 * 10) / 10" />
+    <Line v-if="battleTankVelocity" name="Rotation Speed" :value="radToRoundDec(battleTankVelocity[1])" />
+    <Line v-if="turretRotationSpeed != null" name="Turret Rotation Speed" :value="radToRoundDec(turretRotationSpeed)" />
+
+    <div class="flex" v-if="battleTankPosition">
+      <div class="flex-1">
+        <Line name="X" :value="Math.round(battleTankPosition[0] * 10) / 10" />
+      </div>
+      <div class="flex-1">
+        <Line name="Y" :value="Math.round(battleTankPosition[1] * 10) / 10" />
+      </div>
+      <div class="flex-1">
+        <Line name="Z" :value="Math.round(battleTankPosition[2] * 10) / 10" />
+      </div>
     </div>
-    <div class="flex-1">
-      <Line name="Z" :value="Math.round(battleTankPosition[2] * 10) / 10" />
-    </div>
-  </div>
+  </template>
 </template>
 
 
@@ -76,6 +78,7 @@ import Line from "../Line.vue";
 import RightTank from '@/components/tank/RightView.vue'
 import TopTank from '@/components/tank/TopView.vue'
 import FrontTank from '@/components/tank/FrontView.vue'
+import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
 
 function radToRoundDec(rad: number) {
   return Math.round(radToDec(rad) * 10) / 10
@@ -85,24 +88,27 @@ function radToDec(rad: number) {
   return rad * 180 / Math.PI
 }
 
-
-defineProps<{
+const props = defineProps<{
   battleTank?: {
-    tag: string;
-    localizedName: string;
-    role: string;
-    level: number;
-    class: string;
+    tag: string
+    localizedName: string
+    role: string
+    level: number
+    class: string
   };
-  health?: number;
-  maxHealth?: number;
-  battleTankRotation?: number[];
-  turretYaw?: number;
-  gunPitch?: number;
-  battleTankVelocity?: number[];
-  turretRotationSpeed?: number;
-  battleTankPosition?: number[];
+  health?: number
+  maxHealth?: number
+  battleTankRotation?: number[]
+  turretYaw?: number
+  gunPitch?: number
+  battleTankVelocity?: number[]
+  turretRotationSpeed?: number
+  battleTankPosition?: number[]
+  collapseKeys: KeyBindingSetting
 }>();
+
+
+const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 
 </script>
 
