@@ -2,7 +2,7 @@
   <slot></slot>
   <Transition>
     <WidgetCard class="warning-text" v-if="!shouldShowContent">
-      <div v-if="!isReady">
+      <div v-if="!isConnected">
         <p class="primary">Ожидание клиента игры</p>
         <p class="secondary">Для работы виджета необходим мод data&#8209;provider. Подробнее на сайте wotstat.info</p>
         <p class="secondary ellipsis">{{ ellipsis.join(' ') }}</p>
@@ -41,10 +41,10 @@ const missingExtensions = computed(() => {
   return props.requiredExtensions.filter(ext => !extSet.has(ext))
 })
 
-const isReady = computed(() => ctx.status.value === 'ready')
+const isConnected = computed(() => ctx.status.value === 'connected')
 const isExtensionsReady = computed(() => missingExtensions.value.length === 0)
 
-const shouldShowContent = computed(() => isReady.value && isExtensionsReady.value)
+const shouldShowContent = computed(() => isConnected.value && isExtensionsReady.value)
 
 const ellipsis = ref<string[]>([])
 async function ellipsisLoop() {
