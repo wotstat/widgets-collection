@@ -41,7 +41,6 @@ jobs:
           aws s3 cp \
             s3://widgets.wotstat.info/index.html s3://widgets.wotstat.info/index.html \
             --endpoint-url=https://storage.yandexcloud.net/ \
-            --recursive \
             --metadata-directive REPLACE \
             --cache-control "public, max-age=300"
         env:
