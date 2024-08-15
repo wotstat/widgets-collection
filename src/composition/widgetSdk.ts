@@ -1,6 +1,7 @@
 
 import { onUnmounted, provide, ref, shallowRef } from 'vue';
-import { WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes } from '../../../wotstat-widgets-sdk/lib/main';
+// import { WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes } from '../../../wotstat-widgets-sdk/lib/main';
+import { WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes } from 'wotstat-widgets-sdk';
 
 export { WidgetMetaTags, I18n, type KeyCodes, type Trigger }
 
