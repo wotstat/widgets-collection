@@ -1,6 +1,6 @@
 import { type KeyCodes } from "@/composition/widgetSdk";
 import { useLocalStorage } from "@vueuse/core";
-import { computed, inject, Ref, ref, ShallowRef, watch, watchEffect } from "vue";
+import { computed, inject, provide, Ref, ref, ShallowRef, watch, watchEffect } from "vue";
 
 export const onAnyKeyPressKey = Symbol('pressedKeys')
 
@@ -10,7 +10,7 @@ export function useToggleKeyBinding(settings: KeyBindingSetting, defaultValue = 
   const visible = useLocalStorage('debug-widget-visible-' + settings[0], defaultValue)
 
   const pressed = inject<Ref<Set<string>>>(onAnyKeyPressKey)
-  const isInBattle = inject<ShallowRef<boolean>>('isInBattle')
+  const isInBattle = inject<Ref<boolean>>('isInBattle')
 
   watch(pressed!.value, (newPressed) => {
     const keybinding = settings[isInBattle?.value ? 2 : 1]
@@ -24,4 +24,12 @@ export function useToggleKeyBinding(settings: KeyBindingSetting, defaultValue = 
   })
 
   return { visible, localizedKeys }
+}
+
+export function provideFakeKeyBinding() {
+  const pressed = ref(new Set<string>())
+  const isInBattle = ref(false)
+
+  provide(onAnyKeyPressKey, pressed)
+  provide('isInBattle', isInBattle)
 }
