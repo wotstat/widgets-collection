@@ -52,7 +52,8 @@ const props = defineProps<{
     :deep(.widgets-sdk-styles) {
       .slot {
         cursor: pointer;
-        transition: all 0.3s;
+        transition-duration: 0.3s;
+        transition-property: transform, box-shadow, border-radius;
 
         &:hover {
           box-shadow: 0 5px 10px #13131337;

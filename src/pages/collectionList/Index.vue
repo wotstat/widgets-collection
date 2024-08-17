@@ -31,13 +31,9 @@ import Item from './Item.vue';
 import { defineAsyncComponent, provide, ref } from 'vue';
 import { useLocalStorage } from '@vueuse/core';
 import { setupStyles } from "@/composition/widgetSdk";
+import { collections } from '@/collections';
 
 setupStyles();
-
-const collections = [
-  { name: 'Main', widgets: ['/efficiency/sum/solo/blocked', '/efficiency/sum/solo/blocked', '/efficiency/sum/solo/blocked', '/efficiency/sum/solo/blocked'] },
-  { name: 'Tools', widgets: ['/tools/debug'] }
-]
 
 const widgets = getAllWidgetsRoutes()
 const widgetsMap = new Map(widgets.map(w => ([w.route, w])))

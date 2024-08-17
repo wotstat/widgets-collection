@@ -13,7 +13,7 @@ const defaultOptions: Options = {
   name: '',
   description: '',
   postfix: '',
-  widget: './Widget.vue',
+  widget: './Index.vue',
   preview: './Preview.vue',
 }
 

@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import TitledCounter from './TitledCounter.vue';
+import TitledCounter from '../TitledCounter.vue';
 
 
 const { sdk } = useWidgetSdk();

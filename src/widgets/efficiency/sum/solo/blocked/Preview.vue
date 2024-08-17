@@ -10,7 +10,7 @@
 <script setup lang="ts">
 
 import { computed } from 'vue';
-import TitledCounter from './TitledCounter.vue';
+import TitledCounter from '../TitledCounter.vue';
 import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 
