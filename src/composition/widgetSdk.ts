@@ -1,24 +1,35 @@
 
 import { onUnmounted, provide, ref, shallowRef } from 'vue';
 // import { WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes } from '../../../wotstat-widgets-sdk/lib/main';
-import { WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes } from 'wotstat-widgets-sdk';
+import { WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles } from 'wotstat-widgets-sdk';
 
-export { WidgetMetaTags, I18n, type KeyCodes, type Trigger }
+export { WidgetMetaTags, I18n, type KeyCodes, type Trigger, setupStyles }
+
+
+let currentSdk: WidgetSDK<WidgetsSdkData> | null = null
+let refCount = 0
 
 export function useWidgetSdk() {
-  const sdk = new WidgetSDK()
+  if (currentSdk == null) {
+    currentSdk = new WidgetSDK()
+  }
 
   onUnmounted(() => {
-    console.log('destroying sdk');
-    sdk.dispose()
+    refCount--
+    if (refCount == 0 && currentSdk != null) {
+      console.log('destroying sdk');
+      currentSdk.dispose()
+      currentSdk = null
+    }
   })
 
-  const status = ref(sdk.status)
-  sdk.onStatusChange(s => status.value = s)
+  const status = ref(currentSdk.status)
+  currentSdk.onStatusChange(s => status.value = s)
 
-  const res = { sdk, status }
+  const res = { sdk: currentSdk, status }
   provide('sdk', res)
 
+  refCount++
   return res;
 }
 
