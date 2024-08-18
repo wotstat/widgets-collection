@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core';
 import { computed, inject, MaybeRefOrGetter, ref, toValue } from 'vue';
+import { accent, background } from "@/composition/wotstatColors";
 
 const containerElement = ref<HTMLElement | null>(null)
 
@@ -26,13 +27,12 @@ const props = defineProps<{
 const { width } = useElementSize(containerElement)
 const fontSize = computed(() => width.value / 100 * 4 + 'px')
 
+console.log('accent.value', accent.value);
 
-const previewAccent = inject<MaybeRefOrGetter<string>>('previewAccent')
-const previewBackground = inject<MaybeRefOrGetter<string>>('previewBackground')
 
 const targetStyle = computed(() => ({
-  '--wotstat-accent': toValue(previewAccent),
-  '--wotstat-background': toValue(previewBackground),
+  '--wotstat-accent': accent.value,
+  '--wotstat-background': background.value,
   fontSize: fontSize.value
 } as any))
 </script>

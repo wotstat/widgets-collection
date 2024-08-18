@@ -1,5 +1,30 @@
-import { deepMerge, DeepPartial } from ".";
+import { deepMerge } from ".";
 
+export type CheckboxParam = {
+  type: 'checkbox'
+  target: string
+  label: string
+  default: boolean
+}
+
+export type ColorParam = {
+  type: 'color'
+  target: string
+  label: string
+  default: string
+}
+
+export type IntParam = {
+  type: 'int'
+  target: string
+  label: string
+  default: number
+}
+
+export type AccentColorParam = 'accentColorParam'
+export type BackgroundColorParam = 'backgroundColorParam'
+
+export type WidgetParam = CheckboxParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam
 
 export type Options = {
   name: string,
@@ -7,6 +32,7 @@ export type Options = {
   widget: string,
   postfix: string,
   preview: string | null,
+  params: WidgetParam[],
 }
 
 const defaultOptions: Options = {
@@ -15,11 +41,12 @@ const defaultOptions: Options = {
   postfix: '',
   widget: './Index.vue',
   preview: './Preview.vue',
+  params: [],
 }
 
 const optionsSymbol = Symbol('options');
 
-export function defineWidget(options: DeepPartial<Options>) {
+export function defineWidget(options: Partial<Options>) {
   return {
     optionsSymbol,
     options: deepMerge(structuredClone(defaultOptions), options)

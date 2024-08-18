@@ -1,10 +1,12 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
-import { getAllWidgets, getAllWidgetsRoutes, pascalCaseToKebabCase, pathResolve } from "./utils";
+import { getAllWidgetsRoutes, pathResolve } from "./utils";
 
 import HomeView from './pages/collectionList/Index.vue'
+import PreviewView from './pages/previewPopup/Index.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: HomeView },
+  { path: '/preview/:widget*', component: PreviewView },
 ]
 
 

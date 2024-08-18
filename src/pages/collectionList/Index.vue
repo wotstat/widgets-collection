@@ -26,24 +26,17 @@
 
 
 <script setup lang="ts">
-import { getAllWidgets as getAllWidgetsOptions, getAllWidgetsRoutes, pathResolve } from '@/utils';
+import { getAllWidgetsRoutes, pathResolve } from '@/utils';
 import Item from './Item.vue';
-import { defineAsyncComponent, provide, ref } from 'vue';
-import { useLocalStorage } from '@vueuse/core';
-import { setupStyles } from "@/composition/widgetSdk";
+import { defineAsyncComponent } from 'vue';
 import { collections } from '@/collections';
-
+import { accent, background } from '@/composition/wotstatColors'
+import { setupStyles } from "@/composition/widgetSdk";
 setupStyles();
 
 const widgets = getAllWidgetsRoutes()
 const widgetsMap = new Map(widgets.map(w => ([w.route, w])))
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
-
-const accent = useLocalStorage('accentColor', '#ff0000')
-const background = useLocalStorage('backgroundColor', '#ff000000')
-
-provide('previewAccent', accent)
-provide('previewBackground', background)
 
 const collectionsWithWidgets = collections.map(collection => ({
   ...collection,

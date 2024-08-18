@@ -54,6 +54,7 @@ const props = defineProps<{
         cursor: pointer;
         transition-duration: 0.3s;
         transition-property: transform, box-shadow, border-radius;
+        will-change: transform, box-shadow, border-radius;
 
         &:hover {
           box-shadow: 0 5px 10px #13131337;
