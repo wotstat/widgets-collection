@@ -1,8 +1,8 @@
 <template>
   <template v-if="currentOptions">
     <div class="main">
-      <div class="info">
-        <p>{{ currentOptions.options.description }}</p>
+      <div class="info markdown">
+        <RMC />
       </div>
       <div class="preview">
         <div class="widget">
@@ -47,6 +47,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 const route = useRoute();
 
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
+const widgetReadmes = import.meta.glob('/src/widgets/**/*.md')
 const widgetsOptions = getAllWidgetsRoutes()
 
 const widgetPath = computed(() => {
@@ -119,6 +120,20 @@ const targetQuery = computed(() => {
   }).filter(t => t).join('&')
 })
 
+const Unknown = h('div', 'Unknown widget')
+const RMC = defineAsyncComponent(async () => {
+  if (!currentOptions.value) return Unknown
+  if (!currentOptions.value.options.readme) return Unknown
+
+  const readmePath = '/' + pathResolve('src', currentOptions.value.path, currentOptions.value.options.readme)
+
+  if (!widgetReadmes[readmePath]) return Unknown
+
+  const { VueComponent } = await widgetReadmes[readmePath]() as any
+
+  return VueComponent
+})
+
 const isActivated = ref(false)
 function copy() {
   isActivated.value = true
@@ -144,12 +159,16 @@ function copy() {
 
   .info {
     flex: 1;
+    max-height: 50%;
+    min-height: 30%;
+    overflow-y: auto
   }
 
   .preview {
-    height: 60%;
+    flex: 1;
     display: flex;
     gap: 20px;
+    min-height: 30%;
 
     .widget {
       flex: 1;
@@ -161,6 +180,7 @@ function copy() {
       padding: 10px;
 
       img {
+        user-select: none;
         position: absolute;
         width: 100%;
         height: 100%;

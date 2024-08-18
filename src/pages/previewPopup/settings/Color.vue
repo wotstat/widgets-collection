@@ -27,3 +27,30 @@ const value = defineModel<string>()
   margin: 0;
 }
 </style>
+
+<style lang="scss">
+.vc-colorpicker.white {
+  background-color: #2a2a2a !important;
+  color: #f6f6f6 !important;
+  border-radius: 10px;
+  border: 1px solid #424242;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+
+  .vc-alpha-input,
+  .vc-color-input {
+    input {
+      color: #f6f6f6;
+    }
+  }
+
+  .vc-saturation {
+
+    border-radius: 5px;
+
+    .vc-saturation__white,
+    .vc-saturation__black {
+      border-radius: 5px;
+    }
+  }
+}
+</style>

@@ -9,11 +9,10 @@
 
 <script setup lang="ts">
 
-import { computed, watchEffect } from 'vue';
+import { computed } from 'vue';
 import TitledCounter from '../TitledCounter.vue';
 import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-
 
 const props = defineProps<{
   isMiniPreview: boolean

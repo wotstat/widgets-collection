@@ -1,4 +1,5 @@
-import './style.scss'
+import './styles/main.scss'
+import './styles/markdown.scss'
 
 import { createApp } from 'vue'
 import routes from './routes.ts'

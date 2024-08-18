@@ -32,6 +32,7 @@ export type Options = {
   widget: string,
   postfix: string,
   preview: string | null,
+  readme: string | null,
   params: WidgetParam[],
 }
 
@@ -41,6 +42,7 @@ const defaultOptions: Options = {
   postfix: '',
   widget: './Index.vue',
   preview: './Preview.vue',
+  readme: './README.md',
   params: [],
 }
 

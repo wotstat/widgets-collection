@@ -1,7 +1,6 @@
 <template>
   <div class="widgets-sdk-styles" :style="targetStyle">
     <div class="autoscale" ref="containerElement" :style="{ aspectRatio: predictedAspectRatio }">
-      <!-- <slot></slot> -->
     </div>
     <div class="auto-scale-container" v-if="autoScale">
       <div class="slot" :style="{ fontSize, width: width + 'px' }">
@@ -26,9 +25,6 @@ const props = defineProps<{
 
 const { width } = useElementSize(containerElement)
 const fontSize = computed(() => width.value / 100 * 4 + 'px')
-
-console.log('accent.value', accent.value);
-
 
 const targetStyle = computed(() => ({
   '--wotstat-accent': accent.value,
