@@ -1,12 +1,9 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 import { getAllWidgetsRoutes, pathResolve } from "./utils";
 
-import HomeView from './pages/collectionList/Index.vue'
-import PreviewView from './pages/previewPopup/Index.vue'
-
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: HomeView },
-  { path: '/preview/:widget*', component: PreviewView },
+  { path: '/iframe/collection', component: () => import('./pages/collectionList/Index.vue') },
+  { path: '/iframe/preview/:widget*', component: () => import('./pages/previewPopup/Index.vue') },
 ]
 
 

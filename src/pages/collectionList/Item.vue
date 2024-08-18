@@ -44,7 +44,6 @@ const props = defineProps<{
 
   .preview {
     flex: 1;
-    // margin: auto;
     min-width: 150px;
     width: 30%;
     user-select: none;
@@ -62,6 +61,15 @@ const props = defineProps<{
           transform: scale(1.05) rotate3d(1, 1, 1, 5deg);
         }
       }
+    }
+  }
+
+
+  @media screen and (max-width: 400px) {
+    flex-direction: column;
+
+    .preview {
+      width: 100%;
     }
   }
 }

@@ -1,6 +1,6 @@
 export const collections = [
   {
-    name: 'Main',
+    name: 'Основные',
     widgets: [
       '/efficiency/sum/solo/blocked',
       '/efficiency/sum/solo/radio-assist',
@@ -8,7 +8,7 @@ export const collections = [
     ]
   },
   {
-    name: 'Tools',
+    name: 'Инструменты',
     widgets: ['/tools/debug']
   }
 ]

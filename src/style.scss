@@ -1,7 +1,8 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Inter var experimental", "Inter var", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  color-scheme: dark;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -12,7 +13,8 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #242424;
+  // background-color: #242424;
+  background-color: transparent;
   color: #ffffffde;
 }
 
@@ -99,4 +101,19 @@ div.vr {
 
 .float-right {
   float: right;
+}
+
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none;
+}
+
+
+input {
+  border: none;
+  border-bottom: solid 1px rgba(129, 129, 129, .2431372549);
+  padding: 5px;
+  border-radius: 5px;
 }

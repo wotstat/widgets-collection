@@ -2,23 +2,25 @@
   <template v-if="currentOptions">
     <div class="main">
       <div class="info">
-        <h1>{{ currentOptions.options.name }}</h1>
         <p>{{ currentOptions.options.description }}</p>
       </div>
       <div class="preview">
         <div class="widget">
+          <img src="@/assets/shot_5.jpg">
           <div class="preview-container">
             <template v-if="currentPreviewComponent">
-              <component :is="currentPreviewComponent" :isMiniPreview="true" />
+              <component :is="currentPreviewComponent" :isMiniPreview="false" v-bind="targetProps" />
             </template>
           </div>
         </div>
         <div class="settings">
           <h2>Параметры</h2>
           <component v-for="setting in settingsValues" :is="setting.component" />
-          {{ settingsValues?.map(t => t.value) }}
-          {{ targetQuery }}
         </div>
+      </div>
+      <div class="url" :class="{ 'active': isActivated }">
+        {{ `${BASE_URL}${currentOptions.route}?${targetQuery}` }}
+        <CopyIcon class="icon" @click="copy" />
       </div>
     </div>
   </template>
@@ -27,7 +29,7 @@
 
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
-import { type Component, computed, defineAsyncComponent, defineComponent, h, Ref, ref, watch, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, h, Ref, ref, shallowRef, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { accent, background } from "@/composition/wotstatColors";
 import { setupStyles } from "@/composition/widgetSdk"
@@ -35,9 +37,12 @@ import Checkbox from './settings/Checkbox.vue';
 import Int from './settings/Int.vue';
 import Color from './settings/Color.vue';
 import Unsupported from './settings/Unsupported.vue';
-import { WidgetParam } from '@/utils/defineWidget';
-import { computedWithControl, RemovableRef } from '@vueuse/core';
+import { computedWithControl } from '@vueuse/core';
+import CopyIcon from '@/assets/copy.svg';
+
 setupStyles()
+
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 const route = useRoute();
 
@@ -59,7 +64,6 @@ const currentPreview = computed(() => {
   return widgetPreviews[previewPath]
 });
 const currentPreviewComponent = defineAsyncComponent(currentPreview.value as any)
-
 
 const settingsValues = computedWithControl(currentOptions, () => {
   if (!currentOptions.value) return null
@@ -92,6 +96,18 @@ const settingsValues = computedWithControl(currentOptions, () => {
   })
 })
 
+const targetProps = shallowRef<any>({})
+
+watchEffect(() => {
+  targetProps.value = settingsValues.value?.reduce((acc, s) => {
+    const target = s.target
+    const value = s.value?.value
+
+    if (value !== undefined) return { ...acc, [target]: value }
+    return { ...acc, [target]: true }
+  }, {})
+})
+
 const targetQuery = computed(() => {
   if (!settingsValues.value) return null
   return settingsValues.value.map(s => {
@@ -103,6 +119,13 @@ const targetQuery = computed(() => {
   }).filter(t => t).join('&')
 })
 
+const isActivated = ref(false)
+function copy() {
+  isActivated.value = true
+  navigator.clipboard.writeText(`https://widgets.wotstat.info${currentOptions.value?.route}?${targetQuery.value}`)
+  setTimeout(() => isActivated.value = false, 300)
+}
+
 </script>
 
 
@@ -113,7 +136,7 @@ const targetQuery = computed(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 20px;
+  // padding: 20px;
 
   display: flex;
   flex-direction: column;
@@ -127,13 +150,23 @@ const targetQuery = computed(() => {
     height: 60%;
     display: flex;
     gap: 20px;
-    background-color: #203031;
 
     .widget {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      user-select: none;
+      position: relative;
+      padding: 10px;
+
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+      }
 
       .preview-container {
         flex: 1;
@@ -143,12 +176,60 @@ const targetQuery = computed(() => {
     }
 
     .settings {
-      width: 200px;
+      width: 300px;
 
-      .line {
+      h2 {
+        font-size: 1.2em;
+      }
+
+      :deep(.line) {
         display: flex;
         align-items: center;
         justify-content: space-between;
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      flex-direction: column;
+
+      .settings {
+        width: 100%;
+      }
+    }
+  }
+
+  .url {
+    background-color: #1a1a1a;
+    padding: 10px;
+    border-radius: 10px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.4;
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    word-wrap: break-word;
+    word-break: break-all;
+
+    transition: background-color 0.2s;
+
+    &.active {
+      background-color: #30D158;
+    }
+
+    .icon {
+      min-width: 40px;
+      width: 40px;
+      cursor: pointer;
+      margin: -5px;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      user-select: none;
+
+      &:hover {
+        background-color: #333;
       }
     }
   }
