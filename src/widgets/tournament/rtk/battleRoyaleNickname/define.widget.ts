@@ -11,6 +11,7 @@ export default defineWidget({
     { type: 'checkbox', target: 'hideL1', label: 'Скрыть заголовок', default: false },
     { type: 'checkbox', target: 'hideL2', label: 'Скрыть таблицу', default: false },
     { type: 'checkbox', target: 'hideL3', label: 'Скрыть график', default: false },
+    { type: 'checkbox', target: 'hideL4', label: 'Скрыть лучшую серию', default: false },
     { type: 'string', target: 'nickname', label: 'Никнейм', default: '' },
   ]
 })

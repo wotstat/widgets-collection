@@ -45,18 +45,17 @@ const nicknameId = ref('');
 
 const id = computed(() => nicknameId.value || sdkId.value);
 
-const vehicleForHash = new Map<string, string>(JSON.parse(localStorage.getItem('rtk-vehicleForHash') || '[]'));
-
-function hashForResult(res: { score: number, place: number, damage: number }) {
-  return `${res.place}-${res.score}-${res.damage}`
+function hashForResult(res: { score: number, place: number, timestamp: number }) {
+  return `${res.place}-${res.score}-${res.timestamp}`
 }
 
 const data = ref({
   place: 0,
   battleCount: 0,
-  currentSession: 0,
-  bestSession: 0,
-  scores: [] as { key: string, tank: string, score: number, top: boolean }[]
+  currentSessionSum: 0,
+  bestSessionSum: 0,
+  currentSession: [] as { key: string, tank: string, score: number, top: boolean }[],
+  bestSession: [] as { tank: string, score: number, top: boolean }[]
 })
 
 async function load() {
@@ -72,19 +71,32 @@ async function load() {
   data.value.place = userParticipant.position
   data.value.battleCount = results.battles
 
-  data.value.currentSession = results.current_total
-  data.value.bestSession = results.best_total
+  data.value.currentSessionSum = results.current_total
+  data.value.bestSessionSum = results.best_total
 
   const currentSeries = (results.current_series as any[])
-    .map(t => ({ score: t.score, place: t.position, damage: t.damage, compactCd: t.vehicle_type_cd }))
+    .map(t => ({
+      score: t.score,
+      place: t.position,
+      timestamp: t.timestamp,
+      compactCd: t.vehicle_type_cd
+    }))
 
-  data.value.scores = currentSeries
+  data.value.currentSession = currentSeries
     .map(t => ({
       key: hashForResult(t),
       tank: compactDescriptorToTankName[t.compactCd as keyof typeof compactDescriptorToTankName] ?? '???',
       score: t.score,
       top: t.place === 1
     }))
+
+  data.value.bestSession = (results.best_series as any[]).map(t => ({
+    tank: compactDescriptorToTankName[t.vehicle_type_cd as keyof typeof compactDescriptorToTankName] ?? '???',
+    score: t.score,
+    top: t.position === 1
+  }))
+  console.log(results);
+
 }
 
 async function loadLoop() {
