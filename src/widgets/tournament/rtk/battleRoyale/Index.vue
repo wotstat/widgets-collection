@@ -26,23 +26,18 @@ const hideL1 = computed(() => route.query.hideL1 === 'true');
 const hideL2 = computed(() => route.query.hideL2 === 'true');
 const hideL3 = computed(() => route.query.hideL3 === 'true');
 const nickname = computed(() => route.query.nickname as LocationQueryValue);
-const scoreForPlace = {
-  1: 37,
-  2: 30,
-  3: 27,
-  4: 24,
-  5: 22,
-  6: 20,
-  7: 18,
-  8: 16,
-  9: 14,
-  10: 12,
-  11: 10,
-  12: 9,
-  13: 8,
-  14: 7,
-  15: 6,
-};
+
+const compactDescriptorToTankName = {
+  13057: 'Варяг',
+  43793: 'Walküre',
+  42785: 'Raven',
+  13377: 'Arlequin',
+  41553: 'Harbinger',
+  13361: 'Bái Láng',
+  5777: 'Huragan',
+  5761: 'Beowulf'
+}
+
 const { sdk } = useWidgetSdk();
 
 const sdkId = useReactiveState(sdk.data.player.id);
@@ -80,13 +75,13 @@ async function load() {
   data.value.currentSession = results.current_total
   data.value.bestSession = results.best_total
 
-  const currentSeries = results.current_series
-    .map((t: any) => ({ score: t.score, place: t.position, damage: t.damage })) as { score: number, place: number, damage: number }[]
+  const currentSeries = (results.current_series as any[])
+    .map(t => ({ score: t.score, place: t.position, damage: t.damage, compactCd: t.vehicle_type_cd }))
 
   data.value.scores = currentSeries
     .map(t => ({
       key: hashForResult(t),
-      tank: vehicleForHash.get(hashForResult(t)) ?? '???',
+      tank: compactDescriptorToTankName[t.compactCd as keyof typeof compactDescriptorToTankName] ?? '???',
       score: t.score,
       top: t.place === 1
     }))
@@ -118,61 +113,7 @@ onMounted(() => {
 
 watchOnce(id, loadLoop)
 
-const arenaVehicle = new Map<string, string>(JSON.parse(localStorage.getItem('arenaVehicle') || '[]'))
-
-sdk.data.battle.arenaId.watch(arenaId => {
-  if (!arenaId) return
-  const vehicle = sdk.data.battle.vehicle.value
-  if (!vehicle) return
-
-  arenaVehicle.set(arenaId.toString(), vehicle.localizedShortName)
-
-  localStorage.setItem('arenaVehicle', JSON.stringify(Array.from(arenaVehicle.entries())))
-})
-
-type Result = {
-  personal: {
-    [key: string]: {
-      kills: number,
-      damageDealt: number,
-      brPosInBattle: number,
-    }
-  } & { avatar: {} },
-  common: {
-    bonusType: number
-  },
-  arenaUniqueID: number,
-}
-
 useReactiveTrigger(sdk.data.battle.onBattleResult, r => {
-  const result = r as Result
-
-  const vehicle = arenaVehicle.get(result.arenaUniqueID.toString())
-  if (!vehicle) return
-
-  arenaVehicle.delete(result.arenaUniqueID.toString())
-
-  if (result.common.bonusType != 29) return
-
-  const personalResult = Object.entries(result.personal).find(([key]) => key !== 'avatar')
-  if (!personalResult) return
-
-  console.log(personalResult);
-
-
-  const [key, res] = personalResult
-  if (!('brPosInBattle' in res)) return
-
-  const { kills, damageDealt, brPosInBattle } = res
-
-  const score = kills * 2 + scoreForPlace[brPosInBattle as keyof typeof scoreForPlace] ?? 0
-  const hash = hashForResult({ score, place: brPosInBattle, damage: damageDealt })
-  vehicleForHash.set(hash, vehicle)
-  localStorage.setItem('rtk-vehicleForHash', JSON.stringify(Array.from(vehicleForHash.entries())))
-
-  console.log('set', hash, vehicle);
-
-
   load()
 })
 
