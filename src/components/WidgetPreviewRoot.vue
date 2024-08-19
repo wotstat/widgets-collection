@@ -27,8 +27,8 @@ const { width } = useElementSize(containerElement)
 const fontSize = computed(() => width.value / 100 * 4 + 'px')
 
 const targetStyle = computed(() => ({
-  '--wotstat-accent': accent.value,
-  '--wotstat-background': background.value,
+  '--wotstat-accent': `#` + accent.value,
+  '--wotstat-background': `#` + background.value,
   fontSize: fontSize.value
 } as any))
 </script>

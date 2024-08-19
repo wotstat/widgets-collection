@@ -15,7 +15,11 @@ const props = defineProps<{
   label: string
 }>()
 
-const value = defineModel<string>()
+const value = defineModel<string>({
+  set(value) {
+    return value.replace('#', '')
+  }
+})
 </script>
 
 

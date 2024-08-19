@@ -36,6 +36,7 @@ import { setupStyles } from "@/composition/widgetSdk"
 import Checkbox from './settings/Checkbox.vue';
 import Int from './settings/Int.vue';
 import Color from './settings/Color.vue';
+import String from './settings/String.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/copy.svg';
@@ -91,6 +92,11 @@ const settingsValues = computedWithControl(currentOptions, () => {
     if (param.type == 'int') {
       const value = ref(param.default ?? 0)
       return { component: h(Int, { label: param.label, ...vModel(value) }), target: param.target, value }
+    }
+
+    if (param.type == 'string') {
+      const value = ref(param.default ?? '')
+      return { component: h(String, { label: param.label, ...vModel(value) }), target: param.target, value }
     }
 
     return { component: h(Unsupported, { label: param.type }), target: '', model: undefined }

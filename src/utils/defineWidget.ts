@@ -21,10 +21,17 @@ export type IntParam = {
   default: number
 }
 
+export type StringParam = {
+  type: 'string'
+  target: string
+  label: string
+  default: string
+}
+
 export type AccentColorParam = 'accentColorParam'
 export type BackgroundColorParam = 'backgroundColorParam'
 
-export type WidgetParam = CheckboxParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam
+export type WidgetParam = CheckboxParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam
 
 export type Options = {
   name: string,
