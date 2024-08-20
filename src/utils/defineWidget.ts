@@ -28,10 +28,18 @@ export type StringParam = {
   default: string
 }
 
+export type RandomStringParam = {
+  type: 'random-string'
+  target: string
+  label: string
+  length?: number
+  default?: string
+}
+
 export type AccentColorParam = 'accentColorParam'
 export type BackgroundColorParam = 'backgroundColorParam'
 
-export type WidgetParam = CheckboxParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam
+export type WidgetParam = CheckboxParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam
 
 export type Options = {
   name: string,

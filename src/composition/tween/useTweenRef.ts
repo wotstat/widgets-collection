@@ -1,43 +1,72 @@
 import { ref, Ref, watch } from "vue";
+import { easing } from "./easing";
 
-export function useTweenRef(value: Ref<number>, duration: number = 300) {
+type TweenOptions = {
+  duration: number
+  easing?: keyof typeof easing | null
+}
+
+const defaultOptions = {
+  duration: 300,
+  easing: 'out-quart'
+} satisfies TweenOptions
+
+export function useTweenRef(value: Ref<number>, options: TweenOptions = defaultOptions) {
   const tweenRef = ref(value.value)
 
-  let tweenTarget = tweenRef.value
-  let handler: number = 0;
-  let tweenStart: number;
+  let tweenTargetValue = tweenRef.value
+  let tweenStartValue = tweenRef.value
+  let tweenStartTime: number;
 
-  function doTween() {
-    if (tweenRef.value == tweenTarget) return handler = 0
+  let handler: number = -1;
+  const ease = options.easing === null ? (x: number) => x : easing[options.easing ?? defaultOptions.easing];
 
-    if (handler == 0) {
-      tweenStart = performance.now();
+  function doTween(to: number) {
+    if (tweenRef.value == to) return handler = -1
+
+    tweenStartValue = tweenRef.value;
+    tweenTargetValue = to;
+    tweenStartTime = performance.now();
+
+    function tween() {
+      if (tweenRef.value == tweenTargetValue) return handler = -1;
+
+      if (options.duration == 0) {
+        tweenRef.value = tweenTargetValue;
+        return handler = -1;
+      }
+
+      const elapsed = performance.now() - tweenStartTime;
+      const progress = elapsed / options.duration;
+
+
+      if (progress >= 1) {
+        tweenRef.value = tweenTargetValue;
+        return handler = -1;
+      } else {
+        tweenRef.value = tweenStartValue + (tweenTargetValue - tweenStartValue) * ease(progress);
+      }
+
+      requestAnimationFrame(tween)
     }
 
-    handler = requestAnimationFrame(doTween);
+    if (handler == -1) handler = requestAnimationFrame(tween);
   }
 
   watch(value, (newValue) => {
-    tweenTarget = newValue;
-
-    if (handler) {
-      cancelAnimationFrame(handler);
-    } else {
-      doTween();
-    }
+    doTween(newValue);
   })
 
   return tweenRef;
 }
 
-export function useTweenComputed(effect: () => number) {
-  const tweenRef = ref(effect());
+export function useTweenComputed(effect: () => number, options: TweenOptions = defaultOptions) {
+  const value = ref(effect());
+  const tweenRef = useTweenRef(value, options);
 
-
-  watch(() => effect(), (newValue) => {
-    tweenRef.value = newValue;
+  watch(effect, (newValue) => {
+    value.value = newValue;
   })
 
   return tweenRef;
-
 }

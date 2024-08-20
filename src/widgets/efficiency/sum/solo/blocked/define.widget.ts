@@ -8,5 +8,6 @@ export default defineWidget({
     'backgroundColorParam',
     { type: 'checkbox', target: 'title', label: 'Заголовок', default: true },
     { type: 'int', target: 'start-from', label: 'Начать с', default: 0 },
+    { type: 'random-string', target: 'saveId', label: 'Ключ сохранения', length: 5 },
   ]
 })

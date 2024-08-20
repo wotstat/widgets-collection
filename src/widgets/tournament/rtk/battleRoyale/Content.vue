@@ -1,8 +1,8 @@
 <template>
   <div class="main">
     <div class="l1" v-if="!hideL1">
-      <p class="secondary">Боёв:<span class="primary num">&nbsp;{{ battleCount }}</span></p>
-      <p class="secondary">Место:<span class="accent num bold">&nbsp;{{ place }}</span></p>
+      <p class="secondary">Боёв:<span class="primary number">&nbsp;{{ battleCount }}</span></p>
+      <p class="secondary">Место:<span class="accent number bold">&nbsp;{{ place }}</span></p>
     </div>
 
     <div class="l2" v-if="!hideL2">
@@ -10,9 +10,9 @@
         <table>
           <tr v-for="(_, index) in new Array(5).fill(0)"
             :key="currentSession[column * 5 + index]?.key ?? `${currentSession[column * 5 + index]?.tank}-${currentSession[column * 5 + index]?.score}`">
-            <td class="secondary num">{{ column * 5 + index + 1 }}.</td>
+            <td class="secondary number">{{ column * 5 + index + 1 }}.</td>
             <td class="secondary">{{ currentSession[column * 5 + index]?.tank }}</td>
-            <td class="num bold" :class="currentSession[column * 5 + index]?.top ? 'accent' : 'primary'">{{
+            <td class="number bold" :class="currentSession[column * 5 + index]?.top ? 'accent' : 'primary'">{{
               currentSession[column * 5 + index]?.score }}</td>
           </tr>
         </table>
@@ -23,8 +23,8 @@
     <div class="l3" v-if="!hideL3">
       <div class="flex">
         <div class="flex-1">
-          <p class="secondary">Текущая серия • <span class="primary bold num">{{ currentSessionSum }}</span></p>
-          <p class="secondary">Лучшая серия • <span class="primary bold num">{{ bestSessionSum }}</span></p>
+          <p class="secondary">Текущая серия • <span class="primary bold number">{{ currentSessionSum }}</span></p>
+          <p class="secondary">Лучшая серия • <span class="primary bold number">{{ bestSessionSum }}</span></p>
         </div>
         <div class="chart-container">
           <SeriesBarChart :values="chart" :target-count="10" :gap="3" />
@@ -41,6 +41,8 @@
 
 <script setup lang="ts">
 import SeriesBarChart from '@/components/SeriesBarChart.vue';
+import { useRoundProcessor } from '@/composition/processors/useRoundProcessor';
+import { useTweenComputed } from '@/composition/tween/useTweenRef';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -64,6 +66,12 @@ const props = defineProps<{
   hideL3?: boolean,
   hideL4?: boolean,
 }>()
+
+const battleCount = useRoundProcessor(useTweenComputed(() => props.battleCount, { duration: 500 }))
+const place = useRoundProcessor(useTweenComputed(() => props.place, { duration: 500 }))
+
+const currentSessionSum = useRoundProcessor(useTweenComputed(() => props.currentSessionSum, { duration: 500 }))
+const bestSessionSum = useRoundProcessor(useTweenComputed(() => props.bestSessionSum, { duration: 500 }))
 
 const chart = computed(() => {
   return props.currentSession.map((score) => {

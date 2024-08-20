@@ -43,8 +43,4 @@ watch(() => props.modelValue, (newValue) => {
 </script>
 
 
-<style lang="scss" scoped>
-input {
-  background-color: #1a1a1a;
-}
-</style>
+<style lang="scss" scoped></style>

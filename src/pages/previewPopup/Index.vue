@@ -37,6 +37,7 @@ import Checkbox from './settings/Checkbox.vue';
 import Int from './settings/Int.vue';
 import Color from './settings/Color.vue';
 import String from './settings/String.vue';
+import RandomString from './settings/RandomString.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/copy.svg';
@@ -97,6 +98,11 @@ const settingsValues = computedWithControl(currentOptions, () => {
     if (param.type == 'string') {
       const value = ref(param.default ?? '')
       return { component: h(String, { label: param.label, ...vModel(value) }), target: param.target, value }
+    }
+
+    if (param.type == 'random-string') {
+      const value = ref(param.default ?? '')
+      return { component: h(RandomString, { label: param.label, length: param.length ?? 5, ...vModel(value) }), target: param.target, value }
     }
 
     return { component: h(Unsupported, { label: param.type }), target: '', model: undefined }
@@ -212,6 +218,12 @@ function copy() {
         display: flex;
         align-items: center;
         justify-content: space-between;
+      }
+
+      :deep(input) {
+        background-color: #1a1a1a;
+        max-width: 100px;
+        margin: 0.2em 0;
       }
     }
 
