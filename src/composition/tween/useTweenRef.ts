@@ -8,7 +8,7 @@ type TweenOptions = {
 
 const defaultOptions = {
   duration: 300,
-  easing: 'out-quart'
+  easing: 'out-quad'
 } satisfies TweenOptions
 
 export function useTweenRef(value: Ref<number>, options: TweenOptions = defaultOptions) {

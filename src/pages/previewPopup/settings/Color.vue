@@ -25,7 +25,7 @@ const value = defineModel<string>({
 
 <style lang="scss" scoped>
 :deep(.vc-color-wrap) {
-  height: 20px;
+  height: 21.5px;
   border-radius: 5px;
   border: 1px solid #858585;
   margin: 0;

@@ -6,7 +6,7 @@
       </div>
       <div class="preview">
         <div class="widget">
-          <img src="@/assets/shot_5.jpg">
+          <img src="@/assets/images/preview-background.jpg">
           <div class="preview-container">
             <template v-if="currentPreviewComponent">
               <component :is="currentPreviewComponent" :isMiniPreview="false" v-bind="targetProps" />
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
-import { computed, defineAsyncComponent, h, Ref, ref, shallowRef, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, h, Ref, ref, shallowRef, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { accent, background } from "@/composition/wotstatColors";
 import { setupStyles } from "@/composition/widgetSdk"
@@ -40,7 +40,7 @@ import String from './settings/String.vue';
 import RandomString from './settings/RandomString.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
-import CopyIcon from '@/assets/copy.svg';
+import CopyIcon from '@/assets/icons/copy.svg';
 
 setupStyles()
 
@@ -80,29 +80,32 @@ const settingsValues = computedWithControl(currentOptions, () => {
 
   return currentOptions.value.options.params.map((param) => {
     if (param == 'accentColorParam')
-      return { component: h(Color, { label: 'Акцент', ...vModel(accent) }), target: 'accent', value: accent }
+      return { value: accent, target: 'accent', component: defineComponent(() => () => h(Color, { label: 'Акцент', ...vModel(accent) })) }
 
     if (param == 'backgroundColorParam')
-      return { component: h(Color, { label: 'Фон', ...vModel(background) }), target: 'background', value: background }
+      return { value: background, target: 'background', component: defineComponent(() => () => h(Color, { label: 'Фон', ...vModel(background) })) }
 
     if (param.type == 'checkbox') {
       const value = ref(param.default ?? false)
-      return { component: h(Checkbox, { label: param.label, ...vModel(value) }), target: param.target, value }
+      return { value, target: param.target, component: defineComponent(() => () => h(Checkbox, { label: param.label, ...vModel(value) })) }
     }
 
     if (param.type == 'int') {
       const value = ref(param.default ?? 0)
-      return { component: h(Int, { label: param.label, ...vModel(value) }), target: param.target, value }
+      return { value, target: param.target, component: defineComponent(() => () => h(Int, { label: param.label, ...vModel(value) })) }
     }
 
     if (param.type == 'string') {
       const value = ref(param.default ?? '')
-      return { component: h(String, { label: param.label, ...vModel(value) }), target: param.target, value }
+      return { value, target: param.target, component: defineComponent(() => () => h(String, { label: param.label, ...vModel(value) })) }
     }
 
     if (param.type == 'random-string') {
       const value = ref(param.default ?? '')
-      return { component: h(RandomString, { label: param.label, length: param.length ?? 5, ...vModel(value) }), target: param.target, value }
+      return {
+        target: param.target, value,
+        component: defineComponent(() => () => h(RandomString, { label: param.label, length: param.length ?? 5, ...vModel(value) }))
+      }
     }
 
     return { component: h(Unsupported, { label: param.type }), target: '', model: undefined }
@@ -141,7 +144,12 @@ const RMC = defineAsyncComponent(async () => {
 
   if (!widgetReadmes[readmePath]) return Unknown
 
-  const { VueComponent } = await widgetReadmes[readmePath]() as any
+  const { VueComponent, attributes } = await widgetReadmes[readmePath]() as any
+  parent.postMessage({
+    type: 'readme-loaded',
+    attributes
+  }, '*')
+
 
   return VueComponent
 })
@@ -193,6 +201,7 @@ function copy() {
 
       img {
         user-select: none;
+        pointer-events: none;
         position: absolute;
         width: 100%;
         height: 100%;
@@ -218,12 +227,16 @@ function copy() {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin: 0.2em 0;
       }
 
       :deep(input) {
-        background-color: #1a1a1a;
         max-width: 100px;
-        margin: 0.2em 0;
+        padding: 0.15em 0.3em;
+        background-color: #3b3b3b;
+        border: 1px solid #858585;
+        text-align: center;
+
       }
     }
 
