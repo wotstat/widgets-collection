@@ -21,7 +21,7 @@ const props = defineProps<{
   start?: number
 }>();
 
-const data = computed(() => props.isMiniPreview ? { title: true, start: 123457 } : props);
+const data = computed(() => props.isMiniPreview ? { title: true, start: 124665 } : props);
 
 </script>
 

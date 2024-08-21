@@ -1,8 +1,8 @@
 import { defineWidget } from "@/utils/defineWidget";
 
 export default defineWidget({
-  name: "Нанесённый урон",
-  description: "Отображает сумму нанесённого урона",
+  name: "Урон по засвету",
+  description: "Отображает сумму урона по вашим разведданным",
   params: [
     'accentColorParam',
     'backgroundColorParam',
