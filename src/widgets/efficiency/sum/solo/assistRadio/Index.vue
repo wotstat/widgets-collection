@@ -6,11 +6,9 @@
 <script setup lang="ts">
 import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import ResultSummer from "../ResultSummer.vue";
-import { useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
+import { ref } from 'vue';
 
-const query = useQueryParams<{ saveKey: string }>()
-const value = useWidgetStorage(query.saveKey ?? '_empty', 0)
+const value = ref(0)
 
 const { sdk } = useWidgetSdk();
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
