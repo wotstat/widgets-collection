@@ -13,6 +13,7 @@ import { useQueryParams } from '@/composition/useQueryParams';
 import { computed, watch } from 'vue';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { parseBattleResult } from '@/utils/battleResultParser';
+import { useLocalStorage } from '@vueuse/core';
 
 const props = defineProps<{
   title: string
@@ -28,23 +29,19 @@ const query = useQueryParams<{
   title: string
 }>()
 
-const tempResults = new Map<number, number>()
+const tempResults = useLocalStorage(`${query.saveKey}_tempResults` ?? '_empty', new Map<number, number>())
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
 const title = computed(() => query.title !== 'false' ? props.title : undefined)
 const startFrom = computed(() => query.startFrom && Number.parseInt(query.startFrom) ? Number.parseInt(query.startFrom) : 0)
 const collected = useWidgetStorage(query.saveKey ?? '_empty', 0)
 
-
 watch(() => props.value, (value, old) => {
   if (value == 0 || value == undefined || old == undefined) return
   const delta = value - old
   collected.value += delta
 
-  console.log('collected ++', collected.value, delta);
-
-
-  if (arenaId.value) tempResults.set(arenaId.value, value)
+  if (arenaId.value) tempResults.value.set(arenaId.value, value)
 })
 
 useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
@@ -55,8 +52,9 @@ useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
   const resultValue = parsed.personal?.stats[props.stat]
   if (!arenaId || !resultValue) return
 
-  const tempValue = tempResults.get(arenaId)
+  const tempValue = tempResults.value.get(arenaId)
   const delta = resultValue - (tempValue ?? 0)
+  tempResults.value.delete(arenaId)
 
   console.log(`Got battle result for arena ${arenaId}: ${resultValue} (temp: ${tempValue}) delta = ${delta}`)
   collected.value += delta

@@ -30,7 +30,7 @@ const query = useQueryParams<{ saveKey: string }>()
 const battleCount = useWidgetStorage(`${query.saveKey}_battleCount` ?? '_battleCount', 0)
 const battleScores = useWidgetStorage<number[]>(`${query.saveKey}_battleScores` ?? '_battleScores', [])
 
-const supportedBattles = new Set<number>()
+const supportedBattles = useWidgetStorage(`${query.saveKey}_started` ?? '_started', new Set<number>())
 
 watch(isInBattle, value => {
   if (!value) return;
@@ -38,14 +38,15 @@ watch(isInBattle, value => {
   if (!arenaId.value) return;
 
   if (vehicle.value.level == 10 && vehicle.value.class == 'heavyTank') {
-    supportedBattles.add(arenaId.value)
+    supportedBattles.value.add(arenaId.value)
   }
 })
 
 useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
   const parsed = parseBattleResult(result);
   if (!parsed || !parsed.arenaUniqueID || !parsed.personal) return;
-  if (!supportedBattles.has(parsed.arenaUniqueID)) return;
+  if (!supportedBattles.value.has(parsed.arenaUniqueID)) return;
+  supportedBattles.value.delete(parsed.arenaUniqueID)
 
   battleScores.value.push(parsed.personal.stats.damageDealt);
 })
