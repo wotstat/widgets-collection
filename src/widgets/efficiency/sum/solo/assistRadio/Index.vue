@@ -6,7 +6,6 @@
 <script setup lang="ts">
 import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import ResultSummer from "../ResultSummer.vue";
-import { ref } from 'vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 

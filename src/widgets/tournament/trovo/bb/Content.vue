@@ -47,9 +47,9 @@ const last30 = computed(() => props.currentSession.slice(-30))
 const total = computed(() => last30.value.reduce((acc, item) => acc + item, 0))
 const totalTween = useRoundProcessor(useTweenComputed(() => total.value > 10000 ? total.value / 1000 : total.value, { duration: 500 }))
 
-const last30Average = useRoundProcessor(useTweenComputed(() => total.value / last30.value.length))
-const last30Max = useRoundProcessor(useTweenComputed(() => last30.value.reduce((acc, item) => Math.max(acc, item), 0)))
-const last30Min = useRoundProcessor(useTweenComputed(() => last30.value.reduce((acc, item) => Math.min(acc, item), Infinity)))
+const last30Average = useRoundProcessor(useTweenComputed(() => last30.value.length == 0 ? 0 : total.value / last30.value.length))
+const last30Max = useRoundProcessor(useTweenComputed(() => last30.value.length == 0 ? 0 : last30.value.reduce((acc, item) => Math.max(acc, item), 0)))
+const last30Min = useRoundProcessor(useTweenComputed(() => last30.value.length == 0 ? 0 : last30.value.reduce((acc, item) => Math.min(acc, item), Infinity)))
 
 
 

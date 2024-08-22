@@ -1,5 +1,7 @@
 <template>
-  <Content :value="startFrom + battleCount" :title="title" />
+  <WidgetCardWrapper auto-height auto-scale>
+    <Content :value="startFrom + battleCount" :title="title" />
+  </WidgetCardWrapper>
 </template>
 
 
@@ -7,6 +9,7 @@
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, ref, watch } from 'vue';
+import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 
