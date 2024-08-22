@@ -32,13 +32,11 @@ const battleScores = useWidgetStorage<number[]>(`${query.saveKey}_battleScores` 
 
 const supportedBattles = useWidgetStorage(`${query.saveKey}_started` ?? '_started', new Set<number>())
 
-watch(isInBattle, value => {
-  if (!value) return;
-  if (!vehicle.value) return;
-  if (!arenaId.value) return;
+watch(() => [isInBattle.value, vehicle.value, arenaId.value] as const, ([isInBattle, vehicle, arenaId]) => {
+  if (!isInBattle || !vehicle || !arenaId) return;
 
-  if (vehicle.value.level == 10 && vehicle.value.class == 'heavyTank') {
-    supportedBattles.value.add(arenaId.value)
+  if (vehicle.level == 10 && vehicle.class == 'heavyTank') {
+    supportedBattles.value.add(arenaId)
   }
 })
 
