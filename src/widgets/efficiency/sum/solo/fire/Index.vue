@@ -9,7 +9,6 @@
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import TitledCounter from '../TitledCounter.vue';
 import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import { ref } from 'vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 

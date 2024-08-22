@@ -41,6 +41,9 @@ watch(() => props.value, (value, old) => {
   const delta = value - old
   collected.value += delta
 
+  console.log('collected ++', collected.value, delta);
+
+
   if (arenaId.value) tempResults.set(arenaId.value, value)
 })
 
