@@ -49,6 +49,7 @@ useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
   supportedBattles.value.delete(parsed.arenaUniqueID)
 
   battleScores.value.push(parsed.personal.stats.damageDealt);
+  battleCount.value++
 })
 
 
