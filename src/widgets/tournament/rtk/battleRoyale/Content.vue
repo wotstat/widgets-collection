@@ -121,6 +121,7 @@ const chart = computed(() => {
 
         td {
           font-size: 1.2em;
+          padding: 0.07em;
           text-wrap: none;
           white-space: nowrap;
         }

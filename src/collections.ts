@@ -1,7 +1,16 @@
 export const collections = [
   {
     name: 'Актуальные',
-    widgets: ['/tournament/rtk/battle-royale']
+    widgets: [
+      '/tournament/rtk/battle-royale',
+      '/tournament/trovo/bb'
+    ]
+  },
+  {
+    name: 'Счётчики',
+    widgets: [
+      '/counters/battle',
+    ]
   },
   {
     name: 'Прогрессия',

@@ -1,5 +1,5 @@
 <template>
-  <ResultSummer :title="'УРОНА ПО ЗАСВЕТУ'" :stat="'damageAssistedRadio'" :value="radioAssist" />
+  <ResultSummer :title="'УРОНА ПО ЗАСВЕТУ'" :stat="'damageAssistedRadio'" :value="value" />
 </template>
 
 
@@ -7,11 +7,15 @@
 import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import ResultSummer from "../ResultSummer.vue";
 import { ref } from 'vue';
+import { useQueryParams } from '@/composition/useQueryParams';
+import { useWidgetStorage } from '@/composition/useWidgetStorage';
+
+const query = useQueryParams<{ saveKey: string }>()
+const value = useWidgetStorage(query.saveKey ?? '_empty', 0)
 
 const { sdk } = useWidgetSdk();
-const radioAssist = ref(0)
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
-  if (feedback.type == 'radioAssist') radioAssist.value += feedback.data.damage
+  if (feedback.type == 'radioAssist') value.value += feedback.data.damage
 })
 
 </script>

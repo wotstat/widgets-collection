@@ -66,6 +66,7 @@ div.vr {
   margin: 0 0.5em;
   border: 0;
   width: 0.05em;
+  min-width: 0.05em;
   background: var(--wotstat-separator);
   border-radius: 1em;
 }
