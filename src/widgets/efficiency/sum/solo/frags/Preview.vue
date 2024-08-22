@@ -1,7 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2.78">
     <WidgetCard>
-      <TitledCounter :title="data.title ? 'НАНЕСЕНО УРОНА' : ''" :value="data.startFrom ?? 0" />
+      <TitledCounter :title="data.title ? 'ФРАГОВ' : ''" :value="data.startFrom ?? 0" />
     </WidgetCard>
   </WidgetPreviewRoot>
 </template>
@@ -20,7 +20,7 @@ const props = defineProps<{
   startFrom?: number
 }>();
 
-const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 123457 } : props);
+const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 1863 } : props);
 
 </script>
 

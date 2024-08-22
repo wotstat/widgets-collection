@@ -17,7 +17,7 @@ import { parseBattleResult } from '@/utils/battleResultParser';
 const props = defineProps<{
   title: string
   value: number | undefined
-  stat: 'damageBlockedByArmor' | 'damageDealt' | 'damageAssistedRadio'
+  stat: 'damageBlockedByArmor' | 'damageDealt' | 'damageAssistedRadio' | 'kills'
 }>()
 
 const { sdk } = useWidgetSdk();

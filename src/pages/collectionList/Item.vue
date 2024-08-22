@@ -28,6 +28,7 @@ const props = defineProps<{
 
   .content {
     flex: 1;
+    overflow: hidden;
 
     h3 {
       font-weight: bold;
@@ -37,6 +38,13 @@ const props = defineProps<{
     .description {
       font-size: 14px;
       color: #dddddd;
+
+      display: -webkit-box;
+      max-width: 400px;
+      line-clamp: 4;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
       text-overflow: ellipsis;
     }
 
@@ -65,8 +73,15 @@ const props = defineProps<{
   }
 
 
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 420px) {
     flex-direction: column;
+
+    .content {
+      .description {
+        line-clamp: 0;
+        -webkit-line-clamp: 0;
+      }
+    }
 
     .preview {
       width: 100%;
