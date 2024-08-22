@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
@@ -24,10 +24,13 @@ const title = computed(() => query.title !== 'false');
 
 const { sdk } = useWidgetSdk();
 const battleCount = useWidgetStorage(query.saveKey ?? '_empty', 0)
+const lastArenaId = useWidgetStorage(`${query.saveKey}_arenaId` ?? '_empty', 0)
 
-const isInBattle = useReactiveState(sdk.data.battle.isInBattle);
-watch(isInBattle, value => {
+const arenaId = useReactiveState(sdk.data.battle.arenaId);
+watch(arenaId, value => {
   if (!value) return;
+  if (lastArenaId.value == value) return;
+  lastArenaId.value = value
   battleCount.value += 1
 })
 

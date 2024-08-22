@@ -9,8 +9,8 @@
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 
 import Content from './Content.vue';
-import { LocationQueryValue, useRoute } from 'vue-router';
-import { computed, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { computed, watch } from 'vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import { parseBattleResult } from '@/utils/battleResultParser';
 import { useQueryParams } from '@/composition/useQueryParams';
@@ -45,7 +45,7 @@ watch(isInBattle, value => {
 useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
   const parsed = parseBattleResult(result);
   if (!parsed || !parsed.arenaUniqueID || !parsed.personal) return;
-  if (supportedBattles.has(parsed.arenaUniqueID)) return;
+  if (!supportedBattles.has(parsed.arenaUniqueID)) return;
 
   battleScores.value.push(parsed.personal.stats.damageDealt);
 })
