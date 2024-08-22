@@ -27,10 +27,13 @@ const battleCount = useWidgetStorage(query.saveKey ?? '_empty', 0)
 const lastArenaId = useWidgetStorage(`${query.saveKey}_arenaId` ?? '_empty', 0)
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
-watch(arenaId, value => {
+const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
+watch(isInBattle, value => {
   if (!value) return;
-  if (lastArenaId.value == value) return;
-  lastArenaId.value = value
+  if (!arenaId.value) return;
+  if (lastArenaId.value == arenaId.value) return;
+
+  lastArenaId.value = arenaId.value
   battleCount.value += 1
 })
 
