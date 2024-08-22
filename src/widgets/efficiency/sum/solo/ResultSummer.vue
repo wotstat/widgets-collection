@@ -13,7 +13,6 @@ import { useQueryParams } from '@/composition/useQueryParams';
 import { computed, watch } from 'vue';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { parseBattleResult } from '@/utils/battleResultParser';
-import { useLocalStorage } from '@vueuse/core';
 
 const props = defineProps<{
   title: string
@@ -29,7 +28,7 @@ const query = useQueryParams<{
   title: string
 }>()
 
-const tempResults = useLocalStorage(`${query.saveKey}_tempResults` ?? '_empty', new Map<number, number>())
+const tempResults = useWidgetStorage(`${query.saveKey}_tempResults` ?? '_empty', new Map<number, number>())
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
 const title = computed(() => query.title !== 'false' ? props.title : undefined)
