@@ -15,7 +15,6 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
   if (feedback.type == 'kill') value.value += 1
 })
 
-
 </script>
 
 

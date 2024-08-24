@@ -43,7 +43,6 @@ watch(() => props.value, (value, old) => {
   if (arenaId.value) {
     const old = tempResults.value.get(arenaId.value) ?? 0
     tempResults.value.set(arenaId.value, old + delta)
-    console.log(tempResults.value);
   }
 })
 
@@ -54,10 +53,6 @@ useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
 
   const arenaId = parsed.arenaUniqueID
   const resultValue = parsed.personal?.stats[props.stat]
-
-  console.log(`Got battle result for arena ${arenaId}: ${resultValue}`);
-  console.log(tempResults.value);
-
 
   if (!arenaId || !resultValue) return
 
