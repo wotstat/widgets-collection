@@ -40,7 +40,11 @@ watch(() => props.value, (value, old) => {
   const delta = value - old
   collected.value += delta
 
-  if (arenaId.value) tempResults.value.set(arenaId.value, value)
+  if (arenaId.value) {
+    const old = tempResults.value.get(arenaId.value) ?? 0
+    tempResults.value.set(arenaId.value, old + delta)
+    console.log(tempResults.value);
+  }
 })
 
 const processedResults = new Set<number>()
@@ -50,6 +54,11 @@ useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
 
   const arenaId = parsed.arenaUniqueID
   const resultValue = parsed.personal?.stats[props.stat]
+
+  console.log(`Got battle result for arena ${arenaId}: ${resultValue}`);
+  console.log(tempResults.value);
+
+
   if (!arenaId || !resultValue) return
 
   if (processedResults.has(arenaId)) return console.error(`Duplicated battle result for: ${arenaId}`);

@@ -8,9 +8,9 @@ import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import ResultSummer from "../ResultSummer.vue";
 import { ref } from 'vue';
 
+const { sdk } = useWidgetSdk();
 const value = ref(0)
 
-const { sdk } = useWidgetSdk();
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
   if (feedback.type == 'radioAssist') value.value += feedback.data.damage
 })

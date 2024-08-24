@@ -10,6 +10,7 @@ import { ref } from 'vue';
 
 const { sdk } = useWidgetSdk();
 const value = ref(0)
+
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
   if (feedback.type == 'kill') value.value += 1
 })
