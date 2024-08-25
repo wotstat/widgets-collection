@@ -1,7 +1,7 @@
 <template>
   <div class="main preview-card" :class="transparentBackground ? 'transparent' : 'background'">
     <div class="head flex">
-      <img class="logo" src="https://titan.live/build/icon/titan-agency-logo-white.fc114d6a.svg" alt="">
+      <Logo class="logo" />
       <p class="battles flex-1">Бои: <span class="number">{{ battles }}/30</span></p>
       <p class="resets flex-1">Удалений: <span class="number"> {{ resets }}/4</span></p>
     </div>
@@ -32,6 +32,8 @@
 
 <script setup lang="ts">
 import { useRoundTweenProcessor } from '@/composition/processors/useRoundTweenProcessor';
+
+import Logo from "./logo.svg";
 
 const props = defineProps<{
   place: number,
