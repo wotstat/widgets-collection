@@ -52,6 +52,10 @@ const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
 const widgetReadmes = import.meta.glob('/src/widgets/**/*.md')
 const widgetsOptions = getAllWidgetsRoutes()
 
+const emit = defineEmits<{
+  onLoaded: [any]
+}>()
+
 const widgetPath = computed(() => {
   if (Array.isArray(route.params.widget)) {
     return route.params.widget.join('/');
@@ -145,6 +149,7 @@ const RMC = defineAsyncComponent(async () => {
   if (!widgetReadmes[readmePath]) return Unknown
 
   const { VueComponent, attributes } = await widgetReadmes[readmePath]() as any
+  emit('onLoaded', attributes)
   parent.postMessage({
     type: 'readme-loaded',
     attributes

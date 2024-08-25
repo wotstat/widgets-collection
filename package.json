@@ -19,7 +19,9 @@
   },
   "devDependencies": {
     "@mdit/plugin-alert": "^0.13.0",
+    "@mdit/plugin-align": "^0.13.0",
     "@mdit/plugin-attrs": "^0.13.0",
+    "@mdit/plugin-container": "^0.13.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "typescript": "^5.2.2",
     "vite": "^5.3.4",

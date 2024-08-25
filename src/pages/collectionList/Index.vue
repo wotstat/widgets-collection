@@ -35,6 +35,13 @@ import { Options } from '@/utils/defineWidget';
 setupStyles();
 useProvideDocumentBounding()
 
+const emit = defineEmits<{
+  onClickToWidget: [{
+    route: string,
+    title: string
+  }]
+}>()
+
 const widgets = getAllWidgetsRoutes()
 const widgetsMap = new Map(widgets.map(w => ([w.route, w])))
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
@@ -66,6 +73,12 @@ function onClick(widget: {
   path: string;
   options: Options;
 }) {
+
+  emit('onClickToWidget', {
+    route: widget.route,
+    title: widget.options.name
+  })
+
   parent.postMessage({
     type: 'widget-click',
     route: widget.route,

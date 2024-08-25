@@ -4,6 +4,8 @@ import { getAllWidgetsRoutes, pathResolve } from "./utils";
 const routes: RouteRecordRaw[] = [
   { path: '/iframe/collection', component: () => import('./pages/collectionList/Index.vue') },
   { path: '/iframe/preview/:widget*', component: () => import('./pages/previewPopup/Index.vue') },
+  { path: '/', component: () => import('./pages/main/Index.vue') },
+  { path: '/preview/:widget*', component: () => import('./pages/main/Index.vue') },
   { path: '/demo-widget', redirect: '/tools/debug' }
 ]
 
