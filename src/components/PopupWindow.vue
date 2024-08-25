@@ -79,7 +79,7 @@ function onKey(params: KeyboardEvent) {
 
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;
 
     h2.title {
       margin: 0;
