@@ -3,7 +3,7 @@
     <div class="head flex">
       <Logo class="logo" />
       <p class="battles flex-1">Бои: <span class="number">{{ battles }}/30</span></p>
-      <p class="resets flex-1">Удалений: <span class="number"> {{ resets }}/4</span></p>
+      <p class="resets flex-1">Удалений: <span class="number"> {{ resets }}/3</span></p>
     </div>
 
     <div class="progress flex">
