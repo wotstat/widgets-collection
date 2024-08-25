@@ -71,7 +71,7 @@ async function load() {
   }
 
 
-  setTimeout(load, 30000);
+  setTimeout(load, 60000);
 }
 
 if (targetId.value) load()
