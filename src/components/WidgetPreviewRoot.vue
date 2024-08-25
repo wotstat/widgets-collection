@@ -40,7 +40,8 @@ const targetStyle = computed(() => ({
   height: 100%;
   position: relative;
 
-  :deep(.card) {
+  :deep(.card),
+  :deep(.preview-card) {
     border: 1px dashed rgba(255, 255, 255, 0.1);
     margin: -1px;
   }

@@ -69,6 +69,10 @@ div.vr {
   min-width: 0.05em;
   background: var(--wotstat-separator);
   border-radius: 1em;
+
+  &.accent {
+    background: var(--wotstat-accent);
+  }
 }
 
 .overflow-hidden {

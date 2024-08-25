@@ -2,8 +2,8 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
+      '/tournament/trovo/bb-official',
       '/tournament/rtk/battle-royale',
-      '/tournament/trovo/bb'
     ]
   },
   {

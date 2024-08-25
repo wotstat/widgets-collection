@@ -1,7 +1,7 @@
 import { ref, Ref, watch } from "vue";
 import { easing } from "./easing";
 
-type TweenOptions = {
+export type TweenOptions = {
   duration: number
   easing?: keyof typeof easing | null
 }
