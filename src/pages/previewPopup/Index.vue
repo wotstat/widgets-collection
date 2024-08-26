@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
-import { computed, defineAsyncComponent, defineComponent, h, Ref, ref, shallowRef, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, h, provide, Ref, ref, shallowRef, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { accent, background } from "@/composition/wotstatColors";
 import { setupStyles } from "@/composition/widgetSdk"
@@ -41,6 +41,7 @@ import RandomString from './settings/RandomString.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
+import { language } from '@/utils/provides';
 
 setupStyles()
 
@@ -55,6 +56,8 @@ const widgetsOptions = getAllWidgetsRoutes()
 const emit = defineEmits<{
   onLoaded: [any]
 }>()
+
+provide(language, 'ru')
 
 const widgetPath = computed(() => {
   if (Array.isArray(route.params.widget)) {

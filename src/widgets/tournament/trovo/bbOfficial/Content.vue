@@ -2,14 +2,14 @@
   <div class="main preview-card" :class="transparentBackground ? 'transparent' : 'background'">
     <div class="head flex">
       <Logo class="logo" />
-      <p class="battles flex-1">Бои: <span class="number">{{ battles }}/30</span></p>
-      <p class="resets flex-1">Удалений: <span class="number"> {{ resets }}/3</span></p>
+      <p class="battles flex-1">{{ t('battles') }}: <span class="number">{{ battles }}/30</span></p>
+      <p class="resets flex-1">{{ t('removes') }}: <span class="number"> {{ resets }}/3</span></p>
     </div>
 
     <div class="progress flex">
-      <p class="flex-1 nowrap">Место <span class="number big">{{ place }}</span></p>
+      <p class="flex-1 nowrap">{{ t('place') }} <span class="number big">{{ place }}</span></p>
       <div class="vr accent"></div>
-      <p class="flex-1 nowrap">Ср. урон <span class="number big">{{ avgDamage }}</span></p>
+      <p class="flex-1 nowrap">{{ t('avgDamage') }} <span class="number big">{{ avgDamage }}</span></p>
     </div>
 
     <div class="best-place flex" v-if="showBest !== false">
@@ -34,6 +34,10 @@
 import { useRoundTweenProcessor } from '@/composition/processors/useRoundTweenProcessor';
 
 import Logo from "./logo.svg";
+import i18n from './i18n.json'
+import { useI18nRef } from '@/composition/useI18n';
+
+const { t } = useI18nRef(i18n);
 
 const props = defineProps<{
   place: number,
@@ -49,8 +53,6 @@ const battles = useRoundTweenProcessor(() => props.battles, { duration: 1000 });
 const avgDamage = useRoundTweenProcessor(() => props.avgDamage, { duration: 1000 });
 const place = useRoundTweenProcessor(() => props.place, { duration: 1000 });
 const resets = useRoundTweenProcessor(() => props.resets, { duration: 1000 });
-
-
 
 </script>
 

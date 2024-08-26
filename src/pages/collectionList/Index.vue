@@ -26,11 +26,12 @@
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils';
 import Item from './Item.vue';
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, provide } from 'vue';
 import { collections } from '@/collections';
 import { setupStyles } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
 import { Options } from '@/utils/defineWidget';
+import { language } from '@/utils/provides';
 
 setupStyles();
 useProvideDocumentBounding()
@@ -45,6 +46,8 @@ const emit = defineEmits<{
 const widgets = getAllWidgetsRoutes()
 const widgetsMap = new Map(widgets.map(w => ([w.route, w])))
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
+
+provide(language, 'ru')
 
 const collectionsWithWidgets = collections.map(collection => ({
   ...collection,

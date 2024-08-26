@@ -77,10 +77,6 @@ function onClose() {
   router.push('/')
 }
 
-watchEffect(() => {
-  console.log(route)
-})
-
 </script>
 
 
