@@ -44,7 +44,7 @@ async function load() {
   console.log(targetId.value);
 
   try {
-    const result = await fetch(`https://tournaments-live-ae31c4b3d978.herokuapp.com/api/wot/tournaments/c1aaa6c3-57f5-44a2-a6f8-7d477df3befb/public`)
+    const result = await fetch(`https://api.tanks.live/api/wot/tournaments/c1aaa6c3-57f5-44a2-a6f8-7d477df3befb/public`)
     const { data: { accounts } } = await result.json()
 
     const account = accounts.find((account: any) => account.wotId == targetId.value)
