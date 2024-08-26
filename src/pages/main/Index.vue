@@ -50,15 +50,19 @@
 import According from '@/components/According.vue';
 import CollectionList from '../collectionList/Index.vue'
 import PreviewPopup from '../previewPopup/Index.vue'
-import { VueComponent as InstructionGame } from "./instructionGame.md";
+import { VueComponentWith as InstructionGameWith } from "./instructionGame.md";
 import { VueComponent as InstructionOBS } from "./instructionOBS.md";
 import { useRoute, useRouter } from 'vue-router';
 import PopupWindow from '@/components/PopupWindow.vue';
 import { ref, watchEffect } from 'vue';
+import CurrentLestaVersion from "./CurrentLestaVersion.vue";
+import CurrentWgVersion from "./CurrentWgVersion.vue";
 
 const router = useRouter()
 const title = ref('')
 const route = useRoute()
+
+const InstructionGame = InstructionGameWith({ CurrentLestaVersion, CurrentWgVersion })
 
 function onClickToWidget(widget: { route: string, title: string }) {
   router.push('/preview' + widget.route)
