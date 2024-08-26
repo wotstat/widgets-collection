@@ -106,10 +106,10 @@ function onClick(widget: {
     max-width: 1200px;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
     grid-auto-rows: 150px;
 
-    @media screen and (max-width: 400px) {
+    @media screen and (max-width: 440px) {
       grid-auto-rows: auto;
       grid-template-columns: 1fr;
     }

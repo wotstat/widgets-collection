@@ -156,10 +156,9 @@ watchEffect(() => {
 }
 
 .preview {
-  // width: 800px;
   min-width: 100px;
   max-width: 100%;
-  height: 800px;
+  height: 700px;
   position: relative;
 }
 </style>
