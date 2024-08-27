@@ -1,5 +1,5 @@
 <template>
-  <WidgetCardWrapper auto-height auto-scale>
+  <WidgetCardWrapper auto-height auto-scale :required-extensions="['wotstat']">
     <Content :values="values" :shadow="query.showShadow === 'true'" :center="query.showCenter === 'true'" />
   </WidgetCardWrapper>
 </template>

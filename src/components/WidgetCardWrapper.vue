@@ -1,6 +1,6 @@
 <template>
   <WidgetRoot :autoScale :autoHeight>
-    <WidgetStatusWrapper :ctx>
+    <WidgetStatusWrapper :ctx :requiredExtensions>
       <WidgetCard>
         <slot></slot>
       </WidgetCard>
@@ -19,7 +19,8 @@ const ctx = useWidgetSdk();
 
 const props = defineProps<{
   autoScale?: boolean,
-  autoHeight?: boolean
+  autoHeight?: boolean,
+  requiredExtensions?: string[]
 }>()
 </script>
 

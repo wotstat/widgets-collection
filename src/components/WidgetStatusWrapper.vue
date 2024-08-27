@@ -9,7 +9,11 @@
       </div>
       <div v-else-if="!isExtensionsReady">
         <p class="primary">Необходим мод-расширение</p>
-        <p class="secondary">
+        <p class="secondary" v-if="missingExtensions.length === 1">
+          Для работы виджета необходимы мод-расширение –
+          <span class="primary"> {{ missingExtensions!.join(', ') }}</span>
+        </p>
+        <p class="secondary" v-else>
           Для работы виджета необходимы моды расширения:
           <span class="primary"> {{ missingExtensions!.join(', ') }}</span>
         </p>
