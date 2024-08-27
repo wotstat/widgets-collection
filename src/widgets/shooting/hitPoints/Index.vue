@@ -1,5 +1,4 @@
 <template>
-
   <WidgetRoot auto-height auto-scale>
     <WidgetStatusWrapper :ctx :required-extensions="['wotstat']">
       <Content :values="values" :shadow="query.showShadow === 'true'" :center="query.showCenter === 'true'" />
@@ -9,6 +8,8 @@
 
 
 <script setup lang="ts">
+import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, watch } from 'vue';
