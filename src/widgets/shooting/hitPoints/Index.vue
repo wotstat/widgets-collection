@@ -1,7 +1,10 @@
 <template>
-  <WidgetCardWrapper auto-height auto-scale :required-extensions="['wotstat']">
-    <Content :values="values" :shadow="query.showShadow === 'true'" :center="query.showCenter === 'true'" />
-  </WidgetCardWrapper>
+
+  <WidgetRoot auto-height auto-scale>
+    <WidgetStatusWrapper :ctx :required-extensions="['wotstat']">
+      <Content :values="values" :shadow="query.showShadow === 'true'" :center="query.showCenter === 'true'" />
+    </WidgetStatusWrapper>
+  </WidgetRoot>
 </template>
 
 
@@ -9,7 +12,6 @@
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, watch } from 'vue';
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { BallisticCalculator } from './ballisticCalc';
@@ -26,7 +28,8 @@ const query = useQueryParams<{
 const values = useWidgetStorage<{ r: number; theta: number }[]>(query.saveKey + '_ballistics', [])
 const maxHits = computed(() => parseInt(query.maxHits ?? '0') || 0)
 
-const { sdk } = useWidgetSdk();
+const ctx = useWidgetSdk();
+const { sdk } = ctx;
 
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const isServerAim = useReactiveState(sdk.data.battle.aiming.isServerAim)
