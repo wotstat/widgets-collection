@@ -1,7 +1,8 @@
 <template>
   <WidgetRoot auto-height auto-scale>
     <WidgetStatusWrapper :ctx :required-extensions="['wotstat']">
-      <Content :values="values" :shadow="query.showShadow === 'true'" :center="query.showCenter === 'true'" />
+      <Content :values="values" :shadow="query.showShadow === 'true'" :center="query.showCenter === 'true'"
+        :circleBackground="query.circleBackground === 'true'" />
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -21,6 +22,7 @@ const query = useQueryParams<{
   resetEachBattle: string
   showShadow: string
   showCenter: string
+  circleBackground: string
   maxHits: string
   saveKey: string
 }>()
