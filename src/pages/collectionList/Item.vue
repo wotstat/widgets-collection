@@ -60,13 +60,23 @@ const props = defineProps<{
       .slot {
         cursor: pointer;
         transition-duration: 0.3s;
-        transition-property: transform, box-shadow, border-radius;
-        will-change: transform, box-shadow, border-radius;
+        transition-property: transform, box-shadow;
+        will-change: transform, box-shadow;
+
+        .card,
+        .preview-card,
+        .preview-drop-shadow {
+          transition: box-shadow 0.3s;
+        }
 
         &:hover {
-          box-shadow: 0 5px 10px #13131337;
-          border-radius: 1em;
           transform: scale(1.05) rotate3d(1, 1, 1, 5deg);
+
+          .card,
+          .preview-card,
+          .preview-drop-shadow {
+            box-shadow: 0 5px 10px #13131337;
+          }
         }
       }
     }

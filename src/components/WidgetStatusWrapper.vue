@@ -1,7 +1,7 @@
 <template>
   <slot></slot>
   <Transition>
-    <WidgetCard class="warning-text" v-if="!shouldShowContent">
+    <div class="card warning-text" v-if="!shouldShowContent">
       <div v-if="!isConnected">
         <p class="primary">Ожидание клиента игры</p>
         <p class="secondary">Для работы виджета необходим мод data&#8209;provider. Подробнее на сайте wotstat.info</p>
@@ -14,7 +14,7 @@
           <span class="primary"> {{ missingExtensions!.join(', ') }}</span>
         </p>
       </div>
-    </WidgetCard>
+    </div>
   </Transition>
 </template>
 
@@ -22,7 +22,6 @@
 <script setup lang="ts">
 import { SdkContext, useReactiveState } from '@/composition/widgetSdk';
 import { computed, ref } from 'vue';
-import WidgetCard from './WidgetCard.vue';
 
 const props = defineProps<{
   ctx: SdkContext,
@@ -68,6 +67,10 @@ ellipsisLoop()
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+div.card {
+  background-color: #292929;
 }
 
 .warning-text {

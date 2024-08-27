@@ -28,27 +28,6 @@ const maxHits = computed(() => parseInt(query.maxHits ?? '0') || 0)
 
 const { sdk } = useWidgetSdk();
 
-type Vector3 = { x: number, y: number, z: number, }
-function isEventOnShot(obj: unknown): obj is {
-  eventName: 'OnShot',
-  gravity: number,
-  gunPoint: Vector3,
-  shellSpeed: number,
-  tracerStart: Vector3,
-  tracerVel: Vector3,
-  clientMarkerPoint: Vector3,
-  clientShotDispersion: number,
-  serverMarkerPoint: Vector3,
-  serverShotDispersion: number,
-} {
-  if (typeof obj !== 'object' || obj === null) return false;
-  if (!('eventName' in obj)) return false;
-  if (typeof obj['eventName'] !== 'string') return false;
-  if (obj['eventName'] !== 'OnShot') return false;
-
-  return true;
-}
-
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const isServerAim = useReactiveState(sdk.data.battle.aiming.isServerAim)
 
@@ -58,9 +37,7 @@ watch(isInBattle, (isInBattle, old) => {
   }
 })
 
-useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, e => {
-  if (!isEventOnShot(e)) return;
-
+useReactiveTrigger(sdk.data.extensions.wotstat.onShotBallisticEvent, e => {
   const shared = {
     gravity: -e.gravity,
     gunPos: e.gunPoint,

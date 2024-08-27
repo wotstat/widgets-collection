@@ -1,7 +1,7 @@
 <template>
-  <div class="main">
+  <div class="main preview-drop-shadow" :class="circleBackground ? 'circleBackground' : 'card'">
     <svg>
-      <circle class="main-circle" cx="50%" cy="50%" r="49.5%" />
+      <circle class="main-circle" cx="50%" cy="50%" r="49.75%" />
       <line x1="45%" y1="50%" x2="55%" y2="50%" v-if="center" />
       <line x1="50%" y1="45%" x2="50%" y2="55%" v-if="center" />
       <TransitionGroup name="hit">
@@ -21,6 +21,7 @@ const props = defineProps<{
   values: { r: number; theta: number }[]
   shadow?: boolean
   center?: boolean
+  circleBackground?: boolean
 }>()
 
 function polarToDec(value: { r: number; theta: number }) {
@@ -36,9 +37,24 @@ function polarToDec(value: { r: number; theta: number }) {
 .main {
   aspect-ratio: 1;
 
+  &:not(.card) {
+    border-radius: 50%;
+  }
+
+  &.circleBackground {
+    border-radius: 50%;
+
+    svg {
+      .main-circle {
+        fill: var(--wotstat-background);
+      }
+    }
+  }
+
   svg {
     width: 100%;
     height: 100%;
+    display: block;
 
     .main-circle {
       fill: none;
@@ -72,8 +88,13 @@ function polarToDec(value: { r: number; theta: number }) {
       }
 
       &.hit-enter-from {
+        r: 0%;
+
+        &.last {
+          r: 5%;
+        }
+
         opacity: 0;
-        r: 5%;
       }
 
       &.hit-leave-to {
