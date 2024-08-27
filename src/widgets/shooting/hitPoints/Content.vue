@@ -1,13 +1,12 @@
 <template>
   <div class="main preview-drop-shadow" :class="circleBackground ? 'circleBackground' : 'card'">
     <svg>
-      <circle class="main-circle" cx="50%" cy="50%" r="49.75%" />
-      <line x1="45%" y1="50%" x2="55%" y2="50%" v-if="center" />
-      <line x1="50%" y1="45%" x2="50%" y2="55%" v-if="center" />
+      <circle class="main-circle" cx="50%" cy="50%" r="49.75%" :class="showCircle ? 'stroke' : ''" />
+      <line x1="45%" y1="50%" x2="55%" y2="50%" v-if="showCenter" />
+      <line x1="50%" y1="45%" x2="50%" y2="55%" v-if="showCenter" />
       <TransitionGroup name="hit">
-        <circle v-for="(item, i) in values" :key="`${item.r}-${item.theta}`" class="hit-point" :class="{
+        <circle v-for="(item, i) in values" :key="`${item.r}-${item.theta}`" class="shadow hit-point" :class="{
           'last': i === values.length - 1,
-          'shadow': shadow,
         }" :cx="polarToDec(item).x * 99 + '%'" :cy="polarToDec(item).y * 99 + '%'" />
       </TransitionGroup>
     </svg>
@@ -19,8 +18,8 @@
 
 const props = defineProps<{
   values: { r: number; theta: number }[]
-  shadow?: boolean
-  center?: boolean
+  showCircle?: boolean
+  showCenter?: boolean
   circleBackground?: boolean
 }>()
 
@@ -58,14 +57,18 @@ function polarToDec(value: { r: number; theta: number }) {
 
     .main-circle {
       fill: none;
-      stroke: #4cff70;
+      stroke: none;
+
+      &.stroke {
+        stroke: var(--wotstat-accent);
+      }
+
       stroke-width: 0.5%;
     }
 
     line {
       stroke: #8c8c8c;
-      stroke-width: 0.5;
-      stroke-opacity: 0.8;
+      stroke-width: 0.3%;
     }
 
     .hit-point {
@@ -84,14 +87,14 @@ function polarToDec(value: { r: number; theta: number }) {
 
       &.hit-enter-active,
       &.hit-leave-active {
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease-in-out;
       }
 
       &.hit-enter-from {
         r: 0%;
 
         &.last {
-          r: 5%;
+          r: 6%;
         }
 
         opacity: 0;

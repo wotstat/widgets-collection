@@ -1,7 +1,6 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1">
-    <Content :values="data" :shadow="showShadow" :center="showCenter"
-      :circleBackground="isMiniPreview || circleBackground" />
+    <Content :values="data" :showCircle :showCenter :circleBackground="isMiniPreview || circleBackground" />
   </WidgetPreviewRoot>
 </template>
 
@@ -9,7 +8,6 @@
 <script setup lang="ts">
 
 import { computed, ref } from 'vue';
-import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from './Content.vue';
 
@@ -17,7 +15,7 @@ import Content from './Content.vue';
 const props = defineProps<{
   isMiniPreview: boolean
   circleBackground?: boolean
-  showShadow?: boolean
+  showCircle?: boolean
   showCenter?: boolean
   maxHits?: number
 }>();

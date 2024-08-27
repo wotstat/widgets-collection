@@ -1,8 +1,8 @@
 <template>
   <WidgetRoot auto-height auto-scale>
     <WidgetStatusWrapper :ctx :required-extensions="['wotstat']">
-      <Content :values="values" :shadow="query.showShadow === 'true'" :center="query.showCenter === 'true'"
-        :circleBackground="query.circleBackground === 'true'" />
+      <Content :values="values" :showCircle="query.showCircle === 'true' && toggleCircleDisplay"
+        :showCenter="query.showCenter === 'true'" :circleBackground="query.circleBackground === 'true'" />
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -13,14 +13,14 @@ import WidgetRoot from '@/components/WidgetRoot.vue';
 import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { BallisticCalculator } from './ballisticCalc';
 
 const query = useQueryParams<{
   resetEachBattle: string
-  showShadow: string
+  showCircle: string
   showCenter: string
   circleBackground: string
   maxHits: string
@@ -36,10 +36,23 @@ const { sdk } = ctx;
 
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const isServerAim = useReactiveState(sdk.data.battle.aiming.isServerAim)
+const isPressH = useReactiveState(sdk.data.keyboard.KEY_H)
 
 watch(isInBattle, (isInBattle, old) => {
   if (isInBattle === true && old === false && query.resetEachBattle === 'true') {
     values.value = []
+  }
+})
+
+const toggleCircleDisplay = ref(true)
+let lastTimeUpH = 0
+watch(isPressH, (value) => {
+  if (value) return;
+  if (performance.now() - lastTimeUpH < 400) {
+    toggleCircleDisplay.value = !toggleCircleDisplay.value
+    lastTimeUpH = 0
+  } else {
+    lastTimeUpH = performance.now()
   }
 })
 
