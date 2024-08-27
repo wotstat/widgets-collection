@@ -7,6 +7,12 @@ export const collections = [
     ]
   },
   {
+    name: 'Стрельба',
+    widgets: [
+      '/shooting/hit-points',
+    ]
+  },
+  {
     name: 'Счётчики',
     widgets: [
       '/counters/battle',
