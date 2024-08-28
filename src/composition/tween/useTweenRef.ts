@@ -4,11 +4,13 @@ import { easing } from "./easing";
 export type TweenOptions = {
   duration: number
   easing?: keyof typeof easing | null
+  minStep?: number
 }
 
 const defaultOptions = {
   duration: 300,
-  easing: 'out-quad'
+  easing: 'out-quad',
+  minStep: 1
 } satisfies TweenOptions
 
 export function useTweenRef(value: Ref<number>, options: TweenOptions = defaultOptions) {
@@ -23,6 +25,10 @@ export function useTweenRef(value: Ref<number>, options: TweenOptions = defaultO
 
   function doTween(to: number) {
     if (tweenRef.value == to) return handler = -1
+    if (Math.abs(tweenRef.value - to) <= (options.minStep ?? defaultOptions.minStep)) {
+      tweenRef.value = to;
+      return handler = -1;
+    }
 
     tweenStartValue = tweenRef.value;
     tweenTargetValue = to;

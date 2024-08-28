@@ -16,7 +16,7 @@ import Content from './Content.vue';
 import { computed, ref, watch } from 'vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { BallisticCalculator } from './ballisticCalc';
+import { BallisticCalculator } from '../ballisticCalc';
 
 const query = useQueryParams<{
   resetEachBattle: string

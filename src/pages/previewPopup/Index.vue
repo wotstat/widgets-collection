@@ -249,7 +249,7 @@ function copy() {
     }
   }
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 600px) {
     position: unset;
 
     .preview {

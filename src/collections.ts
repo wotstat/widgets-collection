@@ -10,12 +10,14 @@ export const collections = [
     name: 'Стрельба',
     widgets: [
       '/shooting/hit-points',
+      '/shooting/out',
     ]
   },
   {
     name: 'Счётчики',
     widgets: [
       '/counters/battle',
+      '/counters/hand',
     ]
   },
   {
