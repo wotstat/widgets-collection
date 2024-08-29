@@ -24,6 +24,9 @@ type WotVehicle = {
 }
 
 type Player = {
+  avatar: {
+    playerRank?: number,
+  }
   bdid: number,
   clanAbbrev: string,
   clanDBID: number,
@@ -33,8 +36,8 @@ type Player = {
   team: number,
 }
 
-function get<T>(obj: object, key: string) {
-  return key in obj ? obj[key as keyof typeof obj] as T : null;
+function get<T>(obj: object | null, key: string) {
+  return obj && key in obj ? obj[key as keyof typeof obj] as T : null;
 }
 
 function sum(key: string) {
@@ -52,14 +55,15 @@ export function parseBattleResult(result: unknown) {
   if (!players || !vehicles || !personal) return null
 
   const avatar = get<object>(personal, 'avatar')
-  if (!avatar) return null
+  const avatars = get<Record<number, object>>(result, 'avatars')
+  if (!avatar || !avatars) return null
 
   const personalBdid = get<number>(avatar, 'accountDBID')
   if (!personalBdid) return null
 
-
   const transformedPlayers = Object.entries(players).map(([key, value]) => ({
     ...value,
+    avatar: avatars[Number.parseInt(key)],
     bdid: Number.parseInt(key)
   })) as Player[]
 
@@ -107,9 +111,13 @@ export function parseBattleResult(result: unknown) {
 
   const personalVehicle = playerVehiclePairs.find(pair => pair.player.bdid === personalBdid)
 
+  const common = get<object>(result, 'common')
 
   return {
     arenaUniqueID,
+    common: {
+      bonusType: get<number>(common, 'bonusType'),
+    },
     players: playerVehiclePairs,
     personal: personalVehicle
   }

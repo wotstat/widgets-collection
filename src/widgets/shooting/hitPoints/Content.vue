@@ -65,12 +65,11 @@ function polarToDec(value: { r: number; theta: number }) {
     .main-circle {
       fill: none;
       stroke: none;
+      stroke-width: 0.5%;
 
       &.stroke {
         stroke: var(--wotstat-accent);
       }
-
-      stroke-width: 0.5%;
     }
 
     .out-arrow {
@@ -116,12 +115,11 @@ function polarToDec(value: { r: number; theta: number }) {
 
       &.hit-enter-from {
         r: 0%;
+        opacity: 0;
 
         &.last {
           r: 6%;
         }
-
-        opacity: 0;
       }
 
       &.hit-leave-to {

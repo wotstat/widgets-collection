@@ -21,6 +21,12 @@ export const collections = [
     ]
   },
   {
+    name: 'Соревнования',
+    widgets: [
+      '/competitive/battle-royale/max',
+    ]
+  },
+  {
     name: 'Прогрессия',
     widgets: [
       '/efficiency/sum/solo/blocked',
