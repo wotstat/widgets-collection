@@ -35,8 +35,8 @@
 
 
 <script setup lang="ts">
-import Dmg from '@/assets/actions/avg-dmg.svg'
-import Kills from '@/assets/actions/avg-kills.svg'
+import Dmg from '@/assets/actions/dmg-max.svg'
+import Kills from '@/assets/actions/kill-max.svg'
 import Battles from '@/assets/actions/battles.svg'
 import Top1 from '@/assets/actions/top1.svg'
 
@@ -65,12 +65,12 @@ function kProcessor(number: number) {
 <style lang="scss" scoped>
 .main {
   font-size: 1.3em;
-  line-height: 1;
+  line-height: 1.2;
 
   .lines {
     display: flex;
     flex-direction: column;
-    gap: 0.6em;
+    gap: 0.5em;
 
     .line {
       display: flex;
