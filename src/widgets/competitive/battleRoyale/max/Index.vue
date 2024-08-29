@@ -19,7 +19,7 @@ import { parseBattleResult } from '@/utils/battleResultParser';
 import { v4 as uuidv4 } from "uuid";
 
 
-const checkIsTop = (rank: number | null) => rank && rank <= 15
+const checkIsTop = (rank: number | null) => rank && rank == 1
 
 const query = useQueryParams<{
   startFrom: string
