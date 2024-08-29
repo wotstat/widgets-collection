@@ -14,16 +14,16 @@ export const collections = [
     ]
   },
   {
+    name: 'Соревнования',
+    widgets: [
+      '/competitive/battle-royale/max',
+    ]
+  },
+  {
     name: 'Счётчики',
     widgets: [
       '/counters/battle',
       '/counters/hand',
-    ]
-  },
-  {
-    name: 'Соревнования',
-    widgets: [
-      '/competitive/battle-royale/max',
     ]
   },
   {
