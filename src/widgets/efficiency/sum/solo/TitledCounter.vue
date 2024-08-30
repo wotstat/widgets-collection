@@ -1,22 +1,20 @@
 <template>
   <div>
     <h1 v-if="title" class="title primary">{{ title }}</h1>
-    <p class="counter accent number">{{ target }}</p>
+    <p class="counter accent number">
+      <TweenValue :value space />
+    </p>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import { useRoundSpaceProcessor } from '@/composition/processors/useRoundSpaceProcessor';
-import { useTweenComputed } from '@/composition/tween/useTweenRef';
+import TweenValue from '@/components/TweenValue.vue';
 
 const props = defineProps<{
   title?: string
   value: number
 }>();
-
-const tweenedValue = useTweenComputed(() => props.value, { duration: 1000 });
-const target = useRoundSpaceProcessor(tweenedValue);
 
 </script>
 

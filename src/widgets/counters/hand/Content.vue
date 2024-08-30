@@ -1,20 +1,18 @@
 <template>
   <div class="main center">
-    <p class="accent number bold big">{{ target }}</p>
+    <p class="accent number bold big">
+      <TweenValue :value space />
+    </p>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import { useRoundSpaceProcessor } from '@/composition/processors/useRoundSpaceProcessor';
-import { useTweenComputed } from '@/composition/tween/useTweenRef';
+import TweenValue from '@/components/TweenValue.vue';
 
-const props = defineProps<{
+defineProps<{
   value: number
 }>()
-
-const tweenedValue = useTweenComputed(() => props.value, { duration: 1000 });
-const target = useRoundSpaceProcessor(tweenedValue);
 
 </script>
 

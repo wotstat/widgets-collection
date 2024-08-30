@@ -22,13 +22,13 @@
           <TweenValue :value="line.maxDmg" :processor="kProcessor" />
         </p>
         <p class="number bold" :class="line.maxFrags == Math.max(...lines.map(t => t.maxFrags)) ? 'accent' : ''">
-          <TweenValue :value="line.maxFrags" round />
+          <TweenValue :value="line.maxFrags" />
         </p>
         <p class="number bold" :class="line.maxTopInRow == Math.max(...lines.map(t => t.maxTopInRow)) ? 'accent' : ''">
           <TweenValue :value="line.maxTopInRow" />
         </p>
         <p class="number bold">
-          <TweenValue :value="line.battlesCount" round />
+          <TweenValue :value="line.battlesCount" />
         </p>
       </div>
     </div>

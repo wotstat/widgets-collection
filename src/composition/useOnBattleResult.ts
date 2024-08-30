@@ -1,7 +1,10 @@
 import { useReactiveTrigger, useWidgetSdk } from "@/composition/widgetSdk";
 import { parseBattleResult } from "@/utils/battleResultParser";
 
-export function onBattleResult(callback: (parsed: NonNullable<ReturnType<typeof parseBattleResult>>, result: unknown) => void) {
+type BattleResult = NonNullable<ReturnType<typeof parseBattleResult>>
+type BattleResultWithArenaId = BattleResult & { arenaUniqueID: number }
+
+export function onBattleResult(callback: (parsed: BattleResultWithArenaId, result: unknown) => void) {
 
   const { sdk } = useWidgetSdk();
 
@@ -16,6 +19,6 @@ export function onBattleResult(callback: (parsed: NonNullable<ReturnType<typeof 
     if (processedResults.has(arenaId)) return console.error(`Duplicated battle result for: ${arenaId}`);
     processedResults.add(arenaId)
 
-    callback(parsed, result)
+    callback(parsed as BattleResultWithArenaId, result)
   })
 }

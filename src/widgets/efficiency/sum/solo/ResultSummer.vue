@@ -12,7 +12,7 @@ import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/compositio
 import { useQueryParams } from '@/composition/useQueryParams';
 import { computed, watch } from 'vue';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { parseBattleResult } from '@/utils/battleResultParser';
+import { onBattleResult } from '@/composition/useOnBattleResult';
 
 const props = defineProps<{
   title: string
@@ -46,18 +46,12 @@ watch(() => props.value, (value, old) => {
   }
 })
 
-const processedResults = new Set<number>()
-useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
-  const parsed = parseBattleResult(result)
+onBattleResult((parsed, res) => {
   if (!parsed) return
-
   const arenaId = parsed.arenaUniqueID
   const resultValue = parsed.personal?.stats[props.stat]
 
-  if (!arenaId || !resultValue) return
-
-  if (processedResults.has(arenaId)) return console.error(`Duplicated battle result for: ${arenaId}`);
-  processedResults.add(arenaId)
+  if (!resultValue) return
 
   const tempValue = tempResults.value.get(arenaId)
   const delta = resultValue - (tempValue ?? 0)

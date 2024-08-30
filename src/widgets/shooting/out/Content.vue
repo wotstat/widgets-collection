@@ -1,16 +1,21 @@
 <template>
   <div>
     <h1 class="title primary" v-if="title">УКРАДЕНО</h1>
-    <p class="counter accent number" v-if="!percent">{{ missTween }}/{{ totalTween }}</p>
-    <p class="counter percent accent number" v-else>{{ percentTween }}%</p>
+    <p class="counter accent number" v-if="!percent">
+      <TweenValue :value="miss" />
+      <span>/</span>
+      <TweenValue :value="total" />
+    </p>
+    <p class="counter percent accent number" v-else>
+      <TweenValue :value="percentValue" :precision="2" v-slot="{ value }">{{ value }}%
+      </TweenValue>
+    </p>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import { useRoundProcessor } from '@/composition/processors/useRoundProcessor';
-import { useRoundTweenProcessor } from '@/composition/processors/useRoundTweenProcessor';
-import { useTweenComputed } from '@/composition/tween/useTweenRef';
+import TweenValue from '@/components/TweenValue.vue';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -20,11 +25,7 @@ const props = defineProps<{
   percent?: boolean
 }>();
 
-const missTween = useRoundTweenProcessor(() => props.miss, { duration: 1000 });
-const totalTween = useRoundTweenProcessor(() => props.total, { duration: 1000 });
-
 const percentValue = computed(() => props.total > 0 ? props.miss / props.total * 100 : 0);
-const percentTween = useRoundProcessor(useTweenComputed(() => percentValue.value, { duration: 1000 }), 2);
 
 </script>
 

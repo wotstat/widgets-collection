@@ -1,22 +1,31 @@
 <template>
+  <DefineTemplate>
+    <TweenValue :value="props.value" />
+  </DefineTemplate>
+
   <div class="main center">
-    <p class="primary" v-if="title">Боёв: <span class="accent number bold">{{ target }}</span></p>
-    <p class="accent number bold big" v-else>{{ target }}</p>
+    <p class="primary" v-if="title">Боёв:
+      <span class="accent number bold">
+        <ReuseTemplate />
+      </span>
+    </p>
+    <p class="accent number bold big" v-else>
+      <ReuseTemplate />
+    </p>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import { useRoundSpaceProcessor } from '@/composition/processors/useRoundSpaceProcessor';
-import { useTweenComputed } from '@/composition/tween/useTweenRef';
+import TweenValue from '@/components/TweenValue.vue';
+import { createReusableTemplate } from '@vueuse/core'
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
 const props = defineProps<{
   value: number
   title: boolean
 }>()
-
-const tweenedValue = useTweenComputed(() => props.value, { duration: 1000 });
-const target = useRoundSpaceProcessor(tweenedValue);
 
 </script>
 

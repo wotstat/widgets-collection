@@ -16,7 +16,7 @@ import { useStorageRelayState } from '@/composition/useStorageRelayState';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { v4 as uuidv4 } from "uuid";
-import { onBattleResult } from '@/widgets/shared/useOnBattleResult';
+import { onBattleResult } from '@/composition/useOnBattleResult';
 
 
 const checkIsTop = (rank: number | null) => rank !== null && rank == 1
