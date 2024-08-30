@@ -5,8 +5,9 @@
 
 
 <script setup lang="ts" generic="T">
-import { TweenOptions, useTweenComputed, useTweenRef } from '@/composition/tween/useTweenRef';
-import { computed, ref, useSlots, watch } from 'vue';
+import { TweenOptions, useTweenRef } from '@/composition/tween/useTweenRef';
+import { isInPreview } from '@/utils/provides';
+import { computed, inject, ref, useSlots, watch } from 'vue';
 
 const props = defineProps<{
   value: number
@@ -14,10 +15,12 @@ const props = defineProps<{
   processor?: (value: number) => T
   round?: boolean
   precision?: number
+  startAnimationInPreview?: boolean
 }>()
 
+const isPreview = inject(isInPreview, false)
 const slots = useSlots()
-const value = ref(0)
+const value = ref(isPreview && !props.startAnimationInPreview ? props.value : 0)
 const tweenValue = useTweenRef(value, props.options)
 
 watch(() => props.value, t => {

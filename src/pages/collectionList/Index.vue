@@ -31,7 +31,7 @@ import { collections } from '@/collections';
 import { setupStyles } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
 import { Options } from '@/utils/defineWidget';
-import { language } from '@/utils/provides';
+import { isInPreview, language } from '@/utils/provides';
 
 setupStyles();
 useProvideDocumentBounding()
@@ -48,6 +48,7 @@ const widgetsMap = new Map(widgets.map(w => ([w.route, w])))
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
 
 provide(language, 'ru')
+provide(isInPreview, true)
 
 const collectionsWithWidgets = collections.map(collection => ({
   ...collection,

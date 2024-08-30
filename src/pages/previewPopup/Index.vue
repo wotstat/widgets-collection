@@ -41,7 +41,7 @@ import RandomString from './settings/RandomString.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
-import { language } from '@/utils/provides';
+import { isInPreview, language } from '@/utils/provides';
 
 setupStyles()
 
@@ -52,12 +52,12 @@ const route = useRoute();
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
 const widgetReadmes = import.meta.glob('/src/widgets/**/*.md')
 const widgetsOptions = getAllWidgetsRoutes()
-
 const emit = defineEmits<{
   onLoaded: [any]
 }>()
 
 provide(language, 'ru')
+provide(isInPreview, true)
 
 const widgetPath = computed(() => {
   if (Array.isArray(route.params.widget)) {

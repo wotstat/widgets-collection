@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import Content from './Content.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { computed, ref, shallowRef, triggerRef, watch } from 'vue';
+import { computed, watch } from 'vue';
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
