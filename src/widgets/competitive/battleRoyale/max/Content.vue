@@ -16,18 +16,20 @@
           <Battles class="icon" />
         </div>
       </div>
-      <div class="line" v-for="line in lines">
-        <p class="name" colspan="2">{{ line.name }}</p>
+      <div class="line" v-for="(line, i) in lines" :key="line.name">
+        <p class="name">{{ line.name }}</p>
         <p class="number bold" :class="line.maxDmg == Math.max(...lines.map(t => t.maxDmg)) ? 'accent' : ''">
-          {{ kProcessor(line.maxDmg) }}
+          <TweenValue :value="line.maxDmg" :processor="kProcessor" />
         </p>
         <p class="number bold" :class="line.maxFrags == Math.max(...lines.map(t => t.maxFrags)) ? 'accent' : ''">
-          {{ line.maxFrags }}
+          <TweenValue :value="line.maxFrags" round />
         </p>
         <p class="number bold" :class="line.maxTopInRow == Math.max(...lines.map(t => t.maxTopInRow)) ? 'accent' : ''">
-          {{ line.maxTopInRow }}
+          <TweenValue :value="line.maxTopInRow" />
         </p>
-        <p class="number bold">{{ line.battlesCount }}</p>
+        <p class="number bold">
+          <TweenValue :value="line.battlesCount" round />
+        </p>
       </div>
     </div>
   </div>
@@ -39,6 +41,7 @@ import Dmg from '@/assets/actions/dmg-max.svg'
 import Kills from '@/assets/actions/kill-max.svg'
 import Battles from '@/assets/actions/battles.svg'
 import Top1 from '@/assets/actions/top1.svg'
+import TweenValue from '@/components/TweenValue.vue';
 
 const props = defineProps<{
   lines: {
@@ -55,7 +58,7 @@ const props = defineProps<{
 }>()
 
 function kProcessor(number: number) {
-  if (number < 10000) return number
+  if (number < 10000) return Math.round(number)
   if (number < 1000000) return (number / 1000).toFixed(1) + 'k'
 }
 

@@ -1,4 +1,4 @@
-import { ref, Ref, watch } from "vue";
+import { reactive, ref, Ref, watch } from "vue";
 import { easing } from "./easing";
 
 export type TweenOptions = {
@@ -8,7 +8,7 @@ export type TweenOptions = {
 }
 
 const defaultOptions = {
-  duration: 300,
+  duration: 1000,
   easing: 'out-quad',
   minStep: 1
 } satisfies TweenOptions
@@ -75,4 +75,28 @@ export function useTweenComputed(effect: () => number, options: TweenOptions = d
   })
 
   return tweenRef;
+}
+
+export function useTweenArray(effect: () => number[], options: TweenOptions = defaultOptions) {
+
+  const startValue = effect()
+  const values = ref(startValue.map(t => ref(0)))
+  const tweened = reactive(values.value.map(t => useTweenRef(t, options)))
+  for (let i = 0; i < startValue.length; i++) values.value[i].value = startValue[i]
+
+  watch(effect, (newValue) => {
+    for (let i = 0; i < newValue.length && i < values.value.length; i++) values.value[i].value = newValue[i]
+    for (let i = values.value.length; i < newValue.length; i++) {
+      const val = ref(0)
+      values.value.push(val)
+      tweened.push(useTweenRef(val, options))
+      val.value = newValue[i]
+    }
+    for (let i = newValue.length; i < values.value.length; i++) {
+      values.value.pop()
+      tweened.pop()
+    }
+  })
+
+  return tweened
 }

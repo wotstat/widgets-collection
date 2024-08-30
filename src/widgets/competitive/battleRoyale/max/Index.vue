@@ -7,19 +7,19 @@
 
 <script setup lang="ts">
 import Content from './Content.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
+import { computed, ref, shallowRef, triggerRef, watch } from 'vue';
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useStorageRelayState } from '@/composition/useStorageRelayState';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
-import { parseBattleResult } from '@/utils/battleResultParser';
 import { v4 as uuidv4 } from "uuid";
+import { onBattleResult } from '@/widgets/shared/useOnBattleResult';
 
 
-const checkIsTop = (rank: number | null) => rank && rank == 1
+const checkIsTop = (rank: number | null) => rank !== null && rank == 1
 
 const query = useQueryParams<{
   startFrom: string
@@ -56,7 +56,7 @@ const lines = computed(() => {
       sumFrags: stats?.sumFrags ?? 0,
       battlesCount: stats?.battlesCount ?? 0,
     }
-  })
+  }).filter(l => l.name != '')
 })
 
 const playerName = useReactiveState(sdk.data.player.name)
@@ -64,14 +64,15 @@ watch(playerName, (name) => playerNamesRelay.state.value = name ?? '')
 
 const battlesHistory = useWidgetStorage<{ id: number, rank: number | null }[]>((query.saveKey ?? '') + 'startedBattles', [])
 const arenaInfo = useReactiveState(sdk.data.battle.arena)
-watch(arenaInfo, (info) => {
-  if (!info) return
+const arenaId = useReactiveState(sdk.data.battle.arenaId)
+watch(() => [arenaInfo.value, arenaId.value] as const, ([info, arenaId]) => {
+  if (!info || !arenaId) return
   if (info.mode !== 'BATTLE_ROYALE_SOLO') return
 
-  if (battlesHistory.value.some(b => b.id == sdk.data.battle.arenaId.value!)) return
+  if (battlesHistory.value.some(b => b.id == arenaId)) return
 
-  battlesHistory.value.push({ id: sdk.data.battle.arenaId.value!, rank: null })
-  console.log('Started battle: ', sdk.data.battle.arenaId.value);
+  battlesHistory.value.push({ id: arenaId, rank: null })
+  console.log('Started battle: ', arenaId);
 })
 
 function calculateTopInRow() {
@@ -88,25 +89,26 @@ function calculateTopInRow() {
   return maxTopInRow
 }
 
-const processedResults = new Set<number>()
-useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
-  const parsed = parseBattleResult(result)
-  if (!parsed) return
+function smartStripResults() {
+  let lastNonTopIndex = 0
 
-  console.log('Battle result: ', parsed);
+  for (let i = 0; i < battlesHistory.value.length; i++) {
+    const rank = battlesHistory.value[i].rank
+    if (rank === null) break
+    if (!checkIsTop(rank)) lastNonTopIndex = i
+  }
 
+  if (lastNonTopIndex > 0) {
+    battlesHistory.value = battlesHistory.value.slice(lastNonTopIndex + 1)
+  }
+}
 
-  const arenaId = parsed.arenaUniqueID
-  if (!arenaId) return
-
-  if (processedResults.has(arenaId)) return console.error(`Duplicated battle result for: ${arenaId}`);
-  processedResults.add(arenaId)
-
+onBattleResult((parsed) => {
   if (parsed.common.bonusType != 29) return console.log('Not a battle royale battle')
 
+  const arenaId = parsed.arenaUniqueID
   const battleHistoryIndex = battlesHistory.value.findIndex(b => b.id == arenaId)
   if (battleHistoryIndex == -1) return console.error(`Battle result for unknown battle: ${arenaId}`);
-
 
   console.log('Battle result for: ', arenaId);
 
@@ -128,10 +130,7 @@ useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
 
   console.log('Stats updated: ', current);
 
-
-  if (!isTop && battlesHistory.value.every(b => b.rank != null)) {
-    battlesHistory.value = []
-  }
+  smartStripResults()
 
   console.log('Battles history updated: ', battlesHistory.value);
 
