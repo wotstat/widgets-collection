@@ -4,7 +4,7 @@ import { parseBattleResult } from "@/utils/battleResultParser";
 type BattleResult = NonNullable<ReturnType<typeof parseBattleResult>>
 type BattleResultWithArenaId = BattleResult & { arenaUniqueID: number }
 
-export function onBattleResult(callback: (parsed: BattleResultWithArenaId, result: unknown) => void) {
+export function useBattleResult(callback: (parsed: BattleResultWithArenaId, result: unknown) => void) {
 
   const { sdk } = useWidgetSdk();
 

@@ -12,7 +12,7 @@ import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/compositio
 import { useQueryParams } from '@/composition/useQueryParams';
 import { computed, watch } from 'vue';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { onBattleResult } from '@/composition/useOnBattleResult';
+import { useBattleResult } from '@/composition/useOnBattleResult';
 
 const props = defineProps<{
   title: string
@@ -46,7 +46,7 @@ watch(() => props.value, (value, old) => {
   }
 })
 
-onBattleResult((parsed, res) => {
+useBattleResult((parsed, res) => {
   if (!parsed) return
   const arenaId = parsed.arenaUniqueID
   const resultValue = parsed.personal?.stats[props.stat]

@@ -16,7 +16,7 @@ import { useStorageRelayState } from '@/composition/useStorageRelayState';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { v4 as uuidv4 } from "uuid";
-import { onBattleResult } from '@/composition/useOnBattleResult';
+import { useBattleResult } from '@/composition/useOnBattleResult';
 
 
 const checkIsTop = (rank: number | null) => rank !== null && rank == 1
@@ -103,7 +103,7 @@ function smartStripResults() {
   }
 }
 
-onBattleResult((parsed) => {
+useBattleResult((parsed) => {
   if (parsed.common.bonusType != 29) return console.log('Not a battle royale battle')
 
   const arenaId = parsed.arenaUniqueID

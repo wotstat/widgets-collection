@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils';
 import Item from './Item.vue';
-import { defineAsyncComponent, provide } from 'vue';
+import { type Component, provide } from 'vue';
 import { collections } from '@/collections';
 import { setupStyles } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
@@ -45,7 +45,7 @@ const emit = defineEmits<{
 
 const widgets = getAllWidgetsRoutes()
 const widgetsMap = new Map(widgets.map(w => ([w.route, w])))
-const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
+const widgetPreviews = import.meta.glob<{ default: Component }>('/src/widgets/**/*.vue', { eager: true })
 
 provide(language, 'ru')
 provide(isInPreview, true)
@@ -63,11 +63,11 @@ const collectionsWithWidgets = collections.map(collection => ({
     }
 
     const previewPath = '/' + pathResolve('src', widget.path, widget.options.preview)
-    const previewComponent = widgetPreviews[previewPath] as any
+    const previewComponent = widgetPreviews[previewPath].default
 
     return {
       ...widget,
-      previewComponent: defineAsyncComponent(previewComponent)
+      previewComponent
     }
   })
 }))

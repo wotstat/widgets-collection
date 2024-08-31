@@ -6,7 +6,7 @@
       </div>
       <div class="preview">
         <div class="widget">
-          <img src="@/assets/images/preview-background.jpg">
+          <img class="preview-background" src="@/assets/images/preview-background.jpg">
           <div class="preview-container">
             <template v-if="currentPreviewComponent">
               <component :is="currentPreviewComponent" :isMiniPreview="false" v-bind="targetProps" />
@@ -45,8 +45,7 @@ import { isInPreview, language } from '@/utils/provides';
 
 setupStyles()
 
-const BASE_URL = import.meta.env.VITE_BASE_URL
-
+const BASE_URL = location.origin
 const route = useRoute();
 
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
@@ -71,8 +70,11 @@ const currentPreview = computed(() => {
   if (!currentOptions.value || !currentOptions.value.options.preview) return null
 
   const previewPath = '/' + pathResolve('src', currentOptions.value.path, currentOptions.value.options.preview)
+  if (!(previewPath in widgetPreviews) || !widgetPreviews[previewPath]) return null
+
   return widgetPreviews[previewPath]
 });
+
 const currentPreviewComponent = defineAsyncComponent(currentPreview.value as any)
 
 const settingsValues = computedWithControl(currentOptions, () => {
@@ -165,7 +167,7 @@ const RMC = defineAsyncComponent(async () => {
 const isActivated = ref(false)
 function copy() {
   isActivated.value = true
-  navigator.clipboard.writeText(`https://widgets.wotstat.info${currentOptions.value?.route}?${targetQuery.value}`)
+  navigator.clipboard.writeText(`${BASE_URL}${currentOptions.value?.route}?${targetQuery.value}`)
   setTimeout(() => isActivated.value = false, 300)
 }
 
@@ -197,6 +199,11 @@ function copy() {
     display: flex;
     gap: 20px;
     min-height: 30%;
+
+    .preview-background {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAACXBIWXMAAAsTAAALEwEAmpwYAAAJNmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4xLWMwMDAgNzkuOWNjYzRkZTkzLCAyMDIyLzAzLzE0LTE0OjA3OjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1wTU06RG9jdW1lbnRJRD0iYWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOjFmMDJmNzkwLWVlMGEtZjA0My05MjE5LTQ4ZWRmYzA4YWE4MSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpkY2IxMzBiZS0wYTc5LTQ3ZjEtYjY0MC01MzgzODM3ZTlhMTgiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0iMzUwQzhENEZDRTdDM0IxRjk4RjZEQzcxQTg5QTNGNzciIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB0aWZmOkltYWdlV2lkdGg9IjYzOSIgdGlmZjpJbWFnZUxlbmd0aD0iNjEwIiB0aWZmOlBob3RvbWV0cmljSW50ZXJwcmV0YXRpb249IjIiIHRpZmY6U2FtcGxlc1BlclBpeGVsPSIzIiB0aWZmOlhSZXNvbHV0aW9uPSIxLzEiIHRpZmY6WVJlc29sdXRpb249IjEvMSIgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMSIgZXhpZjpFeGlmVmVyc2lvbj0iMDIzMSIgZXhpZjpDb2xvclNwYWNlPSI2NTUzNSIgZXhpZjpQaXhlbFhEaW1lbnNpb249IjYzOSIgZXhpZjpQaXhlbFlEaW1lbnNpb249IjYxMCIgeG1wOkNyZWF0ZURhdGU9IjIwMjQtMDgtMzFUMDU6NTY6NDUrMDM6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDI0LTA4LTMxVDA2OjIzOjIwKzAzOjAwIiB4bXA6TWV0YWRhdGFEYXRlPSIyMDI0LTA4LTMxVDA2OjIzOjIwKzAzOjAwIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MWY3NzFhZGYtZjgyNS00YjdhLTg2NDAtYTAxOTdhZGVhMjNlIiBzdEV2dDp3aGVuPSIyMDI0LTA4LTMxVDA2OjIzOjIwKzAzOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjMuMyAoTWFjaW50b3NoKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY29udmVydGVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJmcm9tIGltYWdlL2pwZWcgdG8gaW1hZ2UvcG5nIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJkZXJpdmVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJjb252ZXJ0ZWQgZnJvbSBpbWFnZS9qcGVnIHRvIGltYWdlL3BuZyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ZGNiMTMwYmUtMGE3OS00N2YxLWI2NDAtNTM4MzgzN2U5YTE4IiBzdEV2dDp3aGVuPSIyMDI0LTA4LTMxVDA2OjIzOjIwKzAzOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjMuMyAoTWFjaW50b3NoKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MWY3NzFhZGYtZjgyNS00YjdhLTg2NDAtYTAxOTdhZGVhMjNlIiBzdFJlZjpkb2N1bWVudElEPSIzNTBDOEQ0RkNFN0MzQjFGOThGNkRDNzFBODlBM0Y3NyIgc3RSZWY6b3JpZ2luYWxEb2N1bWVudElEPSIzNTBDOEQ0RkNFN0MzQjFGOThGNkRDNzFBODlBM0Y3NyIvPiA8dGlmZjpCaXRzUGVyU2FtcGxlPiA8cmRmOlNlcT4gPHJkZjpsaT44PC9yZGY6bGk+IDxyZGY6bGk+ODwvcmRmOmxpPiA8cmRmOmxpPjg8L3JkZjpsaT4gPC9yZGY6U2VxPiA8L3RpZmY6Qml0c1BlclNhbXBsZT4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5U0wQDAAAAuElEQVQImQXB226CQBAA0J3ZWYKYGG00Pvj/v2J8M33xVoumZVkjJghU3HXK4DmwWi09K1EQBLhj1Go0niEizWcf0isFEP7F5uemaZLpVBNiD0iaIqIY+/qWlW5vuBqgUH4PiGAQm6o4pimH8tfZ+WJIWVGJdAhQ5On+O43Jx1+7awW0/VwrYRZtfzbOunEixmwurqXLaWsQW882OwT/SLSeRBxBiZMYTFd3bfF6/r18iLQemkFdPt+lpmkasjRzSwAAAABJRU5ErkJggg==);
+      background-size: cover;
+    }
 
     .widget {
       flex: 1;
