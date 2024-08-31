@@ -1,11 +1,15 @@
 <template>
+  <DefineTemplate>
+    <Content v-bind="data" :hide-l1="hideL1" :hide-l2="hideL2" :hide-l3="hideL3" />
+  </DefineTemplate>
+
   <WidgetRoot autoScale autoHeight v-if="nickname">
     <WidgetCard>
-      <Content v-bind="data" :hide-l1="hideL1" :hide-l2="hideL2" :hide-l3="hideL3" />
+      <ReuseTemplate />
     </WidgetCard>
   </WidgetRoot>
   <WidgetCardWrapper autoScale autoHeight v-else>
-    <Content v-bind="data" :hide-l1="hideL1" :hide-l2="hideL2" :hide-l3="hideL3" />
+    <ReuseTemplate />
   </WidgetCardWrapper>
 </template>
 
@@ -20,6 +24,9 @@ import { LocationQueryValue, useRoute } from 'vue-router';
 import { computed, onMounted, ref } from 'vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import { watchOnce } from '@vueuse/core';
+
+import { createReusableTemplate } from '@vueuse/core'
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
 const route = useRoute();
 const hideL1 = computed(() => route.query.hideL1 === 'true');
@@ -41,7 +48,7 @@ const compactDescriptorToTankName = {
 const { sdk } = useWidgetSdk();
 
 const sdkId = useReactiveState(sdk.data.player.id);
-const nicknameId = ref('');
+const nicknameId = ref<null | string>(null);
 
 const id = computed(() => nicknameId.value || sdkId.value);
 
@@ -65,7 +72,7 @@ async function load() {
   const page = await fetch(`https://challenge.tanki.su/api/v1/tournaments/708?offset=${place - 1}&limit=1`)
   const { data: { participants } } = await page.json()
 
-  const userParticipant = participants.find((p: any) => p.user.spa_id === id.value)
+  const userParticipant = participants.find((p: any) => p.user.spa_id == id.value)
   const { results } = userParticipant
 
   data.value.place = userParticipant.position
@@ -102,7 +109,9 @@ async function load() {
 async function loadLoop() {
   try {
     await load()
-  } catch { }
+  } catch (e) {
+    console.error(e)
+  }
 
   setTimeout(loadLoop, 10000)
 }
@@ -114,7 +123,9 @@ async function loadSpaIdByPlayerName() {
     .then(res => res.json())
     .then(data => {
       try {
-        nicknameId.value = data.data.search_results[0].spa_id
+        const search_results: { name: string, spa_id: number }[] = data.data.search_results
+        const target = nickname.value?.toLowerCase()
+        nicknameId.value = search_results.find(t => t.name.toLowerCase() === target)?.spa_id.toString() ?? ''
       } catch (error) { }
     })
 }
