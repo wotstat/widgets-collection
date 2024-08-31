@@ -13,7 +13,7 @@
     </div>
 
     <div class="best-place flex" v-if="showBest !== false">
-      <template v-for="_, i in new Array(3).fill(0)">
+      <template v-for="_, i in new Array(3).fill(0)" :key="i">
         <p class="icon">
           {{ i + 1 }}
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 10">
@@ -21,7 +21,10 @@
           </svg>
         </p>
         <div class="place flex-1">
-          <p class="number center">{{ places[i] ?? '-' }}</p>
+          <p class="number center">
+            <TweenValue v-if="places[i]" :value="places[i]" />
+            <span v-else>-</span>
+          </p>
         </div>
         <div class="vr" v-if="i != 2"></div>
       </template>
@@ -36,6 +39,7 @@ import { useRoundTweenProcessor } from '@/composition/processors/useRoundTweenPr
 import Logo from "./logo.svg";
 import i18n from './i18n.json'
 import { useI18nRef } from '@/composition/useI18n';
+import TweenValue from '@/components/TweenValue.vue';
 
 const { t } = useI18nRef(i18n);
 

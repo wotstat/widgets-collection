@@ -1,11 +1,14 @@
 <template>
+  <DefineTemplate>
+    <Content v-bind="data" :transparentBackground="params.transparentBackground == 'true'"
+      :showBest="params.showBest == 'true'" />
+  </DefineTemplate>
+
   <WidgetRoot autoScale autoHeight>
     <WidgetStatusWrapper :ctx v-if="!params.playerId">
-      <Content v-bind="data" :transparentBackground="params.transparentBackground == 'true'"
-        :showBest="params.showBest == 'true'" />
+      <ReuseTemplate />
     </WidgetStatusWrapper>
-    <Content v-else v-bind="data" :transparentBackground="params.transparentBackground == 'true'"
-      :showBest="params.showBest == 'true'" />
+    <ReuseTemplate v-else />
   </WidgetRoot>
 </template>
 
@@ -19,6 +22,9 @@ import { computed, ref } from 'vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { watchOnce } from '@vueuse/core';
+
+import { createReusableTemplate } from '@vueuse/core'
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
 const params = useQueryParams<{
   transparentBackground: string,
@@ -36,7 +42,7 @@ const data = ref({
   avgDamage: 0,
   battles: 0,
   resets: 0,
-  places: [],
+  places: [] as number[],
 })
 
 async function load() {
@@ -44,7 +50,7 @@ async function load() {
   console.log(targetId.value);
 
   try {
-    const result = await fetch(`https://api.tanks.live/api/wot/tournaments/c1aaa6c3-57f5-44a2-a6f8-7d477df3befb/public`)
+    const result = await fetch(`https://api.tanks.live/api/wot/tournaments/c1aaa6c3-57f5-44a2-a6f8-7d477df3befb/accounts/public?wotId=${targetId.value}`)
     const { data: { accounts } } = await result.json()
 
     const account = accounts.find((account: any) => account.wotId == targetId.value)
@@ -57,14 +63,19 @@ async function load() {
       frags: number
       totalScores: number
       wins: number
+      place: number
     } = account.results
 
     data.value.battles = results.battles
     data.value.avgDamage = Math.round(results.damage / results.battles)
     data.value.resets = results.deletedBattles
+    data.value.place = results.place
 
-    const sorted = accounts.sort((a: any, b: any) => b.results.totalScores - a.results.totalScores)
-    data.value.place = sorted.findIndex((account: any) => account.wotId == targetId.value) + 1
+    const battles: {
+      scores: number
+    }[] = account.battles
+
+    data.value.places = battles.map(t => t.scores).sort((a, b) => b - a).slice(0, 3)
 
   } catch (error) {
     console.error(error);
