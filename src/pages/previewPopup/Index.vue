@@ -18,9 +18,16 @@
           <component v-for="setting in settingsValues" :is="setting.component" />
         </div>
       </div>
-      <div class="url" :class="{ 'active': isActivated }">
-        {{ `${BASE_URL}${currentOptions.route}?${targetQuery}` }}
-        <CopyIcon class="icon" @click="copy" />
+      <div class="flex url-container">
+        <div class="url" :class="{ 'active': isActivatedUrl }" :key="'url'">
+          {{ widgetUrl }}
+          <CopyIcon class="icon" @click="copy" />
+        </div>
+        <Transition>
+          <button v-if="predictedStatus == 'predict-open' || predictedStatus == 'open'" :key="'button'"
+            :class="{ 'active': isActivatedButton }" @click="add">Добавить в
+            игру</button>
+        </Transition>
       </div>
     </div>
   </template>
@@ -42,6 +49,7 @@ import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
 import { isInPreview, language } from '@/utils/provides';
+import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
 
 setupStyles()
 
@@ -164,12 +172,25 @@ const RMC = defineAsyncComponent(async () => {
   return VueComponent
 })
 
-const isActivated = ref(false)
+const widgetUrl = computed(() => `${BASE_URL}${currentOptions.value?.route}?${targetQuery.value}`)
+
+const isActivatedUrl = ref(false)
 function copy() {
-  isActivated.value = true
-  navigator.clipboard.writeText(`${BASE_URL}${currentOptions.value?.route}?${targetQuery.value}`)
-  setTimeout(() => isActivated.value = false, 300)
+  isActivatedUrl.value = true
+  navigator.clipboard.writeText(widgetUrl.value)
+  setTimeout(() => isActivatedUrl.value = false, 300)
 }
+
+const isActivatedButton = ref(false)
+const { ws, status: predictedStatus } = usePredictWebSocketInterface(import.meta.env.VITE_WIDGETS_INTERFACE_URL)
+function add() {
+  if (ws.status.value != 'OPEN') return
+  ws.send(`ADD_WIDGET ${widgetUrl.value}`)
+  isActivatedButton.value = true
+  setTimeout(() => isActivatedButton.value = false, 300)
+}
+
+const accentColor = computed(() => '#' + accent.value)
 
 </script>
 
@@ -272,38 +293,76 @@ function copy() {
     }
   }
 
-  .url {
-    background-color: #1a1a1a;
-    padding: 10px;
-    border-radius: 10px;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.4;
-    font-family: monospace;
-    display: flex;
-    align-items: center;
+  .url-container {
     gap: 10px;
-    justify-content: space-between;
-    word-wrap: break-word;
-    word-break: break-all;
 
-    transition: background-color 0.2s;
-
-    &.active {
-      background-color: #30D158;
-    }
-
-    .icon {
-      min-width: 40px;
-      width: 40px;
-      cursor: pointer;
-      margin: -5px;
+    button {
+      background-color: #1a1a1a;
+      border: 1.5px solid v-bind('accentColor');
       padding: 10px;
-      border-radius: 8px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+
       transition: background-color 0.2s;
-      user-select: none;
 
       &:hover {
-        background-color: #333;
+        background-color: #2b2b2b;
+      }
+
+      &.active {
+        background-color: #30D158;
+      }
+
+
+      &.v-enter-active,
+      &.v-leave-active {
+        transition: all 0.3s ease;
+      }
+
+      &.v-enter-from,
+      &.v-leave-to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+    }
+
+    .url {
+      background-color: #1a1a1a;
+      padding: 10px;
+      border-radius: 10px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.4;
+      font-family: monospace;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+      word-wrap: break-word;
+      word-break: break-all;
+      flex: 1;
+
+      transition: background-color 0.2s;
+
+      &.active {
+        background-color: #30D158;
+      }
+
+      .icon {
+        min-width: 40px;
+        width: 40px;
+        cursor: pointer;
+        margin: -5px;
+        padding: 10px;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+        user-select: none;
+
+        &:hover {
+          background-color: #333;
+        }
       }
     }
   }
