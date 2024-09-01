@@ -72,8 +72,13 @@ function kProcessor(number: number) {
   if (number < 1000000) return (number / 1000).toFixed(1) + 'k'
 }
 
+function getAvg(value: number, battlesCount: number) {
+  if (battlesCount == 0) return 0
+  return value / battlesCount
+}
+
 const dmgValues = computed(() => {
-  const res = props.lines.map(t => props.dmg == 'max' ? t.maxDmg : t.sumDmg / t.battlesCount)
+  const res = props.lines.map(t => props.dmg == 'max' ? t.maxDmg : getAvg(t.sumDmg, t.battlesCount))
   const max = Math.max(...res)
   return res.map(t => ({
     value: t,
@@ -82,7 +87,7 @@ const dmgValues = computed(() => {
 })
 
 const killsValues = computed(() => {
-  const res = props.lines.map(t => props.frags == 'max' ? t.maxFrags : t.sumFrags / t.battlesCount)
+  const res = props.lines.map(t => props.frags == 'max' ? t.maxFrags : getAvg(t.sumFrags, t.battlesCount))
   const max = Math.max(...res)
   return res.map(t => ({
     value: t,
