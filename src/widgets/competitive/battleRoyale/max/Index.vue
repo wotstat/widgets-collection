@@ -1,6 +1,6 @@
 <template>
   <WidgetCardWrapper auto-height auto-scale>
-    <Content :lines="lines" />
+    <Content :lines="lines" :dmg="query.dmg" :frags="query.frags" :top="query.top" />
   </WidgetCardWrapper>
 </template>
 
@@ -26,6 +26,9 @@ const query = useQueryParams<{
   title: string
   saveKey: string
   channelKey: string
+  dmg: 'max' | 'avg'
+  frags: 'max' | 'avg'
+  top: 'in-row' | 'sum'
 }>()
 
 const { sdk } = useWidgetSdk();

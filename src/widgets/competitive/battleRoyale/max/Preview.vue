@@ -1,7 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="3.6">
     <WidgetCard>
-      <Content :lines="lines" />
+      <Content :lines="lines" :dmg :frags :top />
     </WidgetCard>
   </WidgetPreviewRoot>
 </template>
@@ -19,32 +19,33 @@ const props = defineProps<{
   isMiniPreview: boolean
   title?: boolean
   startFrom?: number
+  dmg?: 'max' | 'avg'
+  frags?: 'max' | 'avg'
+  top?: 'in-row' | 'sum'
 }>();
 
 const lines = [
   {
     name: 'EviL_GrannY',
-    maxDmg: 12586,
+    maxDmg: 25586,
     maxFrags: 12,
-    maxTopInRow: 7,
-    sumTop: 412,
-    sumDmg: 634578,
-    sumFrags: 1235,
+    maxTopInRow: 5,
+    sumTop: 12,
+    sumDmg: 229575,
+    sumFrags: 38,
     battlesCount: 20,
   },
   {
     name: 'Near_You',
     maxDmg: 18828,
     maxFrags: 8,
-    maxTopInRow: 9,
-    sumTop: 754,
-    sumDmg: 456364,
-    sumFrags: 6654,
+    maxTopInRow: 4,
+    sumTop: 10,
+    sumDmg: 314558,
+    sumFrags: 54,
     battlesCount: 18,
   }
 ]
-
-const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 23 } : props);
 
 </script>
 

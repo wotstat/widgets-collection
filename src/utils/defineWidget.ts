@@ -7,6 +7,14 @@ export type CheckboxParam = {
   default: boolean
 }
 
+export type SelectParam = {
+  type: 'select'
+  target: string
+  label: string
+  variants: { value: string, label: string }[]
+  default: string
+}
+
 export type ColorParam = {
   type: 'color'
   target: string
@@ -39,7 +47,7 @@ export type RandomStringParam = {
 export type AccentColorParam = 'accentColorParam'
 export type BackgroundColorParam = 'backgroundColorParam'
 
-export type WidgetParam = CheckboxParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam
+export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam
 
 export type Options = {
   name: string,
@@ -66,7 +74,7 @@ const optionsSymbol = Symbol('options');
 export function defineWidget(options: Partial<Options>) {
   return {
     optionsSymbol,
-    options: deepMerge(structuredClone(defaultOptions), options)
+    options: { ...structuredClone(defaultOptions), ...options }
   }
 }
 

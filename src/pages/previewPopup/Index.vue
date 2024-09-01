@@ -41,6 +41,7 @@ import { useRoute } from 'vue-router'
 import { accent, background } from "@/composition/wotstatColors";
 import { setupStyles } from "@/composition/widgetSdk"
 import Checkbox from './settings/Checkbox.vue';
+import Select from './settings/Select.vue';
 import Int from './settings/Int.vue';
 import Color from './settings/Color.vue';
 import String from './settings/String.vue';
@@ -105,6 +106,12 @@ const settingsValues = computedWithControl(currentOptions, () => {
     if (param.type == 'checkbox') {
       const value = ref(param.default ?? false)
       return { value, target: param.target, component: defineComponent(() => () => h(Checkbox, { label: param.label, ...vModel(value) })) }
+    }
+
+    if (param.type == 'select') {
+      const firstVariant = param.variants[0]
+      const value = ref(param.default ?? firstVariant.value)
+      return { value, target: param.target, component: defineComponent(() => () => h(Select, { label: param.label, variants: param.variants, ...vModel(value) })) }
     }
 
     if (param.type == 'int') {
@@ -272,7 +279,15 @@ const accentColor = computed(() => '#' + accent.value)
         background-color: #3b3b3b;
         border: 1px solid #858585;
         text-align: center;
+      }
 
+      :deep(select) {
+        width: 100px;
+        padding: 0.15em 0.3em;
+        border-radius: 5px;
+        background-color: #3b3b3b;
+        border: 1px solid #858585;
+        text-align: center;
       }
     }
   }
