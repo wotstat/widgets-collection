@@ -8,7 +8,7 @@ export function usePredictWebSocketInterface(url: string) {
 
   let skipClose = false;
 
-  if (Date.now() - lastStatusSetTime.value > 1000 * 60 * 5) {
+  if (Date.now() - lastStatusSetTime.value > 1000 * 60 * 60 * 3) {
     status.value = 'predict-close';
   }
 

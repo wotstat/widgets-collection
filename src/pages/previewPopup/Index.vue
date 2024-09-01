@@ -295,6 +295,7 @@ const accentColor = computed(() => '#' + accent.value)
 
   .url-container {
     gap: 10px;
+    overflow: hidden;
 
     button {
       background-color: #1a1a1a;
