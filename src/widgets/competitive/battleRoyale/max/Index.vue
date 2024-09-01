@@ -47,7 +47,9 @@ const statsRelay = useStorageRelayState(relay, 'stats', (query.saveKey ?? '') + 
 })
 
 const lines = computed(() => {
-  return [...playerNamesRelay.all.value.entries()].map(([id, name]) => {
+  const uniqValues = new Map([...playerNamesRelay.all.value.entries()].map(([id, name]) => ([name, id])))
+
+  return [...uniqValues.entries()].map(([name, id]) => {
     const stats = statsRelay.all.value.get(id)
     return {
       name,
