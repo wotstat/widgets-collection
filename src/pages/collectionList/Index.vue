@@ -32,6 +32,7 @@ import { setupStyles } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
 import { Options } from '@/utils/defineWidget';
 import { isInPreview, language } from '@/utils/provides';
+import.meta.glob('/src/widgets/**/*.md', { eager: true })
 
 setupStyles();
 useProvideDocumentBounding()
