@@ -106,6 +106,7 @@ export function parseBattleResult(result: unknown) {
         mileage: vehicles.reduce(sum('mileage'), 0),
         shots: vehicles.reduce(sum('shots'), 0),
         spotted: vehicles.reduce(sum('spotted'), 0),
+        xp: vehicles.reduce(sum('xp'), 0),
       }
     }))
 
