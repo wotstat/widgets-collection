@@ -51,6 +51,7 @@ import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
 import { isInPreview, language } from '@/utils/provides';
 import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
+import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
 
 setupStyles()
 
@@ -104,28 +105,28 @@ const settingsValues = computedWithControl(currentOptions, () => {
       return { value: background, target: 'background', component: defineComponent(() => () => h(Color, { label: 'Фон', ...vModel(background) })) }
 
     if (param.type == 'checkbox') {
-      const value = ref(param.default ?? false)
+      const value = useWidgetPreviewStorage(param.target, param.default ?? false)
       return { value, target: param.target, component: defineComponent(() => () => h(Checkbox, { label: param.label, ...vModel(value) })) }
     }
 
     if (param.type == 'select') {
       const firstVariant = param.variants[0]
-      const value = ref(param.default ?? firstVariant.value)
+      const value = useWidgetPreviewStorage(param.target, param.default ?? firstVariant.value)
       return { value, target: param.target, component: defineComponent(() => () => h(Select, { label: param.label, variants: param.variants, ...vModel(value) })) }
     }
 
     if (param.type == 'int') {
-      const value = ref(param.default ?? 0)
+      const value = useWidgetPreviewStorage(param.target, param.default ?? 0)
       return { value, target: param.target, component: defineComponent(() => () => h(Int, { label: param.label, ...vModel(value) })) }
     }
 
     if (param.type == 'string') {
-      const value = ref(param.default ?? '')
+      const value = useWidgetPreviewStorage(param.target, param.default ?? '')
       return { value, target: param.target, component: defineComponent(() => () => h(String, { label: param.label, ...vModel(value) })) }
     }
 
     if (param.type == 'random-string') {
-      const value = ref(param.default ?? '')
+      const value = useWidgetPreviewStorage(param.target, param.default ?? '')
       return {
         target: param.target, value,
         component: defineComponent(() => () => h(RandomString, { label: param.label, length: param.length ?? 5, ...vModel(value) }))
