@@ -87,9 +87,9 @@ const aspect = computed(() => {
 
 const slot1 = computed(() => props.slot1 ?? 'dmg-avg')
 const slot2 = computed(() => props.slot2 ?? 'frags-avg')
-const slot3 = computed(() => props.slot3 ?? 'top-sum')
-const slot4 = computed(() => props.slot4 ?? 'battles')
-const slot5 = computed(() => props.slot5 ?? 'empty')
+const slot3 = computed(() => props.slot3 ?? 'xp-avg')
+const slot4 = computed(() => props.slot4 ?? 'top-sum')
+const slot5 = computed(() => props.slot5 ?? 'battles')
 
 </script>
 

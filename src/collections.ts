@@ -16,7 +16,6 @@ export const collections = [
   {
     name: 'Соревнования',
     widgets: [
-      '/competitive/battle-royale/max',
       '/competitive/battle-royale/custom',
     ]
   },
