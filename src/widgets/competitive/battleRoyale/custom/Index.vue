@@ -54,7 +54,7 @@ const statsRelay = useStorageRelayState<Omit<Line, 'name'>>(relay, 'stats', (que
   sumFrags: 0,
   maxXp: 0,
   sumXp: 0,
-  maxPosition: 0,
+  bestPosition: 0,
   sumPosition: 0,
   maxScore: 0,
   sumScore: 0,
@@ -75,7 +75,7 @@ const lines = computed(() => {
       maxDmg: stats?.maxDmg ?? 0,
       maxFrags: stats?.maxFrags ?? 0,
       maxXp: stats?.maxXp ?? 0,
-      maxPosition: stats?.maxPosition ?? 0,
+      bestPosition: stats?.bestPosition ?? 0,
       maxScore: stats?.maxScore ?? 0,
       maxScoreInRow: stats?.maxScoreInRow ?? 0,
       currentScoreInRow: stats?.currentScoreInRow ?? 0,
@@ -210,7 +210,7 @@ useBattleResult((parsed) => {
     maxTopInRow: Math.max(c.maxTopInRow, maxTopInRow),
     sumTop: c.sumTop + (isTop ? 1 : 0),
 
-    maxPosition: Math.max(c.maxPosition, rank),
+    bestPosition: Math.min(c.bestPosition, rank),
     sumPosition: c.sumPosition + rank,
 
     maxScore: Math.max(c.maxScore, score),

@@ -119,7 +119,7 @@ function getValuesForSlot(slotValue: SlotValue) {
       case 'frags-avg': return getAvg(t.sumFrags, t.battlesCount)
       case 'xp-max': return t.maxXp
       case 'xp-avg': return getAvg(t.sumXp, t.battlesCount)
-      case 'position-max': return t.maxPosition
+      case 'position-max': return t.bestPosition
       case 'position-avg': return getAvg(t.sumPosition, t.battlesCount)
       case 'score-max': return t.maxScore
       case 'score-avg': return getAvg(t.sumScore, t.battlesCount)

@@ -14,7 +14,7 @@ export type Line = {
   maxXp: number
   sumXp: number
 
-  maxPosition: number
+  bestPosition: number
   sumPosition: number
 
   maxScore: number

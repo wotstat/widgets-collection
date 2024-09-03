@@ -34,7 +34,7 @@ const lines = [
     maxXp: 2450,
     sumXp: 32150,
 
-    maxPosition: 1,
+    bestPosition: 1,
     sumPosition: 45,
 
     maxScore: 54,
@@ -58,7 +58,7 @@ const lines = [
     maxXp: 3120,
     sumXp: 23150,
 
-    maxPosition: 1,
+    bestPosition: 1,
     sumPosition: 45,
 
     maxScore: 58,
