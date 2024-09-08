@@ -24,6 +24,7 @@ export const collections = [
     widgets: [
       '/counters/battle',
       '/counters/hand',
+      '/counters/battle-win-lose',
     ]
   },
   {

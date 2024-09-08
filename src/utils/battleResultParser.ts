@@ -113,11 +113,15 @@ export function parseBattleResult(result: unknown) {
   const personalVehicle = playerVehiclePairs.find(pair => pair.player.bdid === personalBdid)
 
   const common = get<object>(result, 'common')
+  const winnerTeam = get<number>(common, 'winnerTeam')
+  const resultType = winnerTeam == 0 ? 'draw' : winnerTeam == get<number>(avatar, 'team') ? 'win' : 'lose'
 
   return {
     arenaUniqueID,
+    result: resultType as typeof resultType,
     common: {
       bonusType: get<number>(common, 'bonusType'),
+      winnerTeam: get<number>(common, 'winnerTeam'),
     },
     players: playerVehiclePairs,
     personal: personalVehicle
