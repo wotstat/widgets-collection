@@ -1,6 +1,6 @@
 .markdown {
   h1 {
-    font-size: 1.4em;
+    font-size: 1.6em;
   }
 
   h2 {
@@ -44,6 +44,14 @@
     font-weight: 600;
   }
 
+  img {
+    max-width: 100%;
+
+    &.rounded {
+      border-radius: 1em;
+    }
+  }
+
   table {
     display: block;
     width: max-content;
@@ -51,6 +59,7 @@
     overflow: auto;
     border-spacing: 0;
     border-collapse: collapse;
+    margin: 0.5em 0;
 
     th {
       text-align: center;
@@ -64,9 +73,9 @@
   }
 
   blockquote {
-    margin: 0;
+    margin: 0.5em 1em 0.5em 0;
     padding: 0.5em 1em;
-    background-color: #262525;
+    background-color: #0000005c;
     border-left: 0.25em solid #4b4b4b;
     border-radius: 0.25em;
     color: var(--font-color);
@@ -75,7 +84,7 @@
   .markdown-alert {
     margin: 0.5em 1em 0.5em 0;
     padding: 0.5em 1em;
-    background-color: #262525;
+    background-color: #0000005c;
     border-left: 0.25em solid #4b4b4b;
     border-radius: 0.25em;
 
