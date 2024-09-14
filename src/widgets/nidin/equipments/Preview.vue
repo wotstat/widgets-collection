@@ -1,7 +1,6 @@
 <template>
-  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.43">
-    <Content :hd="hd ?? true" :variant="isMiniPreview || !variant ? 'compact' : variant"
-      :showTankName="isMiniPreview || showTankName" :sets :tank-name="'Т-100 ЛТ'" />
+  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="variant == 'compact' ? 1.89 : 1.46">
+    <Content :hd="hd ?? true" :variant :showTankName="isMiniPreview || showTankName" :sets :tank-name="'Т-100 ЛТ'" />
   </WidgetPreviewRoot>
 </template>
 
@@ -11,13 +10,16 @@
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from './Content.vue';
 import { Props } from './define.widget';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   isMiniPreview: boolean
   hd?: boolean
   showTankName?: boolean
   variant?: 'default' | 'compact'
 }>();
+
+const variant = computed(() => props.isMiniPreview || !props.variant ? 'compact' : props.variant)
 
 const sets: Props['sets'] = [
   {
