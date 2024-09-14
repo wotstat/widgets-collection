@@ -272,10 +272,11 @@ const accentColor = computed(() => '#' + accent.value)
         align-items: center;
         justify-content: space-between;
         margin: 0.2em 0;
+        gap: 10px;
       }
 
       :deep(input) {
-        max-width: 100px;
+        max-width: 140px;
         padding: 0.15em 0.3em;
         background-color: #3b3b3b;
         border: 1px solid #858585;
@@ -283,7 +284,7 @@ const accentColor = computed(() => '#' + accent.value)
       }
 
       :deep(select) {
-        width: 100px;
+        width: 140px;
         padding: 0.15em 0.3em;
         border-radius: 5px;
         background-color: #3b3b3b;

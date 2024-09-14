@@ -31,7 +31,7 @@ function generateNewValue() {
 
 <style lang="scss" scoped>
 #random-string {
-  max-width: 75.5px;
+  max-width: 115.5px;
 }
 
 .icon {

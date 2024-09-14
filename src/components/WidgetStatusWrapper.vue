@@ -88,6 +88,7 @@ div.card {
   justify-content: center;
   align-items: center;
   text-align: center;
+  z-index: 10000;
 
   p {
     margin: 0;
