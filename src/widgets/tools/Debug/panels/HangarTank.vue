@@ -159,7 +159,7 @@ function last<T>(t: T[]) {
 
 function getModificationIcon(mod: string, i: number) {
   if (mod) return mod.endsWith('_1') ? `←` : '→'
-  if (props.postProgression?.unlockedModifications.find(t => t.endsWith(`_${i + 1}`))) return '–'
+  if (props.postProgression?.unlockedModifications.find(t => t && t.endsWith(`_${i + 1}`))) return '–'
   return '⨯'
 }
 </script>
