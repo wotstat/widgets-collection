@@ -2,6 +2,7 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
+      '/tournament/osg/battle-royale',
       '/nidin/equipments',
     ]
   },
@@ -45,7 +46,7 @@ export const collections = [
     name: 'Архив',
     widgets: [
       '/tournament/trovo/bb-official',
-      '/tournament/rtk/battle-royale',
+      // '/tournament/rtk/battle-royale',
     ]
   }
 ]
