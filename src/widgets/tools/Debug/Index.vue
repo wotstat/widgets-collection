@@ -27,10 +27,16 @@
         <Platoon v-bind="platoonProps" :collapse-keys="['platoon', ['KEY_H', 'KEY_5'], ['KEY_H', 'KEY_2']]" />
       </WidgetCard>
 
+      <div class="spacer"></div>
+      <WidgetCard>
+        <!-- TODO: Remove as any after sdk update -->
+        <Dossier v-bind="dossier as any" :collapse-keys="['dossier', ['KEY_H', 'KEY_6'], ['KEY_H', 'KEY_3']]" />
+      </WidgetCard>
+
       <template v-if="isInHangar">
         <div class="spacer"></div>
         <WidgetCard>
-          <HangarTank v-bind="hangarTankProps" :collapse-keys="['hangar-tank', ['KEY_H', 'KEY_6'], null]" />
+          <HangarTank v-bind="hangarTankProps" :collapse-keys="['hangar-tank', ['KEY_H', 'KEY_7'], null]" />
         </WidgetCard>
       </template>
 
@@ -38,43 +44,43 @@
         <div class="spacer"></div>
 
         <WidgetCard>
-          <Battle v-bind="battleProps" :collapse-keys="['battle', null, ['KEY_H', 'KEY_3']]" />
+          <Battle v-bind="battleProps" :collapse-keys="['battle', null, ['KEY_H', 'KEY_4']]" />
         </WidgetCard>
 
         <div class="spacer"></div>
 
         <WidgetCard>
-          <Aiming v-bind="aimingProps" :collapse-keys="['aiming', null, ['KEY_H', 'KEY_4']]" />
+          <Aiming v-bind="aimingProps" :collapse-keys="['aiming', null, ['KEY_H', 'KEY_5']]" />
         </WidgetCard>
 
         <div class="spacer"></div>
 
         <WidgetCard>
-          <BattleTank v-bind="battleTankProps" :collapse-keys="['battle-tank', null, ['KEY_H', 'KEY_5']]" />
+          <BattleTank v-bind="battleTankProps" :collapse-keys="['battle-tank', null, ['KEY_H', 'KEY_6']]" />
         </WidgetCard>
 
         <div class="spacer"></div>
 
         <WidgetCard>
-          <Efficiency v-bind="efficiencyProps" :collapse-keys="['efficiency', null, ['KEY_H', 'KEY_6']]" />
+          <Efficiency v-bind="efficiencyProps" :collapse-keys="['efficiency', null, ['KEY_H', 'KEY_7']]" />
         </WidgetCard>
 
         <div class="spacer"></div>
 
         <WidgetCard>
-          <DamageLog v-bind="damageLogProps" :collapse-keys="['damage-log', null, ['KEY_H', 'KEY_7']]" />
+          <DamageLog v-bind="damageLogProps" :collapse-keys="['damage-log', null, ['KEY_H', 'KEY_8']]" />
         </WidgetCard>
 
         <div class="spacer"></div>
 
         <WidgetCard>
-          <FeedbackLog :feedbacks="feedbacks" :collapse-keys="['feedback-log', null, ['KEY_H', 'KEY_8']]" />
+          <FeedbackLog :feedbacks="feedbacks" :collapse-keys="['feedback-log', null, ['KEY_H', 'KEY_9']]" />
         </WidgetCard>
 
         <div class="spacer"></div>
 
         <WidgetCard v-if="battleBases">
-          <Bases v-bind="basesProps" :collapse-keys="['bases', null, ['KEY_H', 'KEY_9']]" />
+          <Bases v-bind="basesProps" :collapse-keys="['bases', null, ['KEY_H', 'KEY_0']]" />
         </WidgetCard>
       </template>
 
@@ -82,7 +88,7 @@
 
       <WidgetCard>
         <Keyboard :pressed="[...pressedKeys.values()]"
-          :collapse-keys="['keyboard', ['KEY_H', 'KEY_7'], ['KEY_H', 'KEY_0']]" />
+          :collapse-keys="['keyboard', ['KEY_H', 'KEY_8'], ['KEY_H', 'KEY_K']]" />
       </WidgetCard>
 
     </WidgetStatusWrapper>
@@ -101,6 +107,7 @@ import Game from './panels/Game.vue'
 import Player from './panels/Player.vue'
 import Account from './panels/Account.vue'
 import Hangar from './panels/Hangar.vue'
+import Dossier from './panels/Dossier.vue'
 import Platoon from './panels/Platoon.vue'
 import HangarTank from './panels/HangarTank.vue'
 import Battle from './panels/Battle.vue'
@@ -157,6 +164,10 @@ const hangarTankIsInBattle = useReactiveState(sdk.data.hangar.vehicle.isInBattle
 const xp = useReactiveState(sdk.data.hangar.vehicle.xp)
 const hangarBattleMode = useReactiveState(sdk.data.hangar.battleMode)
 const isInQueue = useReactiveState(sdk.data.hangar.isInQueue)
+
+
+// TODO: Remove as any after sdk update
+const dossier = useReactiveState((sdk.data as any).dossier.current)
 
 const isInPlatoon = useReactiveState(sdk.data.platoon.isInPlatoon)
 const platoonCommander = useReactiveState(sdk.data.platoon.commander)

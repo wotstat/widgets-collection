@@ -8,6 +8,8 @@ export default defineWidget({
     { type: 'checkbox', target: 'show-tank-name', label: 'Название танка', default: true },
     { type: 'select', target: 'variant', label: 'Стиль', variants: [{ value: 'default', label: 'Стандартный' }, { value: 'compact', label: 'Компактный' }], default: 'compact' },
     { type: 'checkbox', target: 'hd', label: 'HD качество', default: true },
+    // { type: 'checkbox', target: 'post-progression', label: 'Модернизация', default: true },
+    // { type: 'checkbox', target: 'post-progression-current', label: 'Текущий выбор', default: true, visible: ctx => ctx['post-progression'] },
   ]
 })
 
@@ -15,6 +17,13 @@ export type Props = {
   hd?: boolean
   showTankName?: boolean
   tankName: string
+  postProgression?: boolean
+  postProgressionCurrent?: boolean
+  postProgressionSetup?: {
+    available: [string, string][]
+    recommended: (string | null)[]
+    current: (string | null)[]
+  }
   variant: 'default' | 'compact'
   sets: {
     slots: {

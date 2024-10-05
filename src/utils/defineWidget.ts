@@ -1,13 +1,18 @@
 import { deepMerge } from ".";
 
-export type CheckboxParam = {
+
+interface BaseParam {
+  visible?: boolean | ((params: Record<string, any>) => boolean)
+}
+
+export interface CheckboxParam extends BaseParam {
   type: 'checkbox'
   target: string
   label: string
   default: boolean
 }
 
-export type SelectParam = {
+export interface SelectParam extends BaseParam {
   type: 'select'
   target: string
   label: string
@@ -15,28 +20,28 @@ export type SelectParam = {
   default: string
 }
 
-export type ColorParam = {
+export interface ColorParam extends BaseParam {
   type: 'color'
   target: string
   label: string
   default: string
 }
 
-export type IntParam = {
+export interface IntParam extends BaseParam {
   type: 'int'
   target: string
   label: string
   default: number
 }
 
-export type StringParam = {
+export interface StringParam extends BaseParam {
   type: 'string'
   target: string
   label: string
   default: string
 }
 
-export type RandomStringParam = {
+export interface RandomStringParam extends BaseParam {
   type: 'random-string'
   target: string
   label: string

@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
-import { computed, defineAsyncComponent, defineComponent, h, provide, Ref, ref, shallowRef, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, h, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { accent, background } from "@/composition/wotstatColors";
 import { setupStyles } from "@/composition/widgetSdk"
@@ -52,6 +52,7 @@ import CopyIcon from '@/assets/icons/copy.svg';
 import { isInPreview, language } from '@/utils/provides';
 import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
 import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
+import { WidgetParam } from '@/utils/defineWidget';
 
 setupStyles()
 
@@ -87,6 +88,7 @@ const currentPreview = computed(() => {
 
 const currentPreviewComponent = defineAsyncComponent(currentPreview.value as any)
 
+const targetProps = shallowRef<any>({})
 const settingsValues = computedWithControl(currentOptions, () => {
   if (!currentOptions.value) return null
 
@@ -95,6 +97,13 @@ const settingsValues = computedWithControl(currentOptions, () => {
       'onUpdate:modelValue': (t: T) => value.value = t,
       modelValue: value.value
     }
+  }
+
+  function renderIfVisible(param: WidgetParam, element: VNode) {
+    if (typeof param == 'string') return element
+    if (param.visible === undefined) return element
+    if (typeof param.visible == 'function') return param.visible(targetProps.value) ? element : null
+    return param.visible ? element : null
   }
 
   return currentOptions.value.options.params.map((param) => {
@@ -106,38 +115,36 @@ const settingsValues = computedWithControl(currentOptions, () => {
 
     if (param.type == 'checkbox') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? false)
-      return { value, target: param.target, component: defineComponent(() => () => h(Checkbox, { label: param.label, ...vModel(value) })) }
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Checkbox, { label: param.label, ...vModel(value) }))) }
     }
 
     if (param.type == 'select') {
       const firstVariant = param.variants[0]
       const value = useWidgetPreviewStorage(param.target, param.default ?? firstVariant.value)
-      return { value, target: param.target, component: defineComponent(() => () => h(Select, { label: param.label, variants: param.variants, ...vModel(value) })) }
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Select, { label: param.label, variants: param.variants, ...vModel(value) }))) }
     }
 
     if (param.type == 'int') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? 0)
-      return { value, target: param.target, component: defineComponent(() => () => h(Int, { label: param.label, ...vModel(value) })) }
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Int, { label: param.label, ...vModel(value) }))) }
     }
 
     if (param.type == 'string') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? '')
-      return { value, target: param.target, component: defineComponent(() => () => h(String, { label: param.label, ...vModel(value) })) }
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(String, { label: param.label, ...vModel(value) }))) }
     }
 
     if (param.type == 'random-string') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? '')
       return {
         target: param.target, value,
-        component: defineComponent(() => () => h(RandomString, { label: param.label, length: param.length ?? 5, ...vModel(value) }))
+        component: defineComponent(() => () => renderIfVisible(param, h(RandomString, { label: param.label, length: param.length ?? 5, ...vModel(value) })))
       }
     }
 
     return { component: h(Unsupported, { label: param.type }), target: '', model: undefined }
   })
 })
-
-const targetProps = shallowRef<any>({})
 
 watchEffect(() => {
   targetProps.value = settingsValues.value?.reduce((acc, s) => {

@@ -2,6 +2,8 @@ import { SpecializationTag } from "@/components/equipment/equipment"
 
 
 export namespace NidinTankEquipment {
+  export const URL = 'https://nidin.ru/table/equipment/tankEquipment.json'
+
   export type EquipmentSet = {
     instructionSlot: { index: number | null }[]
     equipmentSlots: { index: number | null }[]
@@ -25,6 +27,22 @@ export namespace NidinTankEquipment {
       Set1: EquipmentSet
       Set2: EquipmentSet
     }
+  }
+
+  export type Data = {
+    tanks: Tank[]
+    version_ru: string
+  }
+}
+
+export namespace NidinTankModifications {
+  export const URL = 'https://nidin.ru/table/pairModifications/pairModifications.json'
+
+  export type Modification = string
+
+  export type Tank = {
+    id: string
+    pairM: Modification
   }
 
   export type Data = {
