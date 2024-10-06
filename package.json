@@ -23,6 +23,7 @@
     "@mdit/plugin-align": "^0.13.0",
     "@mdit/plugin-attrs": "^0.13.0",
     "@mdit/plugin-container": "^0.13.0",
+    "@types/node": "^22.7.4",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "typescript": "^5.2.2",

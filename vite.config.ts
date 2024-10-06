@@ -7,6 +7,7 @@ import { attrs } from "@mdit/plugin-attrs";
 import { container } from "@mdit/plugin-container";
 import { align } from "@mdit/plugin-align";
 import MarkdownIt from "markdown-it";
+import { releaseNotesPlugin } from "./define.releaseNotes";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -22,7 +23,8 @@ export default defineConfig({
         .use(attrs)
         .use(container)
         .use(align)
-    })
+    }),
+    releaseNotesPlugin()
   ],
   resolve: {
     alias: {
