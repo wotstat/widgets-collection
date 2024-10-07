@@ -1,4 +1,3 @@
-
 import { Plugin } from 'vite'
 import fs from 'fs/promises';
 
@@ -11,8 +10,13 @@ type ReleaseNote = {
 
 export const releaseNotes: ReleaseNote[] = [
   {
+    id: '2024-10-05',
+    ru: `• Тестовое уведомление`,
+  },
+  {
     id: '2024-10-06',
-    ru: `Добавлены уведомления о новых релизах`,
+    ru: `• В виджет "Оборудование от __NIDIN__" добавлен раздел с <b>полевой модернизацией</b>\n• И ещё одна строчка`,
+    en: `• Added section with <b>field modernization</b> to the "Equipment by __NIDIN__" widget\n• And one more line`,
   }
 ]
 
