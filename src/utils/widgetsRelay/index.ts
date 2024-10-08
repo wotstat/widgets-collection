@@ -153,7 +153,7 @@ export class WidgetsRelay {
     if (this.retryCount > 1000) delay = 10000
     else if (this.retryCount > 50) delay = 1000
     else if (this.retryCount > 10) delay = 500
-    setTimeout(() => this.connect(), this.retryCount > 10 ? 1000 : 100)
+    setTimeout(() => this.connect(), delay)
   }
 
   private onMessage = (event: MessageEvent) => {

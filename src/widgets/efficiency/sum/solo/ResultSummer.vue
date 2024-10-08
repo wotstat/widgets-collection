@@ -28,7 +28,7 @@ const query = useQueryParams<{
   title: string
 }>()
 
-const tempResults = useWidgetStorage(`${query.saveKey}_tempResults` ?? '_empty', new Map<number, number>())
+const tempResults = useWidgetStorage(`${query.saveKey ?? ''}_tempResults`, new Map<number, number>())
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
 const title = computed(() => query.title !== 'false' ? props.title : undefined)

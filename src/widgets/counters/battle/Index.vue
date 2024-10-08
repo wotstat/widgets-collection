@@ -24,7 +24,7 @@ const title = computed(() => query.title !== 'false');
 
 const { sdk } = useWidgetSdk();
 const battleCount = useWidgetStorage(query.saveKey ?? '_empty', 0)
-const lastArenaId = useWidgetStorage(`${query.saveKey}_arenaId` ?? '_empty', 0)
+const lastArenaId = useWidgetStorage(`${query.saveKey ?? ''}_arenaId`, 0)
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)

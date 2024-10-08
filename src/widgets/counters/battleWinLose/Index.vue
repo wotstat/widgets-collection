@@ -27,7 +27,7 @@ const battleOnResult = query.battleOnResult !== 'false'
 
 const { sdk } = useWidgetSdk();
 const counter = useWidgetStorage(query.saveKey ?? '_empty', { battles: 0, wins: 0, losses: 0 })
-const lastArenaId = useWidgetStorage(`${query.saveKey}_arenaId` ?? '_empty', 0)
+const lastArenaId = useWidgetStorage(`${query.saveKey ?? ''}_arenaId`, 0)
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)

@@ -27,10 +27,10 @@ const vehicle = useReactiveState(sdk.data.battle.vehicle);
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 
 const query = useQueryParams<{ saveKey: string }>()
-const battleCount = useWidgetStorage(`${query.saveKey}_battleCount` ?? '_battleCount', 0)
-const battleScores = useWidgetStorage<number[]>(`${query.saveKey}_battleScores` ?? '_battleScores', [])
+const battleCount = useWidgetStorage(`${query.saveKey ?? ''}_battleCount`, 0)
+const battleScores = useWidgetStorage<number[]>(`${query.saveKey ?? ''}_battleScores`, [])
 
-const supportedBattles = useWidgetStorage(`${query.saveKey}_started` ?? '_started', new Set<number>())
+const supportedBattles = useWidgetStorage(`${query.saveKey ?? ''}_started`, new Set<number>())
 
 watch(() => [isInBattle.value, vehicle.value, arenaId.value] as const, ([isInBattle, vehicle, arenaId]) => {
   if (!isInBattle || !vehicle || !arenaId) return;

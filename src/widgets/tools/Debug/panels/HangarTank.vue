@@ -128,8 +128,9 @@ const props = defineProps<{
       optSwitchEnabled: boolean;
       shellsSwitchEnabled: boolean;
     };
-    selectedModifications: Array<string>;
-    unlockedModifications: Array<string>;
+    selectedModifications: Array<string | null>;
+    unlockedModifications: Array<string | null>;
+    modifications: string[][];
   }
   optDevices?: Array<{
     specialization: string | null;
@@ -157,7 +158,7 @@ function last<T>(t: T[]) {
   return t[t.length - 1]
 }
 
-function getModificationIcon(mod: string, i: number) {
+function getModificationIcon(mod: string | null, i: number) {
   if (mod) return mod.endsWith('_1') ? `←` : '→'
   if (props.postProgression?.unlockedModifications.find(t => t && t.endsWith(`_${i + 1}`))) return '–'
   return '⨯'

@@ -29,8 +29,7 @@
 
       <div class="spacer"></div>
       <WidgetCard>
-        <!-- TODO: Remove as any after sdk update -->
-        <Dossier v-bind="dossier as any" :collapse-keys="['dossier', ['KEY_H', 'KEY_6'], ['KEY_H', 'KEY_3']]" />
+        <Dossier v-bind="dossier" :collapse-keys="['dossier', ['KEY_H', 'KEY_6'], ['KEY_H', 'KEY_3']]" />
       </WidgetCard>
 
       <template v-if="isInHangar">
@@ -165,9 +164,7 @@ const xp = useReactiveState(sdk.data.hangar.vehicle.xp)
 const hangarBattleMode = useReactiveState(sdk.data.hangar.battleMode)
 const isInQueue = useReactiveState(sdk.data.hangar.isInQueue)
 
-
-// TODO: Remove as any after sdk update
-const dossier = useReactiveState((sdk.data as any).dossier.current)
+const dossier = useReactiveState(sdk.data.dossier.current)
 
 const isInPlatoon = useReactiveState(sdk.data.platoon.isInPlatoon)
 const platoonCommander = useReactiveState(sdk.data.platoon.commander)
