@@ -13,7 +13,7 @@ import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 
 const { sdk } = useWidgetSdk();
-const query = useQueryParams<{ saveKey: string }>()
+const query = useQueryParams({ saveKey: String })
 const value = useWidgetStorage(query.saveKey ?? '_empty', 0)
 
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {

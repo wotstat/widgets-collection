@@ -1,7 +1,9 @@
 import { defineWidget } from "@/utils/defineWidget";
 
 
-export type SlotValue = 'empty' | 'dmg-max' | 'dmg-avg' | 'frags-max' | 'frags-avg' | 'xp-max' | 'xp-avg' | 'position-max' | 'position-avg' | 'score-max' | 'score-avg' | 'score-in-row-10' | 'score-in-row-10-max' | 'top-in-row' | 'top-sum' | 'battles'
+export const slotValues = ['empty', 'dmg-max', 'dmg-avg', 'frags-max', 'frags-avg', 'xp-max', 'xp-avg', 'position-max', 'position-avg', 'score-max', 'score-avg', 'score-in-row-10', 'score-in-row-10-max', 'top-in-row', 'top-sum', 'battles'] as const
+
+export type SlotValue = typeof slotValues[number]
 export type Line = {
   name: string
 

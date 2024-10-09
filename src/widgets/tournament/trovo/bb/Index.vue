@@ -26,7 +26,7 @@ const isInBattle = useReactiveState(sdk.data.battle.isInBattle);
 const vehicle = useReactiveState(sdk.data.battle.vehicle);
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 
-const query = useQueryParams<{ saveKey: string }>()
+const query = useQueryParams({ saveKey: String })
 const battleCount = useWidgetStorage(`${query.saveKey ?? ''}_battleCount`, 0)
 const battleScores = useWidgetStorage<number[]>(`${query.saveKey ?? ''}_battleScores`, [])
 

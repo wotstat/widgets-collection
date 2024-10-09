@@ -1,10 +1,7 @@
 <template>
-  <WidgetRoot auto-height auto-scale>
-    <WidgetStatusWrapper :ctx>
-      <Content :hd="query.hd === 'true'" :show-tank-name="query.showTankName === 'true'"
-        :postProgression="query.postProgression === 'true'"
-        :postProgressionCurrent="query.postProgressionCurrent === 'true'"
-        :variant="query.variant == 'default' ? 'default' : 'compact'" :tank-name="tankName" :sets
+  <WidgetRoot auto-height auto-scale hangar-only>
+    <WidgetStatusWrapper>
+      <Content :hd :showTankName :postProgression :postProgressionCurrent :variant :tank-name="tankName" :sets
         :postProgressionSetup />
     </WidgetStatusWrapper>
   </WidgetRoot>
@@ -17,19 +14,19 @@ import Content from './Content.vue';
 import { computed } from 'vue';
 import WidgetRoot from '@/components/WidgetRoot.vue';
 import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { NidinTankEquipment, NidinTankModifications } from '../api';
 import { useFetch } from '@vueuse/core';
 import { getConsumableByIndex, getEquipmentByIndex, SpecializationTag } from '@/components/equipment/equipment';
 import { Props } from './define.widget';
 
-const query = useQueryParams<{
-  hd: string
-  showTankName: string
-  variant: string
-  postProgression: string
-  postProgressionCurrent: string
-}>()
+const { hd, showTankName, variant, postProgression, postProgressionCurrent } = useQueryParams({
+  hd: Boolean,
+  showTankName: Boolean,
+  variant: oneOf(['default', 'compact'] as const, 'default'),
+  postProgression: Boolean,
+  postProgressionCurrent: Boolean
+})
 
 const { data } = useFetch(NidinTankEquipment.URL).json<NidinTankEquipment.Data>()
 const dataById = computed(() => {
@@ -43,18 +40,15 @@ const modificationsById = computed(() => {
   return new Map(modifications.value.tanks.map(i => [i.id, i]))
 })
 
-const ctx = useWidgetSdk();
-const { sdk } = ctx;
+const { sdk } = useWidgetSdk();
 
 const vehicle = useReactiveState(sdk.data.hangar.vehicle.info)
 const optDevices = useReactiveState(sdk.data.hangar.vehicle.optDevices)
-const postProgression = useReactiveState(sdk.data.hangar.vehicle.postProgression)
+const postProgressionState = useReactiveState(sdk.data.hangar.vehicle.postProgression)
 
 const vehicleMods = computed(() => {
-  // TODO: Remove any after fixing the SDK
-  const postProg = postProgression.value as any
-  if (!postProg?.modifications) return null
-  return postProg.modifications
+  if (!postProgressionState.value?.modifications) return null
+  return postProgressionState.value.modifications
 })
 
 const tankSpecialization = computed(() => {
@@ -92,7 +86,7 @@ const postProgressionSetup = computed<Props['postProgressionSetup']>(() => {
       if (recommended == '2') return t[1]
       return null
     }),
-    current: postProgression.value?.selectedModifications ?? []
+    current: postProgressionState.value?.selectedModifications ?? []
   }
 })
 

@@ -1,11 +1,10 @@
 <template>
   <DefineTemplate>
-    <Content v-bind="data" :transparentBackground="params.transparentBackground == 'true'"
-      :showBest="params.showBest == 'true'" />
+    <Content v-bind="data" :transparentBackground :showBest />
   </DefineTemplate>
 
   <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper :ctx v-if="!params.playerId">
+    <WidgetStatusWrapper v-if="!queryPlayerId">
       <ReuseTemplate />
     </WidgetStatusWrapper>
     <ReuseTemplate v-else />
@@ -26,16 +25,16 @@ import { watchOnce } from '@vueuse/core';
 import { createReusableTemplate } from '@vueuse/core'
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
-const params = useQueryParams<{
-  transparentBackground: string,
-  showBest: string,
-  playerId: string,
-}>()
+const { transparentBackground, showBest, playerId: queryPlayerId } = useQueryParams({
+  transparentBackground: Boolean,
+  showBest: Boolean,
+  playerId: String,
+})
 
-const ctx = useWidgetSdk();
-const playerId = useReactiveState(ctx.sdk.data.player.id);
+const { sdk } = useWidgetSdk();
+const playerId = useReactiveState(sdk.data.player.id);
 
-const targetId = computed(() => playerId.value || params.playerId);
+const targetId = computed(() => playerId.value || queryPlayerId);
 
 const data = ref({
   place: 0,

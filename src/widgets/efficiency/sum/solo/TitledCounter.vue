@@ -12,7 +12,7 @@
 import TweenValue from '@/components/TweenValue.vue';
 
 const props = defineProps<{
-  title?: string
+  title?: boolean | string
   value: number
 }>();
 

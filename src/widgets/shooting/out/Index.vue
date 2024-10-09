@@ -1,6 +1,6 @@
 <template>
   <WidgetCardWrapper auto-height auto-scale>
-    <Content :title="query.title !== 'false'" :percent="query.percent !== 'false'" :total :miss />
+    <Content :title :percent :total :miss />
   </WidgetCardWrapper>
 </template>
 
@@ -13,14 +13,14 @@ import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { BallisticCalculator } from '../ballisticCalc';
 
-const query = useQueryParams<{
-  title: string
-  saveKey: string
-  percent: string
-}>()
+const { title, saveKey, percent } = useQueryParams({
+  title: Boolean,
+  saveKey: String,
+  percent: Boolean
+})
 
-const total = useWidgetStorage(`${query.saveKey ?? '_default'}_total`, 0)
-const miss = useWidgetStorage(`${query.saveKey ?? '_default'}_miss`, 0)
+const total = useWidgetStorage(`${saveKey ?? '_default'}_total`, 0)
+const miss = useWidgetStorage(`${saveKey ?? '_default'}_miss`, 0)
 
 const { sdk } = useWidgetSdk();
 

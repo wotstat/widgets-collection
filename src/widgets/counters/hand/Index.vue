@@ -10,18 +10,16 @@ import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, watch } from 'vue';
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { NumberDefault, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 
-const query = useQueryParams<{
-  startFrom: string
-  saveKey: string
-}>()
-
-const startFrom = computed(() => query.startFrom && Number.parseInt(query.startFrom) ? Number.parseInt(query.startFrom) : 0)
+const { startFrom, saveKey } = useQueryParams({
+  startFrom: NumberDefault(),
+  saveKey: String
+})
 
 const { sdk } = useWidgetSdk();
-const count = useWidgetStorage(query.saveKey ?? '_empty', 0)
+const count = useWidgetStorage(saveKey ?? '_empty', 0)
 
 const keyP = useReactiveState(sdk.data.keyboard.KEY_P)
 const keyO = useReactiveState(sdk.data.keyboard.KEY_O)

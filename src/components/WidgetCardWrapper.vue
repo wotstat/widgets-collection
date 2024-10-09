@@ -1,6 +1,6 @@
 <template>
   <WidgetRoot :autoScale :autoHeight>
-    <WidgetStatusWrapper :ctx :requiredExtensions>
+    <WidgetStatusWrapper :requiredExtensions>
       <WidgetCard>
         <slot></slot>
       </WidgetCard>
@@ -13,9 +13,6 @@
 import WidgetRoot from "@/components/WidgetRoot.vue";
 import WidgetCard from "@/components/WidgetCard.vue";
 import WidgetStatusWrapper from "@/components/WidgetStatusWrapper.vue";
-import { useWidgetSdk } from "@/composition/widgetSdk";
-
-const ctx = useWidgetSdk();
 
 const props = defineProps<{
   autoScale?: boolean,

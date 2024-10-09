@@ -14,11 +14,12 @@ import { onMounted } from 'vue';
 const props = defineProps<{
   autoScale?: boolean,
   autoHeight?: boolean
+  hangarOnly?: boolean
 }>()
 
 onMounted(() => {
-  if (!props.autoHeight) return
-  WidgetMetaTags.enableAutoHeight()
+  WidgetMetaTags.setAutoHeight(props.autoHeight)
+  WidgetMetaTags.setHangarOnly(props.hangarOnly)
 })
 
 </script>

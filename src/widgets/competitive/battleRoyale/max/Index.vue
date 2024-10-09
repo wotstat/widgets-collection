@@ -10,7 +10,7 @@ import Content from './Content.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import { computed, watch } from 'vue';
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useStorageRelayState } from '@/composition/useStorageRelayState';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
@@ -21,15 +21,13 @@ import { useBattleResult } from '@/composition/useOnBattleResult';
 
 const checkIsTop = (rank: number | null) => rank !== null && rank == 1
 
-const query = useQueryParams<{
-  startFrom: string
-  title: string
-  saveKey: string
-  channelKey: string
-  dmg: 'max' | 'avg'
-  frags: 'max' | 'avg'
-  top: 'in-row' | 'sum'
-}>()
+const query = useQueryParams({
+  saveKey: String,
+  channelKey: String,
+  dmg: oneOf(['max', 'avg'] as const),
+  frags: oneOf(['max', 'avg'] as const),
+  top: oneOf(['in-row', 'sum'] as const),
+})
 
 const { sdk } = useWidgetSdk();
 

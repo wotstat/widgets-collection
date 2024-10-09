@@ -1,6 +1,6 @@
 <template>
   <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper :ctx>
+    <WidgetStatusWrapper>
       <Content :lines="lines" :slot1="query.slot1" :slot2="query.slot2" :slot3="query.slot3" :slot4="query.slot4"
         :slot5="query.slot5" />
     </WidgetStatusWrapper>
@@ -12,7 +12,7 @@
 import Content from './Content.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import { computed, watch } from 'vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useStorageRelayState } from '@/composition/useStorageRelayState';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
@@ -21,28 +21,28 @@ import { v4 as uuidv4 } from "uuid";
 import { useBattleResult } from '@/composition/useOnBattleResult';
 import WidgetRoot from '@/components/WidgetRoot.vue';
 import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
-import { Line, SlotValue } from './define.widget';
+import { Line, slotValues } from './define.widget';
 
 
 const checkIsTop = (rank: number | null) => rank !== null && rank == 1
 
-const query = useQueryParams<{
-  startFrom: string
-  title: string
-  saveKey: string
-  channelKey: string
-  allowSquad: string
-  slot1: SlotValue
-  slot2: SlotValue
-  slot3: SlotValue
-  slot4: SlotValue
-  slot5: SlotValue
-}>()
-const allowBattles = new Set(['BATTLE_ROYALE_SOLO', 'BATTLE_ROYALE_SQUAD'])
-if (query.allowSquad != 'true') allowBattles.delete('BATTLE_ROYALE_SQUAD')
+const query = useQueryParams({
+  startFrom: { type: Number, default: 0 },
+  title: Boolean,
+  saveKey: String,
+  channelKey: String,
+  allowSquad: Boolean,
+  slot1: oneOf(slotValues, 'empty'),
+  slot2: oneOf(slotValues, 'empty'),
+  slot3: oneOf(slotValues, 'empty'),
+  slot4: oneOf(slotValues, 'empty'),
+  slot5: oneOf(slotValues, 'empty')
+})
 
-const ctx = useWidgetSdk();
-const { sdk } = ctx
+const allowBattles = new Set(['BATTLE_ROYALE_SOLO', 'BATTLE_ROYALE_SQUAD'])
+if (query.allowSquad) allowBattles.delete('BATTLE_ROYALE_SQUAD')
+
+const { sdk } = useWidgetSdk();
 
 const { relay } = useWidgetRelay(query.channelKey ?? uuidv4())
 

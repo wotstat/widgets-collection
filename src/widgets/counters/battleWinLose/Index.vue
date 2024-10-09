@@ -10,24 +10,20 @@ import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, watch } from 'vue';
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useBattleResult } from '@/composition/useOnBattleResult';
 
-const query = useQueryParams<{
-  saveKey: string
-  align: 'left' | 'center' | 'right'
-  showLosses: string
-  battleOnResult: string
-}>()
-
-const showLosses = computed(() => query.showLosses !== 'false');
-const align = computed(() => query.align ?? 'center');
-const battleOnResult = query.battleOnResult !== 'false'
+const { saveKey, align, showLosses, battleOnResult } = useQueryParams({
+  saveKey: String,
+  align: oneOf(['left', 'center', 'right'] as const, 'center'),
+  showLosses: Boolean,
+  battleOnResult: Boolean,
+})
 
 const { sdk } = useWidgetSdk();
-const counter = useWidgetStorage(query.saveKey ?? '_empty', { battles: 0, wins: 0, losses: 0 })
-const lastArenaId = useWidgetStorage(`${query.saveKey ?? ''}_arenaId`, 0)
+const counter = useWidgetStorage(saveKey ?? '_empty', { battles: 0, wins: 0, losses: 0 })
+const lastArenaId = useWidgetStorage(`${saveKey ?? ''}_arenaId`, 0)
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)

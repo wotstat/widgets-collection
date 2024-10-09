@@ -1,6 +1,6 @@
 <template>
   <WidgetCardWrapper auto-height auto-scale>
-    <Content :value="startFrom + battleCount" :title="title" />
+    <Content :value="startFrom + battleCount" :title />
   </WidgetCardWrapper>
 </template>
 
@@ -13,18 +13,16 @@ import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 
-const query = useQueryParams<{
-  startFrom: string
-  title: string
-  saveKey: string
-}>()
 
-const startFrom = computed(() => query.startFrom && Number.parseInt(query.startFrom) ? Number.parseInt(query.startFrom) : 0)
-const title = computed(() => query.title !== 'false');
+const { title, startFrom, saveKey } = useQueryParams({
+  title: Boolean,
+  saveKey: String,
+  startFrom: { type: Number, default: 0 },
+})
 
 const { sdk } = useWidgetSdk();
-const battleCount = useWidgetStorage(query.saveKey ?? '_empty', 0)
-const lastArenaId = useWidgetStorage(`${query.saveKey ?? ''}_arenaId`, 0)
+const battleCount = useWidgetStorage(saveKey ?? '_empty', 0)
+const lastArenaId = useWidgetStorage(`${saveKey ?? ''}_arenaId`, 0)
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)

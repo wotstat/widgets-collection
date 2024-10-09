@@ -1,8 +1,8 @@
 <template>
   <WidgetRoot auto-height auto-scale>
-    <WidgetStatusWrapper :ctx :required-extensions="['wotstat']">
-      <Content :values="values" :showCircle="query.showCircle === 'true' && toggleCircleDisplay"
-        :showCenter="query.showCenter === 'true'" :circleBackground="query.circleBackground === 'true'" />
+    <WidgetStatusWrapper :required-extensions="['wotstat']">
+      <Content :values="values" :showCircle="query.showCircle && toggleCircleDisplay" :showCenter="query.showCenter"
+        :circleBackground="query.circleBackground" />
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -13,33 +13,31 @@ import WidgetRoot from '@/components/WidgetRoot.vue';
 import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import { computed, ref, watch } from 'vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { ref, watch } from 'vue';
+import { NumberDefault, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { BallisticCalculator } from '../ballisticCalc';
 
-const query = useQueryParams<{
-  resetEachBattle: string
-  showCircle: string
-  showCenter: string
-  circleBackground: string
-  maxHits: string
-  saveKey: string
-}>()
+const query = useQueryParams({
+  resetEachBattle: Boolean,
+  showCircle: Boolean,
+  showCenter: Boolean,
+  circleBackground: Boolean,
+  maxHits: NumberDefault(0),
+  saveKey: String
+})
 
 
 const values = useWidgetStorage<{ r: number; theta: number }[]>(query.saveKey + '_ballistics', [])
-const maxHits = computed(() => parseInt(query.maxHits ?? '0') || 0)
 
-const ctx = useWidgetSdk();
-const { sdk } = ctx;
+const { sdk } = useWidgetSdk();
 
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const isServerAim = useReactiveState(sdk.data.battle.aiming.isServerAim)
 const isPressH = useReactiveState(sdk.data.keyboard.KEY_H)
 
 watch(isInBattle, (isInBattle, old) => {
-  if (isInBattle === true && old === false && query.resetEachBattle === 'true') {
+  if (isInBattle === true && old === false && query.resetEachBattle) {
     values.value = []
   }
 })
@@ -72,8 +70,8 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onShotBallisticEvent, e => {
       dispersionAngle: isServerAim.value ? e.serverShotDispersion : e.clientShotDispersion,
     })
     values.value.push(ballisticResult)
-    if (maxHits.value > 0 && values.value.length > maxHits.value) {
-      values.value = values.value.slice(-maxHits.value)
+    if (query.maxHits > 0 && values.value.length > query.maxHits) {
+      values.value = values.value.slice(-query.maxHits)
     }
   } catch (error) {
     console.error(`Error calculating client ballistic: ${error}. Event: ${JSON.stringify(e)}`)

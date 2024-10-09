@@ -24,18 +24,16 @@
 
 
 <script setup lang="ts">
-import { SdkContext, useReactiveState } from '@/composition/widgetSdk';
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
-  ctx: SdkContext,
   requiredExtensions?: string[]
 }>()
 
-const ctx = props.ctx
-const sdk = ctx.sdk
+const ctx = useWidgetSdk();
 
-const extensions = useReactiveState(sdk.data.registeredExtensions)
+const extensions = useReactiveState(ctx.sdk.data.registeredExtensions)
 const missingExtensions = computed(() => {
   if (!props.requiredExtensions) return []
   if (extensions.value === undefined) return props.requiredExtensions

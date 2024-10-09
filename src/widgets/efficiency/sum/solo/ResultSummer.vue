@@ -9,7 +9,7 @@
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import TitledCounter from './TitledCounter.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { NumberDefault, useQueryParams } from '@/composition/useQueryParams';
 import { computed, watch } from 'vue';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useBattleResult } from '@/composition/useOnBattleResult';
@@ -22,18 +22,16 @@ const props = defineProps<{
 
 const { sdk } = useWidgetSdk();
 
-const query = useQueryParams<{
-  saveKey: string
-  startFrom: string
-  title: string
-}>()
+const { saveKey, startFrom, title } = useQueryParams({
+  saveKey: String,
+  startFrom: NumberDefault(),
+  title: Boolean
+})
 
-const tempResults = useWidgetStorage(`${query.saveKey ?? ''}_tempResults`, new Map<number, number>())
+const tempResults = useWidgetStorage(`${saveKey ?? ''}_tempResults`, new Map<number, number>())
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
-const title = computed(() => query.title !== 'false' ? props.title : undefined)
-const startFrom = computed(() => query.startFrom && Number.parseInt(query.startFrom) ? Number.parseInt(query.startFrom) : 0)
-const collected = useWidgetStorage(query.saveKey ?? '_empty', 0)
+const collected = useWidgetStorage(saveKey ?? '_empty', 0)
 
 watch(() => props.value, (value, old) => {
   if (value == 0 || value == undefined || old == undefined) return
@@ -61,7 +59,7 @@ useBattleResult((parsed, res) => {
   collected.value += delta
 })
 
-const targetCount = computed(() => startFrom.value + collected.value)
+const targetCount = computed(() => startFrom + collected.value)
 
 </script>
 

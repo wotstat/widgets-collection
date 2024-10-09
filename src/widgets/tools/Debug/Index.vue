@@ -1,6 +1,6 @@
 <template>
   <WidgetRoot auto-scale auto-height>
-    <WidgetStatusWrapper :ctx>
+    <WidgetStatusWrapper>
       <WidgetCard>
         <Game v-bind="gameProps" :collapse-keys="['game', ['KEY_H', 'KEY_1'], ['KEY_H', 'KEY_1']]" />
       </WidgetCard>
@@ -124,9 +124,7 @@ import { onAnyKeyPressKey } from "./useToggleKeyBinding";
 // onMounted(() => window.wotstatEmulator.connectAndInit())
 
 
-const ctx = useWidgetSdk()
-const sdk = ctx.sdk
-
+const { sdk } = useWidgetSdk()
 console.log('sdk', sdk);
 
 const playerName = useReactiveState(sdk.data.player.name)
