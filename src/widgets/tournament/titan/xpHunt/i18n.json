@@ -1,0 +1,26 @@
+{
+  "ru": {
+    "battles": "Бои",
+    "removes": "Удаления",
+    "place": "Место",
+    "avgDamage": "Ср. урон"
+  },
+  "en": {
+    "battles": "Battles",
+    "removes": "Removes",
+    "place": "Place",
+    "avgDamage": "Avg. dmg."
+  },
+  "uk": {
+    "battles": "Бої",
+    "removes": "Видалення",
+    "place": "Місце",
+    "avgDamage": "Сер. урон"
+  },
+  "be": {
+    "battles": "Баі",
+    "removes": "Выдаленні",
+    "place": "Месца",
+    "avgDamage": "Сяр. урон"
+  }
+}

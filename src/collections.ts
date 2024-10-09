@@ -3,6 +3,7 @@ export const collections = [
     name: 'Актуальные',
     widgets: [
       '/tournament/osg/battle-royale',
+      // '/tournament/titan/xp-hunt',
       '/nidin/equipments',
     ]
   },
