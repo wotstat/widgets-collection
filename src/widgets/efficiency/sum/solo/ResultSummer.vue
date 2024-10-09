@@ -1,6 +1,6 @@
 <template>
   <WidgetCardWrapper auto-scale auto-height>
-    <TitledCounter :title :value="targetCount" />
+    <TitledCounter :title="titleEnabled ? title : false" :value="targetCount" />
   </WidgetCardWrapper>
 </template>
 
@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 import TitledCounter from './TitledCounter.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import { NumberDefault, useQueryParams } from '@/composition/useQueryParams';
 import { computed, watch } from 'vue';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
@@ -22,7 +22,7 @@ const props = defineProps<{
 
 const { sdk } = useWidgetSdk();
 
-const { startFrom, title } = useQueryParams({
+const { startFrom, title: titleEnabled } = useQueryParams({
   startFrom: NumberDefault(),
   title: Boolean
 })
