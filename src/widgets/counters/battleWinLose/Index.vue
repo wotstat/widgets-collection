@@ -14,16 +14,15 @@ import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useBattleResult } from '@/composition/useOnBattleResult';
 
-const { saveKey, align, showLosses, battleOnResult } = useQueryParams({
-  saveKey: String,
+const { align, showLosses, battleOnResult } = useQueryParams({
   align: oneOf(['left', 'center', 'right'] as const, 'center'),
   showLosses: Boolean,
   battleOnResult: Boolean,
 })
 
 const { sdk } = useWidgetSdk();
-const counter = useWidgetStorage(saveKey ?? '_empty', { battles: 0, wins: 0, losses: 0 })
-const lastArenaId = useWidgetStorage(`${saveKey ?? ''}_arenaId`, 0)
+const counter = useWidgetStorage('counter', { battles: 0, wins: 0, losses: 0 })
+const lastArenaId = useWidgetStorage('lastArenaId', 0)
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)

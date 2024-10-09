@@ -29,7 +29,6 @@ const checkIsTop = (rank: number | null) => rank !== null && rank == 1
 const query = useQueryParams({
   startFrom: { type: Number, default: 0 },
   title: Boolean,
-  saveKey: String,
   channelKey: String,
   allowSquad: Boolean,
   slot1: oneOf(slotValues, 'empty'),
@@ -39,15 +38,14 @@ const query = useQueryParams({
   slot5: oneOf(slotValues, 'empty')
 })
 
-const allowBattles = new Set(['BATTLE_ROYALE_SOLO', 'BATTLE_ROYALE_SQUAD'])
+const allowBattles = new Set(['BATTLE_ROYALE_SOLO', 'BATTLE_ROYALE_SQUAD', 'MAPS_TRAINING'])
 if (query.allowSquad) allowBattles.delete('BATTLE_ROYALE_SQUAD')
 
 const { sdk } = useWidgetSdk();
-
 const { relay } = useWidgetRelay(query.channelKey ?? uuidv4())
 
 const playerNamesRelay = useReactiveRelayState(relay.createState('playerName', ''))
-const statsRelay = useStorageRelayState<Omit<Line, 'name'>>(relay, 'stats', (query.saveKey ?? '') + '_stats', {
+const statsRelay = useStorageRelayState<Omit<Line, 'name'>>(relay, 'stats', {
   maxDmg: 0,
   sumDmg: 0,
   maxFrags: 0,
@@ -94,8 +92,8 @@ const lines = computed(() => {
 const playerName = useReactiveState(sdk.data.player.name)
 watch(playerName, (name) => playerNamesRelay.state.value = name ?? '')
 
-const battlesHistoryTop = useWidgetStorage<{ id: number, rank: number | null }[]>((query.saveKey ?? '') + 'startedBattles', [])
-const battlesHistoryScore = useWidgetStorage<{ id: number, score: number | null }[]>((query.saveKey ?? '') + 'scoreBattles', [])
+const battlesHistoryTop = useWidgetStorage<{ id: number, rank: number | null }[]>('startedBattles', [])
+const battlesHistoryScore = useWidgetStorage<{ id: number, score: number | null }[]>('scoreBattles', [])
 const arenaInfo = useReactiveState(sdk.data.battle.arena)
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
 

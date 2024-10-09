@@ -22,16 +22,15 @@ const props = defineProps<{
 
 const { sdk } = useWidgetSdk();
 
-const { saveKey, startFrom, title } = useQueryParams({
-  saveKey: String,
+const { startFrom, title } = useQueryParams({
   startFrom: NumberDefault(),
   title: Boolean
 })
 
-const tempResults = useWidgetStorage(`${saveKey ?? ''}_tempResults`, new Map<number, number>())
+const tempResults = useWidgetStorage('tempResults', new Map<number, number>())
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
-const collected = useWidgetStorage(saveKey ?? '_empty', 0)
+const collected = useWidgetStorage('collected', 0)
 
 watch(() => props.value, (value, old) => {
   if (value == 0 || value == undefined || old == undefined) return

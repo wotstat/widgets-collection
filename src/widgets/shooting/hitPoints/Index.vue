@@ -23,12 +23,10 @@ const query = useQueryParams({
   showCircle: Boolean,
   showCenter: Boolean,
   circleBackground: Boolean,
-  maxHits: NumberDefault(0),
-  saveKey: String
+  maxHits: NumberDefault(0)
 })
 
-
-const values = useWidgetStorage<{ r: number; theta: number }[]>(query.saveKey + '_ballistics', [])
+const values = useWidgetStorage<{ r: number; theta: number }[]>('ballistics', [])
 
 const { sdk } = useWidgetSdk();
 

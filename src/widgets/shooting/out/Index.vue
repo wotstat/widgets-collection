@@ -13,14 +13,13 @@ import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { BallisticCalculator } from '../ballisticCalc';
 
-const { title, saveKey, percent } = useQueryParams({
+const { title, percent } = useQueryParams({
   title: Boolean,
-  saveKey: String,
   percent: Boolean
 })
 
-const total = useWidgetStorage(`${saveKey ?? '_default'}_total`, 0)
-const miss = useWidgetStorage(`${saveKey ?? '_default'}_miss`, 0)
+const total = useWidgetStorage('total', 0)
+const miss = useWidgetStorage('miss', 0)
 
 const { sdk } = useWidgetSdk();
 

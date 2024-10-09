@@ -1,17 +1,33 @@
-import { RelayState, WidgetsRelay } from "@/utils/widgetsRelay";
+import { WidgetsRelay } from "@/utils/widgetsRelay";
 import { useLocalStorage } from "@vueuse/core";
-import { computed, ref, shallowRef, triggerRef, watch } from "vue";
+import { computed, onUnmounted, ref, shallowRef, triggerRef, watch } from "vue";
 import { useReactiveRelayState } from "./useReactiveRelayState";
+import { useQueryParams } from "./useQueryParams";
+import { useWidgetSdk } from "./widgetSdk";
+import { useRoute } from "vue-router";
 
-export function useStorageRelayState<T>(relay: WidgetsRelay, name: string, storageKey: string, defaultValue: T) {
-  const currentValue = useLocalStorage(storageKey, defaultValue, { listenToStorageChanges: false, shallow: true })
+export function useStorageRelayState<T>(relay: WidgetsRelay, stateKey: string, defaultValue: T, options?: {
+  preventClearData?: boolean
+  alwaysClearDataAvailable?: boolean
+}) {
+  const route = useRoute();
+  const { saveKey } = useQueryParams({ saveKey: { type: String, default: '' } })
+  const { sdk } = useWidgetSdk();
 
-  const state = relay.createState(name, currentValue.value)
-  const reactiveState = useReactiveRelayState(state)
+  const value = useLocalStorage(`${route.path}_${saveKey}_${stateKey}`, defaultValue, { listenToStorageChanges: false, shallow: true })
+  const reactiveState = useReactiveRelayState(relay.createState(stateKey, value.value))
+  watch(reactiveState.state, value => value.value = value)
 
-  watch(reactiveState.state, value => {
-    currentValue.value = value
+  const { setReadyToClearData, unsubscribe } = sdk.commands.onClearData(() => {
+    if (options?.preventClearData) return
+    reactiveState.state.value = structuredClone(defaultValue)
   })
+
+  const isValueDefault = computed(() => typeof defaultValue === 'object' ? JSON.stringify(value.value) === JSON.stringify(defaultValue) : value.value == defaultValue)
+  const isReadyToClear = computed(() => !options?.preventClearData && (!isValueDefault.value || options?.alwaysClearDataAvailable == true))
+  watch(isReadyToClear, v => setReadyToClearData(v), { immediate: true })
+
+  onUnmounted(() => unsubscribe())
 
   return reactiveState
 }

@@ -22,7 +22,6 @@ import { useBattleResult } from '@/composition/useOnBattleResult';
 const checkIsTop = (rank: number | null) => rank !== null && rank == 1
 
 const query = useQueryParams({
-  saveKey: String,
   channelKey: String,
   dmg: oneOf(['max', 'avg'] as const),
   frags: oneOf(['max', 'avg'] as const),
@@ -34,7 +33,7 @@ const { sdk } = useWidgetSdk();
 const { relay } = useWidgetRelay(query.channelKey ?? uuidv4())
 
 const playerNamesRelay = useReactiveRelayState(relay.createState('playerName', ''))
-const statsRelay = useStorageRelayState(relay, 'stats', (query.saveKey ?? '') + '_stats', {
+const statsRelay = useStorageRelayState(relay, 'stats', {
   battlesCount: 0,
   maxDmg: 0,
   sumDmg: 0,
@@ -65,7 +64,7 @@ const lines = computed(() => {
 const playerName = useReactiveState(sdk.data.player.name)
 watch(playerName, (name) => playerNamesRelay.state.value = name ?? '')
 
-const battlesHistory = useWidgetStorage<{ id: number, rank: number | null }[]>((query.saveKey ?? '') + 'startedBattles', [])
+const battlesHistory = useWidgetStorage<{ id: number, rank: number | null }[]>('startedBattles', [])
 const arenaInfo = useReactiveState(sdk.data.battle.arena)
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
 watch(() => [arenaInfo.value, arenaId.value] as const, ([info, arenaId]) => {

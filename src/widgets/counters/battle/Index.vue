@@ -14,15 +14,14 @@ import { useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 
 
-const { title, startFrom, saveKey } = useQueryParams({
+const { title, startFrom } = useQueryParams({
   title: Boolean,
-  saveKey: String,
   startFrom: { type: Number, default: 0 },
 })
 
 const { sdk } = useWidgetSdk();
-const battleCount = useWidgetStorage(saveKey ?? '_empty', 0)
-const lastArenaId = useWidgetStorage(`${saveKey ?? ''}_arenaId`, 0)
+const battleCount = useWidgetStorage('battleCount', 0)
+const lastArenaId = useWidgetStorage('lastArenaId', 0)
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId);
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
