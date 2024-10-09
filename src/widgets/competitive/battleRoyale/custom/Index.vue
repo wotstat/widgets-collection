@@ -38,7 +38,7 @@ const query = useQueryParams({
   slot5: oneOf(slotValues, 'empty')
 })
 
-const allowBattles = new Set(['BATTLE_ROYALE_SOLO', 'BATTLE_ROYALE_SQUAD', 'MAPS_TRAINING'])
+const allowBattles = new Set(['BATTLE_ROYALE_SOLO', 'BATTLE_ROYALE_SQUAD'])
 if (query.allowSquad) allowBattles.delete('BATTLE_ROYALE_SQUAD')
 
 const { sdk } = useWidgetSdk();
