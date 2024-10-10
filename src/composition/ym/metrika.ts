@@ -17,15 +17,13 @@ export const metrikaId = Number.parseInt(import.meta.env.VITE_YM_ID)
 
 export function setup(params: ym.InitParameters) {
   if (isInit.value) return console.warn('Metrika already initialized')
+
+  // @ts-ignore
+  window['ym'] = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments) }
+  // @ts-ignore
+  window['ym'].l = 1 * new Date()
+
   loadScript(async () => {
-    // @ts-ignore
-    window['ym'] = () => (window.ym.a || []).push(arguments)
-    // @ts-ignore
-    window['ym'].l = 1 * new Date()
-
-    console.log('Metrika loaded');
-
-
     ym(metrikaId, 'init', params)
     isInit.value = true
   })
