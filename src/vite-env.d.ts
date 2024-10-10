@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_BASE_URL: string
   readonly VITE_RELAY_URL: string
   readonly VITE_WIDGETS_INTERFACE_URL: string
+  readonly VITE_YM_ID: string
 }
 
 declare module '*.md' {
