@@ -36,6 +36,12 @@ watch(() => [isMetrikaInit.value, playerName.value, playerRegion.value, gameVers
     playerRegion,
     gameVersion
   })
+
+  ym(metrikaId, 'userParams', {
+    playerName,
+    playerRegion,
+    gameVersion
+  })
 })
 
 </script>
