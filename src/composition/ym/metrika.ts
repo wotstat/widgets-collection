@@ -1,13 +1,12 @@
 import { ref } from "vue"
 
 function loadScript(callback: () => void, err?: OnErrorEventHandler) {
-  const head = document.head || document.getElementsByTagName('head')[0]
   const script = document.createElement('script')
-
   script.async = true
   script.src = 'https://mc.yandex.ru/metrika/tag.js'
 
-  head.appendChild(script)
+  const firstScript = document.getElementsByTagName('script')[0]
+  firstScript.parentNode!.insertBefore(script, firstScript)
 
   script.onload = callback
   if (err) script.onerror = err
@@ -21,6 +20,11 @@ export function setup(params: ym.InitParameters) {
   loadScript(async () => {
     // @ts-ignore
     window['ym'] = () => (window.ym.a || []).push(arguments)
+    // @ts-ignore
+    window['ym'].l = 1 * new Date()
+
+    console.log('Metrika loaded');
+
 
     ym(metrikaId, 'init', params)
     isInit.value = true
