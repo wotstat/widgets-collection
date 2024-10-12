@@ -49,6 +49,6 @@ watch(() => [isMetrikaInit.value, playerName.value, playerRegion.value, gameVers
 <style lang="scss" scoped>
 .widgets-sdk-styles {
   position: relative;
-  color: var(--wotstat-primary)
+  color: var(--wotstat-primary);
 }
 </style>

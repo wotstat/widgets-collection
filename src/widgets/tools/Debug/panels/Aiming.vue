@@ -5,14 +5,15 @@
       <div class="flex flex-1 ver">
         <Line name="isAutoAim" :value="isAutoAim" />
         <Line name="ClientDisp" :value="(clientDispersion ?? 0).toFixed(7)" />
+        <Line name="IdealDisp" :value="(idealDispersion ?? 0).toFixed(7)" />
       </div>
       <div class="vr"></div>
       <div class="flex flex-1 ver">
         <Line name="isServerAim" :value="isServerAim" />
         <Line name="ServerDisp" :value="(serverDispersion ?? 0).toFixed(7)" />
+        <Line name="AimingTime" :value="(aimingTime ?? 0).toFixed(7)" />
       </div>
     </div>
-    <Line name="IdealDisp" :value="(idealDispersion ?? 0).toFixed(7)" />
   </template>
 </template>
 
@@ -27,6 +28,7 @@ const props = defineProps<{
   isServerAim?: boolean
   serverDispersion?: number
   idealDispersion?: number
+  aimingTime?: number
   collapseKeys: KeyBindingSetting
 }>()
 
