@@ -57,7 +57,7 @@ const last30Min = useRoundProcessor(useTweenComputed(() => last30.value.length =
 
 
 <style lang="scss" scoped>
-@import '@/styles/widget.scss';
+@use '@/styles/widget.scss';
 
 .main {
 

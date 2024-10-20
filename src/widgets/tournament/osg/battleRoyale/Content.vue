@@ -86,7 +86,7 @@ const chart = computed(() => {
 
 
 <style lang="scss" scoped>
-@import '@/styles/widget.scss';
+@use '@/styles/widget.scss';
 
 .main {
 

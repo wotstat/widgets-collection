@@ -62,7 +62,7 @@ const resets = useRoundTweenProcessor(() => props.resets, { duration: 1000 });
 
 
 <style lang="scss" scoped>
-@import '@/styles/widget.scss';
+@use '@/styles/widget.scss';
 
 .main {
   overflow: hidden;
