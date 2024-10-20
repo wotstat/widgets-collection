@@ -6,6 +6,7 @@
         <Line name="isAutoAim" :value="isAutoAim" />
         <Line name="ClientDisp" :value="(clientDispersion ?? 0).toFixed(7)" />
         <Line name="IdealDisp" :value="(idealDispersion ?? 0).toFixed(7)" />
+        <Line name="AimingMode" :value="aimingMode" />
       </div>
       <div class="vr"></div>
       <div class="flex flex-1 ver">
@@ -29,6 +30,7 @@ const props = defineProps<{
   serverDispersion?: number
   idealDispersion?: number
   aimingTime?: number
+  aimingMode?: string
   collapseKeys: KeyBindingSetting
 }>()
 

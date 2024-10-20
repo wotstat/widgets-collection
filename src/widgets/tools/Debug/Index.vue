@@ -192,6 +192,7 @@ const serverDispersion = useReactiveState(sdk.data.battle.aiming.serverDispersio
 const clientDispersion = useReactiveState(sdk.data.battle.aiming.clientDispersion)
 const idealDispersion = useReactiveState(sdk.data.battle.aiming.idealDispersion)
 const aimingTime = useReactiveState(sdk.data.battle.aiming.aimingTime)
+const aimingMode = useReactiveState(sdk.data.battle.aiming.aimingMode)
 
 const totalDamage = useReactiveState(sdk.data.battle.efficiency.damage)
 const totalBlocked = useReactiveState(sdk.data.battle.efficiency.blocked)
@@ -204,7 +205,8 @@ const aimingProps = computed(() => ({
   isServerAim: isServerAim.value,
   serverDispersion: serverDispersion.value,
   idealDispersion: idealDispersion.value,
-  aimingTime: aimingTime.value
+  aimingTime: aimingTime.value,
+  aimingMode: aimingMode.value
 }))
 
 const gameProps = computed(() => ({

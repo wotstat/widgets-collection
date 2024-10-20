@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "Warhelios";
+  src: url("@/assets/fonts/Warhelios-Regular.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Warhelios";
+  src: url("@/assets/fonts/Warhelios-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Zurichcond";
+  src: url("@/assets/fonts/zurichcond.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Zurichcond";
+  src: url("@/assets/fonts/zurichcondbold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "UniversCondensed";
+  src: url("@/assets/fonts/universcondensed_medium.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "UniversCondensed";
+  src: url("@/assets/fonts/universcondensed_bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "UniversCondensed";
+  src: url("@/assets/fonts/universcondensed_mediumitalic.ttf");
+  font-weight: normal;
+  font-style: italic;
+}
+
+.wg-font {
+  font-family: "Warhelios", sans-serif;
+}
+
+.wg-game-font {
+  font-family: "Zurichcond", sans-serif;
+}

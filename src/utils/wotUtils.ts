@@ -1,0 +1,12 @@
+
+const enum SPECIAL_VEHICLE_HEALTH {
+  DESTR_BY_FALL_RAMMING = -2,
+  FUEL_EXPLODED = -3,
+  AMMO_BAY_DESTROYED = -5,
+  TURRET_DETACHED = -13,
+}
+
+
+export function isAmmoBayDestroyed(health: number) {
+  return health < 0 && (health | SPECIAL_VEHICLE_HEALTH.AMMO_BAY_DESTROYED) == SPECIAL_VEHICLE_HEALTH.AMMO_BAY_DESTROYED
+}

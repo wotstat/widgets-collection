@@ -36,9 +36,12 @@ export function useWidgetSdk() {
 
 export type SdkContext = ReturnType<typeof useWidgetSdk>
 
-export function useReactiveState<T>(state: State<T>) {
+export function useReactiveState<T>(state: State<T>, onChange?: (t: T) => void) {
   const stateRef = shallowRef(state.value)
-  const unmount = state.watch(t => stateRef.value = t)
+  const unmount = state.watch(t => {
+    stateRef.value = t
+    onChange?.(t)
+  })
   onUnmounted(() => unmount())
   return stateRef
 }

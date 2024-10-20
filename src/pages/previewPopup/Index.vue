@@ -15,7 +15,9 @@
         </div>
         <div class="settings">
           <h2>Параметры</h2>
-          <component v-for="setting in settingsValues" :is="setting.component" />
+          <div class="params">
+            <component v-for="setting in settingsValues" :is="setting.component" />
+          </div>
         </div>
       </div>
       <div class="flex url-container">
@@ -86,9 +88,18 @@ const currentPreview = computed(() => {
   return widgetPreviews[previewPath]
 });
 
+const targetProps = shallowRef<any>({})
+
+function isVisible(param?: WidgetParam) {
+  if (!param) return true
+  if (typeof param == 'string') return true
+  if (param.visible === undefined) return true
+  if (typeof param.visible == 'function') return !!param.visible(targetProps.value)
+  return !!param.visible
+}
+
 const currentPreviewComponent = defineAsyncComponent(currentPreview.value as any)
 
-const targetProps = shallowRef<any>({})
 const settingsValues = computedWithControl(currentOptions, () => {
   if (!currentOptions.value) return null
 
@@ -100,13 +111,13 @@ const settingsValues = computedWithControl(currentOptions, () => {
   }
 
   function renderIfVisible(param: WidgetParam, element: VNode) {
-    if (typeof param == 'string') return element
-    if (param.visible === undefined) return element
-    if (typeof param.visible == 'function') return param.visible(targetProps.value) ? element : null
-    return param.visible ? element : null
+    return isVisible(param) ? element : null
   }
 
   return currentOptions.value.options.params.map((param) => {
+    const i18n = currentOptions.value?.options.i18n?.['ru'] ?? {}
+    const t = (key: string) => key in i18n ? i18n[key] : key
+
     if (param == 'accentColorParam')
       return { value: accent, target: 'accent', component: defineComponent(() => () => h(Color, { label: 'Акцент', ...vModel(accent) })) }
 
@@ -115,18 +126,25 @@ const settingsValues = computedWithControl(currentOptions, () => {
 
     if (param.type == 'checkbox') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? false)
-      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Checkbox, { label: param.label, ...vModel(value) }))) }
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Checkbox, { label: t(param.label), ...vModel(value) }))) }
     }
 
     if (param.type == 'select') {
       const firstVariant = param.variants[0]
       const value = useWidgetPreviewStorage(param.target, param.default ?? firstVariant.value)
-      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Select, { label: param.label, variants: param.variants, ...vModel(value) }))) }
+      return {
+        value, target: param.target,
+        component: defineComponent(() => () => renderIfVisible(param, h(Select, {
+          label: t(param.label),
+          variants: param.variants.map(({ value, label }) => ({ value, label: t(label) })),
+          ...vModel(value)
+        })))
+      }
     }
 
     if (param.type == 'int') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? 0)
-      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Int, { label: param.label, ...vModel(value) }))) }
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Int, { label: t(param.label), ...vModel(value) }))) }
     }
 
     if (param.type == 'string') {
@@ -158,13 +176,16 @@ watchEffect(() => {
 
 const targetQuery = computed(() => {
   if (!settingsValues.value) return null
-  return settingsValues.value.map(s => {
-    const target = s.target
-    const value = s.value?.value
+  return settingsValues.value
+    .map((s, i) => {
+      if (!isVisible(currentOptions.value?.options.params[i])) return null
 
-    if (value !== undefined) return `${target}=${value}`
-    return target
-  }).filter(t => t).join('&')
+      const target = s.target
+      const value = s.value?.value
+
+      if (value !== undefined) return `${target}=${value}`
+      return target
+    }).filter(t => t).join('&')
 })
 
 const Unknown = h('div', 'Unknown widget')
@@ -269,6 +290,12 @@ const accentColor = computed(() => '#' + accent.value)
 
     .settings {
       width: 300px;
+      display: flex;
+      flex-direction: column;
+
+      .params {
+        overflow-y: auto;
+      }
 
       h2 {
         font-size: 1.2em;

@@ -54,6 +54,8 @@ export type BackgroundColorParam = 'backgroundColorParam'
 
 export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam
 
+type Language = string
+
 export type Options = {
   name: string,
   description: string,
@@ -61,6 +63,7 @@ export type Options = {
   postfix: string,
   preview: string | null,
   readme: string | null,
+  i18n: Record<Language, Record<string, string>>,
   params: WidgetParam[],
 }
 
@@ -71,6 +74,7 @@ const defaultOptions: Options = {
   widget: './Index.vue',
   preview: './Preview.vue',
   readme: './README.md',
+  i18n: {},
   params: [],
 }
 
