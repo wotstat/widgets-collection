@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <!-- <div class="post-progression" v-if="postProgression && postProgressionSetup">
+      <div class="post-progression" v-if="postProgression && postProgressionSetup">
         <div class="pair-line" v-for="pair, i in postProgressionSetup.available">
           <div class="modernization-slot left" :class="{
             'disabled': postProgressionSetup.recommended.at(i) !== pair[0],
@@ -54,7 +54,7 @@
             <IconCheckmark class="current-icon correct" />
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>

@@ -8,8 +8,8 @@ export default defineWidget({
     { type: 'checkbox', target: 'show-tank-name', label: 'Название танка', default: true },
     { type: 'select', target: 'variant', label: 'Стиль', variants: [{ value: 'default', label: 'Стандартный' }, { value: 'compact', label: 'Компактный' }], default: 'compact' },
     { type: 'checkbox', target: 'hd', label: 'HD качество', default: true },
-    // { type: 'checkbox', target: 'post-progression', label: 'Модернизация', default: true },
-    // { type: 'checkbox', target: 'post-progression-current', label: 'Текущий выбор', default: true, visible: ctx => ctx['post-progression'] },
+    { type: 'checkbox', target: 'post-progression', label: 'Модернизация', default: true },
+    { type: 'checkbox', target: 'post-progression-current', label: 'Текущий выбор', default: true, visible: ctx => ctx['post-progression'] },
   ]
 })
 
