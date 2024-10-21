@@ -14,7 +14,7 @@ import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryPara
 import { SlotValue, slotVariants } from './define.widget';
 import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
 import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
-import { useReactiveWidgetRelay } from '@/composition/useWidgetRelay';
+import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { syncRefs } from '@vueuse/core';
 
@@ -39,6 +39,7 @@ const { sdk } = useWidgetSdk();
 const stats = useInBattleCollector()
 
 const playerName = useReactiveState(sdk.data.player.name)
+const playerId = useReactiveState(sdk.data.player.id)
 const battleTank = useReactiveState(sdk.data.battle.vehicle)
 const hangarTank = useReactiveState(sdk.data.hangar.vehicle.info)
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
@@ -46,6 +47,7 @@ const gunMark = useGunMarkCalculator()
 
 const target = computed(() => ({
   player: playerName.value ?? '',
+  playerId: playerId.value,
   tank: (isInBattle.value ? battleTank.value?.localizedShortName ?? hangarTank.value?.localizedShortName : hangarTank.value?.localizedShortName) ?? '',
   gunMarkPercent: gunMark.battleDamageRating.value,
   ...stats.value,
@@ -77,20 +79,16 @@ const slotToTarget = {
   [key in Exclude<SlotValue, 'empty'>]: keyof typeof target['value']
 }
 
-const platoonSlots = useReactiveState(sdk.data.platoon.slots)
-const platoonId = computed(() => platoonSlots.value?.filter(t => t?.name)
-  .map(t => t?.name)
-  .toSorted()
-  .join('-') || playerName.value)
-const relayPostfix = computed(() => (platoonId.value || 'default') + '_' + (params.channelKey ?? ''))
-const { relay, uuid } = useReactiveWidgetRelay(relayPostfix)
+const { relay, uuid } = usePlatoonWidgetRelay(params.channelKey)
 
 const state = useReactiveRelayState(relay, 'stats', target.value)
 syncRefs(target, state.state)
 
 const lines = computed(() => {
   const all = [...state.all.value.entries()]
-  const values = all.length >= 3 ? all.filter(t => t[0] != uuid) : all
+  const allUnique = [...new Map(all.map(item => [item[1].playerId, item])).values()];
+
+  const values = allUnique.length >= 3 ? allUnique.filter(t => t[0] != uuid) : allUnique
   const target = values.sort((a, b) => {
     if (a[0] == uuid) return 1
     if (b[0] == uuid) return 1

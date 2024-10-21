@@ -1,8 +1,9 @@
 import { WidgetsRelay } from "@/utils/widgetsRelay";
 import { useRoute } from "vue-router";
 import { v4 as uuidv4 } from 'uuid';
-import { MaybeRefOrGetter, shallowRef, toValue } from "vue";
+import { computed, MaybeRefOrGetter, shallowRef, toValue } from "vue";
 import { watch } from "vue";
+import { useReactiveState, useWidgetSdk } from "./widgetSdk";
 
 export function useWidgetRelay(postfix: string) {
   const route = useRoute();
@@ -41,4 +42,18 @@ export function useReactiveWidgetRelay(postfix: MaybeRefOrGetter<string>) {
     relay,
     uuid
   }
+}
+
+export function usePlatoonWidgetRelay(postfix: MaybeRefOrGetter<string | undefined>) {
+  const { sdk } = useWidgetSdk();
+
+  const platoonSlots = useReactiveState(sdk.data.platoon.slots)
+  const playerName = useReactiveState(sdk.data.player.name)
+  const platoonId = computed(() => platoonSlots.value?.filter(t => t?.name)
+    .map(t => t?.name)
+    .toSorted()
+    .join('-') || playerName.value)
+
+  const relayPostfix = computed(() => (platoonId.value || 'default') + '_' + (toValue(postfix) ?? ''))
+  return useReactiveWidgetRelay(relayPostfix)
 }
