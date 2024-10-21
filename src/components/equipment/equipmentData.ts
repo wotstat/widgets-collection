@@ -3,12 +3,9 @@ export const equipment = [
     "id": "deluxImprovedConfiguration",
     "index": 43,
     "name": "Усовершенствованная компоновка",
-    "desc": "",
     "tags": "improvedConfiguration deluxe armor",
     "icon": "improvedConfiguration",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
+    "min_tier": 5,
     "factors": [
       {
         "type": "vehicleRepairSpeed",
@@ -22,7 +19,7 @@ export const equipment = [
       },
       {
         "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
         "value": 0.3
       },
       {
@@ -30,57 +27,44 @@ export const equipment = [
         "desc": "от шанса возгорания двигателя",
         "value": 0.3
       }
-    ],
-    "min_tier": 5
+    ]
   },
   {
     "id": "deluxImprovedVentilation",
     "index": 44,
     "name": "Система отвода пороховых газов",
-    "desc": "",
     "tags": "ventilation deluxe armor firepower camouflage reconnaissance mobility",
     "icon": "improvedVentilation",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
+    "include_tags": "improvedVentilation_class1_user improvedVentilation_class2_user improvedVentilation_class3_user",
     "factors": [
       {
         "type": "crewLevel",
         "desc": "ко всем навыкам всего экипажа",
         "value": 1.085
       }
-    ],
-    "include_tags": "improvedVentilation_class1_user improvedVentilation_class2_user improvedVentilation_class3_user"
+    ]
   },
   {
     "id": "deluxRammer",
     "index": 45,
     "name": "Экспериментальная система заряжания",
-    "desc": "",
     "tags": "rammer deluxe firepower",
     "icon": "rammer",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
+    "include_tags": "tankRammer_class1_user tankRammer_class2_user",
     "factors": [
       {
         "type": "vehicleGunReloadTime",
         "desc": "от времени заряжания",
         "value": 0.865
       }
-    ],
-    "include_tags": "tankRammer_class1_user tankRammer_class2_user"
+    ]
   },
   {
     "id": "deluxCoatedOptics",
     "index": 46,
     "name": "Юстированная оптика",
-    "desc": "",
     "tags": "coatedOptics deluxe reconnaissance",
     "icon": "coatedOptics",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
     "factors": [
       {
         "type": "vehicleCircularVisionRadius",
@@ -93,31 +77,23 @@ export const equipment = [
     "id": "deluxAimingStabilizer",
     "index": 47,
     "name": "Комплекс стабилизационного оборудования",
-    "desc": "",
     "tags": "aimingStabilizer deluxe firepower",
     "icon": "aimingStabilizer",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
+    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user",
     "factors": [
       {
         "type": "vehicleGunShotDispersion",
         "desc": "от разброса при движении и поворотах",
         "value": 0.725
       }
-    ],
-    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user"
+    ]
   },
   {
     "id": "deluxEnhancedAimDrives",
     "index": 48,
     "name": "Износостойкие приводы наводки",
-    "desc": "",
     "tags": "enhancedAimDrives deluxe firepower",
     "icon": "enhancedAimDrives",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
     "factors": [
       {
         "type": "vehicleGunAimSpeed",
@@ -127,1560 +103,12 @@ export const equipment = [
     ]
   },
   {
-    "id": "trophyBasicAimDrives",
-    "index": 50,
-    "name": "Трофейные приводы наводки",
-    "desc": "",
-    "tags": "enhancedAimDrives firepower trophyBasic",
-    "icon": "enhancedAimDrives",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunAimSpeed",
-        "desc": "к скорости сведения",
-        "value": 1.1
-      }
-    ]
-  },
-  {
-    "id": "trophyUpgradedAimDrives",
-    "index": 51,
-    "name": "Трофейные приводы наводки",
-    "desc": "",
-    "tags": "enhancedAimDrives firepower trophyUpgraded",
-    "icon": "enhancedAimDrives",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunAimSpeed",
-        "desc": "к скорости сведения",
-        "value": 1.125
-      }
-    ]
-  },
-  {
-    "id": "trophyBasicTankRammer",
-    "index": 52,
-    "name": "Трофейный досылатель",
-    "desc": "",
-    "tags": "rammer firepower trophyBasic",
-    "icon": "rammer",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunReloadTime",
-        "desc": "от времени заряжания",
-        "value": 0.9
-      }
-    ],
-    "include_tags": "tankRammer_class1_user tankRammer_class2_user"
-  },
-  {
-    "id": "trophyUpgradedTankRammer",
-    "index": 53,
-    "name": "Трофейный досылатель",
-    "desc": "",
-    "tags": "rammer firepower trophyUpgraded",
-    "icon": "rammer",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunReloadTime",
-        "desc": "от времени заряжания",
-        "value": 0.875
-      }
-    ],
-    "include_tags": "tankRammer_class1_user tankRammer_class2_user"
-  },
-  {
-    "id": "trophyBasicImprovedVentilation",
-    "index": 54,
-    "name": "Трофейная вентиляция",
-    "desc": "",
-    "tags": "ventilation trophyBasic armor firepower camouflage reconnaissance mobility",
-    "icon": "improvedVentilation",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "crewLevel",
-        "desc": "ко всем навыкам всего экипажа",
-        "value": 1.05
-      }
-    ],
-    "include_tags": "improvedVentilation_class1_user improvedVentilation_class2_user improvedVentilation_class3_user"
-  },
-  {
-    "id": "trophyUpgradedImprovedVentilation",
-    "index": 55,
-    "name": "Трофейная вентиляция",
-    "desc": "",
-    "tags": "ventilation trophyUpgraded armor firepower camouflage reconnaissance mobility",
-    "icon": "improvedVentilation",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "crewLevel",
-        "desc": "ко всем навыкам всего экипажа",
-        "value": 1.075
-      }
-    ],
-    "include_tags": "improvedVentilation_class1_user improvedVentilation_class2_user improvedVentilation_class3_user"
-  },
-  {
-    "id": "trophyBasicAimingStabilizer",
-    "index": 56,
-    "name": "Трофейный стабилизатор",
-    "desc": "",
-    "tags": "aimingStabilizer trophyBasic firepower",
-    "icon": "aimingStabilizer",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.8
-      }
-    ],
-    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user"
-  },
-  {
-    "id": "trophyUpgradedAimingStabilizer",
-    "index": 57,
-    "name": "Трофейный стабилизатор",
-    "desc": "",
-    "tags": "aimingStabilizer trophyUpgraded firepower",
-    "icon": "aimingStabilizer",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.75
-      }
-    ],
-    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user"
-  },
-  {
-    "id": "trophyBasicCoatedOptics",
-    "index": 58,
-    "name": "Трофейная оптика",
-    "desc": "",
-    "tags": "coatedOptics trophyBasic reconnaissance",
-    "icon": "coatedOptics",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCircularVisionRadius",
-        "desc": "к обзору (не более 445 метров)",
-        "value": 1.1
-      }
-    ]
-  },
-  {
-    "id": "trophyUpgradedCoatedOptics",
-    "index": 59,
-    "name": "Трофейная оптика",
-    "desc": "",
-    "tags": "coatedOptics trophyUpgraded reconnaissance",
-    "icon": "coatedOptics",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCircularVisionRadius",
-        "desc": "к обзору (не более 445 метров)",
-        "value": 1.125
-      }
-    ]
-  },
-  {
-    "id": "improvedConfiguration_tier2",
-    "index": 61,
-    "name": "Изменённая компоновка (Класс 2)",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "improvedConfiguration armor",
-    "icon": "improvedConfiguration",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRepairSpeed",
-        "desc": "к скорости ремонта",
-        "value": 1.25,
-        "specValue": 1.35
-      },
-      {
-        "type": "vehicleAmmoBayEngineFuelStrength",
-        "desc": "к прочности внутренних модулей",
-        "value": 2,
-        "specValue": 2.5
-      },
-      {
-        "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
-        "value": 0.5,
-        "specValue": 0.35
-      },
-      {
-        "type": "vehicleFireChance",
-        "desc": "от шанса возгорания двигателя",
-        "value": 0.5,
-        "specValue": 0.35
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "improvedConfiguration_tier1",
-    "index": 62,
-    "name": "Изменённая компоновка (Класс 1)",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "improvedConfiguration armor",
-    "icon": "improvedConfiguration",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRepairSpeed",
-        "desc": "к скорости ремонта",
-        "value": 1.25,
-        "specValue": 1.35
-      },
-      {
-        "type": "vehicleAmmoBayEngineFuelStrength",
-        "desc": "к прочности внутренних модулей",
-        "value": 2,
-        "specValue": 2.5
-      },
-      {
-        "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
-        "value": 0.5,
-        "specValue": 0.35
-      },
-      {
-        "type": "vehicleFireChance",
-        "desc": "от шанса возгорания двигателя",
-        "value": 0.5,
-        "specValue": 0.35
-      }
-    ],
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "antifragmentationLining_tier4",
-    "index": 63,
-    "name": "Лёгкий противоосколочный подбой",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "antifragmentationLining armor",
-    "icon": "antifragmentationLining",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRamOrExplosionDamageResistance",
-        "desc": "от ОФ урона, огнесмеси и тарана",
-        "value": 0.5,
-        "specValue": 0.4
-      },
-      {
-        "type": "crewHitChance",
-        "desc": "к защите экипажа от ранений",
-        "value": 1.5,
-        "specValue": 1.6
-      },
-      {
-        "type": "crewStunDuration",
-        "desc": "от времени дезориентации",
-        "value": 0.75,
-        "specValue": 0.65
-      },
-      {
-        "type": "crewStunResistance",
-        "desc": "от силы дезориентации экипажа",
-        "value": 0.9,
-        "specValue": 0.85
-      }
-    ],
-    "include_tags": "antifragmentationLining_light_user"
-  },
-  {
-    "id": "antifragmentationLining_tier3",
-    "index": 64,
-    "name": "Средний противоосколочный подбой",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "antifragmentationLining armor",
-    "icon": "antifragmentationLining",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRamOrExplosionDamageResistance",
-        "desc": "от ОФ урона, огнесмеси и тарана",
-        "value": 0.5,
-        "specValue": 0.4
-      },
-      {
-        "type": "crewHitChance",
-        "desc": "к защите экипажа от ранений",
-        "value": 1.5,
-        "specValue": 1.6
-      },
-      {
-        "type": "crewStunDuration",
-        "desc": "от времени дезориентации",
-        "value": 0.75,
-        "specValue": 0.65
-      },
-      {
-        "type": "crewStunResistance",
-        "desc": "от силы дезориентации экипажа",
-        "value": 0.9,
-        "specValue": 0.85
-      }
-    ],
-    "include_tags": "antifragmentationLining_medium_user"
-  },
-  {
-    "id": "antifragmentationLining_tier2",
-    "index": 65,
-    "name": "Тяжёлый противоосколочный подбой",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "antifragmentationLining armor",
-    "icon": "antifragmentationLining",
-    "price": 500000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRamOrExplosionDamageResistance",
-        "desc": "от ОФ урона, огнесмеси и тарана",
-        "value": 0.5,
-        "specValue": 0.4
-      },
-      {
-        "type": "crewHitChance",
-        "desc": "к защите экипажа от ранений",
-        "value": 1.5,
-        "specValue": 1.6
-      },
-      {
-        "type": "crewStunDuration",
-        "desc": "от времени дезориентации",
-        "value": 0.75,
-        "specValue": 0.65
-      },
-      {
-        "type": "crewStunResistance",
-        "desc": "от силы дезориентации экипажа",
-        "value": 0.9,
-        "specValue": 0.85
-      }
-    ],
-    "include_tags": "antifragmentationLining_heavy_user"
-  },
-  {
-    "id": "antifragmentationLining_tier1",
-    "index": 66,
-    "name": "Сверхтяжёлый противоосколочный подбой",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "antifragmentationLining armor",
-    "icon": "antifragmentationLining",
-    "price": 750000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRamOrExplosionDamageResistance",
-        "desc": "от ОФ урона, огнесмеси и тарана",
-        "value": 0.5,
-        "specValue": 0.4
-      },
-      {
-        "type": "crewHitChance",
-        "desc": "к защите экипажа от ранений",
-        "value": 1.5,
-        "specValue": 1.6
-      },
-      {
-        "type": "crewStunDuration",
-        "desc": "от времени дезориентации",
-        "value": 0.75,
-        "specValue": 0.65
-      },
-      {
-        "type": "crewStunResistance",
-        "desc": "от силы дезориентации экипажа",
-        "value": 0.9,
-        "specValue": 0.85
-      }
-    ],
-    "include_tags": "antifragmentationLining_superheavy_user"
-  },
-  {
-    "id": "stereoscope_tier3",
-    "index": 67,
-    "name": "Стереотруба (Класс 3)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "stereoscope reconnaissance",
-    "icon": "stereoscope",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStillCircularVisionRadius",
-        "desc": "к обзору из неподвижной машины (не более 445 метров)",
-        "value": 1.25,
-        "specValue": 1.275
-      }
-    ],
-    "min_tier": 2,
-    "max_tier": 4
-  },
-  {
-    "id": "stereoscope_tier2",
-    "index": 68,
-    "name": "Стереотруба (Класс 2)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "stereoscope reconnaissance",
-    "icon": "stereoscope",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStillCircularVisionRadius",
-        "desc": "к обзору из неподвижной машины (не более 445 метров)",
-        "value": 1.25,
-        "specValue": 1.275
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "stereoscope_tier1",
-    "index": 69,
-    "name": "Стереотруба (Класс 1)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "stereoscope reconnaissance",
-    "icon": "stereoscope",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStillCircularVisionRadius",
-        "desc": "к обзору из неподвижной машины (не более 445 метров)",
-        "value": 1.25,
-        "specValue": 1.275
-      }
-    ],
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "coatedOptics_tier3",
-    "index": 70,
-    "name": "Просветлённая оптика (Класс 3)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "coatedOptics reconnaissance",
-    "icon": "coatedOptics",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCircularVisionRadius",
-        "desc": "к обзору (не более 445 метров)",
-        "value": 1.1,
-        "specValue": 1.115
-      }
-    ],
-    "min_tier": 2,
-    "max_tier": 4
-  },
-  {
-    "id": "coatedOptics_tier2",
-    "index": 71,
-    "name": "Просветлённая оптика (Класс 2)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "coatedOptics reconnaissance",
-    "icon": "coatedOptics",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCircularVisionRadius",
-        "desc": "к обзору (не более 445 метров)",
-        "value": 1.1,
-        "specValue": 1.115
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "coatedOptics_tier1",
-    "index": 72,
-    "name": "Просветлённая оптика (Класс 1)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "coatedOptics reconnaissance",
-    "icon": "coatedOptics",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCircularVisionRadius",
-        "desc": "к обзору (не более 445 метров)",
-        "value": 1.1,
-        "specValue": 1.115
-      }
-    ],
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "camouflageNet_tier3",
-    "index": 73,
-    "name": "Маскировочная сеть (Класс 3)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "camouflageNet camouflage",
-    "icon": "camouflageNet",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStillCamouflage",
-        "desc": "к незаметности неподвижной машины",
-        "value": 1.15,
-        "specValue": 1.175,
-        "restriction": "AT-SPG"
-      },
-      {
-        "type": "vehicleStillCamouflage",
-        "desc": "к незаметности неподвижной машины",
-        "value": 1.1,
-        "specValue": 1.125,
-        "restriction": "lightTank mediumTank"
-      },
-      {
-        "type": "vehicleStillCamouflage",
-        "desc": "к незаметности неподвижной машины",
-        "value": 1.05,
-        "specValue": 1.075,
-        "restriction": "heavyTank SPG"
-      }
-    ],
-    "min_tier": 2,
-    "max_tier": 4
-  },
-  {
-    "id": "camouflageNet_tier2",
-    "index": 74,
-    "name": "Маскировочная сеть (Класс 2)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "camouflageNet camouflage",
-    "icon": "camouflageNet",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStillCamouflage",
-        "desc": "к незаметности неподвижной машины",
-        "value": 1.15,
-        "specValue": 1.175,
-        "restriction": "AT-SPG"
-      },
-      {
-        "type": "vehicleStillCamouflage",
-        "desc": "к незаметности неподвижной машины",
-        "value": 1.1,
-        "specValue": 1.125,
-        "restriction": "lightTank mediumTank"
-      },
-      {
-        "type": "vehicleStillCamouflage",
-        "desc": "к незаметности неподвижной машины",
-        "value": 1.05,
-        "specValue": 1.075,
-        "restriction": "heavyTank SPG"
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
-    "id": "improvedVentilation_tier3",
-    "index": 75,
-    "name": "Улучшенная вентиляция (Класс 3)",
-    "desc": "",
-    "categories": "firepower mobility stealth survivability",
-    "tags": "ventilation armor firepower camouflage reconnaissance mobility",
-    "icon": "improvedVentilation",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "crewLevel",
-        "desc": "ко всем навыкам всего экипажа",
-        "value": 1.05,
-        "specValue": 1.06
-      }
-    ],
-    "include_tags": "improvedVentilation_class3_user"
-  },
-  {
-    "id": "improvedVentilation_tier2",
-    "index": 76,
-    "name": "Улучшенная вентиляция (Класс 2)",
-    "desc": "",
-    "categories": "firepower mobility stealth survivability",
-    "tags": "ventilation armor firepower camouflage reconnaissance mobility",
-    "icon": "improvedVentilation",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "crewLevel",
-        "desc": "ко всем навыкам всего экипажа",
-        "value": 1.05,
-        "specValue": 1.06
-      }
-    ],
-    "include_tags": "improvedVentilation_class2_user"
-  },
-  {
-    "id": "improvedVentilation_tier1",
-    "index": 77,
-    "name": "Улучшенная вентиляция (Класс 1)",
-    "desc": "",
-    "categories": "firepower mobility stealth survivability",
-    "tags": "ventilation armor firepower camouflage reconnaissance mobility",
-    "icon": "improvedVentilation",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "crewLevel",
-        "desc": "ко всем навыкам всего экипажа",
-        "value": 1.05,
-        "specValue": 1.06
-      }
-    ],
-    "include_tags": "improvedVentilation_class1_user"
-  },
-  {
-    "id": "grousers_tier3",
-    "index": 78,
-    "name": "Дополнительные грунтозацепы (Класс 3)",
-    "desc": "",
-    "categories": "mobility",
-    "tags": "grousers mobility",
-    "icon": "grousers",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.15,
-        "specValue": 1.2
-      },
-      {
-        "type": "vehicleSpeedGain",
-        "desc": "к сохранению набранной скорости во время пересечения всех типов местности",
-        "value": 1.1,
-        "specValue": 1.15
-      }
-    ],
-    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
-    "exclude_tags": "wheeledVehicle",
-    "min_tier": 2,
-    "max_tier": 4
-  },
-  {
-    "id": "grousers_tier2",
-    "index": 79,
-    "name": "Дополнительные грунтозацепы (Класс 2)",
-    "desc": "",
-    "categories": "mobility",
-    "tags": "grousers mobility",
-    "icon": "grousers",
-    "price": 250000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.15,
-        "specValue": 1.2
-      },
-      {
-        "type": "vehicleSpeedGain",
-        "desc": "к сохранению набранной скорости во время пересечения всех типов местности",
-        "value": 1.1,
-        "specValue": 1.15
-      }
-    ],
-    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
-    "exclude_tags": "wheeledVehicle",
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "grousers_tier1",
-    "index": 80,
-    "name": "Дополнительные грунтозацепы (Класс 1)",
-    "desc": "",
-    "categories": "mobility",
-    "tags": "grousers mobility",
-    "icon": "grousers",
-    "price": 500000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.15,
-        "specValue": 1.2
-      },
-      {
-        "type": "vehicleSpeedGain",
-        "desc": "к сохранению набранной скорости во время пересечения всех типов местности",
-        "value": 1.1,
-        "specValue": 1.15
-      }
-    ],
-    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
-    "exclude_tags": "wheeledVehicle",
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "tankRammer_tier2",
-    "index": 81,
-    "name": "Орудийный досылатель (Класс 2)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "rammer firepower",
-    "icon": "rammer",
-    "price": 300000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunReloadTime",
-        "desc": "от времени заряжания",
-        "value": 0.9,
-        "specValue": 0.885
-      }
-    ],
-    "include_tags": "tankRammer_class2_user"
-  },
-  {
-    "id": "tankRammer_tier1",
-    "index": 82,
-    "name": "Орудийный досылатель (Класс 1)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "rammer firepower",
-    "icon": "rammer",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunReloadTime",
-        "desc": "от времени заряжания",
-        "value": 0.9,
-        "specValue": 0.885
-      }
-    ],
-    "include_tags": "tankRammer_class1_user"
-  },
-  {
-    "id": "enhancedAimDrives_tier3",
-    "index": 83,
-    "name": "Усиленные приводы наводки (Класс 3)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "enhancedAimDrives firepower",
-    "icon": "enhancedAimDrives",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunAimSpeed",
-        "desc": "к скорости сведения",
-        "value": 1.1,
-        "specValue": 1.115
-      }
-    ],
-    "min_tier": 2,
-    "max_tier": 4
-  },
-  {
-    "id": "enhancedAimDrives_tier2",
-    "index": 84,
-    "name": "Усиленные приводы наводки (Класс 2)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "enhancedAimDrives firepower",
-    "icon": "enhancedAimDrives",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunAimSpeed",
-        "desc": "к скорости сведения",
-        "value": 1.1,
-        "specValue": 1.115
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "enhancedAimDrives_tier1",
-    "index": 85,
-    "name": "Усиленные приводы наводки (Класс 1)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "enhancedAimDrives firepower",
-    "icon": "enhancedAimDrives",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunAimSpeed",
-        "desc": "к скорости сведения",
-        "value": 1.1,
-        "specValue": 1.115
-      }
-    ],
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "aimingStabilizer_tier2",
-    "index": 86,
-    "name": "Стабилизатор вертикальной наводки (Класс 2)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "aimingStabilizer firepower",
-    "icon": "aimingStabilizer",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.8,
-        "specValue": 0.77
-      }
-    ],
-    "include_tags": "aimingStabilizer_class2_user"
-  },
-  {
-    "id": "aimingStabilizer_tier1",
-    "index": 87,
-    "name": "Стабилизатор вертикальной наводки (Класс 1)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "aimingStabilizer firepower",
-    "icon": "aimingStabilizer",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.8,
-        "specValue": 0.77
-      }
-    ],
-    "include_tags": "aimingStabilizer_class1_user"
-  },
-  {
-    "id": "additionalInvisibilityDevice_tier3",
-    "index": 88,
-    "name": "Малошумная система выхлопа (Класс 3)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "additInvisibilityDevice",
-    "icon": "additionalInvisibilityDevice",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.06,
-        "specValue": 1.08,
-        "restriction": "lightTank mediumTank"
-      },
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.05,
-        "specValue": 1.06,
-        "restriction": "AT-SPG"
-      },
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.03,
-        "specValue": 1.04,
-        "restriction": "heavyTank SPG"
-      }
-    ],
-    "min_tier": 2,
-    "max_tier": 4
-  },
-  {
-    "id": "additionalInvisibilityDevice_tier2",
-    "index": 89,
-    "name": "Малошумная система выхлопа (Класс 2)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "additInvisibilityDevice",
-    "icon": "additionalInvisibilityDevice",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.06,
-        "specValue": 1.08,
-        "restriction": "lightTank mediumTank"
-      },
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.05,
-        "specValue": 1.06,
-        "restriction": "AT-SPG"
-      },
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.03,
-        "specValue": 1.04,
-        "restriction": "heavyTank SPG"
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "additionalInvisibilityDevice_tier1",
-    "index": 90,
-    "name": "Малошумная система выхлопа (Класс 1)",
-    "desc": "",
-    "categories": "stealth",
-    "tags": "additInvisibilityDevice",
-    "icon": "additionalInvisibilityDevice",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.06,
-        "specValue": 1.08,
-        "restriction": "lightTank mediumTank"
-      },
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.05,
-        "specValue": 1.06,
-        "restriction": "AT-SPG"
-      },
-      {
-        "type": "vehicleCamouflage",
-        "desc": "к незаметности",
-        "value": 1.03,
-        "specValue": 1.04,
-        "restriction": "heavyTank SPG"
-      }
-    ],
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "extraHealthReserve_tier3",
-    "index": 91,
-    "name": "Улучшенная закалка (Класс 3)",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "healthReserve",
-    "icon": "extraHealthReserve",
-    "price": 40000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStrength",
-        "desc": "к запасу прочности машины",
-        "value": 1.08,
-        "specValue": 1.1
-      },
-      {
-        "type": "vehicleChassisStrength",
-        "desc": "к прочности ходовой",
-        "value": 1.5,
-        "specValue": 1.65
-      },
-      {
-        "type": "vehicleChassisRepairSpeed",
-        "desc": "к скорости ремонта ходовой",
-        "value": 1.15,
-        "specValue": 1.2
-      },
-      {
-        "type": "vehicleChassisFallDamage",
-        "desc": "от урона при падении",
-        "value": 0.5,
-        "specValue": 0.35
-      }
-    ],
-    "include_tags": "extraHealthReserve_class3_user"
-  },
-  {
-    "id": "extraHealthReserve_tier2",
-    "index": 92,
-    "name": "Улучшенная закалка (Класс 2)",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "healthReserve",
-    "icon": "extraHealthReserve",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStrength",
-        "desc": "к запасу прочности машины",
-        "value": 1.08,
-        "specValue": 1.1
-      },
-      {
-        "type": "vehicleChassisStrength",
-        "desc": "к прочности ходовой",
-        "value": 1.5,
-        "specValue": 1.65
-      },
-      {
-        "type": "vehicleChassisRepairSpeed",
-        "desc": "к скорости ремонта ходовой",
-        "value": 1.15,
-        "specValue": 1.2
-      },
-      {
-        "type": "vehicleChassisFallDamage",
-        "desc": "от урона при падении",
-        "value": 0.5,
-        "specValue": 0.35
-      }
-    ],
-    "include_tags": "extraHealthReserve_class2_user"
-  },
-  {
-    "id": "extraHealthReserve_tier1",
-    "index": 93,
-    "name": "Улучшенная закалка (Класс 1)",
-    "desc": "",
-    "categories": "survivability",
-    "tags": "healthReserve",
-    "icon": "extraHealthReserve",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleStrength",
-        "desc": "к запасу прочности машины",
-        "value": 1.08,
-        "specValue": 1.1
-      },
-      {
-        "type": "vehicleChassisStrength",
-        "desc": "к прочности ходовой",
-        "value": 1.5,
-        "specValue": 1.65
-      },
-      {
-        "type": "vehicleChassisRepairSpeed",
-        "desc": "к скорости ремонта ходовой",
-        "value": 1.15,
-        "specValue": 1.2
-      },
-      {
-        "type": "vehicleChassisFallDamage",
-        "desc": "от урона при падении",
-        "value": 0.5,
-        "specValue": 0.35
-      }
-    ],
-    "include_tags": "extraHealthReserve_class1_user"
-  },
-  {
-    "id": "improvedRadioCommunication",
-    "index": 94,
-    "name": "Улучшенное радиооборудование",
-    "desc": "",
-    "categories": "stealth",
-    "icon": "improvedRadioCommunication",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleEnemySpottingTime",
-        "desc": "ко времени отображения обнаруженного\nвами противника",
-        "value": 1.5,
-        "specValue": 2
-      },
-      {
-        "type": "vehicleOwnSpottingTime",
-        "desc": "от времени вашей видимости",
-        "value": -1.5,
-        "specValue": -2
-      }
-    ],
-    "include_tags": "lightTank mediumTank",
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "improvedRotationMechanism_tier2",
-    "index": 95,
-    "name": "Улучшенные механизмы поворота (Класс 2)",
-    "desc": "",
-    "categories": "firepower mobility",
-    "tags": "rotationMechanism",
-    "icon": "improvedRotationMechanism",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleTurretOrCuttingRotationSpeed",
-        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
-        "value": 1.1,
-        "specValue": 1.125
-      },
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.1,
-        "specValue": 1.125
-      },
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.9,
-        "specValue": 0.875
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "improvedRotationMechanism_tier1",
-    "index": 96,
-    "name": "Улучшенные механизмы поворота (Класс 1)",
-    "desc": "",
-    "categories": "firepower mobility",
-    "tags": "rotationMechanism",
-    "icon": "improvedRotationMechanism",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleTurretOrCuttingRotationSpeed",
-        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
-        "value": 1.1,
-        "specValue": 1.125
-      },
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.1,
-        "specValue": 1.125
-      },
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.9,
-        "specValue": 0.875
-      }
-    ],
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "turbocharger_tier3",
-    "index": 97,
-    "name": "Турбонагнетатель (Класс 3)",
-    "desc": "",
-    "categories": "mobility",
-    "tags": "turbocharger",
-    "icon": "turbocharger",
-    "price": 50000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleEnginePower",
-        "desc": "к мощности двигателя",
-        "value": 1.075,
-        "specValue": 1.1
-      },
-      {
-        "type": "vehicleForwardMaxSpeed",
-        "desc": "к максимальной скорости вперёд",
-        "value": 4,
-        "specValue": 5
-      },
-      {
-        "type": "vehicleBackwardMaxSpeed",
-        "desc": "к максимальной скорости назад",
-        "value": 2,
-        "specValue": 3
-      }
-    ],
-    "min_tier": 2,
-    "max_tier": 4
-  },
-  {
-    "id": "turbocharger_tier2",
-    "index": 98,
-    "name": "Турбонагнетатель (Класс 2)",
-    "desc": "",
-    "categories": "mobility",
-    "tags": "turbocharger",
-    "icon": "turbocharger",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleEnginePower",
-        "desc": "к мощности двигателя",
-        "value": 1.075,
-        "specValue": 1.1
-      },
-      {
-        "type": "vehicleForwardMaxSpeed",
-        "desc": "к максимальной скорости вперёд",
-        "value": 4,
-        "specValue": 5
-      },
-      {
-        "type": "vehicleBackwardMaxSpeed",
-        "desc": "к максимальной скорости назад",
-        "value": 2,
-        "specValue": 3
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "turbocharger_tier1",
-    "index": 99,
-    "name": "Турбонагнетатель (Класс 1)",
-    "desc": "",
-    "categories": "mobility",
-    "tags": "turbocharger",
-    "icon": "turbocharger",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleEnginePower",
-        "desc": "к мощности двигателя",
-        "value": 1.075,
-        "specValue": 1.1
-      },
-      {
-        "type": "vehicleForwardMaxSpeed",
-        "desc": "к максимальной скорости вперёд",
-        "value": 4,
-        "specValue": 5
-      },
-      {
-        "type": "vehicleBackwardMaxSpeed",
-        "desc": "к максимальной скорости назад",
-        "value": 2,
-        "specValue": 3
-      }
-    ],
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "commandersView",
-    "index": 100,
-    "name": "Командирский обзорный прибор",
-    "desc": "",
-    "categories": "stealth",
-    "icon": "commandersView",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "demaskFoliageFactor",
-        "desc": "от незаметности противника за растительностью",
-        "value": 0.85,
-        "specValue": 0.8
-      },
-      {
-        "type": "demaskMovingFactor",
-        "desc": "от незаметности противника, находящегося в движении",
-        "value": 0.9,
-        "specValue": 0.875
-      }
-    ],
-    "include_tags": "lightTank mediumTank",
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "improvedSights_tier2",
-    "index": 101,
-    "name": "Улучшенный прицел (Класс 2)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "improvedSights",
-    "icon": "improvedSights",
-    "price": 200000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotFullDispersion",
-        "desc": "от размера круга сведения",
-        "value": 0.95,
-        "specValue": 0.93
-      }
-    ],
-    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
-    "min_tier": 5,
-    "max_tier": 7
-  },
-  {
-    "id": "improvedSights_tier1",
-    "index": 102,
-    "name": "Улучшенный прицел (Класс 1)",
-    "desc": "",
-    "categories": "firepower",
-    "tags": "improvedSights",
-    "icon": "improvedSights",
-    "price": 600000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotFullDispersion",
-        "desc": "от размера круга сведения",
-        "value": 0.95,
-        "specValue": 0.93
-      }
-    ],
-    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
-    "min_tier": 8,
-    "max_tier": 10
-  },
-  {
-    "id": "trophyBasicImprovedConfiguration",
-    "index": 105,
-    "name": "Трофейные технологии защиты",
-    "desc": "",
-    "tags": "improvedConfiguration armor trophyBasic",
-    "icon": "improvedConfiguration",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRepairSpeed",
-        "desc": "к скорости ремонта",
-        "value": 1.25
-      },
-      {
-        "type": "vehicleAmmoBayEngineFuelStrength",
-        "desc": "к прочности внутренних модулей",
-        "value": 2
-      },
-      {
-        "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
-        "value": 0.5
-      },
-      {
-        "type": "vehicleFireChance",
-        "desc": "от шанса возгорания двигателя",
-        "value": 0.5
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
-    "id": "trophyUpgradedImprovedConfiguration",
-    "index": 106,
-    "name": "Трофейные технологии защиты",
-    "desc": "",
-    "tags": "improvedConfiguration armor trophyUpgraded",
-    "icon": "improvedConfiguration",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleRepairSpeed",
-        "desc": "к скорости ремонта",
-        "value": 1.4
-      },
-      {
-        "type": "vehicleAmmoBayEngineFuelStrength",
-        "desc": "к прочности внутренних модулей",
-        "value": 2.5
-      },
-      {
-        "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
-        "value": 0.3
-      },
-      {
-        "type": "vehicleFireChance",
-        "desc": "от шанса возгорания двигателя",
-        "value": 0.3
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
-    "id": "trophyBasicImprovedRotationMechanism",
-    "index": 107,
-    "name": "Трофейные механизмы поворота",
-    "desc": "",
-    "tags": "rotationMechanism trophyBasic",
-    "icon": "improvedRotationMechanism",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleTurretOrCuttingRotationSpeed",
-        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
-        "value": 1.1
-      },
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.1
-      },
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.9
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
-    "id": "trophyUpgradedImprovedRotationMechanism",
-    "index": 108,
-    "name": "Трофейные механизмы поворота",
-    "desc": "",
-    "tags": "rotationMechanism trophyUpgraded",
-    "icon": "improvedRotationMechanism",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleTurretOrCuttingRotationSpeed",
-        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
-        "value": 1.15
-      },
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.15
-      },
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.85
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
-    "id": "trophyBasicImprovedSights",
-    "index": 109,
-    "name": "Трофейный прицел",
-    "desc": "",
-    "tags": "improvedSights trophyBasic firepower",
-    "icon": "improvedSights",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotFullDispersion",
-        "desc": "от размера круга сведения",
-        "value": 0.95
-      }
-    ],
-    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
-    "id": "trophyUpgradedImprovedSights",
-    "index": 110,
-    "name": "Трофейный прицел",
-    "desc": "",
-    "tags": "improvedSights trophyUpgraded firepower",
-    "icon": "improvedSights",
-    "price": 100000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleGunShotFullDispersion",
-        "desc": "от размера круга сведения",
-        "value": 0.92
-      }
-    ],
-    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
-    "id": "deluxTurbocharger",
+    "id": "deluxeTurbocharger",
     "index": 111,
     "name": "Улучшенный компрессор",
-    "desc": "",
     "tags": "turbocharger deluxe",
     "icon": "turbocharger",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
+    "min_tier": 2,
     "factors": [
       {
         "type": "vehicleEnginePower",
@@ -1697,19 +125,15 @@ export const equipment = [
         "desc": "к максимальной скорости назад",
         "value": 4
       }
-    ],
-    "min_tier": 2
+    ]
   },
   {
-    "id": "deluxExtraHealthReserve",
+    "id": "deluxeExtraHealthReserve",
     "index": 112,
     "name": "Повышенная снарядостойкость",
-    "desc": "",
     "tags": "healthReserve deluxe",
     "icon": "extraHealthReserve",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
+    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
     "factors": [
       {
         "type": "vehicleStrength",
@@ -1731,18 +155,351 @@ export const equipment = [
         "desc": "от урона при падении",
         "value": 0.25
       }
-    ],
-    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user"
+    ]
+  },
+  {
+    "id": "deluxeImprovedRotationMechanism",
+    "index": 117,
+    "name": "Усовершенствованная бортовая передача",
+    "tags": "rotationMechanism deluxe",
+    "icon": "improvedRotationMechanism",
+    "min_tier": 5,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleTurretOrCuttingRotationSpeed",
+        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
+        "value": 1.175
+      },
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.175
+      },
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.825
+      }
+    ]
+  },
+  {
+    "id": "deluxeImprovedSights",
+    "index": 120,
+    "name": "Усовершенствованный прицел",
+    "tags": "improvedSights deluxe firepower",
+    "icon": "improvedSights",
+    "min_tier": 5,
+    "max_tier": 10,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleGunShotFullDispersion",
+        "desc": "от размера круга сведения",
+        "value": 0.91
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicAimDrives",
+    "index": 50,
+    "name": "Трофейные приводы наводки",
+    "tags": "enhancedAimDrives firepower trophyBasic",
+    "icon": "enhancedAimDrives",
+    "factors": [
+      {
+        "type": "vehicleGunAimSpeed",
+        "desc": "к скорости сведения",
+        "value": 1.1
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedAimDrives",
+    "index": 51,
+    "name": "Трофейные приводы наводки",
+    "tags": "enhancedAimDrives firepower trophyUpgraded",
+    "icon": "enhancedAimDrives",
+    "factors": [
+      {
+        "type": "vehicleGunAimSpeed",
+        "desc": "к скорости сведения",
+        "value": 1.125
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicTankRammer",
+    "index": 52,
+    "name": "Трофейный досылатель",
+    "tags": "rammer firepower trophyBasic",
+    "icon": "rammer",
+    "include_tags": "tankRammer_class1_user tankRammer_class2_user",
+    "factors": [
+      {
+        "type": "vehicleGunReloadTime",
+        "desc": "от времени заряжания",
+        "value": 0.9
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedTankRammer",
+    "index": 53,
+    "name": "Трофейный досылатель",
+    "tags": "rammer firepower trophyUpgraded",
+    "icon": "rammer",
+    "include_tags": "tankRammer_class1_user tankRammer_class2_user",
+    "factors": [
+      {
+        "type": "vehicleGunReloadTime",
+        "desc": "от времени заряжания",
+        "value": 0.875
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicImprovedVentilation",
+    "index": 54,
+    "name": "Трофейная вентиляция",
+    "tags": "ventilation trophyBasic armor firepower camouflage reconnaissance mobility",
+    "icon": "improvedVentilation",
+    "include_tags": "improvedVentilation_class1_user improvedVentilation_class2_user improvedVentilation_class3_user",
+    "factors": [
+      {
+        "type": "crewLevel",
+        "desc": "ко всем навыкам всего экипажа",
+        "value": 1.05
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedImprovedVentilation",
+    "index": 55,
+    "name": "Трофейная вентиляция",
+    "tags": "ventilation trophyUpgraded armor firepower camouflage reconnaissance mobility",
+    "icon": "improvedVentilation",
+    "include_tags": "improvedVentilation_class1_user improvedVentilation_class2_user improvedVentilation_class3_user",
+    "factors": [
+      {
+        "type": "crewLevel",
+        "desc": "ко всем навыкам всего экипажа",
+        "value": 1.075
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicAimingStabilizer",
+    "index": 56,
+    "name": "Трофейный стабилизатор",
+    "tags": "aimingStabilizer trophyBasic firepower",
+    "icon": "aimingStabilizer",
+    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user",
+    "factors": [
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.8
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedAimingStabilizer",
+    "index": 57,
+    "name": "Трофейный стабилизатор",
+    "tags": "aimingStabilizer trophyUpgraded firepower",
+    "icon": "aimingStabilizer",
+    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user",
+    "factors": [
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.75
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicCoatedOptics",
+    "index": 58,
+    "name": "Трофейная оптика",
+    "tags": "coatedOptics trophyBasic reconnaissance",
+    "icon": "coatedOptics",
+    "factors": [
+      {
+        "type": "vehicleCircularVisionRadius",
+        "desc": "к обзору (не более 445 метров)",
+        "value": 1.1
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedCoatedOptics",
+    "index": 59,
+    "name": "Трофейная оптика",
+    "tags": "coatedOptics trophyUpgraded reconnaissance",
+    "icon": "coatedOptics",
+    "factors": [
+      {
+        "type": "vehicleCircularVisionRadius",
+        "desc": "к обзору (не более 445 метров)",
+        "value": 1.125
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicImprovedConfiguration",
+    "index": 105,
+    "name": "Трофейные технологии защиты",
+    "tags": "improvedConfiguration armor trophyBasic",
+    "icon": "improvedConfiguration",
+    "min_tier": 5,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleRepairSpeed",
+        "desc": "к скорости ремонта",
+        "value": 1.25
+      },
+      {
+        "type": "vehicleAmmoBayEngineFuelStrength",
+        "desc": "к прочности внутренних модулей",
+        "value": 2
+      },
+      {
+        "type": "vehPenaltyForDamageEngineAndCombat",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
+        "value": 0.5
+      },
+      {
+        "type": "vehicleFireChance",
+        "desc": "от шанса возгорания двигателя",
+        "value": 0.5
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedImprovedConfiguration",
+    "index": 106,
+    "name": "Трофейные технологии защиты",
+    "tags": "improvedConfiguration armor trophyUpgraded",
+    "icon": "improvedConfiguration",
+    "min_tier": 5,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleRepairSpeed",
+        "desc": "к скорости ремонта",
+        "value": 1.4
+      },
+      {
+        "type": "vehicleAmmoBayEngineFuelStrength",
+        "desc": "к прочности внутренних модулей",
+        "value": 2.5
+      },
+      {
+        "type": "vehPenaltyForDamageEngineAndCombat",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
+        "value": 0.3
+      },
+      {
+        "type": "vehicleFireChance",
+        "desc": "от шанса возгорания двигателя",
+        "value": 0.3
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicImprovedRotationMechanism",
+    "index": 107,
+    "name": "Трофейные механизмы поворота",
+    "tags": "rotationMechanism trophyBasic",
+    "icon": "improvedRotationMechanism",
+    "min_tier": 5,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleTurretOrCuttingRotationSpeed",
+        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
+        "value": 1.1
+      },
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.1
+      },
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.9
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedImprovedRotationMechanism",
+    "index": 108,
+    "name": "Трофейные механизмы поворота",
+    "tags": "rotationMechanism trophyUpgraded",
+    "icon": "improvedRotationMechanism",
+    "min_tier": 5,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleTurretOrCuttingRotationSpeed",
+        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
+        "value": 1.15
+      },
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.15
+      },
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.85
+      }
+    ]
+  },
+  {
+    "id": "trophyBasicImprovedSights",
+    "index": 109,
+    "name": "Трофейный прицел",
+    "tags": "improvedSights trophyBasic firepower",
+    "icon": "improvedSights",
+    "min_tier": 5,
+    "max_tier": 11,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleGunShotFullDispersion",
+        "desc": "от размера круга сведения",
+        "value": 0.95
+      }
+    ]
+  },
+  {
+    "id": "trophyUpgradedImprovedSights",
+    "index": 110,
+    "name": "Трофейный прицел",
+    "tags": "improvedSights trophyUpgraded firepower",
+    "icon": "improvedSights",
+    "min_tier": 5,
+    "max_tier": 11,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleGunShotFullDispersion",
+        "desc": "от размера круга сведения",
+        "value": 0.92
+      }
+    ]
   },
   {
     "id": "trophyBasicAdditionalInvisibilityDevice",
     "index": 113,
     "name": "Трофейная система выхлопа",
-    "desc": "",
     "tags": "additInvisibilityDevice trophyBasic",
     "icon": "additionalInvisibilityDevice",
-    "price": 100000,
-    "weight": 0,
     "factors": [
       {
         "type": "vehicleCamouflage",
@@ -1768,11 +525,8 @@ export const equipment = [
     "id": "trophyUpgradedAdditionalInvisibilityDevice",
     "index": 114,
     "name": "Трофейная система выхлопа",
-    "desc": "",
     "tags": "additInvisibilityDevice trophyUpgraded",
     "icon": "additionalInvisibilityDevice",
-    "price": 100000,
-    "weight": 0,
     "factors": [
       {
         "type": "vehicleCamouflage",
@@ -1798,11 +552,8 @@ export const equipment = [
     "id": "trophyBasicTurbocharger",
     "index": 115,
     "name": "Трофейный турбонагнетатель",
-    "desc": "",
     "tags": "turbocharger trophyBasic",
-    "icon": "turbocharger",
-    "price": 100000,
-    "weight": 0,
+    "icon": "../maps/icons/artefact/turbocharger.png 0 0",
     "factors": [
       {
         "type": "vehicleEnginePower",
@@ -1825,11 +576,8 @@ export const equipment = [
     "id": "trophyUpgradedTurbocharger",
     "index": 116,
     "name": "Трофейный турбонагнетатель",
-    "desc": "",
     "tags": "turbocharger trophyUpgraded",
-    "icon": "turbocharger",
-    "price": 100000,
-    "weight": 0,
+    "icon": "../maps/icons/artefact/turbocharger.png 0 0",
     "factors": [
       {
         "type": "vehicleEnginePower",
@@ -1849,44 +597,12 @@ export const equipment = [
     ]
   },
   {
-    "id": "deluxImprovedRotationMechanism",
-    "index": 117,
-    "name": "Усовершенствованная бортовая передача",
-    "desc": "",
-    "tags": "rotationMechanism deluxe",
-    "icon": "improvedRotationMechanism",
-    "price": 0,
-    "crystal_price": 5000,
-    "weight": 0,
-    "factors": [
-      {
-        "type": "vehicleTurretOrCuttingRotationSpeed",
-        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
-        "value": 1.175
-      },
-      {
-        "type": "vehicleAllGroundRotationSpeed",
-        "desc": "к скорости поворота ходовой",
-        "value": 1.175
-      },
-      {
-        "type": "vehicleGunShotDispersion",
-        "desc": "от разброса при движении и поворотах",
-        "value": 0.825
-      }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
-  },
-  {
     "id": "trophyBasicExtraHealthReserve",
     "index": 118,
     "name": "Трофейная закалка",
-    "desc": "",
     "tags": "healthReserve trophyBasic",
     "icon": "extraHealthReserve",
-    "price": 100000,
-    "weight": 0,
+    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
     "factors": [
       {
         "type": "vehicleStrength",
@@ -1908,18 +624,15 @@ export const equipment = [
         "desc": "от урона при падении",
         "value": 0.5
       }
-    ],
-    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user"
+    ]
   },
   {
     "id": "trophyUpgradedExtraHealthReserve",
     "index": 119,
     "name": "Трофейная закалка",
-    "desc": "",
     "tags": "healthReserve trophyUpgraded",
     "icon": "extraHealthReserve",
-    "price": 100000,
-    "weight": 0,
+    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
     "factors": [
       {
         "type": "vehicleStrength",
@@ -1941,18 +654,1089 @@ export const equipment = [
         "desc": "от урона при падении",
         "value": 0.3
       }
-    ],
-    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user"
+    ]
+  },
+  {
+    "id": "improvedConfiguration_tier2",
+    "index": 61,
+    "name": "Изменённая компоновка (Класс 2)",
+    "tags": "improvedConfiguration armor",
+    "icon": "improvedConfiguration",
+    "categories": "survivability",
+    "min_tier": 5,
+    "max_tier": 7,
+    "factors": [
+      {
+        "type": "vehicleRepairSpeed",
+        "desc": "к скорости ремонта",
+        "value": 1.25,
+        "specValue": 1.35
+      },
+      {
+        "type": "vehicleAmmoBayEngineFuelStrength",
+        "desc": "к прочности внутренних модулей",
+        "value": 2,
+        "specValue": 2.5
+      },
+      {
+        "type": "vehPenaltyForDamageEngineAndCombat",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
+        "value": 0.5,
+        "specValue": 0.35
+      },
+      {
+        "type": "vehicleFireChance",
+        "desc": "от шанса возгорания двигателя",
+        "value": 0.5,
+        "specValue": 0.35
+      }
+    ]
+  },
+  {
+    "id": "improvedConfiguration_tier1",
+    "index": 62,
+    "name": "Изменённая компоновка (Класс 1)",
+    "tags": "improvedConfiguration armor",
+    "icon": "improvedConfiguration",
+    "categories": "survivability",
+    "min_tier": 8,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleRepairSpeed",
+        "desc": "к скорости ремонта",
+        "value": 1.25,
+        "specValue": 1.35
+      },
+      {
+        "type": "vehicleAmmoBayEngineFuelStrength",
+        "desc": "к прочности внутренних модулей",
+        "value": 2,
+        "specValue": 2.5
+      },
+      {
+        "type": "vehPenaltyForDamageEngineAndCombat",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
+        "value": 0.5,
+        "specValue": 0.35
+      },
+      {
+        "type": "vehicleFireChance",
+        "desc": "от шанса возгорания двигателя",
+        "value": 0.5,
+        "specValue": 0.35
+      }
+    ]
+  },
+  {
+    "id": "antifragmentationLining_tier4",
+    "index": 63,
+    "name": "Лёгкий противоосколочный подбой",
+    "tags": "antifragmentationLining armor",
+    "icon": "antifragmentationLining",
+    "categories": "survivability",
+    "include_tags": "antifragmentationLining_light_user",
+    "factors": [
+      {
+        "type": "vehicleRamOrExplosionDamageResistance",
+        "desc": "от ОФ урона, огнесмеси и тарана",
+        "value": 0.5,
+        "specValue": 0.4
+      },
+      {
+        "type": "crewHitChance",
+        "desc": "к защите экипажа от ранений",
+        "value": 1.5,
+        "specValue": 1.6
+      },
+      {
+        "type": "crewStunDuration",
+        "desc": "от времени дезориентации",
+        "value": 0.75,
+        "specValue": 0.65
+      },
+      {
+        "type": "crewStunResistance",
+        "desc": "от силы дезориентации экипажа",
+        "value": 0.9,
+        "specValue": 0.85
+      }
+    ]
+  },
+  {
+    "id": "antifragmentationLining_tier3",
+    "index": 64,
+    "name": "Средний противоосколочный подбой",
+    "tags": "antifragmentationLining armor",
+    "icon": "antifragmentationLining",
+    "categories": "survivability",
+    "include_tags": "antifragmentationLining_medium_user",
+    "factors": [
+      {
+        "type": "vehicleRamOrExplosionDamageResistance",
+        "desc": "от ОФ урона, огнесмеси и тарана",
+        "value": 0.5,
+        "specValue": 0.4
+      },
+      {
+        "type": "crewHitChance",
+        "desc": "к защите экипажа от ранений",
+        "value": 1.5,
+        "specValue": 1.6
+      },
+      {
+        "type": "crewStunDuration",
+        "desc": "от времени дезориентации",
+        "value": 0.75,
+        "specValue": 0.65
+      },
+      {
+        "type": "crewStunResistance",
+        "desc": "от силы дезориентации экипажа",
+        "value": 0.9,
+        "specValue": 0.85
+      }
+    ]
+  },
+  {
+    "id": "antifragmentationLining_tier2",
+    "index": 65,
+    "name": "Тяжёлый противоосколочный подбой",
+    "tags": "antifragmentationLining armor",
+    "icon": "antifragmentationLining",
+    "categories": "survivability",
+    "include_tags": "antifragmentationLining_heavy_user",
+    "factors": [
+      {
+        "type": "vehicleRamOrExplosionDamageResistance",
+        "desc": "от ОФ урона, огнесмеси и тарана",
+        "value": 0.5,
+        "specValue": 0.4
+      },
+      {
+        "type": "crewHitChance",
+        "desc": "к защите экипажа от ранений",
+        "value": 1.5,
+        "specValue": 1.6
+      },
+      {
+        "type": "crewStunDuration",
+        "desc": "от времени дезориентации",
+        "value": 0.75,
+        "specValue": 0.65
+      },
+      {
+        "type": "crewStunResistance",
+        "desc": "от силы дезориентации экипажа",
+        "value": 0.9,
+        "specValue": 0.85
+      }
+    ]
+  },
+  {
+    "id": "antifragmentationLining_tier1",
+    "index": 66,
+    "name": "Сверхтяжёлый противоосколочный подбой",
+    "tags": "antifragmentationLining armor",
+    "icon": "antifragmentationLining",
+    "categories": "survivability",
+    "include_tags": "antifragmentationLining_superheavy_user",
+    "factors": [
+      {
+        "type": "vehicleRamOrExplosionDamageResistance",
+        "desc": "от ОФ урона, огнесмеси и тарана",
+        "value": 0.5,
+        "specValue": 0.4
+      },
+      {
+        "type": "crewHitChance",
+        "desc": "к защите экипажа от ранений",
+        "value": 1.5,
+        "specValue": 1.6
+      },
+      {
+        "type": "crewStunDuration",
+        "desc": "от времени дезориентации",
+        "value": 0.75,
+        "specValue": 0.65
+      },
+      {
+        "type": "crewStunResistance",
+        "desc": "от силы дезориентации экипажа",
+        "value": 0.9,
+        "specValue": 0.85
+      }
+    ]
+  },
+  {
+    "id": "stereoscope_tier3",
+    "index": 67,
+    "name": "Стереотруба (Класс 3)",
+    "tags": "stereoscope reconnaissance",
+    "icon": "stereoscope",
+    "categories": "stealth",
+    "min_tier": 2,
+    "max_tier": 4,
+    "factors": [
+      {
+        "type": "vehicleStillCircularVisionRadius",
+        "desc": "к обзору из неподвижной машины (не более 445 метров)",
+        "value": 1.25,
+        "specValue": 1.275
+      }
+    ]
+  },
+  {
+    "id": "stereoscope_tier2",
+    "index": 68,
+    "name": "Стереотруба (Класс 2)",
+    "tags": "stereoscope reconnaissance",
+    "icon": "stereoscope",
+    "categories": "stealth",
+    "min_tier": 5,
+    "max_tier": 7,
+    "factors": [
+      {
+        "type": "vehicleStillCircularVisionRadius",
+        "desc": "к обзору из неподвижной машины (не более 445 метров)",
+        "value": 1.25,
+        "specValue": 1.275
+      }
+    ]
+  },
+  {
+    "id": "stereoscope_tier1",
+    "index": 69,
+    "name": "Стереотруба (Класс 1)",
+    "tags": "stereoscope reconnaissance",
+    "icon": "stereoscope",
+    "categories": "stealth",
+    "min_tier": 8,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleStillCircularVisionRadius",
+        "desc": "к обзору из неподвижной машины (не более 445 метров)",
+        "value": 1.25,
+        "specValue": 1.275
+      }
+    ]
+  },
+  {
+    "id": "coatedOptics_tier3",
+    "index": 70,
+    "name": "Просветлённая оптика (Класс 3)",
+    "tags": "coatedOptics reconnaissance",
+    "icon": "coatedOptics",
+    "categories": "stealth",
+    "min_tier": 2,
+    "max_tier": 4,
+    "factors": [
+      {
+        "type": "vehicleCircularVisionRadius",
+        "desc": "к обзору (не более 445 метров)",
+        "value": 1.1,
+        "specValue": 1.115
+      }
+    ]
+  },
+  {
+    "id": "coatedOptics_tier2",
+    "index": 71,
+    "name": "Просветлённая оптика (Класс 2)",
+    "tags": "coatedOptics reconnaissance",
+    "icon": "coatedOptics",
+    "categories": "stealth",
+    "min_tier": 5,
+    "max_tier": 7,
+    "factors": [
+      {
+        "type": "vehicleCircularVisionRadius",
+        "desc": "к обзору (не более 445 метров)",
+        "value": 1.1,
+        "specValue": 1.115
+      }
+    ]
+  },
+  {
+    "id": "coatedOptics_tier1",
+    "index": 72,
+    "name": "Просветлённая оптика (Класс 1)",
+    "tags": "coatedOptics reconnaissance",
+    "icon": "coatedOptics",
+    "categories": "stealth",
+    "min_tier": 8,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleCircularVisionRadius",
+        "desc": "к обзору (не более 445 метров)",
+        "value": 1.1,
+        "specValue": 1.115
+      }
+    ]
+  },
+  {
+    "id": "camouflageNet_tier3",
+    "index": 73,
+    "name": "Маскировочная сеть (Класс 3)",
+    "tags": "camouflageNet camouflage",
+    "icon": "camouflageNet",
+    "categories": "stealth",
+    "min_tier": 2,
+    "max_tier": 4,
+    "factors": [
+      {
+        "type": "vehicleStillCamouflage",
+        "desc": "к незаметности неподвижной машины",
+        "value": 1.15,
+        "restriction": "AT-SPG",
+        "specValue": 1.175
+      },
+      {
+        "type": "vehicleStillCamouflage",
+        "desc": "к незаметности неподвижной машины",
+        "value": 1.1,
+        "restriction": "lightTank mediumTank",
+        "specValue": 1.125
+      },
+      {
+        "type": "vehicleStillCamouflage",
+        "desc": "к незаметности неподвижной машины",
+        "value": 1.05,
+        "restriction": "heavyTank SPG",
+        "specValue": 1.075
+      }
+    ]
+  },
+  {
+    "id": "camouflageNet_tier2",
+    "index": 74,
+    "name": "Маскировочная сеть (Класс 2)",
+    "tags": "camouflageNet camouflage",
+    "icon": "camouflageNet",
+    "categories": "stealth",
+    "min_tier": 5,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleStillCamouflage",
+        "desc": "к незаметности неподвижной машины",
+        "value": 1.15,
+        "restriction": "AT-SPG",
+        "specValue": 1.175
+      },
+      {
+        "type": "vehicleStillCamouflage",
+        "desc": "к незаметности неподвижной машины",
+        "value": 1.1,
+        "restriction": "lightTank mediumTank",
+        "specValue": 1.125
+      },
+      {
+        "type": "vehicleStillCamouflage",
+        "desc": "к незаметности неподвижной машины",
+        "value": 1.05,
+        "restriction": "heavyTank SPG",
+        "specValue": 1.075
+      }
+    ]
+  },
+  {
+    "id": "improvedVentilation_tier3",
+    "index": 75,
+    "name": "Улучшенная вентиляция (Класс 3)",
+    "tags": "ventilation armor firepower camouflage reconnaissance mobility",
+    "icon": "improvedVentilation",
+    "categories": "firepower mobility stealth survivability",
+    "include_tags": "improvedVentilation_class3_user",
+    "factors": [
+      {
+        "type": "crewLevel",
+        "desc": "ко всем навыкам всего экипажа",
+        "value": 1.05,
+        "specValue": 1.06
+      }
+    ]
+  },
+  {
+    "id": "improvedVentilation_tier2",
+    "index": 76,
+    "name": "Улучшенная вентиляция (Класс 2)",
+    "tags": "ventilation armor firepower camouflage reconnaissance mobility",
+    "icon": "improvedVentilation",
+    "categories": "firepower mobility stealth survivability",
+    "include_tags": "improvedVentilation_class2_user",
+    "factors": [
+      {
+        "type": "crewLevel",
+        "desc": "ко всем навыкам всего экипажа",
+        "value": 1.05,
+        "specValue": 1.06
+      }
+    ]
+  },
+  {
+    "id": "improvedVentilation_tier1",
+    "index": 77,
+    "name": "Улучшенная вентиляция (Класс 1)",
+    "tags": "ventilation armor firepower camouflage reconnaissance mobility",
+    "icon": "improvedVentilation",
+    "categories": "firepower mobility stealth survivability",
+    "include_tags": "improvedVentilation_class1_user",
+    "factors": [
+      {
+        "type": "crewLevel",
+        "desc": "ко всем навыкам всего экипажа",
+        "value": 1.05,
+        "specValue": 1.06
+      }
+    ]
+  },
+  {
+    "id": "grousers_tier3",
+    "index": 78,
+    "name": "Дополнительные грунтозацепы (Класс 3)",
+    "tags": "grousers mobility",
+    "icon": "grousers",
+    "categories": "mobility",
+    "min_tier": 2,
+    "max_tier": 4,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.15,
+        "specValue": 1.2
+      },
+      {
+        "type": "vehicleSpeedGain",
+        "desc": "к сохранению набранной скорости во время пересечения всех типов местности",
+        "value": 1.1,
+        "specValue": 1.15
+      }
+    ]
+  },
+  {
+    "id": "grousers_tier2",
+    "index": 79,
+    "name": "Дополнительные грунтозацепы (Класс 2)",
+    "tags": "grousers mobility",
+    "icon": "grousers",
+    "categories": "mobility",
+    "min_tier": 5,
+    "max_tier": 7,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.15,
+        "specValue": 1.2
+      },
+      {
+        "type": "vehicleSpeedGain",
+        "desc": "к сохранению набранной скорости во время пересечения всех типов местности",
+        "value": 1.1,
+        "specValue": 1.15
+      }
+    ]
+  },
+  {
+    "id": "grousers_tier1",
+    "index": 80,
+    "name": "Дополнительные грунтозацепы (Класс 1)",
+    "tags": "grousers mobility",
+    "icon": "grousers",
+    "categories": "mobility",
+    "min_tier": 8,
+    "max_tier": 11,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.15,
+        "specValue": 1.2
+      },
+      {
+        "type": "vehicleSpeedGain",
+        "desc": "к сохранению набранной скорости во время пересечения всех типов местности",
+        "value": 1.1,
+        "specValue": 1.15
+      }
+    ]
+  },
+  {
+    "id": "tankRammer_tier2",
+    "index": 81,
+    "name": "Орудийный досылатель (Класс 2)",
+    "tags": "rammer firepower",
+    "icon": "rammer",
+    "categories": "firepower",
+    "include_tags": "tankRammer_class2_user",
+    "factors": [
+      {
+        "type": "vehicleGunReloadTime",
+        "desc": "от времени заряжания",
+        "value": 0.9,
+        "specValue": 0.885
+      }
+    ]
+  },
+  {
+    "id": "tankRammer_tier1",
+    "index": 82,
+    "name": "Орудийный досылатель (Класс 1)",
+    "tags": "rammer firepower",
+    "icon": "rammer",
+    "categories": "firepower",
+    "include_tags": "tankRammer_class1_user",
+    "factors": [
+      {
+        "type": "vehicleGunReloadTime",
+        "desc": "от времени заряжания",
+        "value": 0.9,
+        "specValue": 0.885
+      }
+    ]
+  },
+  {
+    "id": "enhancedAimDrives_tier3",
+    "index": 83,
+    "name": "Усиленные приводы наводки (Класс 3)",
+    "tags": "enhancedAimDrives firepower",
+    "icon": "enhancedAimDrives",
+    "categories": "firepower",
+    "min_tier": 2,
+    "max_tier": 4,
+    "factors": [
+      {
+        "type": "vehicleGunAimSpeed",
+        "desc": "к скорости сведения",
+        "value": 1.1,
+        "specValue": 1.115
+      }
+    ]
+  },
+  {
+    "id": "enhancedAimDrives_tier2",
+    "index": 84,
+    "name": "Усиленные приводы наводки (Класс 2)",
+    "tags": "enhancedAimDrives firepower",
+    "icon": "enhancedAimDrives",
+    "categories": "firepower",
+    "min_tier": 5,
+    "max_tier": 7,
+    "factors": [
+      {
+        "type": "vehicleGunAimSpeed",
+        "desc": "к скорости сведения",
+        "value": 1.1,
+        "specValue": 1.115
+      }
+    ]
+  },
+  {
+    "id": "enhancedAimDrives_tier1",
+    "index": 85,
+    "name": "Усиленные приводы наводки (Класс 1)",
+    "tags": "enhancedAimDrives firepower",
+    "icon": "enhancedAimDrives",
+    "categories": "firepower",
+    "min_tier": 8,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleGunAimSpeed",
+        "desc": "к скорости сведения",
+        "value": 1.1,
+        "specValue": 1.115
+      }
+    ]
+  },
+  {
+    "id": "aimingStabilizer_tier2",
+    "index": 86,
+    "name": "Стабилизатор вертикальной наводки (Класс 2)",
+    "tags": "aimingStabilizer firepower",
+    "icon": "aimingStabilizer",
+    "categories": "firepower",
+    "include_tags": "aimingStabilizer_class2_user",
+    "factors": [
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.8,
+        "specValue": 0.77
+      }
+    ]
+  },
+  {
+    "id": "aimingStabilizer_tier1",
+    "index": 87,
+    "name": "Стабилизатор вертикальной наводки (Класс 1)",
+    "tags": "aimingStabilizer firepower",
+    "icon": "aimingStabilizer",
+    "categories": "firepower",
+    "include_tags": "aimingStabilizer_class1_user",
+    "factors": [
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.8,
+        "specValue": 0.77
+      }
+    ]
+  },
+  {
+    "id": "additionalInvisibilityDevice_tier3",
+    "index": 88,
+    "name": "Малошумная система выхлопа (Класс 3)",
+    "tags": "additInvisibilityDevice",
+    "icon": "additionalInvisibilityDevice",
+    "categories": "stealth",
+    "min_tier": 2,
+    "max_tier": 4,
+    "factors": [
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.06,
+        "restriction": "lightTank mediumTank",
+        "specValue": 1.08
+      },
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.05,
+        "restriction": "AT-SPG",
+        "specValue": 1.06
+      },
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.03,
+        "restriction": "heavyTank SPG",
+        "specValue": 1.04
+      }
+    ]
+  },
+  {
+    "id": "additionalInvisibilityDevice_tier2",
+    "index": 89,
+    "name": "Малошумная система выхлопа (Класс 2)",
+    "tags": "additInvisibilityDevice",
+    "icon": "additionalInvisibilityDevice",
+    "categories": "stealth",
+    "min_tier": 5,
+    "max_tier": 7,
+    "factors": [
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.06,
+        "restriction": "lightTank mediumTank",
+        "specValue": 1.08
+      },
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.05,
+        "restriction": "AT-SPG",
+        "specValue": 1.06
+      },
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.03,
+        "restriction": "heavyTank SPG",
+        "specValue": 1.04
+      }
+    ]
+  },
+  {
+    "id": "additionalInvisibilityDevice_tier1",
+    "index": 90,
+    "name": "Малошумная система выхлопа (Класс 1)",
+    "tags": "additInvisibilityDevice",
+    "icon": "additionalInvisibilityDevice",
+    "categories": "stealth",
+    "min_tier": 8,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.06,
+        "restriction": "lightTank mediumTank",
+        "specValue": 1.08
+      },
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.05,
+        "restriction": "AT-SPG",
+        "specValue": 1.06
+      },
+      {
+        "type": "vehicleCamouflage",
+        "desc": "к незаметности",
+        "value": 1.03,
+        "restriction": "heavyTank SPG",
+        "specValue": 1.04
+      }
+    ]
+  },
+  {
+    "id": "extraHealthReserve_tier3",
+    "index": 91,
+    "name": "Улучшенная закалка (Класс 3)",
+    "tags": "healthReserve",
+    "icon": "extraHealthReserve",
+    "categories": "survivability",
+    "include_tags": "extraHealthReserve_class3_user",
+    "factors": [
+      {
+        "type": "vehicleStrength",
+        "desc": "к запасу прочности машины",
+        "value": 1.08,
+        "specValue": 1.1
+      },
+      {
+        "type": "vehicleChassisStrength",
+        "desc": "к прочности ходовой",
+        "value": 1.5,
+        "specValue": 1.65
+      },
+      {
+        "type": "vehicleChassisRepairSpeed",
+        "desc": "к скорости ремонта ходовой",
+        "value": 1.15,
+        "specValue": 1.2
+      },
+      {
+        "type": "vehicleChassisFallDamage",
+        "desc": "от урона при падении",
+        "value": 0.5,
+        "specValue": 0.35
+      }
+    ]
+  },
+  {
+    "id": "extraHealthReserve_tier2",
+    "index": 92,
+    "name": "Улучшенная закалка (Класс 2)",
+    "tags": "healthReserve",
+    "icon": "extraHealthReserve",
+    "categories": "survivability",
+    "include_tags": "extraHealthReserve_class2_user",
+    "factors": [
+      {
+        "type": "vehicleStrength",
+        "desc": "к запасу прочности машины",
+        "value": 1.08,
+        "specValue": 1.1
+      },
+      {
+        "type": "vehicleChassisStrength",
+        "desc": "к прочности ходовой",
+        "value": 1.5,
+        "specValue": 1.65
+      },
+      {
+        "type": "vehicleChassisRepairSpeed",
+        "desc": "к скорости ремонта ходовой",
+        "value": 1.15,
+        "specValue": 1.2
+      },
+      {
+        "type": "vehicleChassisFallDamage",
+        "desc": "от урона при падении",
+        "value": 0.5,
+        "specValue": 0.35
+      }
+    ]
+  },
+  {
+    "id": "extraHealthReserve_tier1",
+    "index": 93,
+    "name": "Улучшенная закалка (Класс 1)",
+    "tags": "healthReserve",
+    "icon": "extraHealthReserve",
+    "categories": "survivability",
+    "include_tags": "extraHealthReserve_class1_user",
+    "factors": [
+      {
+        "type": "vehicleStrength",
+        "desc": "к запасу прочности машины",
+        "value": 1.08,
+        "specValue": 1.1
+      },
+      {
+        "type": "vehicleChassisStrength",
+        "desc": "к прочности ходовой",
+        "value": 1.5,
+        "specValue": 1.65
+      },
+      {
+        "type": "vehicleChassisRepairSpeed",
+        "desc": "к скорости ремонта ходовой",
+        "value": 1.15,
+        "specValue": 1.2
+      },
+      {
+        "type": "vehicleChassisFallDamage",
+        "desc": "от урона при падении",
+        "value": 0.5,
+        "specValue": 0.35
+      }
+    ]
+  },
+  {
+    "id": "improvedRadioCommunication",
+    "index": 94,
+    "name": "Улучшенное радиооборудование",
+    "icon": "improvedRadioCommunication",
+    "categories": "stealth",
+    "min_tier": 8,
+    "max_tier": 11,
+    "include_tags": "lightTank mediumTank",
+    "factors": [
+      {
+        "type": "vehicleEnemySpottingTime",
+        "desc": "ко времени отображения обнаруженного\\nвами противника",
+        "value": 1.5,
+        "specValue": 2
+      },
+      {
+        "type": "vehicleOwnSpottingTime",
+        "desc": "от времени вашей видимости",
+        "value": -1.5,
+        "specValue": -2
+      }
+    ]
+  },
+  {
+    "id": "improvedRotationMechanism_tier2",
+    "index": 95,
+    "name": "Улучшенные механизмы поворота (Класс 2)",
+    "tags": "rotationMechanism",
+    "icon": "improvedRotationMechanism",
+    "categories": "firepower mobility",
+    "min_tier": 5,
+    "max_tier": 7,
+    "factors": [
+      {
+        "type": "vehicleTurretOrCuttingRotationSpeed",
+        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
+        "value": 1.1,
+        "specValue": 1.125
+      },
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.1,
+        "specValue": 1.125
+      },
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.9,
+        "specValue": 0.875
+      }
+    ]
+  },
+  {
+    "id": "improvedRotationMechanism_tier1",
+    "index": 96,
+    "name": "Улучшенные механизмы поворота (Класс 1)",
+    "tags": "rotationMechanism",
+    "icon": "improvedRotationMechanism",
+    "categories": "firepower mobility",
+    "min_tier": 8,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleTurretOrCuttingRotationSpeed",
+        "desc": "к скорости поворота башни или горизонтального наведения орудия для машин с неподвижной рубкой",
+        "value": 1.1,
+        "specValue": 1.125
+      },
+      {
+        "type": "vehicleAllGroundRotationSpeed",
+        "desc": "к скорости поворота ходовой",
+        "value": 1.1,
+        "specValue": 1.125
+      },
+      {
+        "type": "vehicleGunShotDispersion",
+        "desc": "от разброса при движении и поворотах",
+        "value": 0.9,
+        "specValue": 0.875
+      }
+    ]
+  },
+  {
+    "id": "turbocharger_tier3",
+    "index": 97,
+    "name": "Турбонагнетатель (Класс 3)",
+    "tags": "turbocharger",
+    "icon": "turbocharger",
+    "categories": "mobility",
+    "min_tier": 2,
+    "max_tier": 4,
+    "factors": [
+      {
+        "type": "vehicleEnginePower",
+        "desc": "к мощности двигателя",
+        "value": 1.075,
+        "specValue": 1.1
+      },
+      {
+        "type": "vehicleForwardMaxSpeed",
+        "desc": "к максимальной скорости вперёд",
+        "value": 4,
+        "specValue": 5
+      },
+      {
+        "type": "vehicleBackwardMaxSpeed",
+        "desc": "к максимальной скорости назад",
+        "value": 2,
+        "specValue": 3
+      }
+    ]
+  },
+  {
+    "id": "turbocharger_tier2",
+    "index": 98,
+    "name": "Турбонагнетатель (Класс 2)",
+    "tags": "turbocharger",
+    "icon": "turbocharger",
+    "categories": "mobility",
+    "min_tier": 5,
+    "max_tier": 7,
+    "factors": [
+      {
+        "type": "vehicleEnginePower",
+        "desc": "к мощности двигателя",
+        "value": 1.075,
+        "specValue": 1.1
+      },
+      {
+        "type": "vehicleForwardMaxSpeed",
+        "desc": "к максимальной скорости вперёд",
+        "value": 4,
+        "specValue": 5
+      },
+      {
+        "type": "vehicleBackwardMaxSpeed",
+        "desc": "к максимальной скорости назад",
+        "value": 2,
+        "specValue": 3
+      }
+    ]
+  },
+  {
+    "id": "turbocharger_tier1",
+    "index": 99,
+    "name": "Турбонагнетатель (Класс 1)",
+    "tags": "turbocharger",
+    "icon": "turbocharger",
+    "categories": "mobility",
+    "min_tier": 8,
+    "max_tier": 11,
+    "factors": [
+      {
+        "type": "vehicleEnginePower",
+        "desc": "к мощности двигателя",
+        "value": 1.075,
+        "specValue": 1.1
+      },
+      {
+        "type": "vehicleForwardMaxSpeed",
+        "desc": "к максимальной скорости вперёд",
+        "value": 4,
+        "specValue": 5
+      },
+      {
+        "type": "vehicleBackwardMaxSpeed",
+        "desc": "к максимальной скорости назад",
+        "value": 2,
+        "specValue": 3
+      }
+    ]
+  },
+  {
+    "id": "commandersView",
+    "index": 100,
+    "name": "Командирский обзорный прибор",
+    "icon": "commandersView",
+    "categories": "stealth",
+    "min_tier": 8,
+    "max_tier": 11,
+    "include_tags": "lightTank mediumTank",
+    "factors": [
+      {
+        "type": "demaskFoliageFactor",
+        "desc": "от незаметности противника\\nза растительностью",
+        "value": 0.85,
+        "specValue": 0.8
+      },
+      {
+        "type": "demaskMovingFactor",
+        "desc": "от незаметности противника,\\nнаходящегося в движении",
+        "value": 0.9,
+        "specValue": 0.875
+      }
+    ]
+  },
+  {
+    "id": "improvedSights_tier2",
+    "index": 101,
+    "name": "Улучшенный прицел (Класс 2)",
+    "tags": "improvedSights",
+    "icon": "improvedSights",
+    "categories": "firepower",
+    "min_tier": 5,
+    "max_tier": 7,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleGunShotFullDispersion",
+        "desc": "от размера круга сведения",
+        "value": 0.95,
+        "specValue": 0.93
+      }
+    ]
+  },
+  {
+    "id": "improvedSights_tier1",
+    "index": 102,
+    "name": "Улучшенный прицел (Класс 1)",
+    "tags": "improvedSights",
+    "icon": "improvedSights",
+    "categories": "firepower",
+    "min_tier": 8,
+    "max_tier": 11,
+    "include_tags": "lightTank mediumTank heavyTank AT-SPG",
+    "factors": [
+      {
+        "type": "vehicleGunShotFullDispersion",
+        "desc": "от размера круга сведения",
+        "value": 0.95,
+        "specValue": 0.93
+      }
+    ]
   },
   {
     "id": "modernizedAimDrivesAimingStabilizer1",
     "index": 150,
     "name": "Система управления огнём Т1",
-    "desc": "",
     "tags": "enhancedAimDrives firepower modernized_1",
     "icon": "modernizedAimDrivesAimingStabilizer",
-    "price": 100,
-    "weight": 0,
+    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user",
     "factors": [
       {
         "type": "vehicleGunAimSpeed",
@@ -1964,18 +1748,15 @@ export const equipment = [
         "desc": "от разброса при движении и поворотах",
         "value": 0.93
       }
-    ],
-    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user"
+    ]
   },
   {
     "id": "modernizedAimDrivesAimingStabilizer2",
     "index": 151,
     "name": "Система управления огнём Т2",
-    "desc": "",
     "tags": "enhancedAimDrives firepower modernized_2",
     "icon": "modernizedAimDrivesAimingStabilizer",
-    "price": 400,
-    "weight": 0,
+    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user",
     "factors": [
       {
         "type": "vehicleGunAimSpeed",
@@ -1987,41 +1768,36 @@ export const equipment = [
         "desc": "от разброса при движении и поворотах",
         "value": 0.91
       }
-    ],
-    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user"
+    ]
   },
   {
     "id": "modernizedAimDrivesAimingStabilizer3",
     "index": 152,
     "name": "Система управления огнём Т3",
-    "desc": "",
     "tags": "enhancedAimDrives firepower modernized_3",
     "icon": "modernizedAimDrivesAimingStabilizer",
-    "price": 1600,
-    "weight": 0,
+    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user",
     "factors": [
       {
         "type": "vehicleGunAimSpeed",
         "desc": "к скорости сведения",
-        "value": 1.095
+        "value": 1.09
       },
       {
         "type": "vehicleGunShotDispersion",
         "desc": "от разброса при движении и поворотах",
         "value": 0.885
       }
-    ],
-    "include_tags": "aimingStabilizer_class1_user aimingStabilizer_class2_user"
+    ]
   },
   {
     "id": "modernizedTurbochargerRotationMechanism1",
     "index": 153,
     "name": "Система повышения мобильности Т1",
-    "desc": "",
     "tags": "turbocharger modernized_1",
     "icon": "modernizedTurbochargerRotationMechanism",
-    "price": 100,
-    "weight": 0,
+    "min_tier": 5,
+    "max_tier": 11,
     "factors": [
       {
         "type": "vehicleEnginePower",
@@ -2053,19 +1829,16 @@ export const equipment = [
         "desc": "к максимальной скорости назад",
         "value": 2
       }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
+    ]
   },
   {
     "id": "modernizedTurbochargerRotationMechanism2",
     "index": 154,
     "name": "Система повышения мобильности Т2",
-    "desc": "",
     "tags": "turbocharger modernized_2",
     "icon": "modernizedTurbochargerRotationMechanism",
-    "price": 400,
-    "weight": 0,
+    "min_tier": 5,
+    "max_tier": 11,
     "factors": [
       {
         "type": "vehicleEnginePower",
@@ -2097,19 +1870,16 @@ export const equipment = [
         "desc": "к максимальной скорости назад",
         "value": 3
       }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
+    ]
   },
   {
     "id": "modernizedTurbochargerRotationMechanism3",
     "index": 155,
     "name": "Система повышения мобильности Т3",
-    "desc": "",
     "tags": "turbocharger modernized_3",
     "icon": "modernizedTurbochargerRotationMechanism",
-    "price": 1600,
-    "weight": 0,
+    "min_tier": 5,
+    "max_tier": 11,
     "factors": [
       {
         "type": "vehicleEnginePower",
@@ -2141,19 +1911,17 @@ export const equipment = [
         "desc": "к максимальной скорости назад",
         "value": 3
       }
-    ],
-    "min_tier": 5,
-    "max_tier": 10
+    ]
   },
   {
     "id": "modernizedExtraHealthReserveAntifragmentationLining1",
     "index": 156,
     "name": "Комплекс улучшения выживаемости Т1",
-    "desc": "",
     "tags": "healthReserve modernized_1",
     "icon": "modernizedExtraHealthReserveAntifragmentationLining",
-    "price": 100,
-    "weight": 0,
+    "min_tier": 5,
+    "max_tier": 11,
+    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
     "factors": [
       {
         "type": "vehicleStrength",
@@ -2177,23 +1945,20 @@ export const equipment = [
       },
       {
         "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
         "value": 0.7
       }
-    ],
-    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
-    "min_tier": 5,
-    "max_tier": 10
+    ]
   },
   {
     "id": "modernizedExtraHealthReserveAntifragmentationLining2",
     "index": 157,
     "name": "Комплекс улучшения выживаемости Т2",
-    "desc": "",
     "tags": "healthReserve modernized_2",
     "icon": "modernizedExtraHealthReserveAntifragmentationLining",
-    "price": 400,
-    "weight": 0,
+    "min_tier": 5,
+    "max_tier": 11,
+    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
     "factors": [
       {
         "type": "vehicleStrength",
@@ -2217,23 +1982,20 @@ export const equipment = [
       },
       {
         "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
         "value": 0.6
       }
-    ],
-    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
-    "min_tier": 5,
-    "max_tier": 10
+    ]
   },
   {
     "id": "modernizedExtraHealthReserveAntifragmentationLining3",
     "index": 158,
     "name": "Комплекс улучшения выживаемости Т3",
-    "desc": "",
     "tags": "healthReserve modernized_3",
     "icon": "modernizedExtraHealthReserveAntifragmentationLining",
-    "price": 1600,
-    "weight": 0,
+    "min_tier": 5,
+    "max_tier": 11,
+    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
     "factors": [
       {
         "type": "vehicleStrength",
@@ -2257,13 +2019,10 @@ export const equipment = [
       },
       {
         "type": "vehPenaltyForDamageEngineAndCombat",
-        "desc": "от штрафа за повреждённые боеукладку и двигатель",
+        "desc": "от штрафа за повреждённые\\nбоеукладку и двигатель",
         "value": 0.5
       }
-    ],
-    "include_tags": "extraHealthReserve_class1_user extraHealthReserve_class2_user extraHealthReserve_class3_user",
-    "min_tier": 5,
-    "max_tier": 10
+    ]
   }
 ] as const
 

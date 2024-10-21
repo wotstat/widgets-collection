@@ -2,8 +2,8 @@ import type { EquipmentTag, ConsumableTag, SpecializationTag } from "@/component
 import { defineWidget } from "@/utils/defineWidget";
 
 export default defineWidget({
-  name: "Оборудование от __NIDIN__",
-  description: "Рекомендуемое оборудование для каждого танка",
+  name: "Оборудование и модернизация от __NIDIN__",
+  description: "Рекомендуемое оборудование и полевая модернизация для каждого танка",
   params: [
     { type: 'checkbox', target: 'show-tank-name', label: 'Название танка', default: true },
     { type: 'select', target: 'variant', label: 'Стиль', variants: [{ value: 'default', label: 'Стандартный' }, { value: 'compact', label: 'Компактный' }], default: 'compact' },

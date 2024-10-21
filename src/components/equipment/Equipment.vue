@@ -20,17 +20,17 @@
 import { computed } from 'vue';
 import { ConsumableTag, EquipmentTag, getConsumableById, getEquipmentById, getEquipmentIconByTag, getConsumableIconByTag, isConsumableTag } from './equipment';
 
-import modernized1 from '@/assets/artefact/equipment/overlay/modernized_1.png'
-import modernized2 from '@/assets/artefact/equipment/overlay/modernized_2.png'
-import modernized3 from '@/assets/artefact/equipment/overlay/modernized_3.png'
+import modernized1 from './assets/equipment/overlay/modernized_1.png'
+import modernized2 from './assets/equipment/overlay/modernized_2.png'
+import modernized3 from './assets/equipment/overlay/modernized_3.png'
 
-import plus from '@/assets/artefact/equipment/overlay/plus.png'
-import PlusImg from '@/assets/artefact/equipment/utils/plus.svg'
-import trophyBasic from '@/assets/artefact/equipment/overlay/trophyBasic.png'
-import trophyUpgraded from '@/assets/artefact/equipment/overlay/trophyUpgraded.png'
-import boosterBackground from '@/assets/artefact/equipment/overlay/boosterBackground.png'
-import equipmentBooster from '@/assets/artefact/equipment/overlay/equipmentBooster.png'
-import skillBooster from '@/assets/artefact/equipment/overlay/skillBooster.png'
+import plus from './assets/equipment/overlay/plus.png'
+import PlusImg from './assets/equipment/utils/plus.svg'
+import trophyBasic from './assets/equipment/overlay/trophyBasic.png'
+import trophyUpgraded from './assets/equipment/overlay/trophyUpgraded.png'
+import boosterBackground from './assets/equipment/overlay/boosterBackground.png'
+import equipmentBooster from './assets/equipment/overlay/equipmentBooster.png'
+import skillBooster from './assets/equipment/overlay/skillBooster.png'
 
 const props = defineProps<{
   tag: EquipmentTag | ConsumableTag | null

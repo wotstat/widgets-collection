@@ -31,11 +31,11 @@ const consumableByIndex = new Map<number, Consumable>(consumables.map(e => [e.in
 type Glob = { default: string }
 const pngMap = ([k, v]: [string, { default: any }]) => [k.match(/([^\/]+)\.png$/)![1], v.default] as const
 
-const equipmentsSd = new Map(Object.entries(import.meta.glob<Glob>('/src/assets/artefact/equipment/normal/*.png', { eager: true })).map(pngMap))
-const equipmentsHd = new Map(Object.entries(import.meta.glob<Glob>('/src/assets/artefact/equipment/hd/*.png', { eager: true })).map(pngMap))
+const equipmentsSd = new Map(Object.entries(import.meta.glob<Glob>('./assets/equipment/normal/*.png', { eager: true })).map(pngMap))
+const equipmentsHd = new Map(Object.entries(import.meta.glob<Glob>('./assets/equipment/hd/*.png', { eager: true })).map(pngMap))
 
-const skillsSd = new Map(Object.entries(import.meta.glob<Glob>('/src/assets/artefact/skills/normal/*.png', { eager: true })).map(pngMap))
-const skillsHd = new Map(Object.entries(import.meta.glob<Glob>('/src/assets/artefact/skills/hd/*.png', { eager: true })).map(pngMap))
+const skillsSd = new Map(Object.entries(import.meta.glob<Glob>('/assets/skills/normal/*.png', { eager: true })).map(pngMap))
+const skillsHd = new Map(Object.entries(import.meta.glob<Glob>('/assets/skills/hd/*.png', { eager: true })).map(pngMap))
 
 export function isEquipmentTag(tag: string): tag is EquipmentTag {
   return equipmentById.has(tag as EquipmentTag)

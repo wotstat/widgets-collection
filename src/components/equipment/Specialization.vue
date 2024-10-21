@@ -9,14 +9,14 @@
 import { computed } from 'vue';
 import { EquipmentTag, getEquipmentById, getEquipmentIconByTag, SpecializationTag } from './equipment';
 
-import firepowerOff from '@/assets/artefact/equipment/specialization/firepower_off.png'
-import firepowerOn from '@/assets/artefact/equipment/specialization/firepower_on.png'
-import mobilityOff from '@/assets/artefact/equipment/specialization/mobility_off.png'
-import mobilityOn from '@/assets/artefact/equipment/specialization/mobility_on.png'
-import stealthOff from '@/assets/artefact/equipment/specialization/stealth_off.png'
-import stealthOn from '@/assets/artefact/equipment/specialization/stealth_on.png'
-import survivabilityOff from '@/assets/artefact/equipment/specialization/survivability_off.png'
-import survivabilityOn from '@/assets/artefact/equipment/specialization/survivability_on.png'
+import firepowerOff from './assets/equipment/specialization/firepower_off.png'
+import firepowerOn from './assets/equipment/specialization/firepower_on.png'
+import mobilityOff from './assets/equipment/specialization/mobility_off.png'
+import mobilityOn from './assets/equipment/specialization/mobility_on.png'
+import stealthOff from './assets/equipment/specialization/stealth_off.png'
+import stealthOn from './assets/equipment/specialization/stealth_on.png'
+import survivabilityOff from './assets/equipment/specialization/survivability_off.png'
+import survivabilityOn from './assets/equipment/specialization/survivability_on.png'
 
 
 const props = defineProps<{

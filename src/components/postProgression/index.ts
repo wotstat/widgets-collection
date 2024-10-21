@@ -115,10 +115,10 @@ const pngMap = ([k, v]: [string, { default: any }]) => [k.match(/([^\/]+)\.png$/
 const iconPackForGlobs = (glob: Record<string, Glob>) => new Map(Object.entries(glob).map(pngMap))
 
 const iconPack = {
-  24: iconPackForGlobs(import.meta.glob<Glob>('/src/assets/artefact/postProgression/pairModifications/24x24/*.png', { eager: true })),
-  80: iconPackForGlobs(import.meta.glob<Glob>('/src/assets/artefact/postProgression/pairModifications/80x80/*.png', { eager: true })),
-  100: iconPackForGlobs(import.meta.glob<Glob>('/src/assets/artefact/postProgression/pairModifications/100x100/*.png', { eager: true })),
-  120: iconPackForGlobs(import.meta.glob<Glob>('/src/assets/artefact/postProgression/pairModifications/120x120/*.png', { eager: true })),
+  24: iconPackForGlobs(import.meta.glob<Glob>('./assets/24x24/*.png', { eager: true })),
+  80: iconPackForGlobs(import.meta.glob<Glob>('./assets/80x80/*.png', { eager: true })),
+  100: iconPackForGlobs(import.meta.glob<Glob>('./assets/100x100/*.png', { eager: true })),
+  120: iconPackForGlobs(import.meta.glob<Glob>('./assets/120x120/*.png', { eager: true })),
 } as const
 
 
