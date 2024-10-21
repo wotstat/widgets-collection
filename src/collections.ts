@@ -19,7 +19,7 @@ export const collections = [
     widgets: [
       '/competitive/battle-royale/custom',
       // '/competitive/universal',
-      // '/competitive/squad/efficiency',
+      '/competitive/squad/efficiency',
     ]
   },
   {

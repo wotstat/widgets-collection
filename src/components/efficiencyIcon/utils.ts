@@ -1,3 +1,4 @@
+import { playerNameProcessor } from "@/composition/processors/usePlayerNameProcessor"
 
 export const shared = [
   'battles',
@@ -70,9 +71,9 @@ const roundProcessor = (precision = 0) => (value: string | number) => (Math.roun
 type Processor = (value: string | number) => string
 
 const processorList = {
-  'player': rawProcessor,
+  'player': (value: string | number) => playerNameProcessor(value.toString()) ?? '',
   'tank': rawProcessor,
-  'gun-mark-percent': roundProcessor(2),
+  'gun-mark-percent': roundProcessor(2)
 } as const satisfies { [key in IconType]?: Processor }
 
 const ignoreAvg = new Set<IconType>(['dmg-avg', 'shot-dmg-avg'])

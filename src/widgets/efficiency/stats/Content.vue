@@ -48,7 +48,7 @@ const isSolo = computed(() => props.lines.every(line => line.values.length == 1)
 
 <style lang="scss" scoped>
 .main {
-  font-size: 1.5em;
+  font-size: 1.8em;
   line-height: 1.2;
   padding-top: 0.65em;
   padding-bottom: 0.65em;
@@ -56,10 +56,6 @@ const isSolo = computed(() => props.lines.every(line => line.values.length == 1)
   flex-direction: column;
   align-items: center;
   border-radius: 1em;
-
-  &.isSolo {
-    font-size: 3em;
-  }
 
   &.large {
     font-size: 4em;

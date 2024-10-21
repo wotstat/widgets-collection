@@ -65,6 +65,7 @@ export type Options = {
   readme: string | null,
   i18n: Record<Language, Record<string, string>>,
   params: WidgetParam[],
+  beta: boolean
 }
 
 const defaultOptions: Options = {
@@ -76,6 +77,7 @@ const defaultOptions: Options = {
   readme: './README.md',
   i18n: {},
   params: [],
+  beta: false
 }
 
 const optionsSymbol = Symbol('options');

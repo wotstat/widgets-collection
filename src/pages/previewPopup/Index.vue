@@ -1,7 +1,7 @@
 <template>
   <template v-if="currentOptions">
     <div class="main">
-      <div class="info markdown">
+      <div class="info markdown nice-scrollbar">
         <RMC />
       </div>
       <div class="preview">
@@ -15,7 +15,7 @@
         </div>
         <div class="settings">
           <h2>Параметры</h2>
-          <div class="params">
+          <div class="params nice-scrollbar">
             <component v-for="setting in settingsValues" :is="setting.component" />
           </div>
         </div>
@@ -295,6 +295,7 @@ const accentColor = computed(() => '#' + accent.value)
 
       .params {
         overflow-y: auto;
+        padding-right: 5px;
       }
 
       h2 {

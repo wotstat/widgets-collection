@@ -1,6 +1,6 @@
 import { WidgetsRelay } from "@/utils/widgetsRelay";
 import { useLocalStorage } from "@vueuse/core";
-import { computed, onUnmounted, ref, shallowRef, triggerRef, watch } from "vue";
+import { computed, onUnmounted, watch } from "vue";
 import { useReactiveRelayState } from "./useReactiveRelayState";
 import { useQueryParams } from "./useQueryParams";
 import { useWidgetSdk } from "./widgetSdk";
@@ -15,7 +15,7 @@ export function useStorageRelayState<T>(relay: WidgetsRelay, stateKey: string, d
   const { sdk } = useWidgetSdk();
 
   const value = useLocalStorage(`${route.path}_${saveKey}_${stateKey}`, defaultValue, { listenToStorageChanges: false, shallow: true })
-  const reactiveState = useReactiveRelayState(relay.createState(stateKey, value.value))
+  const reactiveState = useReactiveRelayState(relay, stateKey, value.value)
   watch(reactiveState.state, value => value.value = value)
 
   const { setReadyToClearData, unsubscribe } = sdk.commands.onClearData(() => {

@@ -8,10 +8,9 @@
 <script setup lang="ts">
 
 import { computed } from 'vue';
-import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from '../../../efficiency/stats/Content.vue';
-import { Props, SlotValue } from './define.widget';
+import { SlotValue } from './define.widget';
 
 const props = defineProps<{
   isMiniPreview: boolean
@@ -60,7 +59,7 @@ const lines = computed(() => (props.isMiniPreview ?
   .map(t => ({ icon: t, values: (defaultValues[t] ?? ['', '']) as any })
   ))
 
-const aspect = computed(() => 9 / lines.value.length)
+const aspect = computed(() => 7.5 / lines.value.length)
 </script>
 
 

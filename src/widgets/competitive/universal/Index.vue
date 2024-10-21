@@ -44,7 +44,7 @@ if (query.allowSquad) allowBattles.delete('BATTLE_ROYALE_SQUAD')
 const { sdk } = useWidgetSdk();
 const { relay } = useWidgetRelay(query.channelKey ?? uuidv4())
 
-const playerNamesRelay = useReactiveRelayState(relay.createState('playerName', ''))
+const playerNamesRelay = useReactiveRelayState(relay, 'playerName', '')
 const statsRelay = useStorageRelayState<Omit<Line, 'name'>>(relay, 'stats', {
   maxDmg: 0,
   sumDmg: 0,

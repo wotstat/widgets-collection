@@ -3,14 +3,12 @@ import { useReactiveState, useReactiveTrigger, useWidgetSdk } from "../widgetSdk
 
 function getStats(tag: string, key: 'last' | 'pre-last') {
   const value = localStorage.getItem(`wotstat-gun-mark-${key}-${tag}`)
-  console.log('getStats', `wotstat-gun-mark-${key}-${tag}`, value);
 
   if (!value) return { movingAvgDamage: 0, damageRating: 0 }
   else return JSON.parse(value)
 }
 
 function setStats(tag: string, key: 'last' | 'pre-last', value: { movingAvgDamage: number, damageRating: number }) {
-  console.log('setStats', `wotstat-gun-mark-${key}-${tag}`, value);
   if (value.movingAvgDamage == -1 || value.damageRating == -1) return
 
   localStorage.setItem(`wotstat-gun-mark-${key}-${tag}`, JSON.stringify(value))
@@ -102,14 +100,6 @@ export function useGunMarkCalculator() {
   })
 
   const currentDamageRating = computed(() => isInBattle.value ? battleDamageRating.value : lastVisibleStats.value.damageRating)
-
-  watchEffect(() => console.log({
-    lastVisibleStats: lastVisibleStats.value,
-    preLastVisibleStats: preLastVisibleStats.value,
-    battleGunSum: battleGunSum.value,
-    battleMovingAvgDamage: battleMovingAvgDamage.value,
-    battleDamageRating: battleDamageRating.value
-  }))
 
   return {
     lastVisibleStats,

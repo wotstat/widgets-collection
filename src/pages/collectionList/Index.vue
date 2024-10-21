@@ -10,12 +10,16 @@
             </div>
           </template>
 
-          <Item v-else :name="widget.options.name" :description="widget.options.description"
-            :hasSlot="widget.options.preview != null">
-            <template v-if="'previewComponent' in widget">
-              <component :is="widget.previewComponent" :isMiniPreview="true" @click="onClick(widget)" />
-            </template>
-          </Item>
+          <template v-else>
+            <Item :name="widget.options.name" :description="widget.options.description"
+              :hasSlot="widget.options.preview != null">
+              <template v-if="'previewComponent' in widget">
+                <component :is="widget.previewComponent" :isMiniPreview="true" @click="onClick(widget)" />
+              </template>
+            </Item>
+
+            <div class="beta" v-if="widget.options.beta">Ранний доступ</div>
+          </template>
         </div>
       </div>
     </div>
@@ -125,9 +129,28 @@ function onClick(widget: {
       background: #353535;
       color: white;
       border-radius: 20px;
+      position: relative;
 
       &.error {
         background: rgb(97, 70, 70);
+      }
+
+      .beta {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        border-radius: 10px;
+
+        font-size: 1em;
+        font-weight: bold;
+
+        background: #353535d9;
+        border: 2px solid rgb(255, 162, 0);
+        color: rgb(255, 162, 0);
+        box-shadow: 0 0 10px #00000037;
+
+        transform: rotate(5deg);
       }
     }
   }
