@@ -23,6 +23,7 @@ const props = defineProps<{
   slot6?: SlotValue
   slot7?: SlotValue
   slot8?: SlotValue
+  slots?: SlotValue[]
 }>();
 
 
@@ -51,11 +52,8 @@ const defaultValues = {
   [key in Exclude<SlotValue, 'empty'>]: any
 }
 
-const lines = computed(() => (props.isMiniPreview ?
-  ['player', 'tank', 'dmg', 'block', 'assist'] as const :
-  [props.slot1, props.slot2, props.slot3, props.slot4, props.slot5, props.slot6, props.slot7, props.slot8])
+const lines = computed(() => (props.isMiniPreview || !props.slots ? ['player', 'tank', 'dmg', 'block', 'assist'] as const : props.slots)
   .filter(t => t != undefined)
-  .filter(t => t != 'empty')
   .map(t => ({ icon: t, values: (defaultValues[t] ?? ['', '']) as any })
   ))
 

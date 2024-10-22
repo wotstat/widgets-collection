@@ -75,6 +75,17 @@ export function oneOf<T extends string, D extends T | undefined>(
   };
 }
 
+export function arrayOfOneOf<T extends string>(
+  values: readonly T[]
+): (value: string | undefined) => T[] {
+  return value => {
+    if (value === undefined) {
+      return [];
+    }
+    return value.split(',').filter(v => values.includes(v as T)) as T[];
+  };
+}
+
 export function NumberDefault(defaultValue: number = 0) {
   return {
     type: Number,

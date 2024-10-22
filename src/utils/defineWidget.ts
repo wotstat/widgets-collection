@@ -1,3 +1,4 @@
+import { IconType } from "@/components/efficiencyIcon/utils";
 import { deepMerge } from ".";
 
 
@@ -49,10 +50,26 @@ export interface RandomStringParam extends BaseParam {
   default?: string
 }
 
+export type MultiSlotParamSlot = {
+  value: string,
+  icon: IconType,
+  label: string,
+  modifications?: Omit<MultiSlotParamSlot, 'modifications'>[]
+}
+export interface MultiSlotParam extends BaseParam {
+  type: 'multi-slot'
+  target: string
+  label: string
+  min: number
+  max: number
+  slots: MultiSlotParamSlot[]
+  default: string[]
+}
+
 export type AccentColorParam = 'accentColorParam'
 export type BackgroundColorParam = 'backgroundColorParam'
 
-export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam
+export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam
 
 type Language = string
 

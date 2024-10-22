@@ -80,5 +80,9 @@ export const i18n = {
     'xp-max': 'Макс. опыт',
     'gun-mark-dmg': 'Сумма для отметок',
     'gun-mark-percent': 'Процент отметки',
-  } satisfies { [key in IconType]: string },
+
+    'total': 'Всего',
+    'max': 'Макс.',
+    'avg': 'Ср.',
+  } satisfies { [key in IconType]: string } & { [key: string]: string },
 }

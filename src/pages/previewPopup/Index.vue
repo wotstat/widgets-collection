@@ -47,6 +47,7 @@ import Select from './settings/Select.vue';
 import Int from './settings/Int.vue';
 import Color from './settings/Color.vue';
 import String from './settings/String.vue';
+import MultiSlot from './settings/MultiSlot.vue';
 import RandomString from './settings/RandomString.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
@@ -157,6 +158,14 @@ const settingsValues = computedWithControl(currentOptions, () => {
       return {
         target: param.target, value,
         component: defineComponent(() => () => renderIfVisible(param, h(RandomString, { label: param.label, length: param.length ?? 5, ...vModel(value) })))
+      }
+    }
+
+    if (param.type == 'multi-slot') {
+      const value = useWidgetPreviewStorage(param.target, param.default ?? [])
+      return {
+        target: param.target, value,
+        component: defineComponent(() => () => renderIfVisible(param, h(MultiSlot, { i18n, label: param.label, min: param.min, max: param.max, slots: param.slots, ...vModel(value) })))
       }
     }
 

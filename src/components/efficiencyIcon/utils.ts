@@ -1,4 +1,5 @@
 import { playerNameProcessor } from "@/composition/processors/usePlayerNameProcessor"
+import { MultiSlotParamSlot } from "@/utils/defineWidget"
 
 export const shared = [
   'battles',
@@ -34,7 +35,53 @@ export const efficiency = [
   'gun-mark-percent',
 ] as const
 
+export const efficiencyWithMods = [
+  { value: 'battles', modifications: [] },
+  { value: 'dmg', modifications: ['dmg-avg', 'dmg-max'] },
+  { value: 'shot-dmg', modifications: ['shot-dmg-avg', 'shot-dmg-max'] },
+  { value: 'block', modifications: ['block-avg', 'block-max'] },
+  { value: 'assist', modifications: ['assist-avg', 'assist-max'] },
+  { value: 'assist-radio', modifications: ['assist-radio-avg', 'assist-radio-max'] },
+  { value: 'assist-track', modifications: ['assist-track-avg', 'assist-track-max'] },
+  { value: 'kill', modifications: ['kill-avg', 'kill-max'] },
+  { value: 'xp', modifications: ['xp-avg', 'xp-max'] },
+  { value: 'position', modifications: ['position-avg', 'position-max'] },
+  { value: 'discover', modifications: ['discover-avg', 'discover-max'] },
+  { value: 'fire', modifications: ['fire-avg', 'fire-max'] },
+  { value: 'fire-dmg', modifications: ['fire-dmg-avg', 'fire-dmg-max'] },
+  { value: 'ram', modifications: ['ram-avg', 'ram-max'] },
+  { value: 'ram-dmg', modifications: ['ram-dmg-avg', 'ram-dmg-max'] },
+  // { value: 'dmg-alt', modifications: ['dmg-alt-avg', 'dmg-alt-max'] },
+  { value: 'ammo-bay-destroyed', modifications: ['ammo-bay-destroyed-avg', 'ammo-bay-destroyed-max'] },
+  { value: 'ammo-bay-destroyed-dmg', modifications: ['ammo-bay-destroyed-dmg-avg', 'ammo-bay-destroyed-dmg-max'] },
+  { value: 'chuck-score', modifications: ['chuck-score-avg', 'chuck-score-max'] },
+  { value: 'distance', modifications: ['distance-avg', 'distance-max'] },
+  { value: 'duration', modifications: ['duration-avg', 'duration-max'] },
+  { value: 'lifetime', modifications: ['lifetime-avg', 'lifetime-max'] },
+  { value: 'base-capture', modifications: ['base-capture-avg', 'base-capture-max'] },
+  { value: 'base-defend', modifications: ['base-defend-avg', 'base-defend-max'] },
+  { value: 'gun-mark-dmg', modifications: [] },
+  { value: 'gun-mark-percent', modifications: [] },
+] as const satisfies { value: IconType, modifications: IconType[] }[]
+
+
+export const multiSlotParamSlot = efficiencyWithMods.map(t => ({
+  value: t.value,
+  icon: t.value,
+  label: t.value,
+  modifications: !t.modifications.length ? [] : [t.value, ...t.modifications].map(t => ({
+    value: t,
+    icon: t,
+    label: t.endsWith('-avg') ? 'avg' : t.endsWith('-max') ? 'max' : 'total',
+  }))
+})) satisfies MultiSlotParamSlot[]
+
 export type IconType = typeof efficiency[number] | typeof shared[number]
+const iconTypeSet = new Set<IconType>([...efficiency, ...shared])
+export function isIconType(value: string | null): value is IconType {
+  if (!value) return false
+  return iconTypeSet.has(value as IconType)
+}
 
 export const inBattleEfficiency = [
   'ammo-bay-destroyed',

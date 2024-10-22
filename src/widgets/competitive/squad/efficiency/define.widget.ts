@@ -21,8 +21,6 @@ export type Props = {
 }
 
 export const slotVariants = [
-  { value: 'empty', label: '-' },
-
   { value: 'player', label: 'player' },
   { value: 'tank', label: 'tank' },
   { value: 'dmg', label: 'dmg' },
@@ -56,14 +54,11 @@ export default defineWidget({
   params: [
     'accentColorParam',
     { type: 'checkbox', target: 'anim', label: 'Анимация', default: true },
-    { type: 'select', target: 'slot-1', label: 'Слот 1', variants: slotVariants, default: 'empty' },
-    { type: 'select', target: 'slot-2', label: 'Слот 2', variants: slotVariants, default: 'tank' },
-    { type: 'select', target: 'slot-3', label: 'Слот 3', variants: slotVariants, default: 'dmg' },
-    { type: 'select', target: 'slot-4', label: 'Слот 4', variants: slotVariants, default: 'block' },
-    { type: 'select', target: 'slot-5', label: 'Слот 5', variants: slotVariants, default: 'assist' },
-    { type: 'select', target: 'slot-6', label: 'Слот 6', variants: slotVariants, default: 'empty' },
-    { type: 'select', target: 'slot-7', label: 'Слот 7', variants: slotVariants, default: 'empty' },
-    { type: 'select', target: 'slot-8', label: 'Слот 8', variants: slotVariants, default: 'empty' },
+    {
+      type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 10,
+      slots: slotVariants.map(t => ({ icon: t.value, label: t.label, value: t.value })),
+      default: ['player', 'tank', 'dmg', 'block', 'assist']
+    },
     { type: 'checkbox', target: 'channel-key-enable', label: 'Использовать ключ канала', default: false },
     { type: 'random-string', target: 'channel-key', label: 'Ключ канала', length: 8, visible: t => t['channel-key-enable'] }
   ]

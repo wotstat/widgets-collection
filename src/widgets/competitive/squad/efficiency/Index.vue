@@ -1,6 +1,6 @@
 <template>
   <WidgetWrapper auto-height auto-scale>
-    <Content :lines="lines" :soloAlign="params.soloAlign" :anim="params.anim" />
+    <Content :lines="lines" :anim="params.anim" />
   </WidgetWrapper>
 </template>
 
@@ -10,7 +10,7 @@ import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from '../../../efficiency/stats/Content.vue';
 import { computed } from 'vue';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
+import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { SlotValue, slotVariants } from './define.widget';
 import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
 import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
@@ -18,21 +18,11 @@ import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { syncRefs } from '@vueuse/core';
 
-
-const possibleSlots = oneOf(slotVariants.map(slot => slot.value))
 const params = useQueryParams({
   startFrom: NumberDefault(),
   anim: Boolean,
   channelKey: String,
-  soloAlign: oneOf(['left', 'right'] as const),
-  slot1: possibleSlots,
-  slot2: possibleSlots,
-  slot3: possibleSlots,
-  slot4: possibleSlots,
-  slot5: possibleSlots,
-  slot6: possibleSlots,
-  slot7: possibleSlots,
-  slot8: possibleSlots,
+  slots: arrayOfOneOf(slotVariants.map(slot => slot.value)),
 })
 
 const { sdk } = useWidgetSdk();
@@ -95,9 +85,8 @@ const lines = computed(() => {
     return a[1].player.localeCompare(b[1].player)
   }).slice(0, 2).map(v => v[1])
 
-  return [params.slot1, params.slot2, params.slot3, params.slot4, params.slot5, params.slot6, params.slot7, params.slot8]
+  return params.slots
     .filter(t => t != undefined)
-    .filter(t => t != 'empty')
     .map(t => {
       const values = target.map(v => v[slotToTarget[t]])
       return { icon: t, values: values as any }
