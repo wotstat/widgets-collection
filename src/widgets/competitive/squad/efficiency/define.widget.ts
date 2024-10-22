@@ -24,6 +24,7 @@ export const slotVariants = [
   { value: 'player', label: 'player' },
   { value: 'tank', label: 'tank' },
   { value: 'dmg', label: 'dmg' },
+  { value: 'kill', label: 'kill' },
   { value: 'block', label: 'block' },
   { value: 'assist', label: 'assist' },
   { value: 'discover', label: 'discover' },

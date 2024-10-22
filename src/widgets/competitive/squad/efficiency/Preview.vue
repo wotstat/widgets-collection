@@ -31,6 +31,7 @@ const defaultValues = {
   'player': ['__NIDIN__', 'Sh0tnik'],
   'tank': ['Grille 15', 'ИС-7'],
   'dmg': [4587, 3782],
+  'kill': [3, 2],
   'block': [552, 456],
   'assist': [735, 968],
   'discover': [3, 2],

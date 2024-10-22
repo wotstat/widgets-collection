@@ -53,6 +53,7 @@ const valuesMap = {
   'chuck-score': () => stats.value.chuckScore,
   'gun-mark-dmg': () => stats.value.gunMarkDmg,
   'gun-mark-percent': () => gunMark.battleDamageRating.value,
+  'kill': () => stats.value.frags,
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: () => number | string
 }

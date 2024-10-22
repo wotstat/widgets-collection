@@ -54,6 +54,7 @@ const slotToTarget = {
   'assist-radio': 'radioAssist',
   'assist-track': 'trackAssist',
   'fire': 'fire',
+  'kill': 'frags',
   'fire-dmg': 'fireDamage',
   'ram': 'ram',
   'ram-dmg': 'ramDmg',

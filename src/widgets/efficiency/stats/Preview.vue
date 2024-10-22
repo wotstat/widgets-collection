@@ -22,6 +22,7 @@ const props = defineProps<{
 
 const defaultValues = {
   'dmg': 4587,
+  'kill': 3,
   'block': 5723,
   'assist': 731,
   'discover': 4,
