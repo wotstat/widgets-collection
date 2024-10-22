@@ -20,8 +20,6 @@ export type Props = {
 }
 
 export const slotVariants = [
-  { value: 'empty', label: '-' },
-
   { value: 'dmg', label: 'dmg' },
   { value: 'block', label: 'block' },
   { value: 'assist', label: 'assist' },
@@ -53,13 +51,10 @@ export default defineWidget({
     'accentColorParam',
     { type: 'select', target: 'solo-align', label: 'Выравнивание', variants: [{ value: 'left', label: 'Слева' }, { value: 'right', label: 'Справа' }], default: 'left' },
     { type: 'checkbox', target: 'anim', label: 'Анимация', default: true },
-    { type: 'select', target: 'slot-1', label: 'Слот 1', variants: slotVariants, default: 'dmg' },
-    { type: 'select', target: 'slot-2', label: 'Слот 2', variants: slotVariants, default: 'block' },
-    { type: 'select', target: 'slot-3', label: 'Слот 3', variants: slotVariants, default: 'assist' },
-    { type: 'select', target: 'slot-4', label: 'Слот 4', variants: slotVariants, default: 'fire-dmg' },
-    { type: 'select', target: 'slot-5', label: 'Слот 5', variants: slotVariants, default: 'ram-dmg' },
-    { type: 'select', target: 'slot-6', label: 'Слот 6', variants: slotVariants, default: 'empty' },
-    { type: 'select', target: 'slot-7', label: 'Слот 7', variants: slotVariants, default: 'empty' },
-    { type: 'select', target: 'slot-8', label: 'Слот 8', variants: slotVariants, default: 'empty' },
+    {
+      type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 10,
+      slots: slotVariants.map(t => ({ icon: t.value, label: t.label, value: t.value })),
+      default: ['dmg', 'block', 'assist', 'fire-dmg', 'ram-dmg']
+    },
   ]
 })

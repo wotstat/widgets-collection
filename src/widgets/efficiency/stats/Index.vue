@@ -9,13 +9,13 @@
 import Content from './Content.vue';
 import { computed, watch } from 'vue';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
+import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { SlotValue, slotVariants } from './define.widget';
 import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
 import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
 
 
-const possibleSlots = oneOf(slotVariants.map(slot => slot.value))
+const possibleSlots = oneOf([...slotVariants.map(slot => slot.value), 'empty'])
 const params = useQueryParams({
   startFrom: NumberDefault(),
   anim: Boolean,
@@ -28,6 +28,7 @@ const params = useQueryParams({
   slot6: possibleSlots,
   slot7: possibleSlots,
   slot8: possibleSlots,
+  slots: arrayOfOneOf(slotVariants.map(slot => slot.value)),
 })
 
 const stats = useInBattleCollector()
@@ -57,11 +58,10 @@ const valuesMap = {
 }
 
 
-const lines = computed(() => [params.slot1, params.slot2, params.slot3, params.slot4, params.slot5, params.slot6, params.slot7, params.slot8]
+const lines = computed(() => (params.slots && params.slots.length > 0 ? params.slots : [params.slot1, params.slot2, params.slot3, params.slot4, params.slot5, params.slot6, params.slot7, params.slot8])
   .filter(t => t != undefined)
   .filter(t => t != 'empty')
-  .map(t => ({ icon: t, values: ([valuesMap[t]() ?? '']) as any })
-  ))
+  .map(t => ({ icon: t, values: ([valuesMap[t]() ?? '']) as any })))
 
 </script>
 
