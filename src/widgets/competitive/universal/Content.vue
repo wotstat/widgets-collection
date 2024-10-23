@@ -3,23 +3,19 @@
     <WidgetCard>
       <div class="lines" v-if="slots">
         <div class="line header" v-if="slots.length">
-          <div class="flex-2"></div>
+          <div class="name" v-if="data.length > 1"></div>
           <div class="image" v-for="slot in slots">
             <EfficiencyIcon :icon="slot" class="icon" />
-            <!-- <component :is="getIconForSlot(slot)" class="icon" /> -->
           </div>
         </div>
-        <!-- <div class=" line" v-for="(line, i) in lines" :key="line.name">
-          <p class="name">{{ line.name }}</p>
-          <p v-for="slot in slots" class="number bold" :class="slot.value[i].isBest ? 'accent' : ''"
-            :key="slot.value[i].type">
-            <TweenValue :value="slot.value[i].value" :processor="getProcessorForSlot(slot.value[i].type)"
-              :precision="getPrecisionForSlot(slot.value[i].type)" />
+        <div class="line" v-for="(line, i) in data" :key="line.player">
+          <p class="name" v-if="data.length > 1">{{ line.player }}</p>
+          <p v-for="(slot, i) in slots" class="number bold"
+            :class="{ accent: bestPerSlot[i] == line[slot] && data.length > 1 }">
+            <TweenValue v-if="line[slot] != undefined" :value="line[slot]" :processor="processor(slot, true)" />
+            <span v-else>{{ line[slot] }}*</span>
           </p>
-          <p class="number bold">
-            <TweenValue :value="123" />
-          </p>
-        </div> -->
+        </div>
       </div>
     </WidgetCard>
   </div>
@@ -32,46 +28,32 @@ import EfficiencyIcon from "@/components/efficiencyIcon/Icon.vue";
 
 import WidgetCard from '@/components/WidgetCard.vue';
 
+import { comparator, processor } from '@/components/efficiencyIcon/utils';
 import TweenValue from '@/components/TweenValue.vue';
 import { computed } from 'vue'
 import { Props } from "./define.widget";
+import { maxByComparator } from "@/utils";
 
 
 const props = defineProps<Props>()
 
-// const minIsBest = new Set<SlotValue>(['position-avg', 'position-max'])
-// function getSlotResult(slotValue: SlotValue) {
-//   const values = getValuesForSlot(slotValue)
-//   const best = minIsBest.has(slotValue) ? Math.min(...values) : Math.max(...values)
-//   return values.map(t => ({
-//     value: t,
-//     type: slotValue,
-//     isBest: slotValue !== 'battles' && t == best
-//   }))
-// }
-
-// const slot1 = computed(() => getSlotResult(props.slot1 ?? 'empty'))
-// const slot2 = computed(() => getSlotResult(props.slot2 ?? 'empty'))
-// const slot3 = computed(() => getSlotResult(props.slot3 ?? 'empty'))
-// const slot4 = computed(() => getSlotResult(props.slot4 ?? 'empty'))
-// const slot5 = computed(() => getSlotResult(props.slot5 ?? 'empty'))
-
-// const slotsTypes = computed(() => [props.slot1, props.slot2, props.slot3, props.slot4, props.slot5].filter(s => s && s != 'empty') as SlotValue[])
-
-// const slots = computed(() => {
-//   return [slot1, slot2, slot3, slot4, slot5].filter(s => s.value[0].type != 'empty')
-// })
+const bestPerSlot = computed(() => props.slots.map(slot => maxByComparator(props.data.map(t => t[slot]), comparator(slot))))
 
 const fontSize = computed(() => {
-  switch (props.slots?.length) {
-    case 0: return '2.4em'
-    case 1: return '2.1em'
-    case 2: return '1.6em'
-    case 3: return '1.35em'
-    case 4: return '1.2em'
-    case 5: return '1em'
-    default: return '1em'
+  const size = () => {
+    switch (props.slots?.length) {
+      case 0: return 2.4
+      case 1: return 2.1
+      case 2: return 1.4
+      case 3: return 1.1
+      case 4: return 1
+      case 5: return 0.9
+      case 6: return 0.8
+      default: return (6 / props.slots?.length)
+    }
   }
+
+  return (size() + (props.data.length > 1 ? 0 : 1.5 / props.slots?.length)) + 'em'
 })
 
 </script>
@@ -98,10 +80,9 @@ const fontSize = computed(() => {
           align-items: center;
 
           .icon {
-            height: 2.3em;
+            height: 2.2em;
             margin: -0.7em;
             margin-bottom: -0.4em;
-            // fill: var(--wotstat-accent);
           }
         }
       }
@@ -113,7 +94,8 @@ const fontSize = computed(() => {
       }
 
       .name {
-        flex: 2;
+        min-width: 6.5em;
+        max-width: 6.5em;
         overflow: hidden;
         text-align: left;
         text-overflow: ellipsis;

@@ -39,7 +39,7 @@ export function useQueryParams<T extends PropsOptions>(values: T): ExtractPropTy
     }
   }
 
-  const res = Object.fromEntries(Object.entries(values)
+  return Object.fromEntries(Object.entries(values)
     .map(([key, value]) => {
       const val = queryParamsMap.get(key)
       if (typeof value === 'object' && value != null && value.type) {
@@ -57,10 +57,6 @@ export function useQueryParams<T extends PropsOptions>(values: T): ExtractPropTy
     })
     .map(([key, value]) => [key, typeof value == 'object' && 'valueOf' in value && typeof value.valueOf === 'function' ? value.valueOf() : value])
   ) as ExtractPropTypes<T>
-
-  console.log(res);
-
-  return res
 }
 
 export function oneOf<T extends string, D extends T | undefined>(

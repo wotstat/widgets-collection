@@ -18,7 +18,7 @@ export const collections = [
     name: 'Соревнования',
     widgets: [
       '/competitive/battle-royale/custom',
-      // '/competitive/universal',
+      '/competitive/universal',
       '/competitive/squad/efficiency',
     ]
   },

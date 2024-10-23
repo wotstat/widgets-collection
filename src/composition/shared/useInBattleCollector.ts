@@ -2,7 +2,7 @@ import { readonly, ref, watch } from "vue";
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from "../widgetSdk";
 import { isAmmoBayDestroyed } from "@/utils/wotUtils";
 
-const defaultStats = {
+export const defaultStats = {
   damage: 0,
   assist: 0,
   blocked: 0,
@@ -18,11 +18,15 @@ const defaultStats = {
   fireDamage: 0,
   fire: 0,
   ram: 0,
-  ramDmg: 0,
+  ramDamage: 0,
   ammoBayDestroyed: 0,
   ammoBayDestroyedDamage: 0,
   gunMarkDmg: 0,
   chuckScore: 0,
+  shotDamage: 0,
+  shotDamageMax: 0,
+  shotDamageMin: 0,
+  damagedShotsCount: 0,
 }
 
 export function useInBattleCollector() {
@@ -64,16 +68,6 @@ export function useInBattleCollector() {
     if (t.type == 'baseCaptureDropped') stats.value.baseCaptureDefend += t.data.points
     if (t.type == 'spotted') stats.value.discover += 1
 
-    // if (t.type == 'damage' && t.data.attackReason == 'fire') stats.value.fireDamage += t.data.damage
-    // if (t.type == 'damage' && t.data.attackReason == 'fire') {
-    //   const vehicle = t.data.vehicle
-    //   const cacheKey = `${vehicle.playerId}-${vehicle.tag}`
-    //   if (!lastFireTickAt.has(cacheKey) || (lastFireTickAt.get(cacheKey)! + 500) < performance.now()) {
-    //     lastFireTickAt.set(cacheKey, performance.now())
-    //     stats.value.fire += 1
-    //   }
-    // }
-
     if (t.type == 'damage' && t.data.attackReason == 'fire') {
       stats.value.fire += 1
     }
@@ -101,7 +95,16 @@ export function useInBattleCollector() {
     }
 
     if (dmg.reason == 'ramming') {
-      stats.value.ramDmg += dmg.damage
+      stats.value.ramDamage += dmg.damage
+    }
+
+    if (dmg.reason == 'shot') {
+      if (stats.value.damagedShotsCount == 0) stats.value.shotDamageMin = dmg.damage
+
+      stats.value.shotDamage += dmg.damage
+      stats.value.damagedShotsCount += 1
+      stats.value.shotDamageMin = Math.min(stats.value.shotDamageMin, dmg.damage)
+      stats.value.shotDamageMax = Math.max(stats.value.shotDamageMax, dmg.damage)
     }
 
   })

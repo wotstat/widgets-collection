@@ -57,7 +57,7 @@ const slotToTarget = {
   'kill': 'frags',
   'fire-dmg': 'fireDamage',
   'ram': 'ram',
-  'ram-dmg': 'ramDmg',
+  'ram-dmg': 'ramDamage',
   'ammo-bay-destroyed': 'ammoBayDestroyed',
   'ammo-bay-destroyed-dmg': 'ammoBayDestroyedDamage',
   'base-capture': 'baseCapturePoints',

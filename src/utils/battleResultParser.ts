@@ -99,6 +99,7 @@ export function parseBattleResult(result: unknown) {
         damageAssistedRadio: vehicles.reduce(sum('damageAssistedRadio'), 0),
         credits: vehicles.reduce(sum('credits'), 0),
         capturePoints: vehicles.reduce(sum('capturePoints'), 0),
+        droppedCapturePoints: vehicles.reduce(sum('droppedCapturePoints'), 0),
         damageReceived: vehicles.reduce(sum('damageReceived'), 0),
         damaged: vehicles.reduce(sum('damaged'), 0),
         directHits: vehicles.reduce(sum('directHits'), 0),
@@ -122,6 +123,7 @@ export function parseBattleResult(result: unknown) {
     common: {
       bonusType: get<number>(common, 'bonusType'),
       winnerTeam: get<number>(common, 'winnerTeam'),
+      duration: get<number>(common, 'duration') ?? 0,
     },
     players: playerVehiclePairs,
     personal: personalVehicle

@@ -21,7 +21,7 @@
           </div>
           <div class="slot-values-content flex-1">
             <div class="slot-values nice-scrollbar" :class="{ 'has-scroll': slotValuesHasScroll }" ref="slotValues">
-              <div class="slot-value interactive selectable" v-for="item in slots" @click="select(item.value)"
+              <div class="slot-value interactive selectable" v-for="item in slots" @click="selectLine(item.value)"
                 :class="{ selected: item.value == selectedSlotParam?.value }">
                 <Icon :icon="item.icon" class="icon" />
                 <p>{{ i18n[item.label] ?? item.label }}</p>
@@ -88,6 +88,17 @@ function add() {
 function remove(index: number) {
   values.value!.splice(index, 1)
   if (selectedSlot.value != null && selectedSlot.value >= index) selectedSlot.value--
+}
+
+function selectLine(value: string) {
+  const targetSlot = props.slots.find(t => t.value == value)
+  if (selectedSlot.value == null || values.value == null) return
+  const slot = selectedSlot.value
+
+  if (targetSlot && targetSlot.modifications && targetSlot.modifications.length > 0)
+    return values.value[slot] = targetSlot.modifications[0].value
+
+  values.value[slot] = value
 }
 
 function select(value: string) {

@@ -64,3 +64,21 @@ export function getAllWidgetsRoutes() {
     }
   })
 }
+
+export function arrayExclude<
+  T extends readonly unknown[],
+  U extends readonly T[number][]
+>(
+  array: T,
+  exclude: U
+) {
+  return array.filter((item) => !exclude.includes(item)) as (Exclude<T[number], U[number]>)[];
+}
+
+export function minByComparator<T>(array: T[], comparator: (a: T, b: T) => number) {
+  return array.reduce((min, current) => comparator(min, current) < 0 ? min : current);
+}
+
+export function maxByComparator<T>(array: T[], comparator: (a: T, b: T) => number) {
+  return array.reduce((max, current) => comparator(max, current) > 0 ? max : current);
+}

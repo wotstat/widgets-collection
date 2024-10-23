@@ -1,8 +1,8 @@
 import { useReactiveTrigger, useWidgetSdk } from "@/composition/widgetSdk";
 import { parseBattleResult } from "@/utils/battleResultParser";
 
-type BattleResult = NonNullable<ReturnType<typeof parseBattleResult>>
-type BattleResultWithArenaId = BattleResult & { arenaUniqueID: number }
+export type BattleResult = NonNullable<ReturnType<typeof parseBattleResult>>
+export type BattleResultWithArenaId = BattleResult & { arenaUniqueID: number }
 
 export function useBattleResult(callback: (parsed: BattleResultWithArenaId, result: unknown) => void) {
 

@@ -23,7 +23,7 @@ export function useReactiveRelayState<T>(relay: MaybeRefOrGetter<WidgetsRelay>, 
       else all.value.set(uuid, structuredClone(newValue))
       triggerRef(all)
     })
-  })
+  }, { immediate: true })
 
   const lastValue = shallowRef(relayState.value.value)
   const state = computed({
