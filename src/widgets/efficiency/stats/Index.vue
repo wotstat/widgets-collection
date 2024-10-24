@@ -54,6 +54,8 @@ const valuesMap = {
   'gun-mark-dmg': () => stats.value.gunMarkDmg,
   'gun-mark-percent': () => gunMark.battleDamageRating.value,
   'kill': () => stats.value.frags,
+  'duration': () => stats.value.duration,
+  'lifetime': () => stats.value.lifetime,
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: () => number | string
 }

@@ -65,6 +65,8 @@ export function useBattleHistoryAggregator() {
     'damagedShotsCount': null,
     'shotDamageMax': null,
     'shotDamageMin': null,
+    'lifetime': 'lifeTime',
+    'duration': null
   } as const satisfies {
     [key in keyof typeof defaultStats]: ((result: BattleResultStats, battle: Battle) => number) | keyof BattleResultStats | null
   }
@@ -149,6 +151,8 @@ export function useBattleHistoryAggregator() {
       return { current: 0, max: acc.max }
     }, { current: 0, max: 0 })
 
+    const totalShotDamage = battlesArray.value.reduce((a, b) => a + b.shotDamage, 0)
+    const countDamagedShots = battlesArray.value.reduce((a, b) => a + b.damagedShotsCount, 0)
 
     return {
       battles: battlesCount,
@@ -157,8 +161,8 @@ export function useBattleHistoryAggregator() {
       ...{
         shotDamageMin: Math.min(...battlesArray.value.map(b => b.shotDamageMin)),
         shotDamageMax: battlesCount <= 0 ? 0 : Math.max(...battlesArray.value.map(b => b.shotDamageMax)),
-        shotDamageTotal: battlesArray.value.reduce((a, b) => a + b.shotDamage, 0),
-        shotDamageAvg: battlesCount <= 0 ? 0 : battlesArray.value.reduce((a, b) => a + b.shotDamage, 0) / battlesCount,
+        shotDamageTotal: totalShotDamage,
+        shotDamageAvg: countDamagedShots <= 0 ? 0 : totalShotDamage / countDamagedShots,
       },
       ...{
         top1: battlesArray.value.filter(b => b.position === 1).length,

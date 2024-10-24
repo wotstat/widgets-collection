@@ -110,7 +110,9 @@ export const inBattleEfficiency = [
   'shot-dmg-max',
   'shot-dmg-avg',
   'gun-mark-dmg',
-  'gun-mark-percent'
+  'gun-mark-percent',
+  'lifetime',
+  'duration',
 ] as const satisfies IconType[]
 
 
@@ -137,7 +139,7 @@ const kRoundProcessor = (precision = 0) => (value: string | number) => {
 const timeProcessor = (value: string | number) => {
   const num = Number(value)
   const minutes = Math.floor(num / 60)
-  const seconds = Math.round(num % 60)
+  const seconds = Math.floor(num % 60)
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 

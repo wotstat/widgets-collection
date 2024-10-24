@@ -125,11 +125,20 @@ button.setup {
   $border: 1px solid #424242;
 
   position: fixed;
-  top: var(--top);
-  left: var(--left);
   z-index: 1000;
 
-  transform: translate(calc(-100% - 10px), -50%);
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  @media screen and (min-width: 650px) {
+    transform: translate(calc(-100% - 10px), -50%);
+    top: var(--top);
+    left: var(--left);
+    bottom: auto;
+    right: auto;
+  }
+
 
   .interactive {
     cursor: pointer;

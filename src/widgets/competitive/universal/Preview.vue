@@ -77,13 +77,17 @@ const targetData = [
 
 const aspect = computed(() => {
   switch (props.slots?.length) {
-    case 0: return 2.11
-    case 1: return 2
-    case 2: return 2.64
-    case 3: return 3.11
-    case 4: return 3.51
-    case 5: return 4.18
-    default: return 2.11
+    case 0: return 1.2
+    case 1: return 1.45
+    case 2: return 2.17
+    case 3: return 2.75
+    case 4: return 3.02
+    case 5: return 3.36
+    case 6: return 3.7
+    case 7: return 4.04
+    case 8: return 4.38
+    case 9: return 4.72
+    default: return 4
   }
 })
 </script>

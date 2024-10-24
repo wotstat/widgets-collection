@@ -1,6 +1,7 @@
-import { readonly, ref, watch } from "vue";
+import { readonly, ref, watch, watchEffect } from "vue";
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from "../widgetSdk";
 import { isAmmoBayDestroyed } from "@/utils/wotUtils";
+import { useWidgetStorage } from "../useWidgetStorage";
 
 export const defaultStats = {
   damage: 0,
@@ -27,24 +28,35 @@ export const defaultStats = {
   shotDamageMax: 0,
   shotDamageMin: 0,
   damagedShotsCount: 0,
+  lifetime: 0,
+  duration: 0,
 }
 
 export function useInBattleCollector() {
-  const stats = ref(structuredClone(defaultStats))
+  const stats = useWidgetStorage('stats', structuredClone(defaultStats))
   const { sdk } = useWidgetSdk()
 
   const lastFireTickAt = new Map<string, number>()
+  const lastBattleStartTime = useWidgetStorage('lastBattleStartTime', 0)
+  const lastLifetimeStart = useWidgetStorage('lastLifetimeStart', 0)
+  const calculatedLifetime = useWidgetStorage('calculatedLifetime', 0)
 
   function reset() {
     stats.value = structuredClone(defaultStats)
     lastFireTickAt.clear()
+    lastBattleStartTime.value = 0
+    lastLifetimeStart.value = 0
+    calculatedLifetime.value = 0
   }
 
   const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
   const playerArena = useReactiveState(sdk.data.battle.arena)
   const playerId = useReactiveState(sdk.data.player.id)
-  watch(isInBattle, v => { if (v) reset() })
+  const serverTime = useReactiveState(sdk.data.game.serverTime)
+  const isAlive = useReactiveState(sdk.data.battle.isAlive)
+  const battlePeriod = useReactiveState(sdk.data.battle.period)
 
+  watch(isInBattle, (v, old) => { if (v && old === false) reset() })
   useReactiveState(sdk.data.battle.efficiency.damage, t => t != 0 && (stats.value.damage = t))
   useReactiveState(sdk.data.battle.efficiency.assist, t => t != 0 && (stats.value.assist = t))
   useReactiveState(sdk.data.battle.efficiency.stun, t => t != 0 && (stats.value.stun = t))
@@ -58,6 +70,29 @@ export function useInBattleCollector() {
     stats.value.chuckScore = dmg + frags * 200
   })
 
+  watch(serverTime, t => {
+    if (!t || !isInBattle.value) return
+    if (lastLifetimeStart.value) stats.value.lifetime = calculatedLifetime.value + t - lastLifetimeStart.value
+    if (lastBattleStartTime.value) stats.value.duration = t - lastBattleStartTime.value
+  })
+
+  watch([isAlive, battlePeriod], async ([alive, battlePeriod]) => {
+    await new Promise(r => setTimeout(r, 0))
+    if (!battlePeriod || alive == undefined) return
+
+    if (!alive && serverTime.value && isInBattle.value && lastLifetimeStart.value && battlePeriod.tag == 'BATTLE') {
+      calculatedLifetime.value += serverTime.value - lastLifetimeStart.value
+      lastLifetimeStart.value = 0
+    }
+
+    if (alive && battlePeriod.tag == 'BATTLE' && !lastLifetimeStart.value) lastLifetimeStart.value = serverTime.value ?? 0
+  })
+
+  watch(battlePeriod, battlePeriod => {
+    if (battlePeriod?.tag == 'BATTLE' && !lastBattleStartTime.value) {
+      lastBattleStartTime.value = serverTime.value ?? 0
+    }
+  })
 
   useReactiveTrigger(sdk.data.battle.onPlayerFeedback, t => {
     if (t.type == 'radioAssist') stats.value.radioAssist += t.data.damage

@@ -66,6 +66,8 @@ const slotToTarget = {
   'chuck-score': 'chuckScore',
   'gun-mark-dmg': 'gunMarkDmg',
   'gun-mark-percent': 'gunMarkPercent',
+  'lifetime': 'lifetime',
+  'duration': 'duration',
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: keyof typeof target['value']
 }

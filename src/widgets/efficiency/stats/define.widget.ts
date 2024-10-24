@@ -36,6 +36,8 @@ export const slotVariants = [
   { value: 'base-capture', label: 'base-capture' },
   { value: 'base-defend', label: 'base-defend' },
   { value: 'distance', label: 'distance' },
+  { value: 'lifetime', label: 'lifetime' },
+  { value: 'duration', label: 'duration' },
   { value: 'chuck-score', label: 'chuck-score' },
   { value: 'gun-mark-dmg', label: 'gun-mark-dmg' },
   { value: 'gun-mark-percent', label: 'gun-mark-percent' }

@@ -25,5 +25,6 @@ export default defineWidget({
     { type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 60, slots, default: ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles'] },
     // { type: 'random-string', target: 'save-key', label: 'Ключ сохранения', length: 5 },
     { type: 'random-string', target: 'channel-key', label: 'Ключ канала', length: 8 },
+    { type: 'checkbox', target: 'passive', label: 'Пассивный режим', default: false },
   ]
 })

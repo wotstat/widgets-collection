@@ -1,10 +1,13 @@
 import { WidgetsRelay } from "@/utils/widgetsRelay";
 import { computed, MaybeRefOrGetter, ref, shallowRef, toValue, triggerRef, watch } from "vue";
 
-export function useReactiveRelayState<T>(relay: MaybeRefOrGetter<WidgetsRelay>, name: string, defaultValue: T) {
+export const passive = 'passive-reactive-relay-state' as const
+type Passive = typeof passive
+
+export function useReactiveRelayState<T>(relay: MaybeRefOrGetter<WidgetsRelay>, name: string, defaultValue: T | Passive) {
 
   const relayState = shallowRef(toValue(relay).createState(name, defaultValue))
-  const all = shallowRef(new Map<string, T>())
+  const all = shallowRef(new Map<string, T | Passive>())
 
   watch(() => toValue(relay), relay => {
     relayState.value = relay.createState(name, relayState.value.value)
@@ -38,8 +41,10 @@ export function useReactiveRelayState<T>(relay: MaybeRefOrGetter<WidgetsRelay>, 
     }
   })
 
+  const publicAll = computed(() => new Map([...all.value.entries()].filter(([k, v]) => v != passive) as [string, T][]))
+
   return {
-    all, state, trigger: () => {
+    all: publicAll, state, trigger: () => {
       lastValue.value = structuredClone(lastValue.value)
       all.value.set(relayState.value.uuid, lastValue.value)
       triggerRef(all)

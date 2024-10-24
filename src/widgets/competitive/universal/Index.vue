@@ -14,38 +14,40 @@ import WidgetRoot from '@/components/WidgetRoot.vue';
 import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { possibleSlots, Props } from './define.widget';
 import { toIconType, useBattleHistoryAggregator } from '@/composition/shared/useBattleHistoryAggregator';
-import { computed, watch } from 'vue';
+import { computed, shallowRef, watch } from 'vue';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
-import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
+import { passive, useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 
 const query = useQueryParams({
   channelKey: String,
   allowSquad: Boolean,
+  passive: Boolean,
   slots: arrayOfOneOf(possibleSlots)
 })
 
-
-const { sdk } = useWidgetSdk()
-const playerName = useReactiveState(sdk.data.player.name)
-
-const stats = useBattleHistoryAggregator()
-
-const data = computed<Props['data'][number]>(() => ({
-  player: playerName.value ?? '',
-  ...toIconType(stats.value)
-}))
-
-
 const { relay } = useWidgetRelay(query.channelKey ?? 'default')
-const state = useReactiveRelayState(() => relay, 'data', data.value)
 
-watch(data, d => {
-  state.state.value = d
-  state.trigger()
-}, { immediate: true, deep: true })
-
+const state = useReactiveRelayState<Props['data'][number]>(() => relay, 'data', passive)
 const target = computed(() => [...state.all.value.values()])
+
+if (!query.passive) {
+  const { sdk } = useWidgetSdk()
+  const playerName = useReactiveState(sdk.data.player.name)
+  const stats = useBattleHistoryAggregator()
+
+  const data = computed<Props['data'][number]>(() => ({
+    player: playerName.value ?? '',
+    ...toIconType(stats.value)
+  }))
+
+  watch(data, d => {
+    state.state.value = d
+    state.trigger()
+  }, { immediate: true, deep: true })
+}
+
+
 
 </script>
 
