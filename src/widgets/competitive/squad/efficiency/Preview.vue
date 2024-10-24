@@ -49,6 +49,8 @@ const defaultValues = {
   'chuck-score': [4587, 3782],
   'gun-mark-dmg': [4887, 4200],
   'gun-mark-percent': [80.51, 82.14],
+  'lifetime': [650, 740],
+  'duration': [720, 740],
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: any
 }
