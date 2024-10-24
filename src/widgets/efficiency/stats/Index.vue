@@ -56,6 +56,7 @@ const valuesMap = {
   'kill': () => stats.value.frags,
   'duration': () => stats.value.duration,
   'lifetime': () => stats.value.lifetime,
+  'crits': () => stats.value.crits,
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: () => number | string
 }

@@ -66,7 +66,8 @@ export function useBattleHistoryAggregator() {
     'shotDamageMax': null,
     'shotDamageMin': null,
     'lifetime': 'lifeTime',
-    'duration': null
+    'duration': null,
+    'crits': null
   } as const satisfies {
     [key in keyof typeof defaultStats]: ((result: BattleResultStats, battle: Battle) => number) | keyof BattleResultStats | null
   }
@@ -130,7 +131,7 @@ export function useBattleHistoryAggregator() {
   const targetUnwrap = ['damage', 'assist', 'blocked', 'stun', 'frags', 'radioAssist', 'trackAssist', 'stunAssist',
     'distance', 'baseCapturePoints', 'baseCaptureDefend', 'discover', 'fireDamage', 'fire', 'ram', 'ramDamage',
     'ammoBayDestroyed', 'ammoBayDestroyedDamage', 'gunMarkDmg', 'chuckScore', 'xp', 'lifetime', 'duration',
-    'position'] as const satisfies BattleNumericFields[]
+    'position', 'crits'] as const satisfies BattleNumericFields[]
 
   return computed(() => {
 
@@ -203,6 +204,7 @@ const battleToIconType = {
   ...nameMap('base-capture', 'baseCapturePoints'),
   ...nameMap('base-defend', 'baseCaptureDefend'),
   ...nameMap('block', 'blocked'),
+  ...nameMap('crits', 'crits'),
   ...nameMap('chuck-score', 'chuckScore'),
   ...nameMap('discover', 'discover'),
   ...nameMap('distance', 'distance'),

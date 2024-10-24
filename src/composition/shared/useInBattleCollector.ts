@@ -30,6 +30,7 @@ export const defaultStats = {
   damagedShotsCount: 0,
   lifetime: 0,
   duration: 0,
+  crits: 0
 }
 
 export function useInBattleCollector() {
@@ -102,6 +103,7 @@ export function useInBattleCollector() {
     if (t.type == 'baseCapturePoints') stats.value.baseCapturePoints += t.data.points
     if (t.type == 'baseCaptureDropped') stats.value.baseCaptureDefend += t.data.points
     if (t.type == 'spotted') stats.value.discover += 1
+    if (t.type == 'crit') stats.value.crits += 1
 
     if (t.type == 'damage' && t.data.attackReason == 'fire') {
       stats.value.fire += 1

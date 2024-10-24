@@ -51,6 +51,7 @@ const defaultValues = {
   'gun-mark-percent': [80.51, 82.14],
   'lifetime': [650, 740],
   'duration': [720, 740],
+  'crits': [3, 2],
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: any
 }
