@@ -1,3 +1,4 @@
+import { objectEntries } from "@vueuse/core"
 
 
 
@@ -36,6 +37,45 @@ type Player = {
   team: number,
 }
 
+const VEHICLE_DEVICE_TYPE_NAMES = ['engine', 'ammoBay', 'fuelTank', 'radio', 'track', 'gun', 'turretRotator', 'surveyingDevice', 'STUN_PLACEHOLDER', 'wheel'] as const
+const VEHICLE_TANKMAN_TYPE_NAMES = ['commander', 'driver', 'radioman', 'gunner', 'loader'] as const
+
+type CritVariant = {
+  type: 'DESTROYED_DEVICES',
+  value: typeof VEHICLE_DEVICE_TYPE_NAMES[number]
+} | {
+  type: 'CRITICAL_DEVICES',
+  value: typeof VEHICLE_DEVICE_TYPE_NAMES[number]
+} | {
+  type: 'DESTROYED_TANKMENS',
+  value: typeof VEHICLE_TANKMAN_TYPE_NAMES[number]
+}
+
+type PersonalDamageDetails = {
+  crits: CritVariant[]
+  damageAssistedInspire: number
+  damageAssistedRadio: number
+  damageAssistedSmoke: number
+  damageAssistedStun: number
+  damageAssistedTrack: number
+  damageBlockedByArmor: number
+  damageDealt: number
+  damageReceived: number
+  deathReason: number
+  directEnemyHits: number
+  directHits: number
+  explosionHits: number
+  fire: number
+  noDamageDirectHitsReceived: number
+  piercingEnemyHits: number
+  piercings: number
+  rickochetsReceived: number
+  spotted: number
+  stunDuration: number
+  stunNum: number
+  targetKills: number
+}
+
 function get<T>(obj: object | null, key: string) {
   return obj && key in obj ? obj[key as keyof typeof obj] as T : null;
 }
@@ -43,6 +83,39 @@ function get<T>(obj: object | null, key: string) {
 function sum(key: string) {
   return (acc: number, value: any) => acc + value[key]
 }
+
+function iterateInt64SetBitsIndexes(mask: number) {
+  const indexes = []
+  for (let i = 0; i < 64; i++) {
+    if (mask & 1) {
+      indexes.push(i)
+    }
+    mask >>= 1
+  }
+  return indexes
+}
+
+
+function critsParserGenerator(mask: number) {
+  mask = mask & -257
+  const maskMap = {
+    DESTROYED_DEVICES: [mask >> 12 & 4095, VEHICLE_DEVICE_TYPE_NAMES] as const,
+    CRITICAL_DEVICES: [mask & 4095, VEHICLE_DEVICE_TYPE_NAMES] as const,
+    DESTROYED_TANKMENS: [mask >> 24 & 255, VEHICLE_TANKMAN_TYPE_NAMES] as const
+  }
+
+  let result = [] as CritVariant[]
+  for (const [subType, [subMask, types]] of objectEntries(maskMap)) {
+    if (subMask > 0) {
+      for (const index of iterateInt64SetBitsIndexes(subMask)) {
+        result.push({ type: subType, value: types[index] as any })
+      }
+    }
+  }
+
+  return result
+}
+
 
 
 export function parseBattleResult(result: unknown) {
@@ -69,13 +142,13 @@ export function parseBattleResult(result: unknown) {
 
   const playerByBdid = new Map<number, Player>(transformedPlayers.map(player => [player.bdid, player]))
 
-  const playerByVehicle = new Map<number, Player>()
+  const playerByVehicle = new Map<number, Player | 'bot'>()
   const vehicleByPlayer = new Map<number, WotVehicle[]>()
 
   for (const [key, value] of Object.entries(vehicles)) {
     const keyNumber = Number.parseInt(key)
     for (const vehicle of value) {
-      playerByVehicle.set(keyNumber, playerByBdid.get(vehicle.accountDBID)!)
+      playerByVehicle.set(keyNumber, playerByBdid.get(vehicle.accountDBID) ?? 'bot')
 
       if (!vehicleByPlayer.has(keyNumber)) {
         vehicleByPlayer.set(keyNumber, [])
@@ -87,7 +160,7 @@ export function parseBattleResult(result: unknown) {
 
   const playerVehiclePairs = Array.from(vehicleByPlayer.entries())
     .map(([playerBdid, vehicles]) => ({
-      player: playerByBdid.get(vehicles[0].accountDBID)!,
+      player: playerByBdid.get(vehicles[0].accountDBID) ?? 'bot' as const,
       vehicles: vehicles,
       stats: {
         kills: vehicles.reduce(sum('kills'), 0),
@@ -111,11 +184,18 @@ export function parseBattleResult(result: unknown) {
       }
     }))
 
-  const personalVehicle = playerVehiclePairs.find(pair => pair.player.bdid === personalBdid)
+  const personalVehicle = playerVehiclePairs.find(pair => pair.player != 'bot' && pair.player.bdid === personalBdid)
 
   const common = get<object>(result, 'common')
   const winnerTeam = get<number>(common, 'winnerTeam')
   const resultType = winnerTeam == 0 ? 'draw' : winnerTeam == get<number>(avatar, 'team') ? 'win' : 'lose'
+
+
+  const details = Object.entries(personal)
+    .filter(([key, value]) => key !== 'avatar')
+    .map(([key, value]) => value)
+    .map(t => Object.values(t.details).map((t: any) => ({ ...t, crits: critsParserGenerator(t.crits) })) as PersonalDamageDetails[])
+    .reduce((acc, value) => acc.concat(value), [])
 
   return {
     arenaUniqueID,
@@ -126,6 +206,9 @@ export function parseBattleResult(result: unknown) {
       duration: get<number>(common, 'duration') ?? 0,
     },
     players: playerVehiclePairs,
-    personal: personalVehicle
+    personal: personalVehicle ? {
+      ...personalVehicle,
+      details
+    } : undefined,
   }
 }

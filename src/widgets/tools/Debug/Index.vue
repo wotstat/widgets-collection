@@ -118,6 +118,7 @@ import Bases from "./panels/Bases.vue";
 import FeedbackLog from "./panels/FeedbackLog.vue";
 import Keyboard from "./panels/Keyboard.vue";
 import { onAnyKeyPressKey } from "./useToggleKeyBinding";
+import { parseBattleResult } from "@/utils/battleResultParser";
 
 
 // @ts-ignore
@@ -344,6 +345,7 @@ useReactiveTrigger(sdk.data.battle.isInBattle, t => {
 
 useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
   console.log('result', result);
+  console.log('parsed result', parseBattleResult(result));
 })
 
 const pressedKeys = ref<Set<string>>(new Set())

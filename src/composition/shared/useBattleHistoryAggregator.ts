@@ -23,6 +23,7 @@ type BattleNumericFields = keyof {
 }
 
 type BattleResultStats = NonNullable<BattleResultWithArenaId['personal']>['stats']
+type BattleResultDetails = NonNullable<BattleResultWithArenaId['personal']>['details']
 
 export function useBattleHistoryAggregator() {
   const { sdk } = useWidgetSdk()
@@ -42,7 +43,7 @@ export function useBattleHistoryAggregator() {
 
   const battleResultsToStats = {
     'damage': 'damageDealt',
-    'assist': (s, _) => s.damageAssistedRadio + s.damageAssistedTrack,
+    'assist': (s, d, b) => s.damageAssistedRadio + s.damageAssistedTrack,
     'blocked': 'damageBlockedByArmor',
     'stun': 'damageAssistedStun',
     'frags': 'kills',
@@ -59,17 +60,17 @@ export function useBattleHistoryAggregator() {
     'ramDamage': null,
     'ammoBayDestroyed': null,
     'ammoBayDestroyedDamage': null,
-    'gunMarkDmg': (s, _) => s.damageDealt + Math.max(s.damageAssistedRadio, s.damageAssistedTrack, s.damageAssistedStun),
-    'chuckScore': (s, _) => s.damageDealt + s.kills * 200,
+    'gunMarkDmg': (s, d, b) => s.damageDealt + Math.max(s.damageAssistedRadio, s.damageAssistedTrack, s.damageAssistedStun),
+    'chuckScore': (s, d, b) => s.damageDealt + s.kills * 200,
     'shotDamage': null,
     'damagedShotsCount': null,
     'shotDamageMax': null,
     'shotDamageMin': null,
     'lifetime': 'lifeTime',
     'duration': null,
-    'crits': null
+    'crits': (s, d, b) => d.map(t => t.crits.length).reduce((a, b) => a + b, 0)
   } as const satisfies {
-    [key in keyof typeof defaultStats]: ((result: BattleResultStats, battle: Battle) => number) | keyof BattleResultStats | null
+    [key in keyof typeof defaultStats]: ((result: BattleResultStats, details: BattleResultDetails, battle: Battle) => number) | keyof BattleResultStats | null
   }
 
   useBattleResult((result, raw) => {
@@ -82,16 +83,16 @@ export function useBattleHistoryAggregator() {
 
     if (!result.personal) return
 
-    const { stats } = result.personal
+    const { stats, details, player } = result.personal
     battle.xp = stats.xp
     battle.lifetime = stats.lifeTime
     battle.result = result.result
-    battle.position = result.personal.player.avatar.playerRank ?? null
+    battle.position = player != 'bot' ? player.avatar.playerRank ?? null : null
     battle.duration = result.common.duration
 
     for (const [key, value] of objectEntries(battleResultsToStats)) {
       if (value === null) continue
-      if (typeof value === 'function') battle[key] = value(stats, battle)
+      if (typeof value === 'function') battle[key] = value(stats, details, battle)
       else battle[key] = stats[value]
     }
 

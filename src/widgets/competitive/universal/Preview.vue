@@ -39,6 +39,7 @@ const sampleData = {
   'ram': 0.5,
   'ram-dmg': 80,
   'xp': 1200,
+  'crits': 3
 }
 
 function dataFor(battles: number) {
