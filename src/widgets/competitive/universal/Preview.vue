@@ -18,7 +18,9 @@ import { AggregatorResultPrefixKey, toIconType, totalAggregator } from '@/compos
 const props = defineProps<{
   isMiniPreview: boolean
   slots?: Props['slots'],
-  total?: boolean
+  total?: boolean,
+  topInRow?: 'max' | 'avg' | 'min' | 'total',
+  battles?: 'max' | 'avg' | 'min' | 'total',
 }>();
 
 const sampleData = {
@@ -64,7 +66,8 @@ function dataFor(battles: number) {
 
 
   const top1InRow = Math.round(battles * (Math.random() * 0.3 + 0.3))
-  const countDamagedShots = Math.round(battles * (Math.random() * 3 + 4))
+  const countDamagedShots = Math.round(battles * (Math.random() * 5 + 10))
+  const shotDamageTotal = Math.round(multiplied['damage'] * 0.9)
   return {
     ...avgMaxMinTotal,
     battles,
@@ -72,8 +75,8 @@ function dataFor(battles: number) {
     top1: Math.round(battles * (Math.random() * 0.3 + 0.7)),
     'top1InRow': top1InRow,
     'top1InRowMax': top1InRow * 1.25,
-    'shotDamageTotal': Math.round(multiplied['damage'] * 0.9),
-    'shotDamageAvg': 400 * (1 + Math.random() * 0.5),
+    'shotDamageTotal': shotDamageTotal,
+    'shotDamageAvg': shotDamageTotal / countDamagedShots,
     'shotDamageMax': 400 * (1.2 + Math.random() * 0.5),
     countDamagedShots,
   }
@@ -90,7 +93,10 @@ const targetData = prepare.map(t => ({
   ...toIconType(t.results as any)
 }))
 
-const total = toIconType(totalAggregator(prepare.map(t => t.results as any)))
+const total = computed(() => toIconType(totalAggregator(prepare.map(t => t.results as any), {
+  battle: props.battles ?? 'max',
+  top1InRow: props.topInRow ?? 'max'
+})))
 
 const aspect = computed(() => {
   switch (props.slots?.length) {

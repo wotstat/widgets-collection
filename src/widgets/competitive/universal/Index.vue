@@ -9,10 +9,10 @@
 
 <script setup lang="ts">
 import Content from './Content.vue';
-import { arrayOfOneOf, useQueryParams } from '@/composition/useQueryParams';
+import { arrayOfOneOf, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import WidgetRoot from '@/components/WidgetRoot.vue';
 import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
-import { possibleSlots, Props } from './define.widget';
+import { possibleSlots, Props, variants } from './define.widget';
 import { AggregatorResult, toIconType, totalAggregator, useBattleHistoryAggregator } from '@/composition/shared/useBattleHistoryAggregator';
 import { computed, watch } from 'vue';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
@@ -23,6 +23,8 @@ const query = useQueryParams({
   channelKey: String,
   allowSquad: Boolean,
   total: Boolean,
+  topInRow: oneOf(variants),
+  battles: oneOf(variants),
   passive: Boolean,
   slots: arrayOfOneOf(possibleSlots)
 })
@@ -36,7 +38,10 @@ type SyncData = {
 
 const state = useReactiveRelayState<SyncData>(() => relay, 'data', passive)
 const target = computed<Props['data']>(() => [...state.all.value.values()].map(t => ({ player: t.player, ...toIconType(t.results) })))
-const total = computed<Props['total']>(() => toIconType(totalAggregator([...state.all.value.values()].map(t => t.results))))
+const total = computed<Props['total']>(() => {
+  const results = [...state.all.value.values()].map(t => t.results)
+  return toIconType(totalAggregator(results, { battle: query.battles ?? 'max', top1InRow: query.topInRow ?? 'max' }))
+})
 
 if (!query.passive) {
   const { sdk } = useWidgetSdk()

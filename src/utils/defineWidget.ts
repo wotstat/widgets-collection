@@ -102,9 +102,13 @@ const defaultOptions: Options = {
 const optionsSymbol = Symbol('options');
 
 export function defineWidget(options: Partial<Options>) {
+
+  const target = { ...structuredClone(defaultOptions), ...options }
+  if (options.i18n) target.i18n = deepMerge(structuredClone(i18n), options.i18n)
+
   return {
     optionsSymbol,
-    options: { ...structuredClone(defaultOptions), ...options }
+    options: target
   }
 }
 

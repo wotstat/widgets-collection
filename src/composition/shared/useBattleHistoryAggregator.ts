@@ -237,15 +237,15 @@ export function toIconType(result: AggregatorResult): { [key in SupportedIconTyp
 
 
 const defaultAggregatorOptions = {
-  battle: 'max' as 'sum' | 'max' | 'min' | 'avg',
-  top1InRow: 'max' as 'sum' | 'max' | 'min' | 'avg',
+  battle: 'max' as 'total' | 'max' | 'min' | 'avg',
+  top1InRow: 'max' as 'total' | 'max' | 'min' | 'avg',
 } as const
 
 type TotalAggregatorOptions = typeof defaultAggregatorOptions
 
 const sum = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => result.reduce((a, b) => a + b[key], 0)
 const total = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => sum(key)(result)
-const avg = (key: keyof AggregatorResult, totalBattles: number) => (result: AggregatorResult[]) => sum(key)(result) / totalBattles
+const avg = (key: keyof AggregatorResult, total: number) => (result: AggregatorResult[]) => sum(key)(result) / total
 const min = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => Math.min(...result.map(r => r[key]))
 const max = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => Math.max(...result.map(r => r[key]))
 
@@ -281,7 +281,7 @@ export function totalAggregator(data: AggregatorResult[], options: Partial<Total
     'max': max(key),
     'min': min(key),
     'avg': (r: AggregatorResult[]) => total(key)(r) / r.length,
-    'sum': total(key)
+    'total': total(key)
   })
 
   const all = {
@@ -294,8 +294,8 @@ export function totalAggregator(data: AggregatorResult[], options: Partial<Total
     top1: total('top1'),
     top1InRow: byPlayerAvg('top1InRow')[optionsWithDefaults.top1InRow],
     top1InRowMax: byPlayerAvg('top1InRowMax')[optionsWithDefaults.top1InRow],
-    wins: byPlayerAvg('wins')[optionsWithDefaults.top1InRow],
-    battles: byPlayerAvg('battles')[optionsWithDefaults.top1InRow],
+    wins: byPlayerAvg('wins')[optionsWithDefaults.battle],
+    battles: byPlayerAvg('battles')[optionsWithDefaults.battle],
   } as const satisfies { [key in keyof AggregatorResult]: TotalAggregator }
 
 

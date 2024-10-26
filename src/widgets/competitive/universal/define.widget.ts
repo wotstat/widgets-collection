@@ -14,11 +14,14 @@ export type Props = {
 
 const slots = multiSlotParamSlot.filter(t => !['gun-mark-percent'].includes(t.value))
 
-const totalOption = (target: string, label: string, visible: (params: Record<string, any>) => boolean) => ({
+export const variants = ['total', 'avg', 'max', 'min'] as const
+
+const totalOption = (target: string, label: string, defaultValue: string, visible: (params: Record<string, any>) => boolean) => ({
   type: 'select',
   target,
   label,
-  variants: ['total', 'avg', 'max', 'min'].map(t => ({ value: t, label: `${t}-long` })),
+  variants: variants.map(t => ({ value: t, label: `shared:${t}` })),
+  default: defaultValue,
   visible
 } as SelectParam)
 
@@ -32,7 +35,8 @@ export default defineWidget({
     'backgroundColorParam',
     { type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 60, slots, default: ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles'] },
     { type: 'checkbox', target: 'total', label: 'Подводить итог', default: false },
-    totalOption('battles', 'Бои', t => t['total'] && t['slots'].includes('battles')),
+    totalOption('battles', 'Бои', 'max', t => t['total'] && t['slots'].includes('battles')),
+    totalOption('top-in-row', 'Топ1 подряд', 'max', t => t['total'] && t['slots'].includes('top1-in-row')),
     'separator',
     { type: 'random-string', target: 'channel-key', label: 'Ключ канала', length: 8 },
     { type: 'checkbox', target: 'passive', label: 'Пассивный режим', default: false },

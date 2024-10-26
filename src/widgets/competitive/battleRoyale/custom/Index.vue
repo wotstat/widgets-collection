@@ -181,10 +181,12 @@ useBattleResult((parsed) => {
 
   console.log('Battle result for: ', arenaId);
 
+  const player = parsed.personal?.player
+
   const dmg = parsed.personal?.stats.damageDealt ?? 0
   const frags = parsed.personal?.stats.kills ?? 0
   const xp = parsed.personal?.stats.xp ?? 0
-  const rank = parsed.personal?.player.avatar.playerRank ?? 0
+  const rank = player == 'bot' || !player ? 0 : player.avatar.playerRank ?? 0
   const score = calculateScore(rank, frags)
   const isTop = checkIsTop(rank)
 
