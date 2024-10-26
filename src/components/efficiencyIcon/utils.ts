@@ -191,9 +191,6 @@ export function processor(icon: IconType, short = false): Processor {
 
 const lessIsBetter = new Set<IconType>([
   'position',
-  'top1',
-  'top1-in-row',
-  'top1-in-row-max',
 ] as const satisfies IconType[])
 
 export function comparator(icon: IconType): (a: number, b: number) => number {

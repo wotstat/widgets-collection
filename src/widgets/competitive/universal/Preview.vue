@@ -1,6 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="aspect">
-    <Content :slots="slots ?? ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles']" :data="targetData" />
+    <Content :slots="slots ?? ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles']" :data="targetData"
+      :total="props.total ? total : undefined" />
   </WidgetPreviewRoot>
 </template>
 
@@ -11,70 +12,85 @@ import { computed } from 'vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from './Content.vue';
 import { Props } from './define.widget';
+import { AggregatorResultPrefixKey, toIconType, totalAggregator } from '@/composition/shared/useBattleHistoryAggregator';
 
 
 const props = defineProps<{
   isMiniPreview: boolean
-  slots?: Props['slots']
+  slots?: Props['slots'],
+  total?: boolean
 }>();
 
 const sampleData = {
-  'ammo-bay-destroyed': 0.2,
-  'ammo-bay-destroyed-dmg': 330,
+  'ammoBayDestroyed': 0.2,
+  'ammoBayDestroyedDamage': 330,
   'assist': 1200,
-  'assist-radio': 1100,
-  'assist-track': 400,
-  'base-capture': 10,
-  'base-defend': 15,
-  'block': 3000,
+  'radioAssist': 1100,
+  'trackAssist': 400,
+  'baseCapturePoints': 10,
+  'baseCaptureDefend': 15,
+  'blocked': 3000,
   'discover': 6,
   'distance': 800,
-  'dmg': 5000,
+  'damage': 5000,
   'duration': 600,
   'fire': 0.4,
-  'fire-dmg': 400,
-  'kill': 4,
+  'fireDamage': 400,
+  'frags': 4,
   'lifetime': 500,
   'position': 2,
   'ram': 0.5,
-  'ram-dmg': 80,
+  'ramDamage': 80,
   'xp': 1200,
-  'crits': 3
+  'crits': 3,
+  'stun': 3,
+  'stunAssist': 300,
+} as const satisfies {
+  [key in Exclude<AggregatorResultPrefixKey, 'gunMarkDmg' | 'chuckScore' | 'shotDamage'>]: number
 }
 
 function dataFor(battles: number) {
   const multiplied = Object.fromEntries(Object.entries(sampleData).map(([key, value]) => [key, Math.round(value * battles * (1 + Math.random() * 0.5))]))
 
-  multiplied['chuck-score'] = multiplied['dmg'] + multiplied['kill'] * 200
-  multiplied['gun-mark-dmg'] = multiplied['dmg'] + Math.max(multiplied['assist-track'], multiplied['assist-radio'], 1)
+  multiplied['chuckScore'] = multiplied['damage'] + multiplied['frags'] * 200
+  multiplied['gunMarkDmg'] = multiplied['damage'] + Math.max(multiplied['trackAssist'], multiplied['radioAssist'], 1)
 
-  const avgMax = Object.fromEntries(Object.entries(multiplied).flatMap(([key, value]) => {
+  const avgMaxMinTotal = Object.fromEntries(Object.entries(multiplied).flatMap(([key, value]) => {
     const avg = value / battles
     const max = Math.round(1 + avg * (1 + Math.random() * 0.5))
-    return [[key + '-avg', avg], [key + '-max', max]]
+    const min = Math.round(avg * (1 - Math.random() * 0.5))
+    return [[key + 'Avg', avg], [key + 'Max', max], [key + 'Min', min], [key + 'Total', value]]
   }))
 
 
   const top1InRow = Math.round(battles * (Math.random() * 0.3 + 0.3))
+  const countDamagedShots = Math.round(battles * (Math.random() * 3 + 4))
   return {
-    ...multiplied,
-    ...avgMax,
+    ...avgMaxMinTotal,
     battles,
-    win: Math.round(battles * Math.random()),
+    wins: Math.round(battles * Math.random()),
     top1: Math.round(battles * (Math.random() * 0.3 + 0.7)),
-    'top1-in-row': top1InRow,
-    'top1-in-row-max': top1InRow * 1.25,
-    'shot-dmg': Math.round(multiplied['dmg'] * 0.9),
-    'shot-dmg-avg': 400 * (1 + Math.random() * 0.5),
-    'shot-dmg-max': 400 * (1.2 + Math.random() * 0.5)
+    'top1InRow': top1InRow,
+    'top1InRowMax': top1InRow * 1.25,
+    'shotDamageTotal': Math.round(multiplied['damage'] * 0.9),
+    'shotDamageAvg': 400 * (1 + Math.random() * 0.5),
+    'shotDamageMax': 400 * (1.2 + Math.random() * 0.5),
+    countDamagedShots,
   }
 }
 
-const targetData = [
-  { player: '__NIDIN__', ...dataFor(12) },
-  { player: 'Sh0tnik', ...dataFor(11) },
-  { player: 'EviL_GrannY', ...dataFor(11) },
-] as any
+const prepare = [
+  { player: '__NIDIN__', results: dataFor(12) },
+  { player: 'Sh0tnik', results: dataFor(11) },
+  { player: 'EviL_GrannY', results: dataFor(11) },
+]
+
+const targetData = prepare.map(t => ({
+  player: t.player,
+  ...toIconType(t.results as any)
+}))
+
+const total = toIconType(totalAggregator(prepare.map(t => t.results as any)))
 
 const aspect = computed(() => {
   switch (props.slots?.length) {

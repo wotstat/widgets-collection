@@ -1,5 +1,6 @@
 import { IconType } from "@/components/efficiencyIcon/utils";
 import { deepMerge } from ".";
+import { i18n } from "./i18nShared";
 
 
 interface BaseParam {
@@ -68,8 +69,9 @@ export interface MultiSlotParam extends BaseParam {
 
 export type AccentColorParam = 'accentColorParam'
 export type BackgroundColorParam = 'backgroundColorParam'
+export type SeparatorParam = 'separator'
 
-export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam
+export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam
 
 type Language = string
 
@@ -92,7 +94,7 @@ const defaultOptions: Options = {
   widget: './Index.vue',
   preview: './Preview.vue',
   readme: './README.md',
-  i18n: {},
+  i18n: i18n,
   params: [],
   beta: false
 }

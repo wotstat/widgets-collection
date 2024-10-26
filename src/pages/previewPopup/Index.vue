@@ -125,6 +125,9 @@ const settingsValues = computedWithControl(currentOptions, () => {
     if (param == 'backgroundColorParam')
       return { value: background, target: 'background', component: defineComponent(() => () => h(Color, { label: 'Фон', ...vModel(background) })) }
 
+    if (param == 'separator')
+      return { component: h('hr') }
+
     if (param.type == 'checkbox') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? false)
       return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Checkbox, { label: t(param.label), ...vModel(value) }))) }
@@ -175,6 +178,8 @@ const settingsValues = computedWithControl(currentOptions, () => {
 
 watchEffect(() => {
   targetProps.value = settingsValues.value?.reduce((acc, s) => {
+    if (!s.target) return acc
+
     const target = s.target
     const value = s.value?.value
 
@@ -309,6 +314,12 @@ const accentColor = computed(() => '#' + accent.value)
 
       h2 {
         font-size: 1.2em;
+      }
+
+      :deep(hr) {
+        margin: 0.5em 0;
+        border: none;
+        border-top: 1px solid #9e9e9e7d;
       }
 
       :deep(.line) {

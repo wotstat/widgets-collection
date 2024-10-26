@@ -5,6 +5,7 @@ import { useReactiveState, useWidgetSdk } from "../widgetSdk";
 import { defaultStats, useInBattleCollector } from "./useInBattleCollector";
 import { objectEntries } from "@vueuse/core";
 import { IconType } from "@/components/efficiencyIcon/utils";
+import { Prettify } from "@/utils";
 
 
 type Battle = typeof defaultBattle
@@ -165,6 +166,7 @@ export function useBattleHistoryAggregator() {
         shotDamageMax: battlesCount <= 0 ? 0 : Math.max(...battlesArray.value.map(b => b.shotDamageMax)),
         shotDamageTotal: totalShotDamage,
         shotDamageAvg: countDamagedShots <= 0 ? 0 : totalShotDamage / countDamagedShots,
+        countDamagedShots
       },
       ...{
         top1: battlesArray.value.filter(b => b.position === 1).length,
@@ -181,11 +183,10 @@ const unsupportedIconTypes = [
   'player', 'tank', 'gun-mark-percent'
 ] as const satisfies IconType[]
 
-type AggregatorResult = ReturnType<typeof useBattleHistoryAggregator>['value']
-type SupportedIconType = Exclude<IconType, typeof unsupportedIconTypes[number]>
+export type AggregatorResult = ReturnType<typeof useBattleHistoryAggregator>['value']
+export type SupportedIconType = Exclude<IconType, typeof unsupportedIconTypes[number]>
 
-type AggregatorResultPrefixKey<T = keyof AggregatorResult> = T extends `${infer Prefix}Avg` ? Prefix : never
-
+export type AggregatorResultPrefixKey<T = keyof AggregatorResult> = T extends `${infer Prefix}Avg` ? Prefix : never
 
 const nameMap = <T extends SupportedIconType, V extends AggregatorResultPrefixKey>(key: T, target: V) => {
   return {
@@ -194,7 +195,6 @@ const nameMap = <T extends SupportedIconType, V extends AggregatorResultPrefixKe
     [`${key}-max`]: `${target}Max`,
   } as { [K in T]: `${V}Total` } & { [K in `${T}-avg`]: `${V}Avg` } & { [K in `${T}-max`]: `${V}Max` }
 }
-
 
 const battleToIconType = {
   ...nameMap('ammo-bay-destroyed', 'ammoBayDestroyed'),
@@ -232,4 +232,72 @@ const battleToIconType = {
 
 export function toIconType(result: AggregatorResult): { [key in SupportedIconType]: number } {
   return Object.fromEntries(objectEntries(battleToIconType).map(([key, value]) => [key, result[value]])) as any
+}
+
+
+
+const defaultAggregatorOptions = {
+  battle: 'max' as 'sum' | 'max' | 'min' | 'avg',
+  top1InRow: 'max' as 'sum' | 'max' | 'min' | 'avg',
+} as const
+
+type TotalAggregatorOptions = typeof defaultAggregatorOptions
+
+const sum = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => result.reduce((a, b) => a + b[key], 0)
+const total = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => sum(key)(result)
+const avg = (key: keyof AggregatorResult, totalBattles: number) => (result: AggregatorResult[]) => sum(key)(result) / totalBattles
+const min = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => Math.min(...result.map(r => r[key]))
+const max = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => Math.max(...result.map(r => r[key]))
+
+type TotalAggregator = (result: AggregatorResult[]) => number
+const groupAggregator = <K extends AggregatorResultPrefixKey>(key: K, battleCount: number) => {
+  return {
+    [`${key}Total`]: total(`${key}Total`),
+    [`${key}Avg`]: avg(`${key}Total`, battleCount),
+    [`${key}Max`]: (result: AggregatorResult[]) => Math.max(...result.map(r => r[`${key}Max`])),
+    [`${key}Min`]: (result: AggregatorResult[]) => Math.min(...result.map(r => r[`${key}Min`])),
+  } as Prettify<{ [key in `${K}Total`]: TotalAggregator } & { [key in `${K}Avg`]: TotalAggregator } & { [key in `${K}Max`]: TotalAggregator } & { [key in `${K}Min`]: TotalAggregator }>
+}
+
+// примитивные аггрегаторы, которые всегда сумма/мин/макс/среднее по боям
+const simpleTotalAggregators = [
+  'damage', 'assist', 'blocked', 'stun', 'frags', 'radioAssist', 'trackAssist', 'stunAssist',
+  'distance', 'baseCapturePoints', 'baseCaptureDefend', 'discover', 'fireDamage', 'fire', 'ram', 'ramDamage',
+  'ammoBayDestroyed', 'ammoBayDestroyedDamage', 'gunMarkDmg', 'chuckScore', 'xp', 'lifetime', 'duration',
+  'position', 'crits'
+] as const satisfies AggregatorResultPrefixKey[]
+
+export function totalAggregator(data: AggregatorResult[], options: Partial<TotalAggregatorOptions> = {}) {
+  const optionsWithDefaults = { ...defaultAggregatorOptions, ...options }
+
+  const totalBattles = sum('battles')(data)
+  const totalShots = sum('countDamagedShots')(data)
+
+  const simple = simpleTotalAggregators
+    .map(k => groupAggregator(k, totalBattles))
+    .reduce((a, b) => ({ ...a, ...b }))
+
+  const byPlayerAvg = (key: keyof AggregatorResult) => ({
+    'max': max(key),
+    'min': min(key),
+    'avg': (r: AggregatorResult[]) => total(key)(r) / r.length,
+    'sum': total(key)
+  })
+
+  const all = {
+    ...simple,
+    shotDamageTotal: total('shotDamageTotal'),
+    shotDamageAvg: avg('shotDamageTotal', totalShots),
+    shotDamageMax: max('shotDamageMax'),
+    shotDamageMin: min('shotDamageMin'),
+    countDamagedShots: (r) => totalShots,
+    top1: total('top1'),
+    top1InRow: byPlayerAvg('top1InRow')[optionsWithDefaults.top1InRow],
+    top1InRowMax: byPlayerAvg('top1InRowMax')[optionsWithDefaults.top1InRow],
+    wins: byPlayerAvg('wins')[optionsWithDefaults.top1InRow],
+    battles: byPlayerAvg('battles')[optionsWithDefaults.top1InRow],
+  } as const satisfies { [key in keyof AggregatorResult]: TotalAggregator }
+
+
+  return Object.fromEntries(objectEntries(all).map(([key, value]) => [key, value(data)])) as AggregatorResult
 }

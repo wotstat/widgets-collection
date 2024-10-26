@@ -18,6 +18,20 @@
         </div>
       </div>
     </WidgetCard>
+    <template v-if="total">
+      <div class="space"></div>
+      <WidgetCard>
+        <div class="lines total">
+          <div class="line">
+            <p class="name bold">Итог</p>
+            <p v-for="(slot, i) in slots" class="number bold">
+              <TweenValue v-if="total[slot] != undefined" :value="total[slot]" :processor="processor(slot, true)" />
+              <span v-else>{{ total[slot] }}*</span>
+            </p>
+          </div>
+        </div>
+      </WidgetCard>
+    </template>
   </div>
 </template>
 
@@ -64,10 +78,18 @@ const fontSize = computed(() => {
   font-size: 1.3em;
   line-height: 1.2;
 
+  .space {
+    height: 0.5em;
+  }
+
   .lines {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+
+    &.total {
+      margin: -0.5em 0;
+    }
 
     .line {
       display: flex;

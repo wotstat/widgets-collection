@@ -29,6 +29,10 @@ export type DeepPartial<T> = T extends object ? {
   [P in keyof T]?: DeepPartial<T[P]>;
 } : T;
 
+export type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & unknown;
+
 export function deepMerge<T extends Object>(target: T, source: Partial<T>): T {
   for (const key in source) {
     if (source[key] && typeof source[key] === 'object') {

@@ -1,5 +1,5 @@
 import { efficiency, IconType, multiSlotParamSlot, shared } from "@/components/efficiencyIcon/utils";
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget, SelectParam } from "@/utils/defineWidget";
 import { i18n } from "@/components/efficiencyIcon/i18n";
 import { arrayExclude } from "@/utils";
 
@@ -9,9 +9,18 @@ type PossibleIconType = typeof possibleSlots[number]
 export type Props = {
   slots: PossibleIconType[]
   data: ({ player: string } & { [key in PossibleIconType]: number })[]
+  total?: { [key in PossibleIconType]: number }
 }
 
 const slots = multiSlotParamSlot.filter(t => !['gun-mark-percent'].includes(t.value))
+
+const totalOption = (target: string, label: string, visible: (params: Record<string, any>) => boolean) => ({
+  type: 'select',
+  target,
+  label,
+  variants: ['total', 'avg', 'max', 'min'].map(t => ({ value: t, label: `${t}-long` })),
+  visible
+} as SelectParam)
 
 export default defineWidget({
   name: "Соревновательный универсальный",
@@ -21,9 +30,10 @@ export default defineWidget({
   params: [
     'accentColorParam',
     'backgroundColorParam',
-    // { type: 'checkbox', target: 'allow-squad', label: 'Учитывать взводы', default: false },
     { type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 60, slots, default: ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles'] },
-    // { type: 'random-string', target: 'save-key', label: 'Ключ сохранения', length: 5 },
+    { type: 'checkbox', target: 'total', label: 'Подводить итог', default: false },
+    totalOption('battles', 'Бои', t => t['total'] && t['slots'].includes('battles')),
+    'separator',
     { type: 'random-string', target: 'channel-key', label: 'Ключ канала', length: 8 },
     { type: 'checkbox', target: 'passive', label: 'Пассивный режим', default: false },
   ]
