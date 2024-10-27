@@ -81,7 +81,7 @@ watch(isOpen[0], () => setupButtonBounding.update())
 
 function add() {
   if (!values.value) values.value = []
-  values.value.push(props.slots[0].value)
+  values.value.push(props.slots.find(t => !values.value?.includes(t.value))?.value ?? props.slots[0].value)
   selectedSlot.value = values.value.length - 1
 }
 
@@ -95,8 +95,15 @@ function selectLine(value: string) {
   if (selectedSlot.value == null || values.value == null) return
   const slot = selectedSlot.value
 
-  if (targetSlot && targetSlot.modifications && targetSlot.modifications.length > 0)
+  if (targetSlot && targetSlot.modifications && targetSlot.modifications.length > 0) {
+    const lastValuePostfix = values.value[slot].split('-').pop() ?? ''
+    const currentValuesPostfix = targetSlot.modifications.map(t => t.value.split('-').pop() ?? '')
+
+    const index = currentValuesPostfix.indexOf(lastValuePostfix)
+    if (index != null && index != -1 && index < targetSlot.modifications.length) return values.value[slot] = targetSlot.modifications[index].value
+
     return values.value[slot] = targetSlot.modifications[0].value
+  }
 
   values.value[slot] = value
 }
@@ -142,6 +149,7 @@ button.setup {
 
   .interactive {
     cursor: pointer;
+    user-select: none;
     transition: background-color 0.1s;
 
     &:hover {

@@ -1,4 +1,4 @@
-import { computed, watch, watchEffect } from "vue";
+import { computed, watch } from "vue";
 import { BattleResultWithArenaId, useBattleResult } from "../useOnBattleResult";
 import { useWidgetStorage } from "../useWidgetStorage";
 import { useReactiveState, useWidgetSdk } from "../widgetSdk";
@@ -245,7 +245,7 @@ type TotalAggregatorOptions = typeof defaultAggregatorOptions
 
 const sum = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => result.reduce((a, b) => a + b[key], 0)
 const total = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => sum(key)(result)
-const avg = (key: keyof AggregatorResult, total: number) => (result: AggregatorResult[]) => sum(key)(result) / total
+const avg = (key: keyof AggregatorResult, total: number) => (result: AggregatorResult[]) => total == 0 ? 0 : sum(key)(result) / total
 const min = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => Math.min(...result.map(r => r[key]))
 const max = (key: keyof AggregatorResult) => (result: AggregatorResult[]) => Math.max(...result.map(r => r[key]))
 
@@ -280,7 +280,7 @@ export function totalAggregator(data: AggregatorResult[], options: Partial<Total
   const byPlayerAvg = (key: keyof AggregatorResult) => ({
     'max': max(key),
     'min': min(key),
-    'avg': (r: AggregatorResult[]) => total(key)(r) / r.length,
+    'avg': (r: AggregatorResult[]) => r.length == 0 ? 0 : total(key)(r) / r.length,
     'total': total(key)
   })
 

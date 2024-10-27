@@ -25,7 +25,7 @@ const props = defineProps<{
 
 const sampleData = {
   'ammoBayDestroyed': 0.2,
-  'ammoBayDestroyedDamage': 330,
+  'ammoBayDestroyedDamage': 800,
   'assist': 1200,
   'radioAssist': 1100,
   'trackAssist': 400,
@@ -99,19 +99,24 @@ const total = computed(() => toIconType(totalAggregator(prepare.map(t => t.resul
 })))
 
 const aspect = computed(() => {
-  switch (props.slots?.length) {
-    case 0: return 1.2
-    case 1: return 1.45
-    case 2: return 2.17
-    case 3: return 2.75
-    case 4: return 3.02
-    case 5: return 3.36
-    case 6: return 3.7
-    case 7: return 4.04
-    case 8: return 4.38
-    case 9: return 4.72
-    default: return 4
-  }
+  const aspect = (() => {
+    switch (props.slots?.length) {
+      case 0: return 1.2
+      case 1: return 1.45
+      case 2: return 2.17
+      case 3: return 2.75
+      case 4: return 3.02
+      case 5: return 3.36
+      case 6: return 3.7
+      case 7: return 4.04
+      case 8: return 4.38
+      case 9: return 4.72
+      default: return 4
+    }
+  })()
+
+  if (props.total) return aspect * 0.6
+  return aspect
 })
 </script>
 

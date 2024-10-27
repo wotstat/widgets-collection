@@ -86,3 +86,16 @@ export function minByComparator<T>(array: T[], comparator: (a: T, b: T) => numbe
 export function maxByComparator<T>(array: T[], comparator: (a: T, b: T) => number) {
   return array.reduce((max, current) => comparator(max, current) > 0 ? max : current);
 }
+
+export function uniqBy<T>(values: T[], key: (value: T) => unknown) {
+  const keys = new Set<unknown>();
+
+  return values.filter(value => {
+    const k = key(value);
+
+    if (keys.has(k)) return false;
+    keys.add(k);
+    return true;
+  });
+
+}

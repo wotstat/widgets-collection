@@ -18,7 +18,7 @@
         </div>
       </div>
     </WidgetCard>
-    <template v-if="total">
+    <template v-if="total && data.length > 1">
       <div class="space"></div>
       <WidgetCard>
         <div class="lines total">
