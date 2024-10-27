@@ -4,7 +4,7 @@ export const collections = [
     widgets: [
       '/tournament/osg/battle-royale',
       '/nidin/equipments',
-      '/efficiency/stats',
+      '/competitive/universal',
     ]
   },
   {
@@ -15,11 +15,11 @@ export const collections = [
     ]
   },
   {
-    name: 'Соревнования',
+    name: 'Боевые',
     widgets: [
-      '/competitive/battle-royale/custom',
-      '/competitive/universal',
+      '/efficiency/stats',
       '/competitive/squad/efficiency',
+      '/competitive/universal',
     ]
   },
   {
@@ -52,6 +52,7 @@ export const collections = [
     name: 'Архив',
     widgets: [
       '/tournament/trovo/bb-official',
+      '/competitive/battle-royale/custom',
     ]
   }
 ]

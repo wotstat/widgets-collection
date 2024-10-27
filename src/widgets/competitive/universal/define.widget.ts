@@ -26,9 +26,8 @@ const totalOption = (target: string, label: string, defaultValue: string, visibl
 } as SelectParam)
 
 export default defineWidget({
-  name: "Соревновательный универсальный",
-  description: "Позволяет соревноваться с друзьями по разным параметрам",
-  beta: true,
+  name: "Универсальная прогрессия",
+  description: "Отслеживает 25 показателей. Играйте соло. Соревнуйтесь с друзьями. Устраивайте кооперативные челленджы.",
   i18n,
   params: [
     'accentColorParam',
