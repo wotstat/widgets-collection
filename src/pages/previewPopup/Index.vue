@@ -298,7 +298,7 @@ const accentColor = computed(() => '#' + accent.value)
       .preview-container {
         flex: 1;
         height: 100%;
-        max-width: 500px;
+        max-width: 600px;
       }
     }
 
