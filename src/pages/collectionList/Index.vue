@@ -18,7 +18,7 @@
               </template>
             </Item>
 
-            <div class="beta" v-if="widget.options.beta">Ранний доступ</div>
+            <div class="beta" v-if="widget.options.beta">В РАЗРАБОТКЕ</div>
           </template>
         </div>
       </div>
@@ -140,7 +140,7 @@ function onClick(widget: {
         top: 10px;
         right: 10px;
         padding: 5px 10px;
-        border-radius: 10px;
+        border-radius: 5px;
 
         font-size: 1em;
         font-weight: bold;
