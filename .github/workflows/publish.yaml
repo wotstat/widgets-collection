@@ -25,24 +25,15 @@ jobs:
 
       - name: Upload to s3
         run: |
-          aws s3 rm s3://widgets.wotstat.info --endpoint-url=https://storage.yandexcloud.net/ --recursive
-
-          aws s3 cp \
-            dist/ s3://widgets.wotstat.info \
+          aws s3 sync ./dist s3://widgets.wotstat.info \
+            --cache-control "max-age=31104000, public" \
             --endpoint-url=https://storage.yandexcloud.net/ \
-            --cache-control 'public, max-age=86400' \
-            --recursive
-
-          aws s3 cp \
-            s3://widgets.wotstat.info/assets/ s3://widgets.wotstat.info/assets/ \
-            --endpoint-url=https://storage.yandexcloud.net/ \
-            --recursive \
-            --cache-control "public, max-age=31104000"
+            --delete
 
           aws s3 cp \
             s3://widgets.wotstat.info/index.html s3://widgets.wotstat.info/index.html \
-            --endpoint-url=https://storage.yandexcloud.net/ \
-            --cache-control "public, max-age=300"
+            --cache-control "public, max-age=300" \
+            --endpoint-url=https://storage.yandexcloud.net/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
