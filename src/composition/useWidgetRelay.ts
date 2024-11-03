@@ -9,8 +9,9 @@ export function useWidgetRelay(postfix: string) {
   const route = useRoute();
   const uuid = uuidv4()
 
+  console.log(`Setup relay for ${route.path}:${postfix}`);
   const relay = new WidgetsRelay({
-    channel: route.path + postfix,
+    channel: `${route.path}:${postfix}`,
     uuid
   })
 
@@ -28,7 +29,7 @@ export function useReactiveWidgetRelay(postfix: MaybeRefOrGetter<string>) {
     console.log(`Setup relay for ${route.path}:${postfix}`);
 
     return new WidgetsRelay({
-      channel: route.path + ':' + postfix,
+      channel: `${route.path}:${postfix}`,
       uuid
     })
   }
@@ -54,8 +55,11 @@ export function usePlatoonWidgetRelay(postfix: MaybeRefOrGetter<string | undefin
   const platoonId = computed(() => platoonSlots.value?.filter(t => t?.name)
     .map(t => t?.name)
     .toSorted()
-    .join('-') || playerName.value || uuidv4())
+    .join(',') || playerName.value || uuidv4())
 
-  const relayPostfix = computed(() => (platoonId.value || 'default') + '_' + (toValue(postfix) ?? ''))
+  const relayPostfix = computed(() => {
+    const postfixValue = toValue(postfix)
+    return (platoonId.value || 'default') + (postfixValue ? `|${postfixValue}` : '')
+  })
   return useReactiveWidgetRelay(relayPostfix)
 }

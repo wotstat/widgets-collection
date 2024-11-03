@@ -36,12 +36,14 @@ const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const gunMark = useGunMarkCalculator()
 
 const target = computed(() => ({
-  player: playerName.value ?? '',
+  player: playerName.value ?? 'Loading...',
   playerId: playerId.value,
   tank: (isInBattle.value ? battleTank.value?.localizedShortName ?? hangarTank.value?.localizedShortName : hangarTank.value?.localizedShortName) ?? '',
   gunMarkPercent: gunMark.battleDamageRating.value,
   ...stats.value,
   distance: Math.round(stats.value.distance),
+  lifetime: Math.round(stats.value.lifetime),
+  duration: Math.round(stats.value.duration),
 }))
 
 const slotToTarget = {
