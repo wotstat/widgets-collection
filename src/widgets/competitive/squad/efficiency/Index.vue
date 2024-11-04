@@ -39,7 +39,7 @@ const target = computed(() => ({
   player: playerName.value ?? 'Loading...',
   playerId: playerId.value,
   tank: (isInBattle.value ? battleTank.value?.localizedShortName ?? hangarTank.value?.localizedShortName : hangarTank.value?.localizedShortName) ?? '',
-  gunMarkPercent: gunMark.battleDamageRating.value,
+  gunMarkPercent: gunMark.dossierDamageRating.value,
   ...stats.value,
   distance: Math.round(stats.value.distance),
   lifetime: Math.round(stats.value.lifetime),

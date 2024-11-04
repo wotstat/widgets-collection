@@ -107,7 +107,8 @@ export function useGunMarkCalculator() {
     battleGunSum,
     battleMovingAvgDamage,
     battleDamageRating,
-    currentDamageRating
+    currentDamageRating,
+    dossierDamageRating: computed(() => dossier.value?.damageRating ?? 0)
   }
 
 }
