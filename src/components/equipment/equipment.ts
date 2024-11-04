@@ -34,8 +34,8 @@ const pngMap = ([k, v]: [string, { default: any }]) => [k.match(/([^\/]+)\.png$/
 const equipmentsSd = new Map(Object.entries(import.meta.glob<Glob>('./assets/equipment/normal/*.png', { eager: true })).map(pngMap))
 const equipmentsHd = new Map(Object.entries(import.meta.glob<Glob>('./assets/equipment/hd/*.png', { eager: true })).map(pngMap))
 
-const skillsSd = new Map(Object.entries(import.meta.glob<Glob>('/assets/skills/normal/*.png', { eager: true })).map(pngMap))
-const skillsHd = new Map(Object.entries(import.meta.glob<Glob>('/assets/skills/hd/*.png', { eager: true })).map(pngMap))
+const skillsSd = new Map(Object.entries(import.meta.glob<Glob>('./assets/skills/normal/*.png', { eager: true })).map(pngMap))
+const skillsHd = new Map(Object.entries(import.meta.glob<Glob>('./assets/skills/hd/*.png', { eager: true })).map(pngMap))
 
 export function isEquipmentTag(tag: string): tag is EquipmentTag {
   return equipmentById.has(tag as EquipmentTag)
