@@ -54,7 +54,6 @@ export default defineWidget({
   name: "Взводная эффективность",
   description: "Отображает эффективность ваших совзводных в бою",
   i18n,
-  beta: true,
   params: [
     'accentColorParam',
     { type: 'checkbox', target: 'anim', label: 'Анимация', default: true },
