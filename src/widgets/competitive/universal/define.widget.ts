@@ -4,7 +4,7 @@ import { i18n } from "@/components/efficiencyIcon/i18n";
 import { arrayExclude } from "@/utils";
 
 
-export const possibleSlots = arrayExclude([...efficiency, ...shared] as const, ['player', 'tank', 'gun-mark-percent'] as const)
+export const possibleSlots = arrayExclude([...efficiency, ...shared] as const, ['player', 'tank', 'gun-mark-percent', 'hp'] as const)
 type PossibleIconType = typeof possibleSlots[number]
 export type Props = {
   slots: PossibleIconType[]

@@ -33,6 +33,7 @@ export const efficiency = [
   'xp', 'xp-avg', 'xp-max',
   'gun-mark-dmg',
   'gun-mark-percent',
+  'hp'
 ] as const
 
 export const efficiencyWithMods = [
@@ -116,6 +117,7 @@ export const inBattleEfficiency = [
   'gun-mark-percent',
   'lifetime',
   'duration',
+  'hp'
 ] as const satisfies IconType[]
 
 

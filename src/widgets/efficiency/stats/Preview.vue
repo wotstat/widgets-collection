@@ -43,6 +43,7 @@ const defaultValues = {
   'lifetime': 650,
   'duration': 7200,
   'crits': 3,
+  'hp': 1800,
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: any
 }

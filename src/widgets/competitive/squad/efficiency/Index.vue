@@ -27,6 +27,7 @@ const params = useQueryParams({
 
 const { sdk } = useWidgetSdk();
 const stats = useInBattleCollector()
+const health = useReactiveState(sdk.data.battle.health)
 
 const playerName = useReactiveState(sdk.data.player.name)
 const playerId = useReactiveState(sdk.data.player.id)
@@ -44,6 +45,7 @@ const target = computed(() => ({
   distance: Math.round(stats.value.distance),
   lifetime: Math.round(stats.value.lifetime),
   duration: Math.round(stats.value.duration),
+  health: health.value,
 }))
 
 const slotToTarget = {
@@ -71,6 +73,7 @@ const slotToTarget = {
   'lifetime': 'lifetime',
   'duration': 'duration',
   'crits': 'crits',
+  'hp': 'health',
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: keyof typeof target['value']
 }

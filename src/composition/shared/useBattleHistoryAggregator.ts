@@ -180,7 +180,7 @@ export function useBattleHistoryAggregator() {
 
 
 const unsupportedIconTypes = [
-  'player', 'tank', 'gun-mark-percent'
+  'player', 'tank', 'gun-mark-percent', 'hp'
 ] as const satisfies IconType[]
 
 export type AggregatorResult = ReturnType<typeof useBattleHistoryAggregator>['value']

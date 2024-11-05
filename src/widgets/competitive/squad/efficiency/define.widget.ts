@@ -23,6 +23,7 @@ export type Props = {
 export const slotVariants = [
   { value: 'player', label: 'player' },
   { value: 'tank', label: 'tank' },
+  { value: 'hp', label: 'hp' },
   { value: 'dmg', label: 'dmg' },
   { value: 'kill', label: 'kill' },
   { value: 'block', label: 'block' },

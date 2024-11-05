@@ -28,6 +28,7 @@ export const slotVariants = [
   { value: 'discover', label: 'discover' },
   { value: 'assist-radio', label: 'assist-radio' },
   { value: 'assist-track', label: 'assist-track' },
+  { value: 'hp', label: 'hp' },
   { value: 'fire', label: 'fire' },
   { value: 'fire-dmg', label: 'fire-dmg' },
   { value: 'ram', label: 'ram' },
@@ -41,8 +42,7 @@ export const slotVariants = [
   { value: 'duration', label: 'duration' },
   { value: 'chuck-score', label: 'chuck-score' },
   { value: 'gun-mark-dmg', label: 'gun-mark-dmg' },
-  { value: 'gun-mark-percent', label: 'gun-mark-percent' }
-
+  { value: 'gun-mark-percent', label: 'gun-mark-percent' },
 ] satisfies { value: Line['icon'] | 'empty', label: string }[]
 
 export type SlotValue = typeof slotVariants[number]['value']

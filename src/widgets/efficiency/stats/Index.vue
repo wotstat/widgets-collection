@@ -13,6 +13,7 @@ import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/compositio
 import { SlotValue, slotVariants } from './define.widget';
 import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
 import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 
 
 const possibleSlots = oneOf([...slotVariants.map(slot => slot.value), 'empty'])
@@ -33,6 +34,9 @@ const params = useQueryParams({
 
 const stats = useInBattleCollector()
 const gunMark = useGunMarkCalculator()
+const { sdk } = useWidgetSdk()
+
+const health = useReactiveState(sdk.data.battle.health)
 
 const valuesMap = {
   'dmg': () => stats.value.damage,
@@ -57,6 +61,7 @@ const valuesMap = {
   'duration': () => stats.value.duration,
   'lifetime': () => stats.value.lifetime,
   'crits': () => stats.value.crits,
+  'hp': () => health.value ?? 0,
 } as const satisfies {
   [key in Exclude<SlotValue, 'empty'>]: () => number | string
 }
