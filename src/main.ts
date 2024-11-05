@@ -6,6 +6,8 @@ import { createApp } from 'vue'
 import routes from './routes.ts'
 import App from './App.vue'
 
+import "./utils/polyfills.ts";
+
 createApp(App)
   .use(routes)
   .mount('#app')
