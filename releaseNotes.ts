@@ -79,6 +79,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2024-10-20-nidin-equipments',
     ru: `• В виджет ${Utils.addWidget('https://widgets.wotstat.info/nidin/equipments?show-tank-name=false&variant=compact&hd=true&post-progression=true&post-progression-current=true', 'Оборудование от __NIDIN__')} добавлено отображение рекомендуемой полевой модернизации
 • Добавлен виджет ${Utils.addWidget('https://widgets.wotstat.info/efficiency/stats?accent=f044fcff&solo-align=left&anim=false&slots=assist-track,assist-radio,fire-dmg,ammo-bay-destroyed-dmg,ram-dmg,discover', 'Расширенная эффективность')}. Сконфигурируйте под себя до 8 параметров из 18 доступных`
+  },
+  {
+    id: '2024-11-05-rtk',
+    ru: `• Добавлен виджет ${Utils.addWidget('https://widgets.wotstat.info/tournament/rtk/random?accent=36ff46ff&background=242424ff&hideL1=false&hideL2=false&hideL3=false', 'Игровой Вызов')} для отображения позиции в турнире Игровой`
   }
 ]
 
