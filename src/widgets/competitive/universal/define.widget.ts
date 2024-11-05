@@ -27,7 +27,7 @@ const totalOption = (target: string, label: string, defaultValue: string, visibl
 
 export default defineWidget({
   name: "Универсальная прогрессия",
-  description: "Отслеживает 25 показателей. Играйте соло. Соревнуйтесь с друзьями. Устраивайте кооперативные челленджы.",
+  description: "Отслеживает 25 показателей. Играйте соло. Соревнуйтесь с друзьями. Устраивайте кооперативные челленджи.",
   i18n,
   params: [
     'accentColorParam',
