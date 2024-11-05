@@ -5,7 +5,8 @@ title: Игровой вызов. Третий турнир
 Виджет для отслеживания прогрессии в турнире [Игровой вызов. Третий турнир](https://challenge.tanki.su/challenge/916){target='_blank'}. Показывает зачётные бои – лучшие 15 по опыту.
 
 > [!NOTE]
-> Для работы виджета необходим мод [wotstat-widgets](https://github.com/WOT-STAT/wotstat-widgets){target='_blank'}. Он нужен для сохранения информации о танках. 
+> Для работы виджета необходим мод [wotstat-widgets](https://github.com/WOT-STAT/wotstat-widgets){target='_blank'}. Он нужен для сохранения информации о танках.
+> Работает и внутри игры и в OBS. 
 <!-- > Если вы не хотите ставить моды, то можете попробовать [виджет по нику игрока](/iframe/preview/tournament/rtk/random-nickname). -->
 
 #### Цветовая палитра

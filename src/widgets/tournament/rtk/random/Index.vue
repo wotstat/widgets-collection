@@ -3,26 +3,22 @@
     <Content v-bind="data" :hide-l1="query.hideL1" :hide-l2="query.hideL2" :hide-l3="query.hideL3" />
   </DefineTemplate>
 
-  <!-- <WidgetRoot autoScale autoHeight v-if="nickname">
+  <!-- <WidgetRoot autoScale autoHeight>
     <WidgetCard>
       <ReuseTemplate />
     </WidgetCard>
-  </WidgetRoot>
-  <WidgetCardWrapper autoScale autoHeight v-else>
-    <ReuseTemplate />
-  </WidgetCardWrapper> -->
+  </WidgetRoot> -->
 
-  <WidgetRoot autoScale autoHeight>
-    <WidgetCard>
-      <ReuseTemplate />
-    </WidgetCard>
-  </WidgetRoot>
+  <WidgetCardWrapper autoScale autoHeight>
+    <ReuseTemplate />
+  </WidgetCardWrapper>
 </template>
 
 
 <script setup lang="ts">
 import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
 
 import Content from './Content.vue';
 import { computed, onMounted, ref, watch } from 'vue';
