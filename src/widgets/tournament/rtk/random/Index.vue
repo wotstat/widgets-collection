@@ -76,7 +76,7 @@ const currentSessionStart = computed(() => {
   for (let i = 1; i < battles.length; i++) {
     const last = battles[i - 1]
     const current = battles[i];
-    const delta = current - last
+    const delta = last - current
     if (delta > 4 * HOUR_MS) return current
   }
 
@@ -92,6 +92,8 @@ async function load() {
   const { data: { participants } } = await page.json()
 
   const userParticipant = participants.find((p: any) => p.user.spa_id == id.value)
+  if (!userParticipant) return
+
   const { results } = userParticipant
 
   data.value.place = userParticipant.position
