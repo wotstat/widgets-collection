@@ -31,8 +31,8 @@
               {{ bestBattles.at(-1)?.score }}
             </span>
           </p>
-          <p class="secondary" v-else>Худший • </p>
-          <p class="secondary" v-if="lastBattle">Прошлый • {{ lastBattle?.tank ?? '?' }} •
+          <p class="secondary nowrap" v-else>Худший • </p>
+          <p class="secondary nowrap" v-if="lastBattle">Прошлый • {{ lastBattle?.tank ?? '?' }} •
             <span class="primary bold number">
               {{ lastBattle?.score }}
             </span>
