@@ -103,6 +103,7 @@ const chart = computed(() => {
 
   .l2 {
     display: flex;
+    font-size: 0.9em;
 
     .column {
       flex: 1;
@@ -111,7 +112,7 @@ const chart = computed(() => {
         width: 100%;
         border-collapse: collapse;
         border-spacing: 0;
-        line-height: 1.4;
+        line-height: 1.5;
 
         td {
           font-size: 1.2em;
