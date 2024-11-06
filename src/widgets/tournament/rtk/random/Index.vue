@@ -71,12 +71,12 @@ const data = ref<Omit<Props, 'hideL1' | 'hideL2' | 'hideL3'>>({
 })
 
 const currentSessionStart = computed(() => {
-  const battles = battleHistory.battlesArray.value.map(t => t.date).filter(t => t != undefined).toReversed()
+  const battles = battleHistory.battlesArray.value.map(t => t.date).filter(t => t != undefined)
 
-  for (let i = 1; i < battles.length; i++) {
+  for (let i = battles.length - 1; i > 0; i--) {
     const last = battles[i - 1]
     const current = battles[i];
-    const delta = last - current
+    const delta = current - last
     if (delta > 4 * HOUR_MS) return current
   }
 
