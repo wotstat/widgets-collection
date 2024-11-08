@@ -197,6 +197,7 @@ const targetQuery = computed(() => {
       const target = s.target
       const value = s.value?.value
 
+      if (value === false) return null
       if (value !== undefined) return `${target}=${value}`
       return target
     }).filter(t => t).join('&')
