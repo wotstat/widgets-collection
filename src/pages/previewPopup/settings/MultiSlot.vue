@@ -20,14 +20,20 @@
             </div>
           </div>
           <div class="slot-values-content flex-1">
-            <div class="slot-values nice-scrollbar" :class="{ 'has-scroll': slotValuesHasScroll }" ref="slotValues">
-              <div class="slot-value interactive selectable" v-for="item in slots" @click="selectLine(item.value)"
-                :class="{ selected: item.value == selectedSlotParam?.value }">
+            <div class="search">
+              <IconSearch class="icon" />
+              <input type="text" ref="searchInput" placeholder="Поиск" v-model="searchText" />
+            </div>
+            <div class="slot-values nice-scrollbar flex-1" :class="{ 'has-scroll': slotValuesHasScroll }"
+              ref="slotValues">
+              <div class="slot-value interactive selectable" v-for="item in filteredSlots"
+                @click="selectLine(item.value)" :class="{ selected: item.value == selectedSlotParam?.value }">
                 <Icon :icon="item.icon" class="icon" />
                 <p>{{ i18n[item.label] ?? item.label }}</p>
               </div>
             </div>
-            <div class="modifiers" v-if="selectedSlotParam?.modifications?.length">
+            <div class="modifiers"
+              v-if="selectedSlotParam?.modifications?.length && filteredSlots.map(t => t.value).includes(selectedSlotParam?.value)">
               <div class="modifier selectable" v-if="selectedSlotParam" v-for="mod in selectedSlotParam.modifications"
                 :class="{ selected: mod.value == selectedSlotValue }" @click="select(mod.value)">
                 {{ i18n[mod.label] ?? mod.label }}
@@ -48,9 +54,10 @@ import { useHasScroll } from '@/composition/utils/useHasScroll';
 import { MultiSlotParamSlot } from '@/utils/defineWidget';
 import { useElementBounding, useToggle } from '@vueuse/core';
 import { onClickOutside } from '@vueuse/core'
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 import IconX from "@/assets/icons/x.svg";
+import IconSearch from "@/assets/icons/search.svg";
 
 
 const props = defineProps<{
@@ -63,6 +70,8 @@ const props = defineProps<{
 
 const values = defineModel<string[]>()
 
+const searchInput = ref<HTMLInputElement | null>(null)
+const searchText = ref('')
 const slotModel = ref<HTMLElement | null>(null)
 const slotValues = ref<HTMLElement | null>(null)
 const slotSelect = ref<HTMLElement | null>(null)
@@ -111,6 +120,22 @@ function selectLine(value: string) {
 function select(value: string) {
   if (selectedSlot.value != null) values.value![selectedSlot.value] = value
 }
+
+watch(isOpen[0], (value) => {
+  setTimeout(() => {
+    if (value) searchInput.value?.focus()
+    if (slotModel.value) slotModel.value.style.minWidth = slotModel.value.clientWidth + 'px'
+  }, 0);
+
+  if (!value) searchText.value = ''
+})
+
+const filteredSlots = computed(() => {
+  if (!props.slots || !searchInput.value) return props.slots
+  const search = searchText.value.toLowerCase()
+  return props.slots.filter(t => (props.i18n[t.label] ?? t.label).toLowerCase().includes(search))
+})
+
 </script>
 
 
@@ -172,6 +197,7 @@ button.setup {
     display: flex;
     overflow: hidden;
     max-height: 400px;
+    min-height: 400px;
 
     .slot-model-content {
       width: 100%;
@@ -249,6 +275,32 @@ button.setup {
         flex-direction: column;
         overflow-y: hidden;
         border-left: $border;
+
+        .search {
+          flex: 1;
+          display: flex;
+          height: 2.4em;
+          max-height: 2.4em;
+          align-items: center;
+
+          input {
+            flex: 1;
+            font-size: 1em;
+            background-color: transparent;
+            border: unset;
+            padding: 0;
+            height: 100%;
+            padding-left: 5.5px;
+          }
+
+          .icon {
+            padding: 5px;
+            padding-left: 15px;
+            max-height: 2em;
+          }
+
+          border-bottom: $border;
+        }
 
         .slot-values {
           overflow-y: auto;
