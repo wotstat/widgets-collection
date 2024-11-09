@@ -11,7 +11,7 @@
         <div class="line" v-for="(line, i) in data" :key="line.player">
           <p class="name" v-if="data.length > 1">{{ line.player }}</p>
           <p v-for="(slot, i) in slots" class="number bold"
-            :class="{ accent: bestPerSlot[i] == line[slot] && data.length > 1 }">
+            :class="{ accent: bestPerSlot[i] == line[slot] && data.length > 1 && bestPerSlot[i] > 0 }">
             <TweenValue v-if="line[slot] != undefined" :value="line[slot]" :processor="processor(slot, true)" />
             <span v-else>{{ line[slot] }}*</span>
           </p>
