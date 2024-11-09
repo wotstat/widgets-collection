@@ -22,7 +22,7 @@ export type Props = {
 
 export const inBattleEfficiencyWithMods = ([
   'dmg',
-  { icon: 'shot-dmg', modifications: ['shot-dmg-max', 'shot-dmg-avg'] },
+  { icon: 'shot-dmg', modifications: ['shot-dmg-avg', 'shot-dmg-max'] },
   'kill',
   'block',
   'crits',
