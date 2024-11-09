@@ -91,8 +91,9 @@ watch(isOpen[0], () => setupButtonBounding.update())
 function add() {
   if (!values.value) values.value = []
   const target = props.slots.find(t => !values.value?.includes(t.value)) ?? props.slots[0]
-  values.value.push(target.modifications?.length ? target.modifications[0].value : target.value)
-  selectedSlot.value = values.value.length - 1
+  const index = (selectedSlot.value ?? values.value.length) + 1
+  values.value.splice(index, 0, target.modifications?.length ? target.modifications[0].value : target.value)
+  selectedSlot.value = index
 }
 
 function remove(index: number) {
