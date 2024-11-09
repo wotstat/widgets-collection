@@ -62,7 +62,7 @@ const defaultValues = {
 
 
 const lines = computed(() => (props.isMiniPreview || !props.slots ?
-  ['dmg', 'block', 'assist-radio', 'assist-track', 'fire-dmg'] as const : props.slots)
+  ['player', 'tank', 'hp', 'dmg', 'block'] as const : props.slots)
   .map(t => ({ icon: t, values: (defaultValues[t] ?? '') }) as any
   ))
 
