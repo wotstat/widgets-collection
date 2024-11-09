@@ -90,7 +90,8 @@ watch(isOpen[0], () => setupButtonBounding.update())
 
 function add() {
   if (!values.value) values.value = []
-  values.value.push(props.slots.find(t => !values.value?.includes(t.value))?.value ?? props.slots[0].value)
+  const target = props.slots.find(t => !values.value?.includes(t.value)) ?? props.slots[0]
+  values.value.push(target.modifications?.length ? target.modifications[0].value : target.value)
   selectedSlot.value = values.value.length - 1
 }
 

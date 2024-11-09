@@ -32,7 +32,7 @@ export default defineWidget({
   params: [
     'accentColorParam',
     'backgroundColorParam',
-    { type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 60, slots, default: ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles'] },
+    { type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 10, slots, default: ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles'] },
     { type: 'checkbox', target: 'total', label: 'Подводить итог', default: false },
     totalOption('battles', 'Бои', 'max', t => t['total'] && t['slots'].includes('battles')),
     totalOption('top-in-row', 'Топ1 подряд', 'max', t => t['total'] && t['slots'].includes('top1-in-row')),

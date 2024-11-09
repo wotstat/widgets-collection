@@ -56,11 +56,17 @@ export function useBattleHistoryAggregator() {
     'baseCapturePoints': 'capturePoints',
     'baseCaptureDefend': 'droppedCapturePoints',
     'fireDamage': null,
+    'fireDamageMin': null,
+    'fireDamageMax': null,
     'fire': null,
     'ram': null,
     'ramDamage': null,
+    'ramDamageMin': null,
+    'ramDamageMax': null,
     'ammoBayDestroyed': null,
     'ammoBayDestroyedDamage': null,
+    'ammoBayDestroyedDamageMin': null,
+    'ammoBayDestroyedDamageMax': null,
     'gunMarkDmg': (s, d, b) => s.damageDealt + Math.max(s.damageAssistedRadio, s.damageAssistedTrack, s.damageAssistedStun),
     'chuckScore': (s, d, b) => s.damageDealt + s.kills * 200,
     'shotDamage': null,
@@ -123,8 +129,8 @@ export function useBattleHistoryAggregator() {
     } as AggregatorResult<T>
 
     return {
-      [`${key}Min`]: Math.min(...values),
-      [`${key}Max`]: Math.max(...values),
+      [`${key}Min`]: Math.min(...values, 0),
+      [`${key}Max`]: Math.max(...values, 0),
       [`${key}Total`]: total,
       [`${key}Avg`]: total / values.length,
     } as AggregatorResult<T>
@@ -157,16 +163,43 @@ export function useBattleHistoryAggregator() {
     const totalShotDamage = battlesArray.value.reduce((a, b) => a + b.shotDamage, 0)
     const countDamagedShots = battlesArray.value.reduce((a, b) => a + b.damagedShotsCount, 0)
 
+    const totalFireDamage = battlesArray.value.reduce((a, b) => a + b.fireDamage, 0)
+    const totalFired = battlesArray.value.reduce((a, b) => a + b.fire, 0)
+
+    const totalRamDamage = battlesArray.value.reduce((a, b) => a + b.ramDamage, 0)
+    const totalRammed = battlesArray.value.reduce((a, b) => a + b.ram, 0)
+
+    const totalAmmoBayDestroyedDamage = battlesArray.value.reduce((a, b) => a + b.ammoBayDestroyedDamage, 0)
+    const totalAmmoBayDestroyed = battlesArray.value.reduce((a, b) => a + b.ammoBayDestroyed, 0)
+
     return {
       battles: battlesCount,
       wins: battlesArray.value.filter(b => b.result === 'win').length,
       ...aggregations,
       ...{
-        shotDamageMin: Math.min(...battlesArray.value.map(b => b.shotDamageMin)),
+        shotDamageMin: Math.min(...battlesArray.value.map(b => b.shotDamageMin), 0),
         shotDamageMax: battlesCount <= 0 ? 0 : Math.max(...battlesArray.value.map(b => b.shotDamageMax)),
         shotDamageTotal: totalShotDamage,
         shotDamageAvg: countDamagedShots <= 0 ? 0 : totalShotDamage / countDamagedShots,
         countDamagedShots
+      },
+      ...{
+        fireDamagePerOneMin: Math.min(...battlesArray.value.map(b => b.fireDamageMin), 0),
+        fireDamagePerOneMax: Math.max(...battlesArray.value.map(b => b.fireDamageMax), 0),
+        fireDamagePerOneAvg: totalFired <= 0 ? 0 : totalFireDamage / totalFired,
+        fireDamagePerOneTotal: totalFireDamage,
+      },
+      ...{
+        ramDamagePerOneMin: Math.min(...battlesArray.value.map(b => b.ramDamageMin), 0),
+        ramDamagePerOneMax: Math.max(...battlesArray.value.map(b => b.ramDamageMax), 0),
+        ramDamagePerOneAvg: totalRammed <= 0 ? 0 : totalRamDamage / totalRammed,
+        ramDamagePerOneTotal: totalRamDamage,
+      },
+      ...{
+        ammoBayDestroyedDamagePerOneMin: Math.min(...battlesArray.value.map(b => b.ammoBayDestroyedDamageMin), 0),
+        ammoBayDestroyedDamagePerOneMax: Math.max(...battlesArray.value.map(b => b.ammoBayDestroyedDamageMax), 0),
+        ammoBayDestroyedDamagePerOneAvg: totalAmmoBayDestroyed <= 0 ? 0 : totalAmmoBayDestroyedDamage / totalAmmoBayDestroyed,
+        ammoBayDestroyedDamagePerOneTotal: totalAmmoBayDestroyedDamage,
       },
       ...{
         top1: battlesArray.value.filter(b => b.position === 1).length,
@@ -175,7 +208,6 @@ export function useBattleHistoryAggregator() {
       }
     }
   })
-
 }
 
 
@@ -186,7 +218,7 @@ const unsupportedIconTypes = [
 export type AggregatorResult = ReturnType<typeof useBattleHistoryAggregator>['value']
 export type SupportedIconType = Exclude<IconType, typeof unsupportedIconTypes[number]>
 
-export type AggregatorResultPrefixKey<T = keyof AggregatorResult> = T extends `${infer Prefix}Avg` ? Prefix : never
+export type AggregatorResultPrefixKey<T = keyof AggregatorResult> = T extends `${infer Prefix}Total` ? Prefix : never
 
 const nameMap = <T extends SupportedIconType, V extends AggregatorResultPrefixKey>(key: T, target: V) => {
   return {
@@ -198,7 +230,8 @@ const nameMap = <T extends SupportedIconType, V extends AggregatorResultPrefixKe
 
 const battleToIconType = {
   ...nameMap('ammo-bay-destroyed', 'ammoBayDestroyed'),
-  ...nameMap('ammo-bay-destroyed-dmg', 'ammoBayDestroyedDamage'),
+  ...nameMap('ammo-bay-destroyed-dmg', 'ammoBayDestroyedDamagePerOne'),
+  ...nameMap('ammo-bay-destroyed-dmg-battle', 'ammoBayDestroyedDamage'), //
   ...nameMap('assist', 'assist'),
   ...nameMap('assist-radio', 'radioAssist'),
   ...nameMap('assist-track', 'trackAssist'),
@@ -212,12 +245,14 @@ const battleToIconType = {
   ...nameMap('dmg', 'damage'),
   ...nameMap('duration', 'duration'),
   ...nameMap('fire', 'fire'),
-  ...nameMap('fire-dmg', 'fireDamage'),
+  ...nameMap('fire-dmg', 'fireDamagePerOne'),
+  ...nameMap('fire-dmg-battle', 'fireDamage'),
   ...nameMap('kill', 'frags'),
   ...nameMap('lifetime', 'lifetime'),
   ...nameMap('position', 'position'),
   ...nameMap('ram', 'ram'),
-  ...nameMap('ram-dmg', 'ramDamage'),
+  ...nameMap('ram-dmg', 'ramDamagePerOne'),
+  ...nameMap('ram-dmg-battle', 'ramDamage'),
   ...nameMap('xp', 'xp'),
   ...nameMap('gun-mark-dmg', 'gunMarkDmg'),
   ...nameMap('shot-dmg', 'shotDamage'),
@@ -272,6 +307,9 @@ export function totalAggregator(data: AggregatorResult[], options: Partial<Total
 
   const totalBattles = sum('battles')(data)
   const totalShots = sum('countDamagedShots')(data)
+  const totalFire = sum('fireTotal')(data)
+  const totalRam = sum('ramTotal')(data)
+  const totalAmmoBayDestroyed = sum('ammoBayDestroyedTotal')(data)
 
   const simple = simpleTotalAggregators
     .map(k => groupAggregator(k, totalBattles))
@@ -291,6 +329,22 @@ export function totalAggregator(data: AggregatorResult[], options: Partial<Total
     shotDamageMax: max('shotDamageMax'),
     shotDamageMin: min('shotDamageMin'),
     countDamagedShots: (r) => totalShots,
+
+    fireDamagePerOneTotal: total('fireDamagePerOneTotal'),
+    fireDamagePerOneAvg: avg('fireDamagePerOneTotal', totalFire),
+    fireDamagePerOneMax: max('fireDamagePerOneMax'),
+    fireDamagePerOneMin: min('fireDamagePerOneMin'),
+
+    ramDamagePerOneTotal: total('ramDamagePerOneTotal'),
+    ramDamagePerOneAvg: avg('ramDamagePerOneTotal', totalRam),
+    ramDamagePerOneMax: max('ramDamagePerOneMax'),
+    ramDamagePerOneMin: min('ramDamagePerOneMin'),
+
+    ammoBayDestroyedDamagePerOneTotal: total('ammoBayDestroyedDamagePerOneTotal'),
+    ammoBayDestroyedDamagePerOneAvg: avg('ammoBayDestroyedDamagePerOneTotal', totalAmmoBayDestroyed),
+    ammoBayDestroyedDamagePerOneMax: max('ammoBayDestroyedDamagePerOneMax'),
+    ammoBayDestroyedDamagePerOneMin: min('ammoBayDestroyedDamagePerOneMin'),
+
     top1: total('top1'),
     top1InRow: byPlayerAvg('top1InRow')[optionsWithDefaults.top1InRow],
     top1InRowMax: byPlayerAvg('top1InRowMax')[optionsWithDefaults.top1InRow],

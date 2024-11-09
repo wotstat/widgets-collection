@@ -48,7 +48,8 @@ const sampleData = {
   'stun': 3,
   'stunAssist': 300,
 } as const satisfies {
-  [key in Exclude<AggregatorResultPrefixKey, 'gunMarkDmg' | 'chuckScore' | 'shotDamage'>]: number
+  [key in Exclude<AggregatorResultPrefixKey,
+    'gunMarkDmg' | 'chuckScore' | 'shotDamage' | 'fireDamagePerOne' | 'ramDamagePerOne' | 'ammoBayDestroyedDamagePerOne'>]: number
 }
 
 function dataFor(battles: number) {
@@ -79,6 +80,18 @@ function dataFor(battles: number) {
     'shotDamageAvg': shotDamageTotal / countDamagedShots,
     'shotDamageMax': 400 * (1.2 + Math.random() * 0.5),
     countDamagedShots,
+
+    'fireDamagePerOneTotal': multiplied['fireDamage'],
+    'fireDamagePerOneAvg': multiplied['fireDamage'] / battles / 1.5,
+    'fireDamagePerOneMax': multiplied['fireDamage'] / battles / 1.5 * 1.2,
+
+    'ramDamagePerOneTotal': multiplied['ramDamage'],
+    'ramDamagePerOneAvg': multiplied['ramDamage'] / battles / 1.5,
+    'ramDamagePerOneMax': multiplied['ramDamage'] / battles / 1.5 * 1.2,
+
+    'ammoBayDestroyedDamagePerOneTotal': multiplied['ammoBayDestroyedDamage'],
+    'ammoBayDestroyedDamagePerOneAvg': multiplied['ammoBayDestroyedDamage'] / battles / 1.5,
+    'ammoBayDestroyedDamagePerOneMax': multiplied['ammoBayDestroyedDamage'] / battles / 1.5 * 1.2,
   }
 }
 

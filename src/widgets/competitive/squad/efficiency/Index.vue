@@ -11,19 +11,22 @@ import Content from '../../../efficiency/stats/Content.vue';
 import { computed } from 'vue';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { SlotValue, slotVariants } from './define.widget';
+import { Props, SlotValue } from './define.widget';
 import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
 import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
 import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { syncRefs } from '@vueuse/core';
+import { inBattleEfficiency } from '@/components/efficiencyIcon/utils';
 
 const params = useQueryParams({
   startFrom: NumberDefault(),
   anim: Boolean,
   channelKey: String,
-  slots: arrayOfOneOf(slotVariants.map(slot => slot.value)),
+  slots: arrayOfOneOf([...inBattleEfficiency, 'player', 'tank']),
 })
+
+
 
 const { sdk } = useWidgetSdk();
 const stats = useInBattleCollector()
@@ -54,16 +57,21 @@ const slotToTarget = {
   'dmg': 'damage',
   'block': 'blocked',
   'assist': 'assist',
-  'discover': 'discover',
   'assist-radio': 'radioAssist',
   'assist-track': 'trackAssist',
+  'shot-dmg-max': 'shotDamageMax',
+  'shot-dmg-avg': s => s.damagedShotsCount == 0 ? 0 : s.shotDamage / s.damagedShotsCount,
+  'discover': 'discover',
   'fire': 'fire',
   'kill': 'frags',
   'fire-dmg': 'fireDamage',
+  'fire-dmg-max': 'fireDamageMax',
   'ram': 'ram',
   'ram-dmg': 'ramDamage',
+  'ram-dmg-max': 'ramDamageMax',
   'ammo-bay-destroyed': 'ammoBayDestroyed',
   'ammo-bay-destroyed-dmg': 'ammoBayDestroyedDamage',
+  'ammo-bay-destroyed-dmg-max': 'ammoBayDestroyedDamageMax',
   'base-capture': 'baseCapturePoints',
   'base-defend': 'baseCaptureDefend',
   'distance': 'distance',
@@ -75,7 +83,7 @@ const slotToTarget = {
   'crits': 'crits',
   'hp': 'health',
 } as const satisfies {
-  [key in Exclude<SlotValue, 'empty'>]: keyof typeof target['value']
+  [key in SlotValue]: (keyof typeof target['value']) | ((stats: typeof target['value']) => number)
 }
 
 const { relay, uuid } = usePlatoonWidgetRelay(params.channelKey)
@@ -97,8 +105,9 @@ const lines = computed(() => {
   return params.slots
     .filter(t => t != undefined)
     .map(t => {
-      const values = target.map(v => v[slotToTarget[t]])
-      return { icon: t, values: values as any }
+      const proc = slotToTarget[t]
+      const values = typeof proc === 'function' ? target.map(v => proc(v)) : target.map(v => v[proc])
+      return { icon: t, values: values } as Props['lines'][number]
     })
 })
 

@@ -30,10 +30,13 @@ const defaultValues = {
   'assist-track': 775,
   'fire': 2,
   'fire-dmg': 423,
+  'fire-dmg-max': 423,
   'ram': 1,
-  'ram-dmg': 23,
+  'ram-dmg': 600,
+  'ram-dmg-max': 600,
   'ammo-bay-destroyed': 1,
   'ammo-bay-destroyed-dmg': 1600,
+  'ammo-bay-destroyed-dmg-max': 1600,
   'base-capture': 23,
   'base-defend': 50,
   'distance': 966,
@@ -43,10 +46,10 @@ const defaultValues = {
   'lifetime': 650,
   'duration': 7200,
   'crits': 3,
-  'hp': 1800,
-} as const satisfies {
-  [key in Exclude<SlotValue, 'empty'>]: any
-}
+  'shot-dmg-avg': 500,
+  'shot-dmg-max': 500,
+  'hp': 1000,
+} as const satisfies { [key in SlotValue]: any }
 
 const lines = computed(() => (props.isMiniPreview || !props.slots ?
   ['dmg', 'block', 'assist-radio', 'assist-track', 'fire-dmg'] as const : props.slots)

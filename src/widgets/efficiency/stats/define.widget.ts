@@ -1,9 +1,9 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget, MultiSlotParamSlot } from "@/utils/defineWidget";
 
-import { InBattleIconType } from '@/components/efficiencyIcon/utils'
+import { InBattleIconType, modificationLabel } from '@/components/efficiencyIcon/utils'
 import { i18n } from "@/components/efficiencyIcon/i18n";
 
-type Line = {
+export type Line = {
   icon: 'player'
   values: string[]
 } | {
@@ -17,35 +17,43 @@ type Line = {
 export type Props = {
   lines: Line[]
   soloAlign?: 'left' | 'right'
+  anim?: boolean
 }
 
-export const slotVariants = [
-  { value: 'dmg', label: 'dmg' },
-  { value: 'kill', label: 'kill' },
-  { value: 'block', label: 'block' },
-  { value: 'crits', label: 'crits' },
-  { value: 'assist', label: 'assist' },
-  { value: 'discover', label: 'discover' },
-  { value: 'assist-radio', label: 'assist-radio' },
-  { value: 'assist-track', label: 'assist-track' },
-  { value: 'hp', label: 'hp' },
-  { value: 'fire', label: 'fire' },
-  { value: 'fire-dmg', label: 'fire-dmg' },
-  { value: 'ram', label: 'ram' },
-  { value: 'ram-dmg', label: 'ram-dmg' },
-  { value: 'ammo-bay-destroyed', label: 'ammo-bay-destroyed' },
-  { value: 'ammo-bay-destroyed-dmg', label: 'ammo-bay-destroyed-dmg' },
-  { value: 'base-capture', label: 'base-capture' },
-  { value: 'base-defend', label: 'base-defend' },
-  { value: 'distance', label: 'distance' },
-  { value: 'lifetime', label: 'lifetime' },
-  { value: 'duration', label: 'duration' },
-  { value: 'chuck-score', label: 'chuck-score' },
-  { value: 'gun-mark-dmg', label: 'gun-mark-dmg' },
-  { value: 'gun-mark-percent', label: 'gun-mark-percent' },
-] satisfies { value: Line['icon'] | 'empty', label: string }[]
+export const inBattleEfficiencyWithMods = ([
+  'dmg',
+  { icon: 'shot-dmg', modifications: ['shot-dmg-max', 'shot-dmg-avg'] },
+  'kill',
+  'block',
+  'crits',
+  'assist',
+  'discover',
+  'assist-radio',
+  'assist-track',
+  'fire',
+  { icon: 'fire-dmg', modifications: ['fire-dmg', 'fire-dmg-max'] },
+  'ram',
+  { icon: 'ram-dmg', modifications: ['ram-dmg', 'ram-dmg-max'] },
+  'ammo-bay-destroyed',
+  { icon: 'ammo-bay-destroyed-dmg', modifications: ['ammo-bay-destroyed-dmg', 'ammo-bay-destroyed-dmg-max'] },
+  'base-capture',
+  'base-defend',
+  'distance',
+  'lifetime',
+  'duration',
+  'chuck-score',
+  'hp',
+  'gun-mark-dmg',
+] as const).map(t => {
+  if (typeof t === 'string') return { value: t, icon: t, label: t, modifications: [] }
 
-export type SlotValue = typeof slotVariants[number]['value']
+  return {
+    value: t.icon, icon: t.icon, label: t.icon,
+    modifications: t.modifications.map(t => ({ value: t, icon: t, label: modificationLabel(t), }))
+  }
+}) satisfies MultiSlotParamSlot[]
+
+export type SlotValue = InBattleIconType
 
 export default defineWidget({
   name: "Расширенная эффективность",
@@ -57,7 +65,7 @@ export default defineWidget({
     { type: 'checkbox', target: 'anim', label: 'Анимация', default: true },
     {
       type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 10,
-      slots: slotVariants.map(t => ({ icon: t.value, label: t.label, value: t.value })),
+      slots: inBattleEfficiencyWithMods,
       default: ['dmg', 'block', 'assist', 'fire-dmg', 'ram-dmg']
     },
   ]

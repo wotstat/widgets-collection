@@ -11,6 +11,7 @@ export const shared = [
 export const efficiency = [
   'ammo-bay-destroyed', 'ammo-bay-destroyed-avg', 'ammo-bay-destroyed-max',
   'ammo-bay-destroyed-dmg', 'ammo-bay-destroyed-dmg-avg', 'ammo-bay-destroyed-dmg-max',
+  'ammo-bay-destroyed-dmg-battle', 'ammo-bay-destroyed-dmg-battle-avg', 'ammo-bay-destroyed-dmg-battle-max',
   'assist', 'assist-avg', 'assist-max',
   'assist-radio', 'assist-radio-avg', 'assist-radio-max',
   'assist-track', 'assist-track-avg', 'assist-track-max',
@@ -23,11 +24,11 @@ export const efficiency = [
   'distance', 'distance-avg', 'distance-max',
   'dmg', 'dmg-avg', 'dmg-max',
   'duration', 'duration-avg', 'duration-max',
-  'fire', 'fire-avg', 'fire-max', 'fire-dmg', 'fire-dmg-avg', 'fire-dmg-max',
+  'fire', 'fire-avg', 'fire-max', 'fire-dmg', 'fire-dmg-avg', 'fire-dmg-max', 'fire-dmg-battle', 'fire-dmg-battle-avg', 'fire-dmg-battle-max',
   'kill', 'kill-avg', 'kill-max',
   'lifetime', 'lifetime-avg', 'lifetime-max',
   'position', 'position-avg', 'position-max',
-  'ram', 'ram-avg', 'ram-max', 'ram-dmg', 'ram-dmg-avg', 'ram-dmg-max',
+  'ram', 'ram-avg', 'ram-max', 'ram-dmg', 'ram-dmg-avg', 'ram-dmg-max', 'ram-dmg-battle', 'ram-dmg-battle-avg', 'ram-dmg-battle-max',
   'shot-dmg', 'shot-dmg-avg', 'shot-dmg-max',
   'top1', 'top1-in-row', 'top1-in-row-max',
   'xp', 'xp-avg', 'xp-max',
@@ -38,10 +39,12 @@ export const efficiency = [
 
 export const efficiencyWithMods = [
   { value: 'battles', modifications: ['battles'] },
+  { value: 'win', modifications: ['win'] },
   { value: 'dmg', modifications: ['dmg', 'dmg-avg', 'dmg-max'] },
   { value: 'shot-dmg', modifications: ['shot-dmg', 'shot-dmg-avg', 'shot-dmg-max'] },
   { value: 'block', modifications: ['block', 'block-avg', 'block-max'] },
   { value: 'assist', modifications: ['assist', 'assist-avg', 'assist-max'] },
+  { value: 'discover', modifications: ['discover', 'discover-avg', 'discover-max'] },
   { value: 'assist-radio', modifications: ['assist-radio', 'assist-radio-avg', 'assist-radio-max'] },
   { value: 'assist-track', modifications: ['assist-track', 'assist-track-avg', 'assist-track-max'] },
   { value: 'kill', modifications: ['kill', 'kill-avg', 'kill-max'] },
@@ -49,13 +52,15 @@ export const efficiencyWithMods = [
   { value: 'xp', modifications: ['xp', 'xp-avg', 'xp-max'] },
   { value: 'position', modifications: ['position-avg', 'position-max'] },
   { value: 'top1', modifications: ['top1', 'top1-in-row', 'top1-in-row-max'] },
-  { value: 'discover', modifications: ['discover', 'discover-avg', 'discover-max'] },
   { value: 'fire', modifications: ['fire', 'fire-avg', 'fire-max'] },
   { value: 'fire-dmg', modifications: ['fire-dmg', 'fire-dmg-avg', 'fire-dmg-max'] },
+  { value: 'fire-dmg-battle', modifications: ['fire-dmg-battle', 'fire-dmg-battle-avg', 'fire-dmg-battle-max'] },
   { value: 'ram', modifications: ['ram', 'ram-avg', 'ram-max'] },
   { value: 'ram-dmg', modifications: ['ram-dmg', 'ram-dmg-avg', 'ram-dmg-max'] },
+  { value: 'ram-dmg-battle', modifications: ['ram-dmg-battle', 'ram-dmg-battle-avg', 'ram-dmg-battle-max'] },
   { value: 'ammo-bay-destroyed', modifications: ['ammo-bay-destroyed', 'ammo-bay-destroyed-avg', 'ammo-bay-destroyed-max'] },
   { value: 'ammo-bay-destroyed-dmg', modifications: ['ammo-bay-destroyed-dmg', 'ammo-bay-destroyed-dmg-avg', 'ammo-bay-destroyed-dmg-max'] },
+  { value: 'ammo-bay-destroyed-dmg-battle', modifications: ['ammo-bay-destroyed-dmg-battle', 'ammo-bay-destroyed-dmg-battle-avg', 'ammo-bay-destroyed-dmg-battle-max'] },
   { value: 'chuck-score', modifications: ['chuck-score', 'chuck-score-avg', 'chuck-score-max'] },
   { value: 'distance', modifications: ['distance', 'distance-avg', 'distance-max'] },
   { value: 'duration', modifications: ['duration', 'duration-avg', 'duration-max'] },
@@ -67,13 +72,14 @@ export const efficiencyWithMods = [
 ] as const satisfies { value: IconType, modifications: IconType[] }[]
 
 
-function modificationLabel(modification: string) {
+export function modificationLabel(modification: string) {
   if (modification.endsWith('-in-row-max')) return 'in-row-max'
   if (modification.endsWith('-avg')) return 'avg'
   if (modification.endsWith('-max')) return 'max'
   if (modification.endsWith('-in-row')) return 'in-row'
   return 'total'
 }
+
 export const multiSlotParamSlot = efficiencyWithMods.map(t => ({
   value: t.value,
   icon: t.value,
@@ -95,6 +101,7 @@ export function isIconType(value: string | null): value is IconType {
 export const inBattleEfficiency = [
   'ammo-bay-destroyed',
   'ammo-bay-destroyed-dmg',
+  'ammo-bay-destroyed-dmg-max',
   'assist',
   'assist-radio',
   'assist-track',
@@ -108,9 +115,11 @@ export const inBattleEfficiency = [
   'dmg',
   'fire',
   'fire-dmg',
+  'fire-dmg-max',
   'kill',
   'ram',
   'ram-dmg',
+  'ram-dmg-max',
   'shot-dmg-max',
   'shot-dmg-avg',
   'gun-mark-dmg',

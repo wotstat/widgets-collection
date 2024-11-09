@@ -10,7 +10,7 @@
 import { computed } from 'vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from '../../../efficiency/stats/Content.vue';
-import { SlotValue } from './define.widget';
+import { Props, SlotValue } from './define.widget';
 
 const props = defineProps<{
   isMiniPreview: boolean
@@ -32,6 +32,8 @@ const defaultValues = {
   'tank': ['Grille 15', 'ИС-7'],
   'hp': [1800, 458],
   'dmg': [4587, 3782],
+  'shot-dmg-max': [751, 510],
+  'shot-dmg-avg': [750, 490],
   'kill': [3, 2],
   'block': [552, 456],
   'assist': [735, 968],
@@ -39,11 +41,14 @@ const defaultValues = {
   'assist-radio': [823, 672],
   'assist-track': [455, 390],
   'fire': [1, 0],
-  'fire-dmg': [72, 0],
+  'fire-dmg': [320, 0],
+  'fire-dmg-max': [150, 0],
   'ram': [0, 1],
-  'ram-dmg': [0, 52],
+  'ram-dmg': [0, 152],
+  'ram-dmg-max': [0, 52],
   'ammo-bay-destroyed': [1, 0],
   'ammo-bay-destroyed-dmg': [1600, 0],
+  'ammo-bay-destroyed-dmg-max': [1600, 0],
   'base-capture': [10, 20],
   'base-defend': [0, 40],
   'distance': [1342, 2245],
@@ -53,13 +58,12 @@ const defaultValues = {
   'lifetime': [650, 740],
   'duration': [720, 740],
   'crits': [3, 2],
-} as const satisfies {
-  [key in Exclude<SlotValue, 'empty'>]: any
-}
+} as const satisfies { [key in SlotValue]: any }
 
-const lines = computed(() => (props.isMiniPreview || !props.slots ? ['player', 'tank', 'dmg', 'block', 'assist'] as const : props.slots)
-  .filter(t => t != undefined)
-  .map(t => ({ icon: t, values: (defaultValues[t] ?? ['', '']) as any })
+
+const lines = computed(() => (props.isMiniPreview || !props.slots ?
+  ['dmg', 'block', 'assist-radio', 'assist-track', 'fire-dmg'] as const : props.slots)
+  .map(t => ({ icon: t, values: (defaultValues[t] ?? '') }) as any
   ))
 
 const aspect = computed(() => 7.5 / lines.value.length)

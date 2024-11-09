@@ -17,11 +17,17 @@ export const defaultStats = {
   baseCaptureDefend: 0,
   discover: 0,
   fireDamage: 0,
+  fireDamageMin: 0,
+  fireDamageMax: 0,
   fire: 0,
   ram: 0,
   ramDamage: 0,
+  ramDamageMin: 0,
+  ramDamageMax: 0,
   ammoBayDestroyed: 0,
   ammoBayDestroyedDamage: 0,
+  ammoBayDestroyedDamageMin: 0,
+  ammoBayDestroyedDamageMax: 0,
   gunMarkDmg: 0,
   chuckScore: 0,
   shotDamage: 0,
@@ -107,10 +113,14 @@ export function useInBattleCollector() {
 
     if (t.type == 'damage' && t.data.attackReason == 'fire') {
       stats.value.fire += 1
+      stats.value.fireDamageMin = Math.min(stats.value.fireDamageMin, t.data.damage)
+      stats.value.fireDamageMax = Math.max(stats.value.fireDamageMax, t.data.damage)
     }
 
     if (t.type == 'damage' && t.data.attackReason == 'ramming') {
       stats.value.ram += 1
+      stats.value.ramDamageMin = Math.min(stats.value.ramDamageMin, t.data.damage)
+      stats.value.ramDamageMax = Math.max(stats.value.ramDamageMax, t.data.damage)
     }
   })
 
@@ -125,6 +135,8 @@ export function useInBattleCollector() {
     if (isAmmoBayDestroyed(dmg.health)) {
       stats.value.ammoBayDestroyed += 1
       stats.value.ammoBayDestroyedDamage += dmg.damage
+      stats.value.ammoBayDestroyedDamageMin = Math.min(stats.value.ammoBayDestroyedDamageMin, dmg.damage)
+      stats.value.ammoBayDestroyedDamageMax = Math.max(stats.value.ammoBayDestroyedDamageMax, dmg.damage)
     }
 
     if (dmg.reason == 'fire') {

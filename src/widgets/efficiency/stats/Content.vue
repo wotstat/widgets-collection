@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import TweenValue from '@/components/TweenValue.vue';
 import EfficiencyIcon from '@/components/efficiencyIcon/Icon.vue'
-import { Props } from '../../competitive/squad/efficiency/define.widget';
+import { Props } from './define.widget';
 import { computed } from 'vue';
 import { processor } from '@/components/efficiencyIcon/utils';
 import { createReusableTemplate } from '@vueuse/core';

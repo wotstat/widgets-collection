@@ -10,26 +10,18 @@ import Content from './Content.vue';
 import { computed, watch } from 'vue';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { SlotValue, slotVariants } from './define.widget';
+import { SlotValue } from './define.widget';
 import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
 import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
+import { inBattleEfficiency } from '@/components/efficiencyIcon/utils';
 
 
-const possibleSlots = oneOf([...slotVariants.map(slot => slot.value), 'empty'])
 const params = useQueryParams({
   startFrom: NumberDefault(),
   anim: Boolean,
   soloAlign: oneOf(['left', 'right'] as const),
-  slot1: possibleSlots,
-  slot2: possibleSlots,
-  slot3: possibleSlots,
-  slot4: possibleSlots,
-  slot5: possibleSlots,
-  slot6: possibleSlots,
-  slot7: possibleSlots,
-  slot8: possibleSlots,
-  slots: arrayOfOneOf(slotVariants.map(slot => slot.value)),
+  slots: arrayOfOneOf(inBattleEfficiency),
 })
 
 const stats = useInBattleCollector()
@@ -40,6 +32,8 @@ const health = useReactiveState(sdk.data.battle.health)
 
 const valuesMap = {
   'dmg': () => stats.value.damage,
+  'shot-dmg-avg': () => stats.value.damagedShotsCount == 0 ? 0 : stats.value.shotDamage / stats.value.damagedShotsCount,
+  'shot-dmg-max': () => stats.value.shotDamageMax,
   'block': () => stats.value.blocked,
   'assist': () => stats.value.assist,
   'discover': () => stats.value.discover,
@@ -47,10 +41,13 @@ const valuesMap = {
   'assist-track': () => stats.value.trackAssist,
   'fire': () => stats.value.fire,
   'fire-dmg': () => stats.value.fireDamage,
+  'fire-dmg-max': () => stats.value.fireDamageMax,
   'ram': () => stats.value.ram,
   'ram-dmg': () => stats.value.ramDamage,
+  'ram-dmg-max': () => stats.value.ramDamageMax,
   'ammo-bay-destroyed': () => stats.value.ammoBayDestroyed,
   'ammo-bay-destroyed-dmg': () => stats.value.ammoBayDestroyedDamage,
+  'ammo-bay-destroyed-dmg-max': () => stats.value.ammoBayDestroyedDamageMax,
   'base-capture': () => stats.value.baseCapturePoints,
   'base-defend': () => stats.value.baseCaptureDefend,
   'distance': () => Math.round(stats.value.distance),
@@ -63,13 +60,12 @@ const valuesMap = {
   'crits': () => stats.value.crits,
   'hp': () => health.value ?? 0,
 } as const satisfies {
-  [key in Exclude<SlotValue, 'empty'>]: () => number | string
+  [key in SlotValue]: () => number | string
 }
 
 
-const lines = computed(() => (params.slots && params.slots.length > 0 ? params.slots : [params.slot1, params.slot2, params.slot3, params.slot4, params.slot5, params.slot6, params.slot7, params.slot8])
+const lines = computed(() => params.slots
   .filter(t => t != undefined)
-  .filter(t => t != 'empty')
   .map(t => ({ icon: t, values: ([valuesMap[t]() ?? '']) as any })))
 
 </script>
