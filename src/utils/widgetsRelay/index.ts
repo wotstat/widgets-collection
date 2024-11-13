@@ -1,34 +1,37 @@
 import { v4 as uuidv4 } from 'uuid';
+import { create, Delta } from "jsondiffpatch";
+
+const differ = create()
 
 function tryParseJson(message: string): unknown {
-  try {
-    return JSON.parse(message)
-  } catch (error) {
-    return null
-  }
+  try { return JSON.parse(message) }
+  catch (error) { return null }
 }
 
 type ChangeMessage = { type: 'change', uuid: string, name: string, value: unknown }
-
 function isChangeMessage(message: unknown): message is ChangeMessage {
-  if (typeof message !== 'object') return false;
-  if (message === null) return false;
+  if (typeof message !== 'object' || message === null) return false;
   if ('type' in message && message['type'] !== 'change') return false;
+  return true;
+}
+
+type DeltaChangeMessage = { type: 'delta', uuid: string, name: string, delta: Delta }
+function isDeltaChangeMessage(message: unknown): message is DeltaChangeMessage {
+  if (typeof message !== 'object' || message === null) return false;
+  if ('type' in message && message['type'] !== 'delta') return false;
   return true;
 }
 
 type DisconnectMessage = { type: 'disconnect', uuid: string }
 function isDisconnectMessage(message: unknown): message is DisconnectMessage {
-  if (typeof message !== 'object') return false;
-  if (message === null) return false;
+  if (typeof message !== 'object' || message === null) return false;
   if ('type' in message && message['type'] !== 'disconnect') return false;
   return true;
 }
 
 type ConnectMessage = { type: 'connect', uuid: string }
 function isConnectMessage(message: unknown): message is ConnectMessage {
-  if (typeof message !== 'object') return false;
-  if (message === null) return false;
+  if (typeof message !== 'object' || message === null) return false;
   if ('type' in message && message['type'] !== 'connect') return false;
   return true;
 }
@@ -78,36 +81,70 @@ export class WidgetsRelay {
   private readonly uuid: string
   private readonly channel: string
   private readonly states = new Map<string, RelayState<any>>()
+  private readonly lastSendedStates = new Map<RelayState<any>, any>()
   private retryCount = 0
   private readonly intervalHandler: ReturnType<typeof setInterval>
+
+  private throttleInterval: number
 
   constructor(options: {
     uuid?: string
     reconnect?: boolean
     channel: string
+    fullSyncInterval?: number
+    throttleInterval?: number
   }) {
     this.reconnect = options.reconnect ?? true;
     this.uuid = options.uuid ?? uuidv4();
     this.channel = options.channel;
     this.connect();
+    this.throttleInterval = options.throttleInterval ?? 300
 
     this.intervalHandler = setInterval(() => {
-      for (const [stateKey, stateValue] of this.states) this.sendState(stateKey, stateValue)
-    }, 30000);
+      for (const [stateKey, stateValue] of this.states) this.sendState(stateKey, stateValue, true)
+    }, options.fullSyncInterval ?? 10000);
   }
 
   createState<T>(name: string, defaultValue: T): RelayState<T> {
-    const relayState = new RelayState<T>(this.uuid, defaultValue, (uuid, value) => this.sendState(name, relayState))
+    let lastDeltaSync = 0
+    let throttleTimer: ReturnType<typeof setTimeout> | null = null
+
+    const relayState = new RelayState<T>(this.uuid, defaultValue, (uuid, value) => {
+      if (throttleTimer) return
+
+      const delta = performance.now() - lastDeltaSync
+
+      if (delta > this.throttleInterval) {
+        this.sendState(name, relayState)
+        lastDeltaSync = performance.now()
+        return
+      }
+
+      throttleTimer = setTimeout(() => {
+        this.sendState(name, relayState)
+        lastDeltaSync = performance.now()
+        throttleTimer = null
+      }, this.throttleInterval - delta);
+    })
 
     this.states.set(name, relayState)
 
     return relayState
   }
 
-  private sendState(name: string, state: RelayState<any>) {
+  private sendState(name: string, state: RelayState<any>, full = false) {
     if (!this.websocket) return
     if (this.websocket.readyState !== WebSocket.OPEN) return
-    this.websocket.send(JSON.stringify({ type: 'change', uuid: state.uuid, name, value: state.value } satisfies ChangeMessage))
+
+    const lastSendedState = this.lastSendedStates.get(state)
+    if (!full && lastSendedState !== undefined) {
+      const delta = differ.diff(lastSendedState, state.value)
+      if (delta === undefined) return
+      this.websocket.send(JSON.stringify({ type: 'delta', uuid: state.uuid, name, delta } satisfies DeltaChangeMessage))
+    } else {
+      this.websocket.send(JSON.stringify({ type: 'change', uuid: state.uuid, name, value: state.value } satisfies ChangeMessage))
+    }
+    this.lastSendedStates.set(state, structuredClone(state.value))
   }
 
   private closeConnection() {
@@ -163,7 +200,19 @@ export class WidgetsRelay {
     if (isChangeMessage(message)) {
       const relayState = this.states.get(message.name)
       if (relayState === undefined) return
+
+      this.lastSendedStates.set(relayState, structuredClone(message.value))
       relayState.change(message.uuid, message.value)
+    }
+
+    if (isDeltaChangeMessage(message)) {
+      const relayState = this.states.get(message.name)
+      if (relayState === undefined) return
+      const lastSendedState = structuredClone(this.lastSendedStates.get(relayState)) ?? {}
+      const newValue = differ.patch(lastSendedState, message.delta)
+
+      this.lastSendedStates.set(relayState, structuredClone(newValue))
+      relayState.change(message.uuid, newValue)
     }
 
     if (isDisconnectMessage(message)) {
@@ -173,7 +222,7 @@ export class WidgetsRelay {
     }
 
     if (isConnectMessage(message)) {
-      for (const [stateKey, stateValue] of this.states) this.sendState(stateKey, stateValue)
+      for (const [stateKey, stateValue] of this.states) this.sendState(stateKey, stateValue, true)
     }
   }
 }
