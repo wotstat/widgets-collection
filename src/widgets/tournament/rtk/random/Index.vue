@@ -80,7 +80,7 @@ const currentSessionStart = computed(() => {
     if (delta > 4 * HOUR_MS) return current
   }
 
-  return battles.at(-1) ?? new Date().getTime()
+  return new Date().getTime()
 })
 
 
@@ -106,7 +106,6 @@ async function load() {
     if (!xpMap.has(xp)) xpMap.set(xp, [])
     xpMap.get(xp)?.push(battle)
   }
-
 
   data.value.bestBattles = (results.history as number[]).toSorted((a, b) => b - a).map(xp => {
 

@@ -6,17 +6,20 @@
     </div>
 
     <div class="l2" v-if="!hideL2">
-      <div class="column" v-for="(_, column) in new Array(2).fill(0)">
+      <div class="column primary" v-for="(_, column) in new Array(2).fill(0)">
         <table>
-          <tr v-for="(_, index) in new Array(LINE_COUNT).fill(0)">
+          <tr v-for="(_, index) in new Array(LINE_COUNT).fill(0)" :class="{
+            'is-last-battle': isLastBattleResultAt(column * LINE_COUNT + index)
+          }">
             <td class="secondary number index">{{ column * LINE_COUNT + index + 1 }}.</td>
             <td class="secondary tank-name" v-if="bestBattles[column * LINE_COUNT + index]">
               {{ bestBattles[column * LINE_COUNT + index].tank ?? '?' }}
             </td>
             <td class="secondary tank-name" v-else></td>
-            <td class="number bold right"
-              :class="bestBattles[column * LINE_COUNT + index]?.today ? 'accent' : 'primary'">{{
-                bestBattles[column * LINE_COUNT + index]?.score }}</td>
+            <td class="number bold right score" :class="{
+              'accent': isTodayAt(column * LINE_COUNT + index),
+            }">{{
+              bestBattles[column * LINE_COUNT + index]?.score }}</td>
           </tr>
         </table>
       </div>
@@ -26,8 +29,12 @@
     <div class="l3" v-if="!hideL3">
       <div class="flex">
         <div class="flex-1 text-lines">
-          <p class="secondary" v-if="bestBattles.at(-1)?.score">Худший • {{ bestBattles.at(-1)?.tank ?? '?' }} • <span
-              class="primary bold number">
+          <p class="secondary" v-if="bestBattles.at(-1)?.score">Худший •
+            <span :class="isLastBattleResult(bestBattles.at(-1)) ? 'accent' : 'secondary'">
+              {{ bestBattles.at(-1)?.tank ?? '?' }}
+            </span>
+            •
+            <span class="bold number" :class="bestBattles.at(-1)?.today ? 'accent' : 'primary'">
               {{ bestBattles.at(-1)?.score }}
             </span>
           </p>
@@ -63,8 +70,19 @@ const props = defineProps<Props>()
 const battleCount = useRoundProcessor(useTweenComputed(() => props.battleCount, { duration: 500 }))
 const place = useRoundProcessor(useTweenComputed(() => props.place, { duration: 500 }))
 
-// const currentSessionSum = useRoundProcessor(useTweenComputed(() => props.currentSessionSum, { duration: 500 }))
-// const bestSessionSum = useRoundProcessor(useTweenComputed(() => props.bestSessionSum, { duration: 500 }))
+function isLastBattleResult(battle: { tank: string | null, score: number } | undefined) {
+  return battle &&
+    battle.tank === props.lastBattle?.tank &&
+    battle.score === props.lastBattle?.score
+}
+
+function isLastBattleResultAt(index: number) {
+  return isLastBattleResult(props.bestBattles[index])
+}
+
+function isTodayAt(index: number) {
+  return props.bestBattles[index]?.today
+}
 
 const chart = computed(() => {
   return props.last10.slice(-BAR_COUNT).map((score) => {
@@ -114,6 +132,17 @@ const chart = computed(() => {
         border-spacing: 0;
         line-height: 1.5;
 
+        .is-last-battle {
+          .tank-name {
+            font-weight: bold;
+            color: var(--wotstat-accent);
+          }
+
+          .score {
+            color: var(--wotstat-accent);
+          }
+        }
+
         td {
           font-size: 1.2em;
           padding: 0.07em;
@@ -154,6 +183,7 @@ const chart = computed(() => {
       display: flex;
       flex-direction: column;
       line-height: 1;
+      margin-right: 0.8em;
     }
   }
 
