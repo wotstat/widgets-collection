@@ -5,8 +5,8 @@ export namespace NidinTankEquipment {
   export const URL = 'https://nidin.ru/table/equipment/tankEquipment.json'
 
   export type EquipmentSet = {
-    instructionSlot: { index: number | null }[]
-    equipmentSlots: { index: number | null }[]
+    instructionSlot?: { index: number | null }[]
+    equipmentSlots?: { index: number | null }[]
   }
 
   export type RoleSlot = 'firepower' | 'mobility' | 'scouting' | 'survivability'
@@ -24,8 +24,8 @@ export namespace NidinTankEquipment {
     id: string
     roleslot_2?: 'firepower' | 'mobility' | 'scouting' | 'survivability'
     equipment: {
-      Set1: EquipmentSet
-      Set2: EquipmentSet
+      Set1?: EquipmentSet
+      Set2?: EquipmentSet
     }
   }
 

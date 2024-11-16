@@ -105,13 +105,14 @@ const sets = computed<Props['sets']>(() => {
   const specifications = [tankSpecialization.value, specialization, null]
 
   const sets = [tank.equipment.Set1, tank.equipment.Set2]
+    .filter(i => i != undefined)
     .map(set => {
-      const equipmentSlots = set.equipmentSlots
+      const equipmentSlots = (set.equipmentSlots ?? [])
         .map(i => i.index)
         .map(i => i ? getEquipmentByIndex(i) : null)
         .map(i => i?.id)
 
-      const booster = set.instructionSlot.map(i => i.index).map(i => i ? getConsumableByIndex(i)?.id : null).shift() ?? null
+      const booster = set.instructionSlot?.map(i => i.index).map(i => i ? getConsumableByIndex(i)?.id : null).shift() ?? null
       return {
         slots: equipmentSlots.map((equipment, i) => ({
           equipment: equipment ?? null,

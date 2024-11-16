@@ -7,13 +7,13 @@
         <div class="set-line " v-for="(set, i) in sets">
 
           <div class="left-info">
-            <div class="slot-num">
+            <div class="slot-num" v-if="sets.length > 1">
               <component :is="EquipmentNum[i % 2]" class="num" />
             </div>
 
-            <div class="slot-num" v-if="variant == 'compact'">
+            <div class="slot-num" v-if="variant == 'compact' && targetSpecialization[i]">
               <div class="specialization">
-                <Specialization :tag="targetSpecialization[i]" :is-on="true" v-if="targetSpecialization[i]" />
+                <Specialization :tag="targetSpecialization[i]" :is-on="true" />
               </div>
             </div>
           </div>
@@ -29,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="booster equipment">
+          <div class="booster equipment" v-if="set.booster">
             <Equipment :tag="set.booster" :hd="hd" :is-booster="true" />
           </div>
         </div>
@@ -286,7 +286,10 @@ const EquipmentNum = [EquipmentNum1, EquipmentNum2]
       }
 
       .left-info {
-        justify-content: space-between;
+
+        &:has(> :last-child:nth-child(2)) {
+          justify-content: space-between;
+        }
 
         .slot-num {
           min-width: 0.9em;
