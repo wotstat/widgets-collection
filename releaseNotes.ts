@@ -83,6 +83,10 @@ export const releaseNotes: ReleaseNote[] = [
   {
     id: '2024-11-05-rtk',
     ru: `• Добавлен виджет ${Utils.addWidget('https://widgets.wotstat.info/tournament/rtk/random?accent=36ff46ff&background=242424ff&hideL1=false&hideL2=false&hideL3=false', 'Игровой Вызов')} для отображения позиции в турнире Игровой`
+  },
+  {
+    id: '2024-11-16-rtk',
+    ru: `• Новый ${Utils.addWidget('https://widgets.wotstat.info/tournament/rtk/random?skin=transparent&accent=7aff8cff', 'прозрачный')} стиль для виджета турнира Игровой Вызов`
   }
 ]
 
