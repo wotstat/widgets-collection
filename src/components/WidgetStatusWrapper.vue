@@ -4,7 +4,7 @@
     <div class="card warning-text" v-if="!shouldShowContent">
       <div v-if="!isConnected">
         <p class="primary">Ожидание клиента игры</p>
-        <p class="secondary">Для работы виджета необходим мод data&#8209;provider. Подробнее на сайте wotstat.info</p>
+        <p class="secondary">Для работы виджета необходим мод wotstat-widgets. Подробнее на сайте wotstat.info</p>
         <p class="secondary ellipsis">{{ ellipsis.join(' ') }}</p>
       </div>
       <div v-else-if="!isExtensionsReady">

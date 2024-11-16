@@ -7,7 +7,7 @@ title: Битва Блогеров. TROVO
 Цветом акцента отмечаются бои с результатом **выше среднего**.
 
 > [!NOTE]
-> Для работы виджета необходим мод [data-provider](https://github.com/WOT-STAT/data-provider){target='_blank'} ИЛИ [wotstat-widgets](https://github.com/WOT-STAT/wotstat-widgets){target='_blank'}.
+> Для работы виджета необходим мод [wotstat-widgets](https://github.com/WOT-STAT/wotstat-widgets/releases/latest).
 
 
 ### Как сбросить статистику?
