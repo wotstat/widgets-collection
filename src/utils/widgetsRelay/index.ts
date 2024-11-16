@@ -136,14 +136,16 @@ export class WidgetsRelay {
     if (!this.websocket) return
     if (this.websocket.readyState !== WebSocket.OPEN) return
 
-    // const lastSendedState = this.lastSendedStates.get(state)
-    // if (!full && lastSendedState !== undefined) {
-    //   const delta = differ.diff(lastSendedState, state.value)
-    //   if (delta === undefined) return
-    //   this.websocket.send(JSON.stringify({ type: 'delta', uuid: state.uuid, name, delta } satisfies DeltaChangeMessage))
-    // } else {
-    this.websocket.send(JSON.stringify({ type: 'change', uuid: state.uuid, name, value: state.value } satisfies ChangeMessage))
-    // }
+    const lastSendedState = this.lastSendedStates.get(state)
+
+    if (!full && lastSendedState !== undefined) {
+      const delta = differ.diff(lastSendedState, state.value)
+      if (delta === undefined) return
+      this.websocket.send(JSON.stringify({ type: 'delta', uuid: state.uuid, name, delta } satisfies DeltaChangeMessage))
+    } else {
+      this.websocket.send(JSON.stringify({ type: 'change', uuid: state.uuid, name, value: state.value } satisfies ChangeMessage))
+    }
+
     this.lastSendedStates.set(state, structuredClone(state.value))
   }
 
@@ -201,7 +203,6 @@ export class WidgetsRelay {
       const relayState = this.states.get(message.name)
       if (relayState === undefined) return
 
-      this.lastSendedStates.set(relayState, structuredClone(message.value))
       relayState.change(message.uuid, message.value)
     }
 
@@ -211,7 +212,6 @@ export class WidgetsRelay {
       const lastSendedState = structuredClone(this.lastSendedStates.get(relayState)) ?? {}
       const newValue = differ.patch(lastSendedState, message.delta)
 
-      this.lastSendedStates.set(relayState, structuredClone(newValue))
       relayState.change(message.uuid, newValue)
     }
 
