@@ -4,6 +4,7 @@ export type Props = {
   hideL1: boolean,
   hideL2: boolean,
   hideL3: boolean,
+  skin?: 'default' | 'transparent',
   place: number
   battleCount: number,
   bestBattles: {
@@ -22,6 +23,12 @@ export default defineWidget({
   name: "Турнир Ростелекома",
   description: "Виджет отображает прогресс в турнире Ростелекома Третий этап",
   params: [
+    {
+      type: 'select', target: 'skin', label: 'Стиль', variants: [
+        { value: 'default', label: 'Стандартный' },
+        { value: 'transparent', label: 'Прозрачный' },
+      ], default: 'default'
+    },
     'accentColorParam',
     'backgroundColorParam',
     { type: 'checkbox', target: 'hideL1', label: 'Скрыть заголовок', default: false },

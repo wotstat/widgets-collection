@@ -1,8 +1,6 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="predictedAspectRatio">
-    <WidgetCard>
-      <Content v-bind="target" />
-    </WidgetCard>
+    <Content v-bind="target" />
   </WidgetPreviewRoot>
 </template>
 
@@ -19,12 +17,14 @@ const props = defineProps<{
   hideL1?: boolean,
   hideL2?: boolean,
   hideL3?: boolean,
+  skin?: 'default' | 'transparent',
 }>();
 
 const target = computed<Props>(() => ({
   hideL1: props.hideL1,
   hideL2: props.hideL2,
   hideL3: props.isMiniPreview ? true : props.hideL3,
+  skin: props.skin,
   place: 98,
   battleCount: 347,
   bestBattles: [

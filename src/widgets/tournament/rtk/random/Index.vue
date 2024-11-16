@@ -1,6 +1,6 @@
 <template>
   <DefineTemplate>
-    <Content v-bind="data" :hide-l1="query.hideL1" :hide-l2="query.hideL2" :hide-l3="query.hideL3" />
+    <Content v-bind="data" :hide-l1="query.hideL1" :hide-l2="query.hideL2" :hide-l3="query.hideL3" :skin="query.skin" />
   </DefineTemplate>
 
   <!-- <WidgetRoot autoScale autoHeight>
@@ -9,16 +9,15 @@
     </WidgetCard>
   </WidgetRoot> -->
 
-  <WidgetCardWrapper autoScale autoHeight>
+  <WidgetWrapper autoScale autoHeight>
     <ReuseTemplate />
-  </WidgetCardWrapper>
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
+
 
 import Content from './Content.vue';
 import { computed, onMounted, ref, watch } from 'vue';
@@ -26,7 +25,7 @@ import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/compositio
 import { watchOnce } from '@vueuse/core';
 
 import { createReusableTemplate } from '@vueuse/core'
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { Props } from './define.widget';
 import { useBattleResultHistory } from '@/composition/useBattleResultHistory';
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
@@ -38,7 +37,8 @@ const query = useQueryParams({
   hideL1: Boolean,
   hideL2: Boolean,
   hideL3: Boolean,
-  nickname: String
+  nickname: String,
+  skin: oneOf(['default', 'transparent'] as const)
 })
 
 const { sdk } = useWidgetSdk();
