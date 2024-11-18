@@ -54,6 +54,10 @@ export class RelayState<T> {
     this.onSet(this.uuid, value)
   }
 
+  valueOf(uuid: UUID) {
+    return this.values.get(uuid)
+  }
+
   get all() {
     return [...this.values.entries()]
   }
@@ -209,8 +213,9 @@ export class WidgetsRelay {
     if (isDeltaChangeMessage(message)) {
       const relayState = this.states.get(message.name)
       if (relayState === undefined) return
-      const lastSendedState = structuredClone(this.lastSendedStates.get(relayState)) ?? {}
-      const newValue = differ.patch(lastSendedState, message.delta)
+
+      const lastState = structuredClone(relayState.valueOf(message.uuid)) ?? {}
+      const newValue = differ.patch(lastState, message.delta)
 
       relayState.change(message.uuid, newValue)
     }
