@@ -1,5 +1,5 @@
 <template>
-  <WidgetWrapper auto-height auto-scale>
+  <WidgetWrapper auto-height auto-scale hangar-only>
     <Content v-bind="data" :hideL1 :hideL2 :hideL3 :tanks />
   </WidgetWrapper>
 </template>
