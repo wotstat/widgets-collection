@@ -9,3 +9,8 @@ if (!Array.prototype.toReversed) {
     return Array.from(this).reverse();
   };
 }
+
+// Uncomment for working clickhouse in not secure context (like by ip in local network)
+// crypto.randomUUID = function () {
+//   return Math.random().toString(36).slice(2);
+// }

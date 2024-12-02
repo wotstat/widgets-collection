@@ -5,6 +5,7 @@ export const collections = [
       '/tournament/rtk/random',
       '/nidin/equipments',
       '/competitive/universal',
+      // '/hangar/lootbox-lesta-ny25'
     ]
   },
   {

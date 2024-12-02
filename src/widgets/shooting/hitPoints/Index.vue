@@ -1,5 +1,5 @@
 <template>
-  <WidgetRoot auto-height auto-scale>
+  <WidgetRoot auto-height auto-scale hangar-only>
     <WidgetStatusWrapper :required-extensions="['wotstat']">
       <Content :values="values" :showCircle="query.showCircle && toggleCircleDisplay" :showCenter="query.showCenter"
         :circleBackground="query.circleBackground" />

@@ -6,6 +6,9 @@ interface ImportMetaEnv {
   readonly VITE_RELAY_HTTP_URL: string
   readonly VITE_WIDGETS_INTERFACE_URL: string
   readonly VITE_YM_ID: string
+  readonly VITE_CLICKHOUSE_URL: string
+  readonly VITE_CLICKHOUSE_USER: string
+  readonly VITE_CLICKHOUSE_DATABASE: string
 }
 
 declare module '*.md' {
