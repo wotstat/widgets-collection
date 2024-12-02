@@ -4,11 +4,12 @@ export type Props = {
   hideL1: boolean,
   hideL2: boolean,
   hideL3: boolean,
-  skin?: 'default' | 'transparent',
+  skin?: 'default' | 'transparent' | 'replay',
   place: number
   battleCount: number,
   bestBattles: {
     tank: string | null,
+    date: number | null,
     score: number,
     today: boolean,
   }[],
@@ -27,6 +28,7 @@ export default defineWidget({
       type: 'select', target: 'skin', label: 'Стиль', variants: [
         { value: 'default', label: 'Стандартный' },
         { value: 'transparent', label: 'Прозрачный' },
+        { value: 'replay', label: 'Название реплеев' },
       ], default: 'default'
     },
     'accentColorParam',

@@ -38,7 +38,7 @@ const query = useQueryParams({
   hideL2: Boolean,
   hideL3: Boolean,
   nickname: String,
-  skin: oneOf(['default', 'transparent'] as const)
+  skin: oneOf(['default', 'transparent', 'replay'] as const)
 })
 
 const { sdk } = useWidgetSdk();
@@ -113,6 +113,7 @@ async function load() {
 
     return {
       tank: battle?.tank ?? null,
+      date: battle?.date ?? null,
       score: xp,
       today: currentSessionStart.value <= (battle?.date ?? 0)
     }

@@ -6,7 +6,7 @@
         <p class="secondary">Место:<span class="accent number bold">&nbsp;{{ place }}</span></p>
       </div>
 
-      <div class="l2" v-if="!hideL2">
+      <div class="l2" v-if="!hideL2 && skin !== 'replay'">
         <div class="column primary" v-for="(_, column) in new Array(2).fill(0)">
           <table>
             <tr v-for="(_, index) in new Array(LINE_COUNT).fill(0)" :class="{
@@ -27,8 +27,28 @@
         <div class="vr"></div>
       </div>
 
-      <div class="l3" v-if="!hideL3">
-        <div class="flex">
+
+      <div class="l-rep" v-if="skin === 'replay'">
+        <table>
+          <tr v-for="(_, index) in new Array(bestBattles.length).fill(0)" :class="{
+            'is-last-battle': isLastBattleResultAt(index)
+          }">
+            <td class="secondary number index">{{ index + 1 }}.</td>
+            <td class="secondary tank-name" v-if="bestBattles[index]">
+              {{ getReplayName(bestBattles[index]) }}
+            </td>
+            <td class="secondary tank-name" v-else></td>
+            <td class="number bold right score" :class="{
+              'accent': isTodayAt(index),
+            }">
+              {{ bestBattles[index]?.score }}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="l3" v-if="!hideL3 && skin !== 'replay'">
+        <div class=" flex">
           <div class="flex-1 text-lines nowrap">
             <p class="secondary" v-if="bestBattles.at(-1)?.score">Худший •
               <span :class="isLastBattleResult(bestBattles.at(-1)) ? 'accent' : 'secondary'">
@@ -61,9 +81,9 @@
 import SeriesBarChart from '@/components/SeriesBarChart.vue';
 import { useRoundProcessor } from '@/composition/processors/useRoundProcessor';
 import { useTweenComputed } from '@/composition/tween/useTweenRef';
-import { computed, watchEffect } from 'vue';
+import { computed } from 'vue';
 import { Props } from './define.widget';
-import WidgetCard from '@/components/WidgetCard.vue';
+import { queryAsync } from '@/utils/db';
 
 const LINE_COUNT = 7
 const BAR_COUNT = 9
@@ -95,6 +115,27 @@ const chart = computed(() => {
     }
   })
 })
+
+const tankTagsData = queryAsync<{ tag: string, name: string }>(`select tag, argMax(shortName, datetime) as name from Vehicles where region = 'RU' group by tag`)
+
+const tankTags = computed(() => new Map(tankTagsData.value.data.map((row) => [row.name, row.tag])))
+
+function getReplayName(line: Props['bestBattles'][number]) {
+  if (!line.date || !line.tank) return '???'
+
+  const date = new Date(line.date)
+  const YYYY = date.getFullYear()
+  const MM = (date.getMonth() + 1).toString().padStart(2, '0')
+  const DD = date.getDate().toString().padStart(2, '0')
+
+  const HH = date.getHours().toString().padStart(2, '0')
+  const mm = date.getMinutes().toString().padStart(2, '0')
+
+  const datePrefix = `${YYYY}${MM}${DD}_${HH}${mm}`
+
+  if (!tankTags.value.has(line.tank)) return `${datePrefix} (${line.tank})`
+  return `${datePrefix}_${tankTags.value.get(line.tank)?.replace(':', '-')}`
+}
 
 </script>
 
@@ -170,6 +211,19 @@ const chart = computed(() => {
 
       .vr {
         order: 1;
+      }
+    }
+
+    .l-rep {
+      display: flex;
+      font-size: 0.85em;
+
+      table {
+        width: 100%;
+
+        .tank-name {
+          width: 100%;
+        }
       }
     }
 
