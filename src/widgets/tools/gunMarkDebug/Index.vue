@@ -19,7 +19,8 @@ const data = computed(() => ({
   battleGunSum: gunMark.battleGunSum.value,
   battleMovingAvgDamage: gunMark.battleMovingAvgDamage.value,
   battleDamageRating: gunMark.battleDamageRating.value,
-  currentDamageRating: gunMark.currentDamageRating.value
+  currentDamageRating: gunMark.currentDamageRating.value,
+  dossierDamageRating: gunMark.dossierDamageRating.value
 }))
 
 </script>

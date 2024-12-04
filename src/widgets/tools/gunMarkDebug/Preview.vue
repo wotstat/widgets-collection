@@ -22,7 +22,8 @@ const data = {
   battleGunSum: 5510,
   battleMovingAvgDamage: 2241,
   battleDamageRating: 50.21,
-  currentDamageRating: 52.21
+  currentDamageRating: 52.21,
+  dossierDamageRating: 51.21
 }
 
 </script>

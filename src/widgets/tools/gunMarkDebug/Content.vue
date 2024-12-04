@@ -15,6 +15,7 @@
         <p class="secondary">moving avg: <span class="primary num">{{ battleMovingAvgDamage.toFixed(0) }}</span></p>
         <p class="secondary">battle rating: <span class="primary num">{{ battleDamageRating.toFixed(2) }}</span></p>
         <p class="secondary">current rating: <span class="primary num">{{ currentDamageRating.toFixed(2) }}</span></p>
+        <p class="secondary">dossier rating: <span class="primary num">{{ dossierDamageRating.toFixed(2) }}</span></p>
       </div>
     </WidgetCard>
   </div>
@@ -37,6 +38,7 @@ const props = defineProps<{
   battleMovingAvgDamage: number,
   battleDamageRating: number,
   currentDamageRating: number
+  dossierDamageRating: number
 }>()
 
 
