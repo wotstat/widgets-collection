@@ -102,6 +102,8 @@ watch(playerName, async player => {
   if (result.data.length == 0) return
   const first = result.data[0]
 
+  if (player != playerName.value) return
+
   data.value = {
     opened: {
       small: first.countSmall,
