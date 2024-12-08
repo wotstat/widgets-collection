@@ -1,5 +1,5 @@
 <template>
-  <div class="main ">
+  <div class="main preview-card">
     <img class="ribbon" src="./assets/effects/ribbon_gold_medium.png" v-if="!hideL1">
     <div class="line-1" v-if="!hideL1">
       <div class="container number">
@@ -121,6 +121,7 @@ const tanks = computed(() => props.tanks.toSorted((a, b) => getTankLevel(b) - ge
   overflow: hidden;
   padding-top: 0.4em;
   position: relative;
+  border-radius: 1em;
 
   .ribbon {
     position: absolute;

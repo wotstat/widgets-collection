@@ -2,9 +2,9 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
+      '/hangar/lootbox-lesta-ny25',
       '/nidin/equipments',
       '/competitive/squad/efficiency',
-      '/hangar/lootbox-lesta-ny25'
     ]
   },
   {

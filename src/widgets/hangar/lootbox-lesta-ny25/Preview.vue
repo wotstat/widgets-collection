@@ -44,13 +44,13 @@ const targetProps = computed<Props>(() => ({
   ],
   hideL1: props.hideL1,
   hideL2: props.hideL2,
-  hideL3: props.hideL3,
+  hideL3: props.isMiniPreview || props.hideL3,
 }))
 
 const aspect = computed(() => {
   if (props.hideL1) return props.hideL2 ? 3.5 : 0.78;
-  if (props.hideL2) return props.hideL3 ? 3.9 : 2.2;
-  if (props.hideL3) return 1;
+  if (props.hideL2) return props.isMiniPreview || props.hideL3 ? 3.9 : 2.2;
+  if (props.isMiniPreview || props.hideL3) return 1;
 
   return 0.87;
 })
