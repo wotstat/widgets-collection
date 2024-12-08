@@ -87,6 +87,10 @@ export const releaseNotes: ReleaseNote[] = [
   {
     id: '2024-11-16-rtk',
     ru: `• Новый ${Utils.addWidget('https://widgets.wotstat.info/tournament/rtk/random?skin=transparent&accent=7aff8cff', 'прозрачный')} стиль для виджета турнира Игровой Вызов`
+  },
+  {
+    id: '2024-12-08-ny',
+    ru: `• Новый виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-lesta-ny25?sync=true', 'статистика новогодних коробок')} для Лесты. На версии wotstat.widgets ${Utils.openUrl('https://github.com/wotstat/wotstat-widgets/releases/tag/2.0.0', '2.0.0')} и новее его можно поместить поверх интерфейса открытия коробок`
   }
 ]
 
