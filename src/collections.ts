@@ -2,10 +2,9 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
-      '/tournament/rtk/random',
       '/nidin/equipments',
-      '/competitive/universal',
-      // '/hangar/lootbox-lesta-ny25'
+      '/competitive/squad/efficiency',
+      '/hangar/lootbox-lesta-ny25'
     ]
   },
   {
@@ -47,6 +46,7 @@ export const collections = [
     widgets: [
       '/tools/debug',
       '/tools/gun-mark-debug',
+      '/tools/meta-tags-debug',
     ]
   },
   {
@@ -55,6 +55,7 @@ export const collections = [
       '/tournament/trovo/bb-official',
       '/competitive/battle-royale/custom',
       '/tournament/osg/battle-royale',
+      '/tournament/rtk/random',
     ]
   }
 ]

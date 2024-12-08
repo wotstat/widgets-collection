@@ -14,6 +14,7 @@ export type Props = {
 export const inBattleEfficiencyWithMods = ([
   'player',
   'tank',
+  'hp',
   'dmg',
   { icon: 'shot-dmg', modifications: ['shot-dmg-avg', 'shot-dmg-max'] },
   'kill',
@@ -35,7 +36,6 @@ export const inBattleEfficiencyWithMods = ([
   'lifetime',
   'duration',
   'chuck-score',
-  'hp',
   'gun-mark-dmg',
   'gun-mark-percent'
 ] as const).map(t => {

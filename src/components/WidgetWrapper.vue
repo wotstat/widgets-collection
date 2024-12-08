@@ -1,5 +1,5 @@
 <template>
-  <WidgetRoot :autoScale :autoHeight>
+  <WidgetRoot :autoScale :autoHeight :hangarOnly>
     <WidgetStatusWrapper :requiredExtensions>
       <slot></slot>
     </WidgetStatusWrapper>
@@ -9,12 +9,12 @@
 
 <script setup lang="ts">
 import WidgetRoot from "@/components/WidgetRoot.vue";
-import WidgetCard from "@/components/WidgetCard.vue";
 import WidgetStatusWrapper from "@/components/WidgetStatusWrapper.vue";
 
 const props = defineProps<{
   autoScale?: boolean,
   autoHeight?: boolean,
+  hangarOnly?: boolean,
   requiredExtensions?: string[]
 }>()
 </script>

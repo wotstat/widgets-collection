@@ -27,8 +27,8 @@ const props = defineProps<{
 }>()
 
 onMounted(() => {
-  WidgetMetaTags.setAutoHeight(props.autoHeight)
-  WidgetMetaTags.setHangarOnly(props.hangarOnly)
+  if (props.autoHeight) WidgetMetaTags.setAutoHeight(props.autoHeight)
+  if (props.hangarOnly) WidgetMetaTags.setHangarOnly(props.hangarOnly)
 })
 
 const { sdk } = useWidgetSdk()

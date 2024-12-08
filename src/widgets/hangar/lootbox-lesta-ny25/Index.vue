@@ -6,7 +6,7 @@
 
 
 <script setup lang="ts">
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
+import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, watch } from 'vue';
 import { useQueryParams } from '@/composition/useQueryParams';
@@ -41,10 +41,7 @@ const data = useWidgetStorage<Omit<Props, 'hideL1' | 'hideL2' | 'hideL3' | 'tank
 
 const tanksSet = useWidgetStorage('tanks', new Set<string>(), { groupByPlayerId: true })
 const tanks = computed(() => [...tanksSet.value.values()])
-
-// setTimeout(() => {
-//   wotstatEmulator.connectAndInit()
-// }, 0);
+WidgetMetaTags.setInsets({ left: 15, right: 15 })
 
 const { sdk } = useWidgetSdk();
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
