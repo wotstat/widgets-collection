@@ -41,7 +41,7 @@ const data = useWidgetStorage<Omit<Props, 'hideL1' | 'hideL2' | 'hideL3' | 'tank
 
 const tanksSet = useWidgetStorage('tanks', new Set<string>(), { groupByPlayerId: true })
 const tanks = computed(() => [...tanksSet.value.values()])
-WidgetMetaTags.setInsets({ left: 15, right: 15 })
+WidgetMetaTags.setPreferredTopLayer(true)
 
 const { sdk } = useWidgetSdk();
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
