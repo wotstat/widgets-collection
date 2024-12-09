@@ -9,21 +9,21 @@
         </p>
       </div>
 
-      <div class="container">
+      <div class="container number">
         <img src="./assets/containers/ny_2025_big.png">
         <p class="nowrap">
           <TweenValue :value="opened.big" space :options />
         </p>
       </div>
 
-      <div class="container">
+      <div class="container number">
         <img src="./assets/containers/ny_2025_tanks.png">
         <p class="nowrap">
           <TweenValue :value="opened.tanks" space :options />
         </p>
       </div>
 
-      <div class="container surprise">
+      <div class="container number surprise">
         <img src="./assets/containers/ny_2025_surprise.png">
         <p class="nowrap">
           <TweenValue :value="opened.surprise" space :options />
@@ -116,12 +116,19 @@ const tanks = computed(() => props.tanks.toSorted((a, b) => getTankLevel(b) - ge
 
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap');
+
 .main {
   font-size: 2em;
   overflow: hidden;
   padding-top: 0.4em;
   position: relative;
   border-radius: 1em;
+
+  .number {
+    font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+    font-weight: 900;
+  }
 
   .ribbon {
     position: absolute;
@@ -180,7 +187,6 @@ const tanks = computed(() => props.tanks.toSorted((a, b) => getTankLevel(b) - ge
         text-align: center;
         transform: translate(-50%, -50%);
         font-size: 0.9em;
-        font-weight: bold;
         color: white;
         background: url('./assets/effects/glow.png');
         background-position: center;
@@ -247,7 +253,6 @@ const tanks = computed(() => props.tanks.toSorted((a, b) => getTankLevel(b) - ge
 
         p {
           font-size: 0.9em;
-          font-weight: bold;
           line-height: 1;
           color: rgb(255, 255, 255);
           filter: drop-shadow(0 0 0.3em rgb(88, 123, 249));
