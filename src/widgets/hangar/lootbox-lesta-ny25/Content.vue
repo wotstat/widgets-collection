@@ -149,13 +149,14 @@ const tanks = computed(() => props.tanks.toSorted((a, b) => getTankLevel(b) - ge
 
       &:not(.surprise) {
         img {
-          transform: translateY(8%);
+          transform: translateY(3%) translateX(7%) rotate(-9deg);
         }
       }
 
       &.surprise {
         img {
           scale: 1.2;
+          transform: translateY(-4%);
         }
       }
 
