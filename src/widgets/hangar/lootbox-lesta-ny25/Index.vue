@@ -44,12 +44,9 @@ const tanks = computed(() => [...tanksSet.value.values()])
 WidgetMetaTags.setPreferredTopLayer(true)
 
 const { sdk } = useWidgetSdk();
-const alreadyOpenedGroup = new Set<string>()
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   if (event.eventName != 'OnLootboxOpen') return
-  if (alreadyOpenedGroup.has(event.openGroup)) return
   console.log('onEvent', event)
-  alreadyOpenedGroup.add(event.openGroup)
 
   const { containerTag, openCount, parsed } = event
 
