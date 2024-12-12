@@ -9,21 +9,22 @@
 import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, watch } from 'vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { Props } from './define.widget';
 import { query } from '@/utils/db';
 
 
-const { hideL1, hideL2, hideL3, sync } = useQueryParams({
+const { hideL1, hideL2, hideL3, sync, delay } = useQueryParams({
   hideL1: Boolean,
   hideL2: Boolean,
   hideL3: Boolean,
+  delay: oneOf(['disable', 'short', 'long'] as const, 'long'),
   sync: Boolean
 })
 
-const data = useWidgetStorage<Omit<Props, 'hideL1' | 'hideL2' | 'hideL3' | 'tanks'>>('mainStats', {
+const data = useWidgetStorage<Omit<Props, 'hideL1' | 'hideL2' | 'hideL3' | 'tanks' | 'delay'>>('mainStats', {
   opened: {
     small: 0,
     big: 0,
@@ -43,6 +44,18 @@ const tanksSet = useWidgetStorage('tanks', new Set<string>(), { groupByPlayerId:
 const tanks = computed(() => [...tanksSet.value.values()])
 WidgetMetaTags.setPreferredTopLayer(true)
 
+const delayTime = {
+  'disable': 0,
+  'short': 3000,
+  'long': 5000,
+} as const
+
+const tankDelayTime = {
+  'disable': 0,
+  'short': 32000,
+  'long': 32000,
+} as const
+
 const { sdk } = useWidgetSdk();
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   if (event.eventName != 'OnLootboxOpen') return
@@ -56,14 +69,15 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   else if (containerTag == 'ny_2025_surprise') data.value.opened.surprise += 1
   else return
 
+  setTimeout(() => {
+    data.value.currencies.gold += parsed.gold
+    data.value.currencies.credits += parsed.credits
+    data.value.currencies.freeXP += parsed.freeXP
+    data.value.currencies.premium += parsed.premium_plus
+    data.value.currencies.mandarins += parsed.extraTokens.filter(t => t[0] == 'ny25_mandarin').reduce((acc, [, count]) => acc + count, 0)
+  }, containerTag == 'ny_2025_surprise' ? 0 : delayTime[delay])
 
-  data.value.currencies.gold += parsed.gold
-  data.value.currencies.credits += parsed.credits
-  data.value.currencies.freeXP += parsed.freeXP
-  data.value.currencies.premium += parsed.premium_plus
-  data.value.currencies.mandarins += parsed.extraTokens.filter(t => t[0] == 'ny25_mandarin').reduce((acc, [, count]) => acc + count, 0)
-
-  for (const tank of parsed.addedVehicles) tanksSet.value.add(tank)
+  for (const tank of parsed.addedVehicles) setTimeout(() => tanksSet.value.add(tank), containerTag == 'ny_2025_surprise' ? 0 : tankDelayTime[delay])
 })
 
 const playerName = useReactiveState(sdk.data.player.name)
