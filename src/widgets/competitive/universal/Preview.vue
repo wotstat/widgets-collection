@@ -1,7 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="aspect">
     <Content :slots="slots ?? ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles']" :data="targetData"
-      :total="props.total ? total : undefined" />
+      :total="props.total ? total : undefined" :skin="skin ?? 'transparent'" />
   </WidgetPreviewRoot>
 </template>
 
@@ -16,7 +16,8 @@ import { AggregatorResultPrefixKey, toIconType, totalAggregator } from '@/compos
 
 
 const props = defineProps<{
-  isMiniPreview: boolean
+  isMiniPreview: boolean,
+  skin?: 'transparent' | 'default',
   slots?: Props['slots'],
   total?: boolean,
   topInRow?: 'max' | 'avg' | 'min' | 'total',

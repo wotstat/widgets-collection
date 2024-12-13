@@ -285,6 +285,7 @@ const accentColor = computed(() => '#' + accent.value)
       user-select: none;
       position: relative;
       padding: 10px;
+      overflow: hidden;
 
       img {
         user-select: none;
@@ -300,6 +301,7 @@ const accentColor = computed(() => '#' + accent.value)
         flex: 1;
         height: 100%;
         max-width: 600px;
+        z-index: 100;
       }
     }
 

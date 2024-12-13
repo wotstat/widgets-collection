@@ -1,7 +1,7 @@
 <template>
   <WidgetRoot autoScale autoHeight>
     <WidgetStatusWrapper>
-      <Content :slots="query.slots" :data="target" :total="query.total ? total : undefined" />
+      <Content :slots="query.slots" :skin="query.skin" :data="target" :total="query.total ? total : undefined" />
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -14,7 +14,7 @@ import WidgetRoot from '@/components/WidgetRoot.vue';
 import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { possibleSlots, Props, variants } from './define.widget';
 import { AggregatorResult, toIconType, totalAggregator, useBattleHistoryAggregator } from '@/composition/shared/useBattleHistoryAggregator';
-import { computed, watch, watchEffect } from 'vue';
+import { computed, watch } from 'vue';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
 import { passive, useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
@@ -24,6 +24,7 @@ const query = useQueryParams({
   channelKey: String,
   allowSquad: Boolean,
   total: Boolean,
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
   topInRow: oneOf(variants),
   battles: oneOf(variants),
   passive: Boolean,

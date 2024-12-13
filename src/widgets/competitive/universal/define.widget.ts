@@ -1,4 +1,4 @@
-import { efficiency, IconType, multiSlotParamSlot, shared } from "@/components/efficiencyIcon/utils";
+import { efficiency, multiSlotParamSlot, shared } from "@/components/efficiencyIcon/utils";
 import { defineWidget, SelectParam } from "@/utils/defineWidget";
 import { i18n } from "@/components/efficiencyIcon/i18n";
 import { arrayExclude } from "@/utils";
@@ -7,6 +7,7 @@ import { arrayExclude } from "@/utils";
 export const possibleSlots = arrayExclude([...efficiency, ...shared] as const, ['player', 'tank', 'gun-mark-percent', 'hp'] as const)
 type PossibleIconType = typeof possibleSlots[number]
 export type Props = {
+  skin: 'transparent' | 'default'
   slots: PossibleIconType[]
   data: ({ player: string } & { [key in PossibleIconType]: number })[]
   total?: { [key in PossibleIconType]: number }
@@ -30,6 +31,12 @@ export default defineWidget({
   description: "Отслеживает 25 показателей. Играйте соло. Соревнуйтесь с друзьями. Устраивайте кооперативные челленджи.",
   i18n,
   params: [
+    {
+      type: 'select', target: 'skin', label: 'Стиль', variants: [
+        { value: 'transparent', label: 'Прозрачный' },
+        { value: 'default', label: 'Классический' },
+      ], default: 'transparent'
+    },
     'accentColorParam',
     'backgroundColorParam',
     { type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 10, slots, default: ['dmg-avg', 'kill-avg', 'xp-avg', 'fire-dmg-avg', 'battles'] },

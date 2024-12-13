@@ -17,8 +17,9 @@
 <script setup lang="ts">
 import { useReactiveState, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
 import { isInit as isMetrikaInit, metrikaId } from '@/composition/ym/metrika';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, provide, ref, watch } from 'vue';
 import { onClickOutside } from '@vueuse/core'
+import { obsStudioVersion } from '@/utils/provides';
 
 const props = defineProps<{
   autoScale?: boolean,
@@ -30,6 +31,8 @@ onMounted(() => {
   if (props.autoHeight) WidgetMetaTags.setAutoHeight(props.autoHeight)
   if (props.hangarOnly) WidgetMetaTags.setHangarOnly(props.hangarOnly)
 })
+
+provide(obsStudioVersion, (window as any).obsstudio?.pluginVersion)
 
 const { sdk } = useWidgetSdk()
 

@@ -35,7 +35,7 @@ import { collections } from '@/collections';
 import { setupStyles } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
 import { Options } from '@/utils/defineWidget';
-import { isInPreview, language } from '@/utils/provides';
+import { isInMiniPreview, isInPreview, language } from '@/utils/provides';
 import.meta.glob('/src/widgets/**/*.md', { eager: true })
 
 setupStyles();
@@ -54,6 +54,7 @@ const widgetPreviews = import.meta.glob<{ default: Component }>('/src/widgets/**
 
 provide(language, 'ru')
 provide(isInPreview, true)
+provide(isInMiniPreview, true)
 
 const collectionsWithWidgets = collections.map(collection => ({
   ...collection,
