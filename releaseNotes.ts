@@ -94,7 +94,8 @@ export const releaseNotes: ReleaseNote[] = [
   },
   {
     id: '2024-12-13-universal-transparent',
-    ru: `• Новый прозрачный стиль виджета ${Utils.openUrl('https://wotstat.info/session/widgets/competitive/universal', 'универсальная прогрессия')}.\nНапоминание: виджет адаптирован как для взводной игры так и для одиночной`
+    ru: `• Новый прозрачный стиль виджета ${Utils.openUrl('https://wotstat.info/session/widgets/competitive/universal', 'универсальная прогрессия')}. ${Utils.italicString('Напоминание: виджет адаптирован как для взводной игры так и для одиночной')}
+• В виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-lesta-ny25?sync=true', 'статистика новогодних коробок')} добавлена задержка на обновление статистики, чтоб не отображать результаты раньше завершения анимации открытия.`
   }
 ]
 
