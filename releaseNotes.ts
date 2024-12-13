@@ -91,6 +91,10 @@ export const releaseNotes: ReleaseNote[] = [
   {
     id: '2024-12-08-ny',
     ru: `• Новый виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-lesta-ny25?sync=true', 'статистика новогодних коробок')} для Лесты. На версии wotstat.widgets ${Utils.openUrl('https://github.com/wotstat/wotstat-widgets/releases/tag/2.0.0', '2.0.0')} и новее его можно поместить поверх интерфейса открытия коробок`
+  },
+  {
+    id: '2024-12-13-universal-transparent',
+    ru: `• Новый прозрачный стиль виджета ${Utils.openUrl('https://wotstat.info/session/widgets/competitive/universal', 'универсальная прогрессия')}.\nНапоминание: виджет адаптирован как для взводной игры так и для одиночной`
   }
 ]
 
