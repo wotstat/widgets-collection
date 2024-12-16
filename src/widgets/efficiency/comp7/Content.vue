@@ -101,7 +101,7 @@ const edgeMask = computed(() => {
 }
 
 .main {
-  font-size: 2em;
+  font-size: 1.9em;
   position: relative;
   padding: 0 0.3em;
   color: white;
