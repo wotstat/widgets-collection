@@ -6,7 +6,7 @@
         <img :src="RankTabHighlight" class="highlight" v-if="!hideIcon">
         <img class="rank" :src="currentImage" v-if="!hideIcon">
         <p class="current-rank wg-font">
-          <TweenValue :value="props.currentRank" />
+          <TweenValue :value="props.currentRank" :options="{ duration: 500 }" />
         </p>
         <div class="history wg-font">
           <TransitionGroup :name="isInPreview ? 'list-preview' : 'list'">
