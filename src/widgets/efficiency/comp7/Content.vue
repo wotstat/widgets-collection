@@ -170,7 +170,7 @@ const edgeMask = computed(() => {
 
     .line {
       gap: 0.4em;
-      font-size: 1.3em;
+      font-size: 1.25em;
       align-items: center;
       height: 1.5em;
       white-space: nowrap;
