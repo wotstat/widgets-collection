@@ -46,6 +46,11 @@ const targetStyle = computed(() => ({
     margin: -1px;
   }
 
+  :deep(img) {
+    user-select: none;
+    pointer-events: none;
+  }
+
   .autoscale {
     max-height: 100%;
   }

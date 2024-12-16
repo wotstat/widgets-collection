@@ -197,18 +197,32 @@ export function parseBattleResult(result: unknown) {
     .map(t => Object.values(t.details).map((t: any) => ({ ...t, crits: critsParserGenerator(t.crits) })) as PersonalDamageDetails[])
     .reduce((acc, value) => acc.concat(value), [])
 
+  const comp7 = {
+    ratingDelta: get<number>(avatar, 'comp7RatingDelta'),
+    rating: get<number>(avatar, 'comp7Rating'),
+    qualActive: get<boolean>(avatar, 'comp7QualActive'),
+    qualBattleIndex: get<number>(avatar, 'comp7QualBattleIndex'),
+    rank: get<[number, number]>(avatar, 'comp7Rank'),
+  }
+
+  const arenaTypeID = get<number>(common, 'arenaTypeID') ?? 0
+
   return {
     arenaUniqueID,
     result: resultType as typeof resultType,
     common: {
       bonusType: get<number>(common, 'bonusType'),
+      arenaTypeID: get<number>(common, 'arenaTypeID'),
+      arenaId: arenaTypeID & (1 << 16) - 1,
       winnerTeam: get<number>(common, 'winnerTeam'),
       duration: get<number>(common, 'duration') ?? 0,
+      arenaCreateTime: get<number>(common, 'arenaCreateTime') ?? 0,
     },
     players: playerVehiclePairs,
     personal: personalVehicle ? {
       ...personalVehicle,
-      details
+      comp7,
+      details,
     } : undefined,
   }
 }

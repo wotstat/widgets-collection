@@ -27,7 +27,7 @@ import { watchOnce } from '@vueuse/core';
 import { createReusableTemplate } from '@vueuse/core'
 import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { Props } from './define.widget';
-import { useBattleResultHistory } from '@/composition/useBattleResultHistory';
+import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory';
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
 const TOURNAMENT_ID = 916
