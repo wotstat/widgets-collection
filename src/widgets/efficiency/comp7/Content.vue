@@ -173,6 +173,13 @@ const edgeMask = computed(() => {
       font-size: 1.3em;
       align-items: center;
       height: 1.5em;
+      white-space: nowrap;
+    }
+
+    .name {
+      flex: 1;
+      text-align: left;
+      width: 1em;
     }
 
     .delta {
