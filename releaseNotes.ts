@@ -96,7 +96,11 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2024-12-13-universal-transparent',
     ru: `• Новый прозрачный стиль виджета ${Utils.openUrl('https://wotstat.info/session/widgets/competitive/universal', 'универсальная прогрессия')}. ${Utils.italicString('Напоминание: виджет адаптирован как для взводной игры так и для одиночной')}
 • В виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-lesta-ny25?sync=true', 'статистика новогодних коробок')} добавлена задержка на обновление статистики, чтоб не отображать результаты раньше завершения анимации открытия.`
-  }
+  },
+  {
+    id: '2024-12-17-comp7',
+    ru: `• Новый виджет ${Utils.openUrl('https://wotstat.info/session/widgets/efficiency/comp7', 'прогрессия Натиска')} для Лесты. Отображает текущий ранг и результаты нескольких прошлых боёв. Есть два стиля.`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {
