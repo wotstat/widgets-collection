@@ -30,7 +30,7 @@ const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
   }
 }, { order: 'result', groupByPlayerId: true })
 
-const comp7History = computed(() => history.value.filter(h => h.arena != null && h.bonusType == 43))
+const comp7History = computed(() => history.value.filter(h => h?.arena != null && h.bonusType == 43))
 
 const arenas = queryAsync<{ id: number, name: string }>(`select id, argMax(name, datetime) as name from Arenas where region = 'RU' group by id;`)
 
@@ -40,7 +40,7 @@ function getArenaName(id: number) {
 
 const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, history: [] } : {
   currentRank: (comp7History.value[comp7History.value.length - 1].rating ?? 0) + (comp7History.value[comp7History.value.length - 1].delta ?? 0),
-  history: comp7History.value.toReversed().slice(0, historyLength).map(t => ({ arena: getArenaName(t.arena ?? 0), delta: t.delta ?? 0 }))
+  history: comp7History.value.toReversed().slice(0, historyLength).map(t => ({ arena: getArenaName(t?.arena ?? 0), delta: t.delta ?? 0 }))
 }))
 
 
