@@ -132,35 +132,35 @@ export const inBattleEfficiency = [
 
 export type InBattleIconType = typeof inBattleEfficiency[number]
 
-const rawProcessor = (value: string | number) => value.toString()
-const spaceProcessor = (value: string | number) => Math.round(Number(value)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-const roundProcessor = (precision = 0) => (value: string | number) => (Math.round(Number(value) * Math.pow(10, precision)) / Math.pow(10, precision)).toFixed(precision)
-const kProcessor = (value: string | number) => {
+const rawProcessor = (value: string | number | undefined) => value?.toString() ?? ''
+const spaceProcessor = (value: string | number | undefined) => Math.round(Number(value ?? 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+const roundProcessor = (precision = 0) => (value: string | number | undefined) => (Math.round(Number(value ?? 0) * Math.pow(10, precision)) / Math.pow(10, precision)).toFixed(precision)
+const kProcessor = (value: string | number | undefined) => {
   if (value === 0) return '0'
-  const num = Number(value)
+  const num = Number(value ?? 0)
   if (num < 1e4) return roundProcessor(0)(num).toString()
   if (num < 1e5) return roundProcessor(1)(num / 1e3) + 'k'
   if (num < 1e6) return roundProcessor(0)(num / 1e3) + 'k'
   if (num < 1e7) return roundProcessor(1)(num / 1e6) + 'm'
   return Math.round(num / 1e6).toString() + 'm'
 }
-const kRoundProcessor = (precision = 0) => (value: string | number) => {
+const kRoundProcessor = (precision = 0) => (value: string | number | undefined) => {
   if (value === 0) return '0'
-  const num = Number(value)
+  const num = Number(value ?? 0)
   if (num < 20) return roundProcessor(precision)(num).toString()
   return kProcessor(num)
 }
-const timeProcessor = (value: string | number) => {
-  const num = Number(value)
+const timeProcessor = (value: string | number | undefined) => {
+  const num = Number(value ?? 0)
   const minutes = Math.floor(num / 60)
   const seconds = Math.floor(num % 60)
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
-type Processor = (value: string | number) => string
+type Processor = (value: string | number | undefined) => string
 
 const processorList = {
-  'player': (value: string | number) => playerNameProcessor(value.toString()) ?? '',
+  'player': (value: string | number | undefined) => value ? playerNameProcessor(value.toString()) ?? '' : '',
   'tank': rawProcessor,
   'gun-mark-percent': roundProcessor(2),
   'lifetime': timeProcessor,

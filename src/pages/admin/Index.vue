@@ -2,7 +2,11 @@
   <div class="page">
     <h1>Admin</h1>
     <input type="password" name="pass" v-model="password">
-    <h2>List</h2>
+    <div class="flex">
+      <h2 class="flex-1">List</h2>
+      <button @click="channelList.execute()">Refresh</button>
+    </div>
+    <input type="text" v-model="listSearchText">
     <div class="list" :class="{
       'connecting': status == 'CONNECTING',
       'connected': status == 'OPEN',
@@ -26,8 +30,9 @@ import { useFetch, useLocalStorage, useVirtualList, useWebSocket } from '@vueuse
 import { computed, ref, watchEffect } from 'vue';
 
 const password = useLocalStorage<string>('admin_password', '');
+const listSearchText = ref<string>('');
 
-const { data } = useFetch(`${import.meta.env.VITE_RELAY_HTTP_URL}/channel-list`, {
+const channelList = useFetch(`${import.meta.env.VITE_RELAY_HTTP_URL}/channel-list`, {
   beforeFetch: ({ url, options, cancel }) => {
     options.headers = {
       ...options.headers,
@@ -35,8 +40,11 @@ const { data } = useFetch(`${import.meta.env.VITE_RELAY_HTTP_URL}/channel-list`,
     }
     return { url, options, cancel };
   },
-}).json<{ channels: { channel: string, clients: string[] }[] }>();
-const dataList = computed(() => data.value?.channels || []);
+})
+
+const { data } = channelList.json<{ channels: { channel: string, clients: string[] }[] }>();
+
+const dataList = computed(() => (data.value?.channels || []).filter(channel => channel.channel.includes(listSearchText.value)));
 
 const { list, containerProps, wrapperProps } = useVirtualList(dataList, { itemHeight: 70 });
 
