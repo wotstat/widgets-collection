@@ -162,16 +162,6 @@ const insets = computed(() => {
     border: max(0.5px, 0.07em) solid rgba(255, 255, 255, 0.25);
   }
 
-  &.is-in-obs>.main {
-    .card::after {
-      border: max(1px, 0.1em) solid rgba(255, 255, 255, 0.395)
-    }
-
-    &::before {
-      opacity: 0.7;
-    }
-  }
-
   .main {
     position: relative;
     margin-top: -0.8em;

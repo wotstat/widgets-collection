@@ -50,6 +50,19 @@
     &.rounded {
       border-radius: 1em;
     }
+
+    &.center {
+      display: block;
+      margin: 0 auto;
+    }
+
+    &.small {
+      max-width: 450px;
+    }
+
+    &.medium {
+      max-width: 600px;
+    }
   }
 
   table {
