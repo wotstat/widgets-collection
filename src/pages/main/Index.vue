@@ -50,8 +50,8 @@
 import According from '@/components/According.vue';
 import CollectionList from '../collectionList/Index.vue'
 import PreviewPopup from '../previewPopup/Index.vue'
-import { VueComponentWith as InstructionGameWith } from "./instructionGame.md";
-import { VueComponent as InstructionOBS } from "./instructionOBS.md";
+import { VueComponentWith as InstructionGameWith } from "./instructionGame/index.md";
+import { VueComponent as InstructionOBS } from "./instructionOBS/index.md";
 import { useRoute, useRouter } from 'vue-router';
 import PopupWindow from '@/components/PopupWindow.vue';
 import { ref, watchEffect } from 'vue';
@@ -130,6 +130,13 @@ function onClose() {
         @media (-webkit-device-pixel-ratio: 3) {
           max-width: 288px;
         }
+      }
+
+      &.srgb-compare {
+        width: 100%;
+        min-width: 0;
+
+        max-width: 433px;
       }
     }
   }
