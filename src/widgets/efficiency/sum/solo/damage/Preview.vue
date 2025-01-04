@@ -1,7 +1,8 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2.78">
     <WidgetCard>
-      <TitledCounter :title="data.title ? 'НАНЕСЕНО УРОНА' : ''" :value="data.startFrom ?? 0" />
+      <TitledCounter :title="data.title ? (reverse ? 'ОСТАЛОСЬ УРОНА' : 'НАНЕСЕНО УРОНА') : false"
+        :value="data.startFrom ?? 0" />
     </WidgetCard>
   </WidgetPreviewRoot>
 </template>
@@ -17,6 +18,7 @@ import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 const props = defineProps<{
   isMiniPreview: boolean
   title?: boolean
+  reverse?: boolean
   startFrom?: number
 }>();
 

@@ -1,7 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2.78">
     <WidgetCard>
-      <TitledCounter :title="data.title ? 'УРОНА ПО ЗАСВЕТУ' : ''" :value="data.startFrom ?? 0" />
+      <TitledCounter :title="data.title ? 'УРОНА ПО ЗАСВЕТУ' : false" :value="data.startFrom ?? 0" />
     </WidgetCard>
   </WidgetPreviewRoot>
 </template>
