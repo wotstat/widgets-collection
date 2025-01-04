@@ -1,6 +1,6 @@
 <template>
   <WidgetCardWrapper auto-scale auto-height>
-    <TitledCounter :title="'УРОНА ПОЖАРОМ'" :value="value" />
+    <TitledCounter :title="'УРОНА ПОЖАРОМ'" :reversed-title="'ОСТАЛОСЬ УРОНА ПОЖАРОМ'" :value="value" />
   </WidgetCardWrapper>
 </template>
 

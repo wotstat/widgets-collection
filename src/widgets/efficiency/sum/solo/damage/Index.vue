@@ -1,5 +1,6 @@
 <template>
-  <ResultSummer :title="'НАНЕСЕНО УРОНА'" :stat="'damageDealt'" :value="battleDamage" />
+  <ResultSummer :title="'НАНЕСЕНО УРОНА'" :reversed-title="'ОСТАЛОСЬ УРОНА'" :stat="'damageDealt'"
+    :value="battleDamage" />
 </template>
 
 

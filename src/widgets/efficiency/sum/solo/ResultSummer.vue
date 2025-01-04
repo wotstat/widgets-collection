@@ -1,6 +1,7 @@
 <template>
   <WidgetCardWrapper auto-scale auto-height>
-    <TitledCounter :title="titleEnabled ? title : false" :value="targetCount" />
+    <TitledCounter :title="titleEnabled ? ((reverse && reversedTitle) ? reversedTitle : title) : false"
+      :value="formattedCount" />
   </WidgetCardWrapper>
 </template>
 
@@ -16,15 +17,17 @@ import { useBattleResult } from '@/composition/useOnBattleResult';
 
 const props = defineProps<{
   title: string
+  reversedTitle?: string
   value: number | undefined
   stat: 'damageBlockedByArmor' | 'damageDealt' | 'damageAssistedRadio' | 'kills'
 }>()
 
 const { sdk } = useWidgetSdk();
 
-const { startFrom, title: titleEnabled } = useQueryParams({
+const { startFrom, title: titleEnabled, reverse } = useQueryParams({
   startFrom: NumberDefault(),
-  title: Boolean
+  title: Boolean,
+  reverse: Boolean
 })
 
 const tempResults = useWidgetStorage('tempResults', new Map<number, number>())
@@ -35,7 +38,7 @@ const collected = useWidgetStorage('collected', 0)
 watch(() => props.value, (value, old) => {
   if (value == 0 || value == undefined || old == undefined) return
   const delta = value - old
-  collected.value += delta
+  collected.value += reverse ? -delta : delta;
 
   if (arenaId.value) {
     const old = tempResults.value.get(arenaId.value) ?? 0
@@ -59,6 +62,7 @@ useBattleResult((parsed, res) => {
 })
 
 const targetCount = computed(() => startFrom + collected.value)
+const formattedCount = computed(() => reverse && startFrom >= 0 ? Math.max(0, targetCount.value) : targetCount.value)
 
 </script>
 

@@ -1,5 +1,6 @@
 <template>
-  <ResultSummer :title="'ЗАБЛОКИРОВАНО'" :stat="'damageBlockedByArmor'" :value="battleBlocked" />
+  <ResultSummer :title="'ЗАБЛОКИРОВАНО'" :reversed-title="'ОСТАЛОСЬ ЗАБЛОКИРОВАТЬ'" :stat="'damageBlockedByArmor'"
+    :value="battleBlocked" />
 </template>
 
 

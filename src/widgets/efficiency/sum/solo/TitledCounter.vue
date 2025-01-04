@@ -13,6 +13,7 @@ import TweenValue from '@/components/TweenValue.vue';
 
 const props = defineProps<{
   title?: boolean | string
+  reversedTitle?: string
   value: number
 }>();
 

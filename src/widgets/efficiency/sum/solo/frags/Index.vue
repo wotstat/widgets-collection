@@ -1,5 +1,5 @@
 <template>
-  <ResultSummer :title="'ФРАГОВ'" :stat="'kills'" :value="value" />
+  <ResultSummer :title="'ФРАГОВ'" :reversed-title="'ОСТАЛОСЬ ФРАГОВ'" :stat="'kills'" :value="value" />
 </template>
 
 
