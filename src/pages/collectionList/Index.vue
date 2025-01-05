@@ -118,6 +118,7 @@ function onClick(widget: {
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
     grid-auto-rows: 150px;
+    overflow: hidden;
 
     @media screen and (max-width: 440px) {
       grid-auto-rows: auto;
