@@ -1,16 +1,16 @@
 <template>
-  <WidgetCardWrapper auto-scale auto-height>
+  <WidgetWrapper auto-scale auto-height>
     <TitledCounter :title="titleEnabled ? ((reverse && reversedTitle) ? reversedTitle : title) : false"
-      :value="formattedCount" />
-  </WidgetCardWrapper>
+      :value="formattedCount" :skin />
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import TitledCounter from './TitledCounter.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { NumberDefault, useQueryParams } from '@/composition/useQueryParams';
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { computed, watch } from 'vue';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useBattleResult } from '@/composition/useOnBattleResult';
@@ -24,10 +24,11 @@ const props = defineProps<{
 
 const { sdk } = useWidgetSdk();
 
-const { startFrom, title: titleEnabled, reverse } = useQueryParams({
+const { startFrom, title: titleEnabled, reverse, skin } = useQueryParams({
   startFrom: NumberDefault(),
   title: Boolean,
-  reverse: Boolean
+  reverse: Boolean,
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
 const tempResults = useWidgetStorage('tempResults', new Map<number, number>())
@@ -58,7 +59,7 @@ useBattleResult((parsed, res) => {
   tempResults.value.delete(arenaId)
 
   console.log(`Got battle result for arena ${arenaId}: ${resultValue} (temp: ${tempValue}) delta = ${delta}`)
-  collected.value += delta
+  collected.value += reverse ? -delta : delta;
 })
 
 const targetCount = computed(() => startFrom + collected.value)

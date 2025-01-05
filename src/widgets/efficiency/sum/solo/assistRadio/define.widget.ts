@@ -4,6 +4,12 @@ export default defineWidget({
   name: "Урон по засвету",
   description: "Отображает сумму урона по вашим разведданным",
   params: [
+    {
+      type: 'select', target: 'skin', label: 'Стиль', variants: [
+        { value: 'transparent', label: 'Прозрачный' },
+        { value: 'default', label: 'Классический' },
+      ], default: 'transparent'
+    },
     'accentColorParam',
     'backgroundColorParam',
     { type: 'checkbox', target: 'title', label: 'Заголовок', default: true },

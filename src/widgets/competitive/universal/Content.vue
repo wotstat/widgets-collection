@@ -175,12 +175,6 @@ const insets = computed(() => {
       inset: -0.2em;
       top: 1.5em;
       filter: blur(1.6em);
-
-
-      // background: black;
-      // opacity: 1;
-      // position: absolute;
-      // inset: -400%;
     }
 
     .card {

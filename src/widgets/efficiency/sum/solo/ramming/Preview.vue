@@ -1,8 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2.78">
-    <WidgetCard>
-      <TitledCounter :title="data.title ? 'УРОНА ТАРАНОМ' : false" :value="data.startFrom ?? 0" />
-    </WidgetCard>
+    <TitledCounter :title="data.title ? 'УРОНА ТАРАНОМ' : false" :value="data.startFrom ?? 0"
+      :skin="props.skin ?? 'transparent'" />
   </WidgetPreviewRoot>
 </template>
 
@@ -11,13 +10,13 @@
 
 import { computed } from 'vue';
 import TitledCounter from '../TitledCounter.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 
 const props = defineProps<{
   isMiniPreview: boolean
   title?: boolean
   startFrom?: number
+  skin?: 'transparent' | 'default'
 }>();
 
 const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 54531 } : props);
