@@ -10,7 +10,7 @@
         </p>
         <div class="history wg-font">
           <TransitionGroup :name="isInPreview ? 'list-preview' : 'list'">
-            <div class="line flex" v-for="line in history" :key="line.arena + '_' + line.delta">
+            <div class="line flex" v-for="line in history" :key="line.key">
               <p class="name flex-1">{{ line.arena }}</p>
               <p class="delta" :class="{
                 'positive': line.delta > 0,

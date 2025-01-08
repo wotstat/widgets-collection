@@ -5,6 +5,7 @@ export type Props = {
   history: {
     delta: number
     arena: string
+    key: string
   }[],
   hideIcon: boolean
 }

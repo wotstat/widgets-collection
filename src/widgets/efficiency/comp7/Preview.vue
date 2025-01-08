@@ -22,12 +22,12 @@ const props = defineProps<{
 const targetProps = computed<Props>(() => ({
   currentRank: 840,
   history: [
-    { delta: +19, arena: 'Утёс' },
-    { delta: +29, arena: 'Химмльсдорф' },
-    { delta: -15, arena: 'Степи' },
-    { delta: +12, arena: 'Карелия' },
-    { delta: +12, arena: 'Тихий берег' },
-    { delta: +12, arena: 'Карелия' },
+    { delta: +19, key: '1', arena: 'Утёс' },
+    { delta: +29, key: '2', arena: 'Химмльсдорф' },
+    { delta: -15, key: '3', arena: 'Степи' },
+    { delta: +12, key: '4', arena: 'Карелия' },
+    { delta: +12, key: '5', arena: 'Тихий берег' },
+    { delta: +12, key: '6', arena: 'Карелия' },
   ].slice(0, Number.parseInt((props.historyLength ?? 3).toString())),
   hideIcon: props.hideIcon,
 }))

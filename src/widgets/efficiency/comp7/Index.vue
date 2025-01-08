@@ -26,7 +26,8 @@ const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
     delta: parsed.personal.comp7.ratingDelta ?? 0,
     rating: parsed.personal.comp7.rating ?? 0,
     arena: parsed.common.arenaId,
-    bonusType: parsed.common.bonusType
+    bonusType: parsed.common.bonusType,
+    arenaUniqueID: parsed.arenaUniqueID
   }
 }, { order: 'result', groupByPlayerId: true })
 
@@ -40,7 +41,11 @@ function getArenaName(id: number) {
 
 const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, history: [] } : {
   currentRank: (comp7History.value[comp7History.value.length - 1].rating ?? 0) + (comp7History.value[comp7History.value.length - 1].delta ?? 0),
-  history: comp7History.value.toReversed().slice(0, historyLength).map(t => ({ arena: getArenaName(t?.arena ?? 0), delta: t.delta ?? 0 }))
+  history: comp7History.value.toReversed().slice(0, historyLength).map(t => ({
+    arena: getArenaName(t?.arena ?? 0),
+    delta: t.delta ?? 0,
+    key: `${t.arena}_${t.delta}_${t.rating}_${t.arenaUniqueID}`
+  }))
 }))
 
 
