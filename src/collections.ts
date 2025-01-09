@@ -24,6 +24,12 @@ export const collections = [
     ]
   },
   {
+    name: 'Турниры',
+    widgets: [
+      '/tournament/granny',
+    ]
+  },
+  {
     name: 'Счётчики',
     widgets: [
       '/counters/battle',
