@@ -27,28 +27,28 @@ const target = computed<Props>(() => ({
   place: 98,
   battleCount: 347,
   bestBattles: [
-    { date: 1731790571056, tank: '110', score: 2212, today: false },
-    { date: 1731791256575, tank: 'Turtle I', score: 2182, today: false },
-    { date: 1730813329711, tank: 'Turtle I', score: 2172, today: false },
-    { date: 1731614833973, tank: 'Turtle I', score: 2164, today: true },
-    { date: 1731638991393, tank: 'Turtle I', score: 2096, today: false },
-    { date: 1731637891450, tank: '110', score: 2044, today: true },
-    { date: 1731637630680, tank: 'Turtle I', score: 2037, today: false },
-    { date: 1731624918280, tank: '110', score: 2025, today: false },
-    { date: 1731624504156, tank: null, score: 2019, today: true },
-    { date: 1731624177120, tank: null, score: 1977, today: false },
-    { date: 1731623810841, tank: '110', score: 1955, today: false },
-    { date: 1731623430359, tank: 'Turtle I', score: 1952, today: false },
-    { date: 1731621663631, tank: 'Turtle I', score: 1947, today: true },
-    { date: 1731615256104, tank: '110', score: 1940, today: true },
-    { date: 1731614833973, tank: 'Turtle I', score: 1855, today: false },
+    { date: 1731790571056, tank: 'Gendarme', score: 5212, today: false },
+    { date: 1731791256575, tank: 'Gendarme', score: 5182, today: false },
+    { date: 1730813329711, tank: 'FV4005', score: 5172, today: false },
+    { date: 1731614833973, tank: 'Gendarme', score: 5164, today: true },
+    { date: 1731638991393, tank: 'FV4005', score: 5096, today: false },
+    { date: 1731637891450, tank: 'Gendarme', score: 5044, today: true },
+    { date: 1731637630680, tank: 'FV4005', score: 5037, today: false },
+    { date: 1731624918280, tank: 'Gendarme', score: 5025, today: false },
+    { date: 1731624504156, tank: null, score: 5019, today: true },
+    { date: 1731624177120, tank: null, score: 5977, today: false },
+    { date: 1731623810841, tank: 'Gendarme', score: 5955, today: false },
+    { date: 1731623430359, tank: 'FV4005', score: 5952, today: false },
+    { date: 1731621663631, tank: 'FV4005', score: 5947, today: true },
+    { date: 1731615256104, tank: 'Gendarme', score: 5940, today: true },
+    { date: 1731614833973, tank: 'FV4005', score: 5855, today: false },
   ],
   last10: [1200, 2124, 1212, 564, 1244, 2412, 1551, 1551, 1551, 453],
-  lastBattle: { tank: 'Turtle I', score: 453 },
+  lastBattle: { tank: 'FV4005', score: 453 },
 }))
 
 const predictedAspectRatio = computed(() => {
-  return props.isMiniPreview ? 1.33 : props.skin === 'replay' ? 0.8 : 1.09
+  return props.isMiniPreview ? 1.6 : props.skin === 'replay' ? 0.8 : 1.2
 })
 
 </script>
