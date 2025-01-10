@@ -23,7 +23,7 @@ const target = computed<Props>(() => ({
   hideL1: props.hideL1,
   hideL2: props.hideL2,
   hideL3: props.isMiniPreview ? true : props.hideL3,
-  skin: props.skin,
+  skin: props.isMiniPreview ? 'transparent' : props.skin,
   place: 98,
   battleCount: 347,
   bestBattles: [

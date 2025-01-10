@@ -29,7 +29,7 @@ export default defineWidget({
         { value: 'default', label: 'Стандартный' },
         { value: 'transparent', label: 'Прозрачный' },
         { value: 'replay', label: 'Название реплеев' },
-      ], default: 'default'
+      ], default: 'transparent'
     },
     'accentColorParam',
     'backgroundColorParam',

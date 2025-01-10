@@ -248,21 +248,13 @@ function getReplayName(line: Props['bestBattles'][number]) {
 
   &.style-transparent {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.38);
+    border: max(1px, 0.1em) solid rgba(255, 255, 255, 0.25);
 
     .secondary {
       color: white;
     }
 
-    .content {
-      filter: drop-shadow(0 0 0.8em rgba(0, 0, 0, 0.3)) drop-shadow(0 0 0.2em rgba(0, 0, 0, 0.3));
-
-      .l2 {
-        filter: drop-shadow(0 0 0.5em rgba(0, 0, 0, 0.2));
-      }
-    }
-
-    background: radial-gradient(ellipse, rgb(0 0 0 / 29%) 20%, rgba(43, 43, 43, 0.1) 100%);
+    background: radial-gradient(ellipse, rgb(0 0 0 / 40%) 20%, rgba(43, 43, 43, 0.37) 100%);
   }
 
 }
