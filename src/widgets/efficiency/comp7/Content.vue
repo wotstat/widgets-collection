@@ -39,10 +39,11 @@ import { preloadImage } from '@/utils/preload';
 import { isInPreview as isInPreviewKey } from '@/utils/provides';
 
 
-const ranks = import.meta.glob<{ default: string }>('./assets/rank/*.png', { eager: true });
+const ranksLesta = import.meta.glob<{ default: string }>('./assets/rank-lesta/*.png', { eager: true });
+const ranksWg = import.meta.glob<{ default: string }>('./assets/rank-wg/*.png', { eager: true });
 const isInPreview = inject(isInPreviewKey, false);
 
-const ranksMap = {
+const ranksLestaMap = {
   1: 'first_E',
   80: 'first_D',
   160: 'first_C',
@@ -66,19 +67,49 @@ const ranksMap = {
   1600: 'fifth_logo'
 }
 
+const rankWgMap = {
+  1: 'first_E',
+  100: 'first_D',
+  200: 'first_C',
+  300: 'first_B',
+  400: 'first_A',
+  500: 'second_E',
+  600: 'second_D',
+  700: 'second_C',
+  800: 'second_B',
+  900: 'second_A',
+  1000: 'third_E',
+  1100: 'third_D',
+  1200: 'third_C',
+  1300: 'third_B',
+  1400: 'third_A',
+  1500: 'fourth_E',
+  1600: 'fourth_D',
+  1700: 'fourth_C',
+  1800: 'fourth_B',
+  1900: 'fourth_A',
+  2000: 'fifth_logo'
+}
+
 const props = defineProps<Props>()
 
 function imageForRank(rank: number) {
-  const key = Object.keys(ranksMap).reverse().find(key => rank >= parseInt(key));
-  if (!key) return ranks[`./assets/rank/qualification.png`].default
-  const value = ranksMap[key as unknown as keyof typeof ranksMap];
-  return ranks[`./assets/rank/${value}.png`].default;
+  const isLesta = props.game == 'lesta';
+
+  const rankImage = isLesta ? ranksLesta : ranksWg;
+  const rankImagePrefix = isLesta ? './assets/rank-lesta' : './assets/rank-wg';
+
+  const key = Object.keys(isLesta ? ranksLestaMap : rankWgMap).reverse().find(key => rank >= parseInt(key));
+  if (!key) return rankImage[`${rankImagePrefix}/qualification.png`].default
+
+  const value = isLesta ? ranksLestaMap[key as unknown as keyof typeof ranksLestaMap] : rankWgMap[key as unknown as keyof typeof rankWgMap];
+  return rankImage[`${rankImagePrefix}/${value}.png`].default;
 }
 
 const currentImage = computed(() => imageForRank(props.currentRank));
 
 watch(currentImage, () => {
-  preloadImage(imageForRank(props.currentRank + 80))
+  preloadImage(imageForRank(props.currentRank + (props.game == 'lesta' ? 80 : 100)));
 })
 
 const insets = computed(() => {

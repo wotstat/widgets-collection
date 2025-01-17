@@ -20,7 +20,7 @@ const props = defineProps<{
 }>();
 
 const targetProps = computed<Props>(() => ({
-  currentRank: 840,
+  currentRank: 925,
   history: [
     { delta: +19, key: '1', arena: 'Утёс' },
     { delta: +29, key: '2', arena: 'Химмльсдорф' },
@@ -30,6 +30,7 @@ const targetProps = computed<Props>(() => ({
     { delta: +12, key: '6', arena: 'Карелия' },
   ].slice(0, Number.parseInt((props.historyLength ?? 3).toString())),
   hideIcon: props.hideIcon,
+  game: 'lesta'
 }))
 
 

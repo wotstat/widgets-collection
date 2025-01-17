@@ -8,6 +8,7 @@ export type Props = {
     key: string
   }[],
   hideIcon: boolean
+  game: 'lesta' | 'wg'
 }
 
 export default defineWidget({

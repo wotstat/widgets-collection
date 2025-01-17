@@ -13,12 +13,17 @@ import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { Props } from './define.widget';
 import { queryAsync } from '@/utils/db';
 import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory';
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 
 
 const { hideIcon, historyLength } = useQueryParams({
   hideIcon: Boolean,
   historyLength: Number
 })
+
+
+const { sdk } = useWidgetSdk()
+const region = useReactiveState(sdk.data.game.region)
 
 const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
   if (!parsed.personal || parsed.personal.player == 'bot') return { delta: 0, rating: 0 }
@@ -39,13 +44,14 @@ function getArenaName(id: number) {
   return arenas.value.data.find(a => a.id == id)?.name ?? '...'
 }
 
-const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, history: [] } : {
+const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, history: [], game: 'lesta' } : {
   currentRank: (comp7History.value[comp7History.value.length - 1].rating ?? 0) + (comp7History.value[comp7History.value.length - 1].delta ?? 0),
   history: comp7History.value.toReversed().slice(0, historyLength).map(t => ({
     arena: getArenaName(t?.arena ?? 0),
     delta: t.delta ?? 0,
     key: `${t.arena}_${t.delta}_${t.rating}_${t.arenaUniqueID}`
-  }))
+  })),
+  game: region.value == 'RU' ? 'lesta' : 'wg'
 }))
 
 
