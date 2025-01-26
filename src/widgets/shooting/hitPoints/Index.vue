@@ -1,8 +1,7 @@
 <template>
   <WidgetRoot auto-height auto-scale>
     <WidgetStatusWrapper :required-extensions="['wotstat']">
-      <Content :values="values" :showCircle="query.showCircle && toggleCircleDisplay" :showCenter="query.showCenter"
-        :circleBackground="query.circleBackground" />
+      <Content :values="values" :showCircle="query.showCircle && toggleCircleDisplay" :showCenter="query.showCenter" />
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -22,7 +21,6 @@ const query = useQueryParams({
   resetEachBattle: Boolean,
   showCircle: Boolean,
   showCenter: Boolean,
-  circleBackground: Boolean,
   maxHits: NumberDefault(0)
 })
 

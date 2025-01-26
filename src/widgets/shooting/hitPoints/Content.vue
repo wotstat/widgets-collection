@@ -1,7 +1,7 @@
 <template>
-  <div class="main preview-drop-shadow" :class="circleBackground ? 'circleBackground' : 'card'">
+  <div class="main preview-drop-shadow">
     <svg viewBox="0 0 100 100">
-      <circle class="main-circle" cx="50%" cy="50%" r="49.75%" :class="showCircle ? 'stroke' : ''" />
+      <circle class="main-circle " cx="50%" cy="50%" r="49.75%" :class="showCircle ? 'stroke' : ''" />
       <line x1="45%" y1="50%" x2="55%" y2="50%" v-if="showCenter" />
       <line x1="50%" y1="45%" x2="50%" y2="55%" v-if="showCenter" />
       <TransitionGroup name="hit">
@@ -27,7 +27,6 @@ const props = defineProps<{
   values: { r: number; theta: number }[]
   showCircle?: boolean
   showCenter?: boolean
-  circleBackground?: boolean
 }>()
 
 function polarToDec(value: { r: number; theta: number }) {
@@ -42,20 +41,7 @@ function polarToDec(value: { r: number; theta: number }) {
 <style lang="scss" scoped>
 .main {
   aspect-ratio: 1;
-
-  &:not(.card) {
-    border-radius: 50%;
-  }
-
-  &.circleBackground {
-    border-radius: 50%;
-
-    svg {
-      .main-circle {
-        fill: var(--wotstat-background);
-      }
-    }
-  }
+  border-radius: 50%;
 
   svg {
     width: 100%;
@@ -63,7 +49,7 @@ function polarToDec(value: { r: number; theta: number }) {
     display: block;
 
     .main-circle {
-      fill: none;
+      fill: var(--wotstat-background);
       stroke: none;
       stroke-width: 0.5%;
 

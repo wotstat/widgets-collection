@@ -2,8 +2,6 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
-      '/hangar/lootbox-lesta-ny25',
-      '/efficiency/comp7',
       '/nidin/equipments',
       '/competitive/squad/efficiency',
     ]
@@ -23,12 +21,11 @@ export const collections = [
       '/competitive/universal',
     ]
   },
-  {
-    name: 'Турниры',
-    widgets: [
-      '/tournament/granny',
-    ]
-  },
+  // {
+  //   name: 'Турниры',
+  //   widgets: [
+  //   ]
+  // },
   {
     name: 'Счётчики',
     widgets: [
@@ -40,6 +37,7 @@ export const collections = [
   {
     name: 'Прогрессия',
     widgets: [
+      '/efficiency/comp7',
       '/efficiency/sum/solo/blocked',
       '/efficiency/sum/solo/assist-radio',
       '/efficiency/sum/solo/damage',
@@ -63,6 +61,8 @@ export const collections = [
       '/competitive/battle-royale/custom',
       '/tournament/osg/battle-royale',
       '/tournament/rtk/random',
+      '/hangar/lootbox-lesta-ny25',
+      '/tournament/granny',
     ]
   }
 ]

@@ -329,8 +329,9 @@ const accentColor = computed(() => '#' + accent.value)
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 0.2em 0;
+        margin: 0.4em 0;
         gap: 10px;
+        line-height: 1.2;
       }
 
       :deep(input) {

@@ -6,11 +6,9 @@ export default defineWidget({
   params: [
     'accentColorParam',
     'backgroundColorParam',
-    { type: 'checkbox', target: 'reset-each-battle', label: 'Сбрасывать каждый бой', default: false },
+    { type: 'checkbox', target: 'reset-each-battle', label: 'Сбрасывать каждый бой', default: true },
     { type: 'checkbox', target: 'show-center', label: 'Центр прицела', default: true },
-    { type: 'checkbox', target: 'show-circle', label: 'Отображать круг', default: true },
-    { type: 'checkbox', target: 'circle-background', label: 'Круглый фон', default: true },
+    { type: 'checkbox', target: 'show-circle', label: 'Отображать круг', default: false },
     { type: 'int', target: 'max-hits', label: 'Отображать попаданий', default: 1000 },
-    { type: 'random-string', target: 'save-key', label: 'Ключ сохранения', length: 5 },
   ]
 })
