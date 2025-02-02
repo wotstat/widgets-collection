@@ -17,6 +17,12 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
 
+      # FIX FOR YANDEX CLOUD
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          version: 2.22.35
+
       - name: Install dependencies
         run: bun install
 
