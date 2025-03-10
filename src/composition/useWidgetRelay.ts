@@ -60,7 +60,9 @@ export function usePlatoonWidgetRelay(postfix: MaybeRefOrGetter<string | undefin
   const relayPostfix = computed(() => {
     const postfixValue = toValue(postfix)
     if (postfixValue) return postfixValue
-    return (platoonId.value || 'default') + (postfixValue ? `|${postfixValue}` : '')
+
+    return platoonId.value
   })
+
   return useReactiveWidgetRelay(relayPostfix)
 }

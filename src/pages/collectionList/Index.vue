@@ -3,7 +3,8 @@
     <div class="collection" v-for="collection in collectionsWithWidgets">
       <h2>{{ collection.name }}</h2>
       <div class="collection-content">
-        <div class="widget-container" v-for="widget in collection.widgets" :class="{ 'error': 'error' in widget }">
+        <div class="widget-container" v-for="widget in collection.widgets" :class="{ 'error': 'error' in widget }"
+          @click="'error' in widget ? null : onClick(widget)">
           <template v-if="'error' in widget">
             <div>
               {{ widget.error }}
@@ -14,7 +15,7 @@
             <Item :name="widget.options.name" :description="widget.options.description"
               :hasSlot="widget.options.preview != null">
               <template v-if="'previewComponent' in widget">
-                <component :is="widget.previewComponent" :isMiniPreview="true" @click="onClick(widget)" />
+                <component :is="widget.previewComponent" :isMiniPreview="true" />
               </template>
             </Item>
 
@@ -132,6 +133,7 @@ function onClick(widget: {
       color: white;
       border-radius: 20px;
       position: relative;
+      cursor: pointer;
 
       &.error {
         background: rgb(97, 70, 70);

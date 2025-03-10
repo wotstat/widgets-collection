@@ -2,6 +2,7 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
+      '/efficiency/comp7',
       '/nidin/equipments',
       '/competitive/squad/efficiency',
     ]
@@ -37,7 +38,6 @@ export const collections = [
   {
     name: 'Прогрессия',
     widgets: [
-      '/efficiency/comp7',
       '/efficiency/sum/solo/blocked',
       '/efficiency/sum/solo/assist-radio',
       '/efficiency/sum/solo/damage',
