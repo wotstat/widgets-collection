@@ -366,10 +366,11 @@ const accentColor = computed(() => '#' + accent.value)
 
         .icon-reset {
           float: right;
-          height: 1.2em;
+          height: 1.1em;
           display: block;
           cursor: pointer;
-          padding: 4px;
+          padding: 3px;
+          border: 1px solid #858585;
           border-radius: 5px;
           background: transparent;
           transition: background 0.1s;
