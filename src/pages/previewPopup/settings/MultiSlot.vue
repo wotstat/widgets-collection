@@ -68,7 +68,7 @@ const props = defineProps<{
   i18n: Record<string, string>
 }>()
 
-const values = defineModel<string[]>()
+const values = defineModel<string[]>({ required: true })
 
 const searchInput = ref<HTMLInputElement | null>(null)
 const searchText = ref('')

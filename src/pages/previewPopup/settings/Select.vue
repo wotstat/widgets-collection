@@ -14,7 +14,7 @@ const props = defineProps<{
   variants: { value: string, label: string }[]
 }>()
 
-const value = defineModel<string>()
+const value = defineModel<string>({ required: true })
 </script>
 
 

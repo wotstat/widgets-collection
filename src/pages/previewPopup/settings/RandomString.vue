@@ -17,7 +17,7 @@ const props = defineProps<{
   length: number
 }>()
 
-const value = defineModel<string>()
+const value = defineModel<string>({ required: true })
 
 onMounted(() => {
   if (!value.value) generateNewValue()

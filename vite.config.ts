@@ -8,11 +8,13 @@ import { container } from "@mdit/plugin-container";
 import { align } from "@mdit/plugin-align";
 import MarkdownIt from "markdown-it";
 import { releaseNotesPlugin } from "./releaseNotes";
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    vueDevTools(),
     svgLoader({
       svgoConfig: {
         plugins: [

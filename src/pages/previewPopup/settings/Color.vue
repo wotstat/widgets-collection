@@ -16,6 +16,7 @@ const props = defineProps<{
 }>()
 
 const value = defineModel<string>({
+  required: true,
   set(value) {
     return value.replace('#', '')
   }

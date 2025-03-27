@@ -11,7 +11,7 @@ const props = defineProps<{
   label: string
 }>()
 
-const value = defineModel<boolean>()
+const value = defineModel<boolean>({ required: true })
 </script>
 
 
