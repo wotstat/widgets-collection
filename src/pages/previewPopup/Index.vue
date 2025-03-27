@@ -14,7 +14,10 @@
           </div>
         </div>
         <div class="settings">
-          <h2>Параметры</h2>
+          <h2>
+            <span class="flex-1">Параметры</span>
+            <IconReset class="icon-reset" v-if="canReset" @click="resetToDefault" />
+          </h2>
           <div class="params nice-scrollbar">
             <component v-for="setting in settingsValues" :is="setting.component" />
           </div>
@@ -40,7 +43,7 @@
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
 import { computed, defineAsyncComponent, defineComponent, h, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { accent, background } from "@/composition/wotstatColors";
+import { accent, background, defaultAccent, defaultBackground } from "@/composition/wotstatColors";
 import { setupStyles } from "@/composition/widgetSdk"
 import Checkbox from './settings/Checkbox.vue';
 import Select from './settings/Select.vue';
@@ -52,6 +55,7 @@ import RandomString from './settings/RandomString.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
+import IconReset from '@/assets/icons/reset.svg'
 import { isInPreview, language } from '@/utils/provides';
 import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
 import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
@@ -88,6 +92,45 @@ const currentPreview = computed(() => {
 
   return widgetPreviews[previewPath]
 });
+
+const canReset = computed(() => {
+  if (!settingsValues.value) return
+  if (!currentOptions.value) return
+
+  for (let i = 0; i < currentOptions.value.options.params.length; i++) {
+    const element = currentOptions.value.options.params[i];
+    const settings = settingsValues.value[i]
+
+    if (element == 'accentColorParam' && accent.value != defaultAccent) return true
+    if (element == 'backgroundColorParam' && background.value != defaultBackground) return true
+
+    if (element == 'accentColorParam') continue
+    if (element == 'backgroundColorParam') continue
+    if (element == 'separator') continue
+
+    if (!settings) continue
+    if (element.default === undefined) continue
+    if (settings.value?.value !== element.default) return true
+  }
+
+  return false
+})
+
+function resetToDefault() {
+  if (!settingsValues.value) return
+  if (!currentOptions.value) return
+
+  currentOptions.value.options.params.forEach((v, i) => {
+    if (v == 'accentColorParam') return accent.value = defaultAccent
+    if (v == 'backgroundColorParam') return background.value = defaultBackground
+    if (v == 'separator') return
+
+    if (!settingsValues.value) return
+    if (!settingsValues.value[i].value) return
+    if (v.default === undefined) return
+    settingsValues.value[i].value.value = v.default
+  })
+}
 
 const targetProps = shallowRef<any>({})
 
@@ -317,6 +360,24 @@ const accentColor = computed(() => '#' + accent.value)
 
       h2 {
         font-size: 1.2em;
+        align-items: center;
+        display: flex;
+        padding-right: 5px;
+
+        .icon-reset {
+          float: right;
+          height: 1.2em;
+          display: block;
+          cursor: pointer;
+          padding: 4px;
+          border-radius: 5px;
+          background: transparent;
+          transition: background 0.1s;
+
+          &:hover {
+            background: #ffffff1a;
+          }
+        }
       }
 
       :deep(hr) {
