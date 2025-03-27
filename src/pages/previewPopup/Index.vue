@@ -16,7 +16,9 @@
         <div class="settings">
           <h2>
             <span class="flex-1">Параметры</span>
-            <IconReset class="icon-reset" v-if="canReset" @click="resetToDefault" />
+            <button class="reset-button" @click="resetToDefault" v-if="canReset">
+              <IconReset class="icon-reset" />
+            </button>
           </h2>
           <div class="params nice-scrollbar">
             <component v-for="setting in settingsValues" :is="setting.component" />
@@ -110,7 +112,12 @@ const canReset = computed(() => {
 
     if (!settings) continue
     if (element.default === undefined) continue
-    if (settings.value?.value !== element.default) return true
+
+    const value = settings.value?.value
+    const target = element.default
+
+    if (typeof value === 'object' && typeof target == 'object' && JSON.stringify(value) !== JSON.stringify(target)) return true
+    if (typeof value !== 'object' && typeof target !== 'object' && value !== target) return true
   }
 
   return false
@@ -128,7 +135,7 @@ function resetToDefault() {
     if (!settingsValues.value) return
     if (!settingsValues.value[i].value) return
     if (v.default === undefined) return
-    settingsValues.value[i].value.value = v.default
+    settingsValues.value[i].value.value = structuredClone(v.default)
   })
 }
 
@@ -208,7 +215,7 @@ const settingsValues = computedWithControl(currentOptions, () => {
     }
 
     if (param.type == 'multi-slot') {
-      const value = useWidgetPreviewStorage(param.target, param.default ?? [])
+      const value = useWidgetPreviewStorage(param.target, structuredClone(param.default) ?? [])
       return {
         target: param.target, value,
         component: defineComponent(() => () => renderIfVisible(param, h(MultiSlot, { i18n, label: param.label, min: param.min, max: param.max, slots: param.slots, ...vModel(value) })))
@@ -364,9 +371,10 @@ const accentColor = computed(() => '#' + accent.value)
         display: flex;
         padding-right: 5px;
 
-        .icon-reset {
+        .reset-button {
           float: right;
-          height: 1.1em;
+          box-sizing: content-box;
+          height: 1em;
           display: block;
           cursor: pointer;
           padding: 3px;
@@ -374,9 +382,14 @@ const accentColor = computed(() => '#' + accent.value)
           border-radius: 5px;
           background: transparent;
           transition: background 0.1s;
+          color: inherit;
 
           &:hover {
             background: #ffffff1a;
+          }
+
+          .icon-reset {
+            height: 100%;
           }
         }
       }
