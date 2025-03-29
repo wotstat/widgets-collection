@@ -1,6 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1">
-    <Content :values="data" :showCircle="isMiniPreview || showCircle" :showCenter="isMiniPreview || showCenter" />
+    <Content :values="data" :showCircle="showCircle" :showCenter="isMiniPreview || showCenter"
+      :skin="skin ?? 'transparent'" />
   </WidgetPreviewRoot>
 </template>
 
@@ -17,6 +18,7 @@ const props = defineProps<{
   showCircle?: boolean
   showCenter?: boolean
   maxHits?: number
+  skin?: 'default' | 'transparent'
 }>();
 
 const values = ref([

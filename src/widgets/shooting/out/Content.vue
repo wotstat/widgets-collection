@@ -85,10 +85,9 @@ const percentValue = computed(() => props.total > 0 ? props.miss / props.total *
       background: radial-gradient(ellipse closest-corner, rgb(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 80%);
       opacity: 0.35;
       position: absolute;
-      inset: 0.2em;
+      inset: -0.4em;
 
-      border-radius: 1em;
-      filter: blur(1em);
+      filter: blur(1.8em);
     }
 
     .card {

@@ -1,7 +1,8 @@
 <template>
   <WidgetRoot auto-height auto-scale>
     <WidgetStatusWrapper :required-extensions="['wotstat']">
-      <Content :values="values" :showCircle="query.showCircle && toggleCircleDisplay" :showCenter="query.showCenter" />
+      <Content :values="values" :showCircle="query.showCircle && toggleCircleDisplay" :showCenter="query.showCenter"
+        :skin="query.skin" />
     </WidgetStatusWrapper>
   </WidgetRoot>
 </template>
@@ -13,7 +14,7 @@ import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { ref, watch } from 'vue';
-import { NumberDefault, useQueryParams } from '@/composition/useQueryParams';
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { BallisticCalculator } from '../ballisticCalc';
 
@@ -21,7 +22,8 @@ const query = useQueryParams({
   resetEachBattle: Boolean,
   showCircle: Boolean,
   showCenter: Boolean,
-  maxHits: NumberDefault(0)
+  maxHits: NumberDefault(0),
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
 const values = useWidgetStorage<{ r: number; theta: number }[]>('ballistics', [])

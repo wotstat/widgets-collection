@@ -1,5 +1,5 @@
 <template>
-  <div class="main preview-drop-shadow">
+  <div class="main preview-drop-shadow" :class="{ [`style-${props.skin ?? 'default'}`]: true }">
     <svg viewBox="0 0 100 100">
       <circle class="main-circle " cx="50%" cy="50%" r="49.75%" :class="showCircle ? 'stroke' : ''" />
       <line x1="45%" y1="50%" x2="55%" y2="50%" v-if="showCenter" />
@@ -27,6 +27,7 @@ const props = defineProps<{
   values: { r: number; theta: number }[]
   showCircle?: boolean
   showCenter?: boolean
+  skin: 'default' | 'transparent'
 }>()
 
 function polarToDec(value: { r: number; theta: number }) {
@@ -42,6 +43,7 @@ function polarToDec(value: { r: number; theta: number }) {
 .main {
   aspect-ratio: 1;
   border-radius: 50%;
+  position: relative;
 
   svg {
     width: 100%;
@@ -113,6 +115,35 @@ function polarToDec(value: { r: number; theta: number }) {
         r: 0%;
       }
     }
+  }
+}
+
+
+.style-transparent {
+
+  &::before {
+    z-index: -1;
+    content: '';
+    background: radial-gradient(ellipse closest-corner, rgb(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0.4;
+    position: absolute;
+    inset: 0em;
+
+    border-radius: 50%;
+    filter: blur(1em);
+    overflow: hidden;
+
+    border: max(0.5px, 0.03em) solid rgba(255, 255, 255, 0.25);
+  }
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  svg {
+    .main-circle {
+      fill: transparent;
+    }
+
   }
 }
 </style>

@@ -1,29 +1,25 @@
 <template>
   <InsetsWrapper :insets="props.skin == 'transparent' ? 12 : 0" class="edge-mask"
     :class="{ ...classes, [`style-${props.skin ?? 'default'}`]: true }">
-    <div class="main center">
+    <div class="main center" :class="align">
       <WidgetCard class="main-card">
+        <p class="primary">Боёв:
+          <span class="accent number bold">
+            <TweenValue :value="battles" />
+          </span>
+        </p>
 
-        <div class="main" :class="align">
-          <p class="primary">Боёв:
-            <span class="accent number bold">
-              <TweenValue :value="battles" />
-            </span>
-          </p>
+        <p class="primary">Побед:
+          <span class="accent number bold">
+            <TweenValue :value="wins" />
+          </span>
+        </p>
 
-          <p class="primary">Побед:
-            <span class="accent number bold">
-              <TweenValue :value="wins" />
-            </span>
-          </p>
-
-
-          <p class="primary" v-if="showLosses !== false">Поражений:
-            <span class="accent number bold">
-              <TweenValue :value="loses" />
-            </span>
-          </p>
-        </div>
+        <p class="primary" v-if="showLosses !== false">Поражений:
+          <span class="accent number bold">
+            <TweenValue :value="loses" />
+          </span>
+        </p>
       </WidgetCard>
     </div>
   </InsetsWrapper>
@@ -52,11 +48,15 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
 .main {
-  font-size: 1.65em;
+  font-size: 2.5em;
   line-height: 1.2;
 
   .accent {
     font-size: 1.1em;
+  }
+
+  .main-card {
+    padding: 0.5em;
   }
 }
 
@@ -79,12 +79,11 @@ const props = defineProps<{
       z-index: -1;
       content: '';
       background: radial-gradient(ellipse closest-corner, rgb(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 100%);
-      opacity: 0.25;
+      opacity: 0.35;
       position: absolute;
-      inset: 0.2em;
+      inset: 0;
 
-      border-radius: 1em;
-      filter: blur(1em);
+      filter: blur(0.8em);
     }
 
     .card {

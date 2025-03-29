@@ -63,10 +63,9 @@ const props = defineProps<{
       background: radial-gradient(ellipse closest-corner, rgb(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 80%);
       opacity: 0.35;
       position: absolute;
-      inset: 0.2em;
+      inset: 0;
 
-      border-radius: 1em;
-      filter: blur(1em);
+      filter: blur(0.8em);
     }
 
     .card {

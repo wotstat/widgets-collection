@@ -7,16 +7,14 @@
     :class="{ ...classes, [`style-${props.skin ?? 'default'}`]: true }">
     <div class="main center">
       <WidgetCard class="main-card">
-        <div class="main center">
-          <p class="primary" v-if="title">Боёв:
-            <span class="accent number bold">
-              <ReuseTemplate />
-            </span>
-          </p>
-          <p class="accent number bold big" v-else>
+        <p class="primary" v-if="title">Боёв:
+          <span class="accent number bold">
             <ReuseTemplate />
-          </p>
-        </div>
+          </span>
+        </p>
+        <p class="accent number bold big" v-else>
+          <ReuseTemplate />
+        </p>
       </WidgetCard>
     </div>
   </InsetsWrapper>
@@ -45,7 +43,7 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
 .main {
-  font-size: 1.8em;
+  font-size: 3em;
   line-height: 1.2;
 
   .accent {
@@ -84,10 +82,9 @@ const props = defineProps<{
       background: radial-gradient(ellipse closest-corner, rgb(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 80%);
       opacity: 0.35;
       position: absolute;
-      inset: 0.2em;
+      inset: 0;
 
-      border-radius: 1em;
-      filter: blur(1em);
+      filter: blur(0.8em);
     }
 
     .card {
