@@ -1,5 +1,5 @@
 <template>
-  <div class="main preview-drop-shadow" :class="{ [`style-${props.skin ?? 'default'}`]: true }">
+  <div class="main preview-drop-shadow" :class="{ ...classes, [`style-${props.skin ?? 'default'}`]: true }">
     <svg viewBox="0 0 100 100">
       <circle class="main-circle " cx="50%" cy="50%" r="49.75%" :class="showCircle ? 'stroke' : ''" />
       <line x1="45%" y1="50%" x2="55%" y2="50%" v-if="showCenter" />
@@ -22,7 +22,9 @@
 
 
 <script setup lang="ts">
+import { useStateClass } from '@/composition/utils/useStateClass';
 
+const classes = useStateClass()
 const props = defineProps<{
   values: { r: number; theta: number }[]
   showCircle?: boolean
@@ -121,6 +123,12 @@ function polarToDec(value: { r: number; theta: number }) {
 
 .style-transparent {
 
+  border: max(1px, 0.03em) solid rgba(255, 255, 255, 0.05);
+
+  &.is-in-mini-preview {
+    border: max(0.5px, 0.01em) solid rgba(255, 255, 255, 0.05);
+  }
+
   &::before {
     z-index: -1;
     content: '';
@@ -132,8 +140,6 @@ function polarToDec(value: { r: number; theta: number }) {
     border-radius: 50%;
     filter: blur(1em);
     overflow: hidden;
-
-    border: max(0.5px, 0.03em) solid rgba(255, 255, 255, 0.25);
   }
 
   border-radius: 50%;
@@ -143,6 +149,7 @@ function polarToDec(value: { r: number; theta: number }) {
     .main-circle {
       fill: transparent;
     }
+
 
   }
 }
