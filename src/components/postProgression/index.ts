@@ -107,7 +107,13 @@ const iconByName = {
   'role_SPG_pair_5_1': 'increasedThickness',
   'role_SPG_pair_1_1': 'improvedChassisStability',
   'role_SPG_pair_4_2': 'improvedScope',
-  'role_SPG_pair_4_1': 'improvedGunBreech'
+  'role_SPG_pair_4_1': 'improvedGunBreech',
+  'role_HT_flame_pair_2_1': 'reinforcedInteriorModules',
+  'role_HT_flame_pair_2_2': 'betterFriction',
+  'role_HT_flame_pair_4_1': 'improvedSpallingResistance',
+  'role_HT_flame_pair_4_2': 'increasedThickness',
+  'role_HT_flame_pair_5_1': 'improvedObservationDevice',
+  'role_HT_flame_pair_5_2': 'improvedEnginePower'
 }
 
 type Glob = { default: string }
