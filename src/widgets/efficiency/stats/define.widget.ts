@@ -60,7 +60,7 @@ export default defineWidget({
   description: "Отображает расширенную эффективность в бою. Настройте под себя до 8 параметров из 18 доступных",
   i18n,
   params: [
-    'accentColorParam',
+    { type: 'accentColorParam' },
     { type: 'select', target: 'solo-align', label: 'Выравнивание', variants: [{ value: 'left', label: 'Слева' }, { value: 'right', label: 'Справа' }], default: 'left' },
     { type: 'checkbox', target: 'anim', label: 'Анимация', default: true },
     {

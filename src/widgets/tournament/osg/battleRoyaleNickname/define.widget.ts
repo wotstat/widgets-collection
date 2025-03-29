@@ -6,8 +6,8 @@ export default defineWidget({
   widget: '../battleRoyale/Index.vue',
   preview: '../battleRoyale/Preview.vue',
   params: [
-    'accentColorParam',
-    'backgroundColorParam',
+    { type: 'accentColorParam' },
+    { type: 'backgroundColorParam' },
     { type: 'checkbox', target: 'hideL1', label: 'Скрыть заголовок', default: false },
     { type: 'checkbox', target: 'hideL2', label: 'Скрыть таблицу', default: false },
     { type: 'checkbox', target: 'hideL3', label: 'Скрыть график', default: false },

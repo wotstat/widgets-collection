@@ -28,7 +28,7 @@ export default defineWidget({
     { type: 'checkbox', target: 'hide-l1', label: 'Скрыть коробки', default: false },
     { type: 'checkbox', target: 'hide-l2', label: 'Скрыть ресурсы', default: false },
     { type: 'checkbox', target: 'hide-l3', label: 'Скрыть танки', default: false },
-    'separator',
+    { type: 'separator' },
     {
       type: 'select', target: 'delay', label: 'Задержка', variants: [
         { value: 'disable', label: 'отключена' },

@@ -1,22 +1,26 @@
 <template>
-  <WidgetCardWrapper auto-height auto-scale>
-    <Content :value="startFrom + battleCount" :title />
-  </WidgetCardWrapper>
+  <WidgetRoot autoScale autoHeight>
+    <WidgetStatusWrapper>
+      <Content :value="startFrom + battleCount" :title :skin="skin" />
+    </WidgetStatusWrapper>
+  </WidgetRoot>
 </template>
 
 
 <script setup lang="ts">
+import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import { computed, watch } from 'vue';
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { watch } from 'vue';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 
 
-const { title, startFrom } = useQueryParams({
+const { title, startFrom, skin } = useQueryParams({
   title: Boolean,
   startFrom: { type: Number, default: 0 },
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
 const { sdk } = useWidgetSdk();

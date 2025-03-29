@@ -25,14 +25,14 @@ export default defineWidget({
   description: "Виджет отображает прогресс в турнире Gendarme VS FV4005 - Выбери Своего Бойца!",
   params: [
     {
-      type: 'select', target: 'skin', label: 'Стиль', variants: [
+      type: 'select', target: 'skin', label: 'shared:style:title', variants: [
         { value: 'default', label: 'Стандартный' },
-        { value: 'transparent', label: 'Прозрачный' },
+        { value: 'transparent', label: 'shared:style:transparent' },
         { value: 'replay', label: 'Название реплеев' },
       ], default: 'transparent'
     },
-    'accentColorParam',
-    'backgroundColorParam',
+    { type: 'accentColorParam' },
+    { type: 'backgroundColorParam' },
     { type: 'checkbox', target: 'hideL1', label: 'Скрыть заголовок', default: false },
     { type: 'checkbox', target: 'hideL2', label: 'Скрыть таблицу', default: false },
     { type: 'checkbox', target: 'hideL3', label: 'Скрыть график', default: false },

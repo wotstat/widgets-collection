@@ -103,12 +103,12 @@ const canReset = computed(() => {
     const element = currentOptions.value.options.params[i];
     const settings = settingsValues.value[i]
 
-    if (element == 'accentColorParam' && accent.value != defaultAccent) return true
-    if (element == 'backgroundColorParam' && background.value != defaultBackground) return true
+    if (element.type == 'accentColorParam' && accent.value != defaultAccent) return true
+    if (element.type == 'backgroundColorParam' && background.value != defaultBackground) return true
 
-    if (element == 'accentColorParam') continue
-    if (element == 'backgroundColorParam') continue
-    if (element == 'separator') continue
+    if (element.type == 'accentColorParam') continue
+    if (element.type == 'backgroundColorParam') continue
+    if (element.type == 'separator') continue
 
     if (!settings) continue
     if (element.default === undefined) continue
@@ -128,9 +128,9 @@ function resetToDefault() {
   if (!currentOptions.value) return
 
   currentOptions.value.options.params.forEach((v, i) => {
-    if (v == 'accentColorParam') return accent.value = defaultAccent
-    if (v == 'backgroundColorParam') return background.value = defaultBackground
-    if (v == 'separator') return
+    if (v.type == 'accentColorParam') return accent.value = defaultAccent
+    if (v.type == 'backgroundColorParam') return background.value = defaultBackground
+    if (v.type == 'separator') return
 
     if (!settingsValues.value) return
     if (!settingsValues.value[i].value) return
@@ -169,13 +169,13 @@ const settingsValues = computedWithControl(currentOptions, () => {
     const i18n = currentOptions.value?.options.i18n?.['ru'] ?? {}
     const t = (key: string) => key in i18n ? i18n[key] : key
 
-    if (param == 'accentColorParam')
-      return { value: accent, target: 'accent', component: defineComponent(() => () => h(Color, { label: 'Акцент', ...vModel(accent) })) }
+    if (param.type == 'accentColorParam')
+      return { value: accent, target: 'accent', component: defineComponent(() => () => renderIfVisible(param, h(Color, { label: 'Акцент', ...vModel(accent) }))) }
 
-    if (param == 'backgroundColorParam')
-      return { value: background, target: 'background', component: defineComponent(() => () => h(Color, { label: 'Фон', ...vModel(background) })) }
+    if (param.type == 'backgroundColorParam')
+      return { value: background, target: 'background', component: defineComponent(() => () => renderIfVisible(param, h(Color, { label: 'Фон', ...vModel(background) }))) }
 
-    if (param == 'separator')
+    if (param.type == 'separator')
       return { component: h('hr') }
 
     if (param.type == 'checkbox') {

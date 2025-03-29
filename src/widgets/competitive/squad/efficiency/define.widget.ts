@@ -55,7 +55,8 @@ export default defineWidget({
   description: "Отображает эффективность ваших совзводных в бою",
   i18n,
   params: [
-    'accentColorParam',
+    { type: 'accentColorParam' },
+    { type: 'backgroundColorParam' },
     { type: 'checkbox', target: 'anim', label: 'Анимация', default: true },
     {
       type: 'multi-slot', target: 'slots', label: 'Слоты', min: 1, max: 10,

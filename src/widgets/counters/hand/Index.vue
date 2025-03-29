@@ -1,20 +1,24 @@
 <template>
-  <WidgetCardWrapper auto-height auto-scale>
-    <Content :value="startFrom + count" />
-  </WidgetCardWrapper>
+  <WidgetRoot autoScale autoHeight>
+    <WidgetStatusWrapper>
+      <Content :value="startFrom + count" :skin="skin" />
+    </WidgetStatusWrapper>
+  </WidgetRoot>
 </template>
 
 
 <script setup lang="ts">
+import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { watch } from 'vue';
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
-import { NumberDefault, useQueryParams } from '@/composition/useQueryParams';
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 
-const { startFrom } = useQueryParams({
-  startFrom: NumberDefault()
+const { startFrom, skin } = useQueryParams({
+  startFrom: NumberDefault(),
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
 const { sdk } = useWidgetSdk();

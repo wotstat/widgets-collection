@@ -60,8 +60,8 @@ export default defineWidget({
   name: "Лучшие в Стальном Охотнике",
   description: "Позволяет соревноваться по максимальным показателям в Стальном Охотнике",
   params: [
-    'accentColorParam',
-    'backgroundColorParam',
+    { type: 'accentColorParam' },
+    { type: 'backgroundColorParam' },
     { type: 'checkbox', target: 'allow-squad', label: 'Учитывать взводы', default: false },
     { type: 'select', target: 'slot-1', label: 'Слот 1', variants: slotVariants, default: 'dmg-avg' },
     { type: 'select', target: 'slot-2', label: 'Слот 2', variants: slotVariants, default: 'frags-avg' },

@@ -7,6 +7,18 @@ interface BaseParam {
   visible?: boolean | ((params: Record<string, any>) => boolean)
 }
 
+export interface AccentColorParam extends BaseParam {
+  type: 'accentColorParam'
+}
+
+export interface BackgroundColorParam extends BaseParam {
+  type: 'backgroundColorParam'
+}
+
+export interface SeparatorParam extends BaseParam {
+  type: 'separator'
+}
+
 export interface CheckboxParam extends BaseParam {
   type: 'checkbox'
   target: string
@@ -66,10 +78,6 @@ export interface MultiSlotParam extends BaseParam {
   slots: MultiSlotParamSlot[]
   default: string[]
 }
-
-export type AccentColorParam = 'accentColorParam'
-export type BackgroundColorParam = 'backgroundColorParam'
-export type SeparatorParam = 'separator'
 
 export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam
 

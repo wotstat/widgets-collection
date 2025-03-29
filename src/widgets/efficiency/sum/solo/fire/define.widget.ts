@@ -5,13 +5,13 @@ export default defineWidget({
   description: "Отображает сумму урона пожаром",
   params: [
     {
-      type: 'select', target: 'skin', label: 'Стиль', variants: [
-        { value: 'transparent', label: 'Прозрачный' },
-        { value: 'default', label: 'Классический' },
+      type: 'select', target: 'skin', label: 'shared:style:title', variants: [
+        { value: 'transparent', label: 'shared:style:transparent' },
+        { value: 'default', label: 'shared:style:default' },
       ], default: 'transparent'
     },
-    'accentColorParam',
-    'backgroundColorParam',
+    { type: 'accentColorParam' },
+    { type: 'backgroundColorParam', visible: ctx => ctx['skin'] == 'default' },
     { type: 'checkbox', target: 'title', label: 'Заголовок', default: true },
     { type: 'checkbox', target: 'reverse', label: 'Обратный отсчёт', default: false },
     { type: 'int', target: 'start-from', label: 'Начать с', default: 0 },

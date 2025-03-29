@@ -26,6 +26,6 @@ export default defineWidget({
   name: "Debug мета-тегов",
   description: "Этот виджет позволяет проверить взаимодействие виджета с модом",
   params: [
-    'backgroundColorParam',
+    { type: 'backgroundColorParam' },
   ]
 })

@@ -1,23 +1,28 @@
 <template>
-  <WidgetCardWrapper auto-height auto-scale>
-    <Content :showLosses :align :battles="counter.battles" :wins="counter.wins" :loses="counter.losses" />
-  </WidgetCardWrapper>
+  <WidgetRoot autoScale autoHeight>
+    <WidgetStatusWrapper>
+      <Content :showLosses :align :battles="counter.battles" :wins="counter.wins" :loses="counter.losses"
+        :skin="skin" />
+    </WidgetStatusWrapper>
+  </WidgetRoot>
 </template>
 
 
 <script setup lang="ts">
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import { computed, watch } from 'vue';
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
+import { watch } from 'vue';
 import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useBattleResult } from '@/composition/useOnBattleResult';
+import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 
-const { align, showLosses, battleOnResult } = useQueryParams({
+const { align, showLosses, battleOnResult, skin } = useQueryParams({
   align: oneOf(['left', 'center', 'right'] as const, 'center'),
   showLosses: Boolean,
   battleOnResult: Boolean,
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
 const { sdk } = useWidgetSdk();

@@ -1,21 +1,25 @@
 <template>
-  <WidgetCardWrapper auto-height auto-scale>
-    <Content :title :percent :total :miss />
-  </WidgetCardWrapper>
+  <WidgetRoot autoScale autoHeight>
+    <WidgetStatusWrapper>
+      <Content :title :percent :total :miss :skin />
+    </WidgetStatusWrapper>
+  </WidgetRoot>
 </template>
 
 
 <script setup lang="ts">
+import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { BallisticCalculator } from '../ballisticCalc';
 
-const { title, percent } = useQueryParams({
+const { title, percent, skin } = useQueryParams({
   title: Boolean,
-  percent: Boolean
+  percent: Boolean,
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
 const total = useWidgetStorage('total', 0)
