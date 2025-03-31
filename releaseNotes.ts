@@ -103,7 +103,7 @@ export const releaseNotes: ReleaseNote[] = [
   },
   {
     id: '2025-03-31-bongo',
-    ru: `• Новый виджет ${Utils.addWidget('https://wotstat.info/session/widgets/meme/bongo-cat', 'Bongo Cat')}. Поселите в ангар милого котика!`
+    ru: `• Новый виджет ${Utils.addWidget('https://widgets.wotstat.info/meme/bongo-cat', 'Bongo Cat')}. Поселите в ангар милого котика!`
   },
 ]
 
