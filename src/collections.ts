@@ -5,6 +5,7 @@ export const collections = [
       '/efficiency/comp7',
       '/nidin/equipments',
       '/competitive/squad/efficiency',
+      '/meme/bongo-cat',
     ]
   },
   {
@@ -44,6 +45,12 @@ export const collections = [
       '/efficiency/sum/solo/frags',
       '/efficiency/sum/solo/fire',
       '/efficiency/sum/solo/ramming',
+    ]
+  },
+  {
+    name: 'Мемы',
+    widgets: [
+      '/meme/bongo-cat',
     ]
   },
   {
