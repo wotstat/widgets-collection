@@ -101,6 +101,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2024-12-17-comp7',
     ru: `• Новый виджет ${Utils.openUrl('https://wotstat.info/session/widgets/efficiency/comp7', 'прогрессия Натиска')} для Лесты. Отображает текущий ранг и результаты нескольких прошлых боёв. Есть два стиля.`
   },
+  {
+    id: '2025-03-31-bongo',
+    ru: `• Новый виджет ${Utils.addWidget('https://wotstat.info/session/widgets/meme/bongo-cat', 'Bongo Cat')}. Поселите в ангар милого котика!`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {

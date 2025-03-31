@@ -69,14 +69,14 @@
           transform="rotate(16.603 51.849 62.64)" />
         <g class="mouth">
           <path stroke="#000" stroke-linecap="round" stroke-width="2"
-            d="M67.356 64.407c.047-3.642 2.263-6.081 4.697-6.125 2.806-.05 4.31 3.648 4.12 7.392-.192 3.744-8.864 2.375-8.817-1.267Z"
+            d="M67.858 63.112c-.219-3.636 1.814-6.23 4.239-6.45 2.795-.254 4.564 3.325 4.646 7.073.081 3.748-8.667 3.013-8.885-.623Z"
             class="o" />
           <path stroke="#000" stroke-linecap="round" stroke-width="2"
-            d="m70.046 60.822 3.451 3.958m-3.936-.562 4.421-2.834" class="x" />
-          <ellipse cx="72.343" cy="64.243" fill="#000" class="dot" rx="3.308" ry="2.757"
-            transform="rotate(9.551 72.343 64.243)" />
+            d="m70.742 59.263 3.73 3.696m-3.967-.274 4.203-3.148" class="x" />
+          <ellipse cx="72.316" cy="60.95" fill="#000" class="dot" rx="3.308" ry="2.757"
+            transform="rotate(5.382 72.316 60.95)" />
           <path stroke="#000" stroke-linecap="round" stroke-width="2"
-            d="M64.352 59.95s1.124 2.646 3.123 2.95c1.998.302 3.926-1.612 4.366-1.55.44.064 1.479 2.08 3.294 2.392 1.816.313 2.513 0 4.546-1.718"
+            d="M66.025 59.907s1.084 1.206 2.727 1.289c1.644.083 3.089-.87 3.45-.854.362.017 1.336.93 2.832 1.023 1.496.093 2.042-.074 3.585-.939"
             class="normal" />
         </g>
         <g class="eyes">
@@ -86,8 +86,8 @@
             class="r-x" />
           <path stroke="#000" stroke-linecap="round" stroke-width="2" d="m57.246 55.089 4.823.61" class="l-close" />
           <path stroke="#000" stroke-linecap="round" stroke-width="2" d="m82.899 57.589 4.925.612" class="r-close" />
-          <circle cx="85.362" cy="57.895" r="3.374" fill="#000" class="r-normal" />
-          <circle cx="59.658" cy="55.393" r="3.374" fill="#000" class="l-normal" />
+          <circle cx="85.345" cy="58.229" r="3" fill="#000" class="r-normal" />
+          <circle cx="59.641" cy="55.728" r="3" fill="#000" class="l-normal" />
         </g>
       </g>
       <g class="under-legs">
