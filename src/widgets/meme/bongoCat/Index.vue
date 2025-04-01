@@ -134,8 +134,6 @@ watch(isKilled, (killed) => {
 
 let blinkTimer: ReturnType<typeof setTimeout> | null = null
 async function blink() {
-  console.log('bongo cat blink');
-
   leftBlink.value = true
   rightBlink.value = true
   await new Promise(resolve => setTimeout(resolve, 200))
