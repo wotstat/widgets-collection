@@ -1,15 +1,12 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper>
-      <Content :title :percent :total :miss :skin />
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+  <WidgetWrapper autoScale autoHeight>
+    <Content :title :percent :total :miss :skin />
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { oneOf, useQueryParams } from '@/composition/useQueryParams';

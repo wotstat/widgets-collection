@@ -1,19 +1,16 @@
 <template>
-  <WidgetRoot auto-height auto-scale hangar-only>
-    <WidgetStatusWrapper>
-      <Content :hd :showTankName :postProgression :postProgressionCurrent :variant :tank-name="tankName" :sets
-        :postProgressionSetup />
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+  <WidgetWrapper auto-height auto-scale hangar-only>
+    <Content :hd :showTankName :postProgression :postProgressionCurrent :variant :tank-name="tankName" :sets
+      :postProgressionSetup />
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed } from 'vue';
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { NidinTankEquipment, NidinTankModifications } from '../api';
 import { useFetch } from '@vueuse/core';

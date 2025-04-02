@@ -1,7 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.45">
     <Content :background="[]" :under-leg="[]" :left-eye="'normal'" :right-eye="'normal'" :mouth="'normal'" :left="left"
-      :right="right" :flipX :flipY />
+      :right="right" :flipX="flipX ?? false" :flipY="flipY ?? false" />
   </WidgetPreviewRoot>
 </template>
 
@@ -15,8 +15,8 @@ import { useEventListener } from '@vueuse/core';
 
 const props = defineProps<{
   isMiniPreview: boolean
-  flipX: boolean
-  flipY: boolean
+  flipX?: boolean
+  flipY?: boolean
 }>();
 
 const left = ref<'up' | 'down'>('up');

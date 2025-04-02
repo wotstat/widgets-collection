@@ -1,104 +1,100 @@
 <template>
-  <WidgetRoot auto-scale auto-height>
-    <WidgetStatusWrapper>
-      <WidgetCard>
-        <Game v-bind="gameProps" :collapse-keys="['game', ['KEY_H', 'KEY_1'], ['KEY_H', 'KEY_1']]" />
-      </WidgetCard>
+  <WidgetWrapper auto-scale auto-height>
+    <WidgetCard>
+      <Game v-bind="gameProps" :collapse-keys="['game', ['KEY_H', 'KEY_1'], ['KEY_H', 'KEY_1']]" />
+    </WidgetCard>
 
-      <template v-if="isInHangar">
-        <div class="spacer"></div>
-        <WidgetCard>
-          <Player v-bind="playerProps" :collapse-keys="['player', ['KEY_H', 'KEY_2'], null]" />
-        </WidgetCard>
-
-        <div class="spacer"></div>
-        <WidgetCard>
-          <Account v-bind="accountProps" :collapse-keys="['account', ['KEY_H', 'KEY_3'], null]" />
-        </WidgetCard>
-
-        <div class="spacer"></div>
-        <WidgetCard>
-          <Hangar v-bind="hangarProps" :collapse-keys="['hangar', ['KEY_H', 'KEY_4'], null]" />
-        </WidgetCard>
-      </template>
-
+    <template v-if="isInHangar">
       <div class="spacer"></div>
       <WidgetCard>
-        <Platoon v-bind="platoonProps" :collapse-keys="['platoon', ['KEY_H', 'KEY_5'], ['KEY_H', 'KEY_2']]" />
+        <Player v-bind="playerProps" :collapse-keys="['player', ['KEY_H', 'KEY_2'], null]" />
       </WidgetCard>
 
       <div class="spacer"></div>
       <WidgetCard>
-        <Dossier v-bind="dossier" :collapse-keys="['dossier', ['KEY_H', 'KEY_6'], ['KEY_H', 'KEY_3']]" />
+        <Account v-bind="accountProps" :collapse-keys="['account', ['KEY_H', 'KEY_3'], null]" />
       </WidgetCard>
 
-      <template v-if="isInHangar">
-        <div class="spacer"></div>
-        <WidgetCard>
-          <HangarTank v-bind="hangarTankProps" :collapse-keys="['hangar-tank', ['KEY_H', 'KEY_7'], null]" />
-        </WidgetCard>
-      </template>
+      <div class="spacer"></div>
+      <WidgetCard>
+        <Hangar v-bind="hangarProps" :collapse-keys="['hangar', ['KEY_H', 'KEY_4'], null]" />
+      </WidgetCard>
+    </template>
 
-      <template v-if="isInBattle">
-        <div class="spacer"></div>
+    <div class="spacer"></div>
+    <WidgetCard>
+      <Platoon v-bind="platoonProps" :collapse-keys="['platoon', ['KEY_H', 'KEY_5'], ['KEY_H', 'KEY_2']]" />
+    </WidgetCard>
 
-        <WidgetCard>
-          <Battle v-bind="battleProps" :collapse-keys="['battle', null, ['KEY_H', 'KEY_4']]" />
-        </WidgetCard>
+    <div class="spacer"></div>
+    <WidgetCard>
+      <Dossier v-bind="dossier" :collapse-keys="['dossier', ['KEY_H', 'KEY_6'], ['KEY_H', 'KEY_3']]" />
+    </WidgetCard>
 
-        <div class="spacer"></div>
+    <template v-if="isInHangar">
+      <div class="spacer"></div>
+      <WidgetCard>
+        <HangarTank v-bind="hangarTankProps" :collapse-keys="['hangar-tank', ['KEY_H', 'KEY_7'], null]" />
+      </WidgetCard>
+    </template>
 
-        <WidgetCard>
-          <Aiming v-bind="aimingProps" :collapse-keys="['aiming', null, ['KEY_H', 'KEY_5']]" />
-        </WidgetCard>
+    <template v-if="isInBattle">
+      <div class="spacer"></div>
 
-        <div class="spacer"></div>
-
-        <WidgetCard>
-          <BattleTank v-bind="battleTankProps" :collapse-keys="['battle-tank', null, ['KEY_H', 'KEY_6']]" />
-        </WidgetCard>
-
-        <div class="spacer"></div>
-
-        <WidgetCard>
-          <Efficiency v-bind="efficiencyProps" :collapse-keys="['efficiency', null, ['KEY_H', 'KEY_7']]" />
-        </WidgetCard>
-
-        <div class="spacer"></div>
-
-        <WidgetCard>
-          <DamageLog v-bind="damageLogProps" :collapse-keys="['damage-log', null, ['KEY_H', 'KEY_8']]" />
-        </WidgetCard>
-
-        <div class="spacer"></div>
-
-        <WidgetCard>
-          <FeedbackLog :feedbacks="feedbacks" :collapse-keys="['feedback-log', null, ['KEY_H', 'KEY_9']]" />
-        </WidgetCard>
-
-        <div class="spacer"></div>
-
-        <WidgetCard v-if="battleBases">
-          <Bases v-bind="basesProps" :collapse-keys="['bases', null, ['KEY_H', 'KEY_0']]" />
-        </WidgetCard>
-      </template>
+      <WidgetCard>
+        <Battle v-bind="battleProps" :collapse-keys="['battle', null, ['KEY_H', 'KEY_4']]" />
+      </WidgetCard>
 
       <div class="spacer"></div>
 
       <WidgetCard>
-        <Keyboard :pressed="[...pressedKeys.values()]"
-          :collapse-keys="['keyboard', ['KEY_H', 'KEY_8'], ['KEY_H', 'KEY_K']]" />
+        <Aiming v-bind="aimingProps" :collapse-keys="['aiming', null, ['KEY_H', 'KEY_5']]" />
       </WidgetCard>
 
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+      <div class="spacer"></div>
+
+      <WidgetCard>
+        <BattleTank v-bind="battleTankProps" :collapse-keys="['battle-tank', null, ['KEY_H', 'KEY_6']]" />
+      </WidgetCard>
+
+      <div class="spacer"></div>
+
+      <WidgetCard>
+        <Efficiency v-bind="efficiencyProps" :collapse-keys="['efficiency', null, ['KEY_H', 'KEY_7']]" />
+      </WidgetCard>
+
+      <div class="spacer"></div>
+
+      <WidgetCard>
+        <DamageLog v-bind="damageLogProps" :collapse-keys="['damage-log', null, ['KEY_H', 'KEY_8']]" />
+      </WidgetCard>
+
+      <div class="spacer"></div>
+
+      <WidgetCard>
+        <FeedbackLog :feedbacks="feedbacks" :collapse-keys="['feedback-log', null, ['KEY_H', 'KEY_9']]" />
+      </WidgetCard>
+
+      <div class="spacer"></div>
+
+      <WidgetCard v-if="battleBases">
+        <Bases v-bind="basesProps" :collapse-keys="['bases', null, ['KEY_H', 'KEY_0']]" />
+      </WidgetCard>
+    </template>
+
+    <div class="spacer"></div>
+
+    <WidgetCard>
+      <Keyboard :pressed="[...pressedKeys.values()]"
+        :collapse-keys="['keyboard', ['KEY_H', 'KEY_8'], ['KEY_H', 'KEY_K']]" />
+    </WidgetCard>
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
-import WidgetRoot from "@/components/WidgetRoot.vue";
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import WidgetCard from "@/components/WidgetCard.vue";
-import WidgetStatusWrapper from "@/components/WidgetStatusWrapper.vue";
 import { useWidgetSdk, useReactiveState, useReactiveTrigger, I18n } from '@/composition/widgetSdk';
 import { computed, provide, ref } from "vue";
 

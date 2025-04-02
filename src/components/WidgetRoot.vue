@@ -25,6 +25,7 @@ const props = defineProps<{
   autoScale?: boolean,
   autoHeight?: boolean
   hangarOnly?: boolean
+  battleOnly?: boolean
 }>()
 
 onMounted(() => {

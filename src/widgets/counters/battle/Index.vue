@@ -1,15 +1,12 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper>
-      <Content :value="startFrom + battleCount" :title :skin="skin" />
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+  <WidgetWrapper autoScale autoHeight>
+    <Content :value="startFrom + battleCount" :title :skin="skin" />
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { watch } from 'vue';

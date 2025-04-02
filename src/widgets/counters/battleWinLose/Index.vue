@@ -1,22 +1,18 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper>
-      <Content :showLosses :align :battles="counter.battles" :wins="counter.wins" :loses="counter.losses"
-        :skin="skin" />
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+  <WidgetWrapper autoScale autoHeight>
+    <Content :showLosses :align :battles="counter.battles" :wins="counter.wins" :loses="counter.losses" :skin="skin" />
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { watch } from 'vue';
 import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { useBattleResult } from '@/composition/useOnBattleResult';
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 
 const { align, showLosses, battleOnResult, skin } = useQueryParams({
   align: oneOf(['left', 'center', 'right'] as const, 'center'),

@@ -1,16 +1,13 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper>
-      <Content :background :underLeg :leftEye :rightEye :mouth :left="leftThrottled" :right="rightThrottled" :flipX
-        :flipY />
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+  <WidgetWrapper autoScale autoHeight>
+    <Content :background :underLeg :leftEye :rightEye :mouth :left="leftThrottled" :right="rightThrottled" :flipX
+      :flipY />
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';

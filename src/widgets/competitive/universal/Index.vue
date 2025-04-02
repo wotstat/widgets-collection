@@ -1,17 +1,14 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper>
-      <Content :slots="query.slots" :skin="query.skin" :data="target" :total="query.total ? total : undefined" />
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+  <WidgetWrapper autoScale autoHeight>
+    <Content :slots="query.slots" :skin="query.skin" :data="target" :total="query.total ? total : undefined" />
+  </WidgetWrapper>
 </template>
 
 
 <script setup lang="ts">
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import Content from './Content.vue';
 import { arrayOfOneOf, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { possibleSlots, Props, variants } from './define.widget';
 import { AggregatorResult, toIconType, totalAggregator, useBattleHistoryAggregator } from '@/composition/shared/useBattleHistoryAggregator';
 import { computed, watch } from 'vue';

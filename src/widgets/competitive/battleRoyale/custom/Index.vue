@@ -1,10 +1,8 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
-    <WidgetStatusWrapper>
-      <Content :lines="lines" :slot1="query.slot1" :slot2="query.slot2" :slot3="query.slot3" :slot4="query.slot4"
-        :slot5="query.slot5" />
-    </WidgetStatusWrapper>
-  </WidgetRoot>
+  <WidgetWrapper autoScale autoHeight>
+    <Content :lines="lines" :slot1="query.slot1" :slot2="query.slot2" :slot3="query.slot3" :slot4="query.slot4"
+      :slot5="query.slot5" />
+  </WidgetWrapper>
 </template>
 
 
@@ -19,9 +17,8 @@ import { useWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { v4 as uuidv4 } from "uuid";
 import { useBattleResult } from '@/composition/useOnBattleResult';
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
 import { Line, slotValues } from './define.widget';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
 
 
 const checkIsTop = (rank: number | null) => rank !== null && rank == 1
