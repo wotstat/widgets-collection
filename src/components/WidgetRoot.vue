@@ -20,7 +20,7 @@ import { isInit as isMetrikaInit, metrikaId } from '@/composition/ym/metrika';
 import { onMounted, provide, ref, watch } from 'vue';
 import { onClickOutside } from '@vueuse/core'
 import { isInWidgetMod as isInWidgetModKey, obsStudioVersion } from '@/utils/provides';
-import { useIsInWidgetMod } from '@/composition/utils/useisInWidgetMod';
+import { useIsInWidgetMod } from '@/composition/utils/useIsInWidgetMod';
 
 const props = defineProps<{
   autoScale?: boolean,
