@@ -1,6 +1,6 @@
 <template>
   <WidgetRoot :autoScale :autoHeight :hangarOnly>
-    <WidgetStatusWrapper :requiredExtensions>
+    <WidgetStatusWrapper :requiredExtensions :battleOnly :hideSlotOnWarning>
       <slot></slot>
     </WidgetStatusWrapper>
   </WidgetRoot>
@@ -15,7 +15,9 @@ const props = defineProps<{
   autoScale?: boolean,
   autoHeight?: boolean,
   hangarOnly?: boolean,
+  battleOnly?: boolean,
   requiredExtensions?: string[]
+  hideSlotOnWarning?: boolean
 }>()
 </script>
 

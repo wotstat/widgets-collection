@@ -13,6 +13,7 @@ export const collections = [
     widgets: [
       '/shooting/hit-points',
       '/shooting/out',
+      '/shooting/reduction-info'
     ]
   },
   {

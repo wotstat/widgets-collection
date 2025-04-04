@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 110">
+  <g class="reduction-info-new-bar">
+    <rect width="16" height="110" fill="#000" fill-opacity=".21" class="Rectangle 48" rx="2"/>
+    <g fill="#fff" fill-opacity=".07" class="Frame 8">
+      <rect width="13" height="3.5" x="1.5" y="1.5" class="Rectangle 49" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="6" class="Rectangle 52" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="10.5" class="Rectangle 53" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="15" class="Rectangle 54" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="19.5" class="Rectangle 55" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="24" class="Rectangle 56" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="28.5" class="Rectangle 57" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="33" class="Rectangle 58" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="37.5" class="Rectangle 59" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="42" class="Rectangle 60" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="46.5" class="Rectangle 61" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="51" class="Rectangle 62" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="55.5" class="Rectangle 63" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="60" class="Rectangle 50" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="64.5" class="Rectangle 51" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="69" class="Rectangle 64" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="73.5" class="Rectangle 65" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="78" class="Rectangle 66" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="82.5" class="Rectangle 67" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="87" class="Rectangle 68" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="91.5" class="Rectangle 69" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="96" class="Rectangle 70" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="100.5" class="Rectangle 71" rx="1"/>
+      <rect width="13" height="3.5" x="1.5" y="105" class="Rectangle 72" rx="1"/>
+    </g>
+  </g>
+</svg>

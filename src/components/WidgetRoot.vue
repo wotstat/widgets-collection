@@ -19,13 +19,13 @@ import { useReactiveState, useWidgetSdk, WidgetMetaTags } from '@/composition/wi
 import { isInit as isMetrikaInit, metrikaId } from '@/composition/ym/metrika';
 import { onMounted, provide, ref, watch } from 'vue';
 import { onClickOutside } from '@vueuse/core'
-import { obsStudioVersion } from '@/utils/provides';
+import { isInWidgetMod as isInWidgetModKey, obsStudioVersion } from '@/utils/provides';
+import { useIsInWidgetMod } from '@/composition/utils/useisInWidgetMod';
 
 const props = defineProps<{
   autoScale?: boolean,
   autoHeight?: boolean
   hangarOnly?: boolean
-  battleOnly?: boolean
 }>()
 
 onMounted(() => {
@@ -33,7 +33,10 @@ onMounted(() => {
   if (props.hangarOnly) WidgetMetaTags.setHangarOnly(props.hangarOnly)
 })
 
+const isInWidgetMod = useIsInWidgetMod()
+
 provide(obsStudioVersion, (window as any).obsstudio?.pluginVersion)
+provide(isInWidgetModKey, isInWidgetMod)
 
 const { sdk } = useWidgetSdk()
 

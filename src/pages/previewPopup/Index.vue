@@ -176,7 +176,7 @@ const settingsValues = computedWithControl(currentOptions, () => {
       return { value: background, target: 'background', component: defineComponent(() => () => renderIfVisible(param, h(Color, { label: 'Фон', ...vModel(background) }))) }
 
     if (param.type == 'separator')
-      return { component: h('hr') }
+      return { component: defineComponent(() => () => renderIfVisible(param, h('hr'))) }
 
     if (param.type == 'checkbox') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? false)
