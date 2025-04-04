@@ -1,6 +1,6 @@
 <template>
   <div class="main preview-card wg-font number">
-    <p class="center" v-if="props.time < 0.01">СВЕДËН</p>
+    <p class="center" v-if="props.time < 0.01">{{ t('reduction:full') }}</p>
     <p class="label" v-else>
       <ForceMono :value="timeLabel.split('.')[0]" />
       <span class="dot">.</span>
@@ -14,6 +14,10 @@
 <script setup lang="ts">
 import ForceMono from '@/components/ForceMono.vue';
 import { computed } from 'vue';
+import { useI18nRef } from "@/composition/useI18n";
+import i18n from '../../i18n.json';
+
+const { t } = useI18nRef(i18n);
 
 const props = defineProps<{
   time: number,

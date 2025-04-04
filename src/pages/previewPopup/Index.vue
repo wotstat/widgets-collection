@@ -75,7 +75,8 @@ const emit = defineEmits<{
   onLoaded: [any]
 }>()
 
-provide(language, 'ru')
+const CURRENT_LANGUAGE = 'ru'
+provide(language, CURRENT_LANGUAGE)
 provide(isInPreview, true)
 
 const widgetPath = computed(() => {
@@ -166,7 +167,7 @@ const settingsValues = computedWithControl(currentOptions, () => {
   }
 
   return currentOptions.value.options.params.map((param) => {
-    const i18n = currentOptions.value?.options.i18n?.['ru'] ?? {}
+    const i18n = currentOptions.value?.options.i18n?.[CURRENT_LANGUAGE] ?? {}
     const t = (key: string) => key in i18n ? i18n[key] : key
 
     if (param.type == 'accentColorParam')

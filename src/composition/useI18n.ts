@@ -38,7 +38,7 @@ export function useI18nRef<L extends string, K extends string>(i18n: I18n<L, K>,
   if (previewLang) {
     const currentLocale = computed(() => getLocale(i18n, previewLang ?? fallback))
     return {
-      t: (key: K) => computed(() => currentLocale.value[key]),
+      t: (key: K) => computed(() => currentLocale.value[key] ?? key),
     }
   }
 
@@ -50,6 +50,6 @@ export function useI18nRef<L extends string, K extends string>(i18n: I18n<L, K>,
   const currentLocale = computed(() => getLocale(i18n, language.value ?? fallback))
 
   return {
-    t: (key: K) => computed(() => currentLocale.value[key]),
+    t: (key: K) => computed(() => currentLocale.value[key] ?? key),
   }
 }

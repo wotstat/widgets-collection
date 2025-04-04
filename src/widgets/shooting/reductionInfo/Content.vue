@@ -5,9 +5,9 @@
   <PercentLabel v-if="skin == 'percent'" :percent="percent" />
   <ValueLabel v-if="skin == 'tangent'" :value="tangent" />
   <Chart v-if="skin == 'chart-time'" :value="time" :history="historyTime" :default-max="7"
-    :title="displayTitle ? 'Время до полного сведения' : ''" :precision="1" :display-value="displayValue" />
+    :title="displayTitle ? t('timeToFull').value : ''" :precision="1" :display-value="displayValue" />
   <Chart v-if="skin == 'chart-tangent'" :value="tangent" :history="historyTangent" :default-max="5"
-    :title="displayTitle ? 'Разброс на 100 м.' : ''" :precision="2" :display-value="displayValue" />
+    :title="displayTitle ? t('dispersion100').value : ''" :precision="2" :display-value="displayValue" />
 
 </template>
 
@@ -20,6 +20,10 @@ import PercentLabel from './skins/percentLabel/Index.vue';
 import ValueLabel from './skins/valueLabel/Index.vue';
 import Chart from './skins/chart/Index.vue';
 import { skins } from './define.widget';
+import { useI18nRef } from '@/composition/useI18n';
+import i18n from './i18n.json';
+
+const { t } = useI18nRef(i18n);
 
 const props = defineProps<{
   percent: number,

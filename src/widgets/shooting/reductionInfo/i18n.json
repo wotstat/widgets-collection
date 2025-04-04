@@ -1,0 +1,40 @@
+{
+  "ru": {
+    "timeToFull": "Время до полного сведения",
+    "dispersion100": "Разброс на 100 м.",
+    "reduction:full": "СВЕДËН",
+    "seconds": "с",
+    "options:protanki1": "ProTanki старый",
+    "options:protanki2": "ProTanki новый",
+    "options:time": "Время",
+    "options:percent": "Процент",
+    "options:tangent": "Разброс",
+    "options:chart-time": "График времени",
+    "options:chart-tangent": "График разброса",
+    "options:source": "Источник данных",
+    "options:source:auto": "Как в игре",
+    "options:source:server": "Серверный прицел",
+    "options:source:client": "Клиентский прицел",
+    "title": "Заголовок",
+    "value": "Значение"
+  },
+  "en": {
+    "timeToFull": "Time to full aim",
+    "dispersion100": "Dispersion at 100 m.",
+    "reduction:full": "AIMED",
+    "seconds": "s",
+    "options:protanki1": "ProTanki old",
+    "options:protanki2": "ProTanki new",
+    "options:time": "Time",
+    "options:percent": "Percent",
+    "options:tangent": "Dispersion",
+    "options:chart-time": "Chart time",
+    "options:chart-tangent": "Chart dispersion",
+    "options:source": "Data source",
+    "options:source:auto": "As in game",
+    "options:source:server": "Server reticle",
+    "options:source:client": "Client reticle",
+    "title": "Title",
+    "value": "Value"
+  }
+}

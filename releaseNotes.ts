@@ -105,6 +105,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2025-03-31-bongo',
     ru: `• Новый виджет ${Utils.addWidget('https://widgets.wotstat.info/meme/bongo-cat', 'Bongo Cat')}. Поселите в ангар милого котика!`
   },
+  {
+    id: '2025-04-05-reduction',
+    ru: `• Новый виджет ${Utils.openUrl('https://wotstat.info/widgets/shooting/reduction-info', 'Индикатор сведения')}. Шесть стилей, с прогресс-баром, просто числом или графиком за 30 секунд.`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {
