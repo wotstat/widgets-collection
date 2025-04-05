@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { WidgetMetaTags } from '@/composition/widgetSdk';
 import { isInPreview } from '@/utils/provides';
-import { computed, inject, watch } from 'vue';
+import { computed, inject, onUnmounted, watch } from 'vue';
 
 const props = defineProps<{
   insets: number | { top: number, right: number, bottom: number, left: number }
@@ -52,6 +52,10 @@ const targetStyle = computed(() => {
     ...edgeMask
   }
 
+})
+
+onUnmounted(() => {
+  WidgetMetaTags.setInsets(0)
 })
 </script>
 
