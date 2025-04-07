@@ -3,8 +3,8 @@ export const collections = [
     name: 'Актуальные',
     widgets: [
       '/efficiency/comp7',
+      '/hangar/lootbox-universal',
       '/nidin/equipments',
-      '/competitive/squad/efficiency',
       '/meme/bongo-cat',
     ]
   },
@@ -22,6 +22,13 @@ export const collections = [
       '/efficiency/stats',
       '/competitive/squad/efficiency',
       '/competitive/universal',
+    ]
+  },
+  {
+    name: 'Ангарные',
+    widgets: [
+      '/nidin/equipments',
+      '/hangar/lootbox-universal'
     ]
   },
   // {
