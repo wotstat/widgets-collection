@@ -5,6 +5,14 @@ export type ContainersData = {
     tag: string,
     count: number
   }[],
+  modernizations: {
+    tag: string,
+    count: number
+  }[],
+  vehicles: {
+    tag: string,
+    isLegendary: boolean,
+  }[],
   currencies: {
     gold: number
     credits: number
@@ -12,6 +20,7 @@ export type ContainersData = {
     premium: number
     mandarins: number
     crystals: number
+    equipCoins: number
   },
 }
 
@@ -22,9 +31,9 @@ export default defineWidget({
   description: "Подводит итог выпавших ресурсов из коробок",
   params: [
     { type: 'checkbox', target: 'sync', label: 'Синхронизировать с сайтом', default: true },
-    { type: 'checkbox', target: 'hide-l1', label: 'Скрыть коробки', default: false },
-    { type: 'checkbox', target: 'hide-l2', label: 'Скрыть ресурсы', default: false },
-    { type: 'checkbox', target: 'hide-l3', label: 'Скрыть танки', default: false },
+    // { type: 'checkbox', target: 'hide-l1', label: 'Скрыть коробки', default: false },
+    // { type: 'checkbox', target: 'hide-l2', label: 'Скрыть ресурсы', default: false },
+    // { type: 'checkbox', target: 'hide-l3', label: 'Скрыть танки', default: false },
     { type: 'separator' },
     {
       type: 'select', target: 'delay', label: 'Задержка', variants: [

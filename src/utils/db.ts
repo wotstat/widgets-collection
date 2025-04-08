@@ -124,6 +124,15 @@ export function queryAsync<T>(queryString: string, { enabled = ref(true), settin
   return result
 }
 
+export function queryAsyncMap<T, R>(queryString: string, mapFn: (data: T[]) => R, { enabled = ref(true), settings = {} as ClickHouseSettings } = {}) {
+  const result = queryAsync<T>(queryString, { enabled, settings });
+
+  return computed(() => ({
+    status: result.value.status as Status,
+    data: mapFn(result.value.data)
+  }))
+}
+
 export function queryAsyncFirst<T>(queryString: string, defaultValue: T, { enabled = ref(true), settings = {} as ClickHouseSettings } = {}) {
   const result = queryAsync<T>(queryString, { enabled, settings });
 

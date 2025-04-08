@@ -1,6 +1,6 @@
 <template>
-  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="aspect">
-    <!-- <Content v-bind="targetProps" /> -->
+  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="0.74">
+    <Content :data="targetProps" />
   </WidgetPreviewRoot>
 </template>
 
@@ -10,46 +10,38 @@
 import { computed } from 'vue';
 import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import Content from './content/Index.vue';
 import { Props } from './define.widget';
 
 
 const props = defineProps<{
   isMiniPreview: boolean
-  hideL1?: boolean
-  hideL2?: boolean
-  hideL3?: boolean
 }>();
 
 
-// const targetProps = computed<Props>(() => ({
-//   opened: [],
-//   currencies: {
-//     gold: 886528,
-//     credits: 4874188,
-//     freeXP: 8899237,
-//     premium: 1873,
-//     mandarins: 89525,
-//     crystals: 123,
-//   },
-//   // tanks: [
-//   //   'ussr:R159_SU_130PM',
-//   //   'ussr:R173_K_91_2_122',
-//   //   'ussr:R115_IS-3_auto_S',
-//   //   'france:F126_Char_Lourd_AP58',
-//   // ],
-//   // hideL1: props.hideL1,
-//   // hideL2: props.hideL2,
-//   // hideL3: props.isMiniPreview || props.hideL3,
-// }))
-
-const aspect = computed(() => {
-  if (props.hideL1) return props.hideL2 ? 3.5 : 0.78;
-  if (props.hideL2) return props.isMiniPreview || props.hideL3 ? 3.9 : 2.2;
-  if (props.isMiniPreview || props.hideL3) return 1;
-
-  return 0.87;
-})
+const targetProps = computed<Props>(() => ({
+  containers: [
+    { tag: "cosm_2025_silver", count: 154 },
+    { tag: "cosmic_2025_standart", count: 9810 },
+  ],
+  modernizations: [
+    // { tag: "modernizedTankRammerSights1", count: 89 },
+    // { tag: "modernizedDamageVentilation1", count: 91 }
+  ],
+  vehicles: [
+    { tag: "uk:GB110_FV4201_Chieftain_Prototype", isLegendary: false },
+    { tag: "usa:A146_TL_7_120", isLegendary: false },
+  ],
+  currencies: {
+    premium: 0,
+    credits: 3470000,
+    freeXP: 26200,
+    crystals: 0,
+    equipCoins: 44740,
+    gold: 42325,
+    mandarins: 0,
+  },
+}))
 
 </script>
 
