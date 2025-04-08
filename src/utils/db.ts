@@ -12,6 +12,16 @@ export const clickhouse = createClient({
   }
 });
 
+if (!crypto.randomUUID) {
+  crypto.randomUUID = () => {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40; // Set version to 0100
+    bytes[8] = (bytes[8] & 0x3f) | 0x80; // Set variant to 10
+    return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+}
+
 export const CACHE_SETTINGS = { use_query_cache: 1, query_cache_ttl: 600 } as ClickHouseSettings
 export const SHORT_CACHE_SETTINGS = { use_query_cache: 1, query_cache_ttl: 10 } as ClickHouseSettings
 export const LONG_CACHE_SETTINGS = { use_query_cache: 1, query_cache_ttl: 600 } as ClickHouseSettings
@@ -112,6 +122,15 @@ export function queryAsync<T>(queryString: string, { enabled = ref(true), settin
   }, { immediate: true })
 
   return result
+}
+
+export function queryAsyncMap<T, R>(queryString: string, mapFn: (data: T[]) => R, { enabled = ref(true), settings = {} as ClickHouseSettings } = {}) {
+  const result = queryAsync<T>(queryString, { enabled, settings });
+
+  return computed(() => ({
+    status: result.value.status as Status,
+    data: mapFn(result.value.data)
+  }))
 }
 
 export function queryAsyncFirst<T>(queryString: string, defaultValue: T, { enabled = ref(true), settings = {} as ClickHouseSettings } = {}) {
