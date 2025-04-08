@@ -137,7 +137,7 @@ watch(playerName, async player => {
                 toUInt32(sum(freeXP)) as freeXP,
                 toUInt32(sum(crystal)) as crystal,
                 toUInt32(sum(equipCoin)) as equipCoin,
-                toUInt32(sum(gold) + sum(arraySum(compensatedVehicles.gold))) as gold
+                toUInt32(sum(gold)) as gold
             from data
         ),
         modernized as (
