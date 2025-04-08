@@ -119,7 +119,7 @@ watch(playerName, async player => {
         data as (
             select *
             from Event_OnLootboxOpen
-            where playerName = '${playerName.value}' and dateTime >= now() - INTERVAL 1 DAY
+            where playerName = '${playerName.value}' and dateTime > '2025-04-07'
         ),
         containers as (
             select containerTag, toUInt32(count()) as count
