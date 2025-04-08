@@ -109,6 +109,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2025-04-05-reduction',
     ru: `• Новый виджет ${Utils.openUrl('https://wotstat.info/widgets/shooting/reduction-info', 'Индикатор сведения')}. Шесть стилей, с прогресс-баром, просто числом или графиком за 30 секунд.`
   },
+  {
+    id: '2025-04-08-lootbox',
+    ru: `• Новый виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-universal?sync=true&delay=long', 'Статистика коробок')}. Поддерживает все виды контейнеров и анти-спойлер систему при которой статистика отображается с небольшой задержкой.`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {
