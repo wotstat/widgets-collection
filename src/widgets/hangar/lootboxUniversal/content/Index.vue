@@ -33,6 +33,21 @@
           :icon="modernizationsImages[`../assets/modernizations/${mod.icon}.png`]" :overlay-icon="ModernizedOverlay" />
       </div>
 
+      <div class="space" v-if="crewBooks.length"></div>
+
+      <div class="crewbooks">
+        <Element v-for="book in crewBooks" :class="book.class" :title="t(book.tag as any).value" :value="book.count"
+          :icon="crewBoolsImages[`../assets/crewBooks/${book.tag}.png`]" :short-log-processor="crewBooks.length > 2" />
+      </div>
+
+      <div :class="crewBooks.length >= 3 && items.length >= 3 ? 'small-space' : 'space'" v-if="items.length"></div>
+
+      <div class="items">
+        <Element v-for="item in items" :class="item.class" :title="t(item.tag as any).value" :value="item.count"
+          :icon="itemsImages[`../assets/items/${item.tag}.png`]" :short-log-processor="items.length > 2" />
+      </div>
+
+
       <div class="space" v-if="largeVehicles.length || smallVehicles.length"></div>
 
       <div class="large-vehicles">
@@ -75,6 +90,8 @@ import LargeVehicle from './LargeVehicle.vue';
 
 const containersImages = import.meta.glob<string>('../assets/containers/*.png', { eager: true, import: 'default' })
 const modernizationsImages = import.meta.glob<string>('../assets/modernizations/*.png', { eager: true, import: 'default' })
+const crewBoolsImages = import.meta.glob<string>('../assets/crewBooks/*.png', { eager: true, import: 'default' })
+const itemsImages = import.meta.glob<string>('../assets/items/*.png', { eager: true, import: 'default' })
 
 const { t } = useI18nRef(i18n)
 const currencyIcons = {
@@ -95,6 +112,7 @@ const isEmpty = computed(() => {
   return props.data.containers.length == 0 &&
     props.data.modernizations.length == 0 &&
     props.data.vehicles.length == 0 &&
+    props.data.crewBooks.length == 0 &&
     props.data.currencies.gold == 0 &&
     props.data.currencies.credits == 0 &&
     props.data.currencies.freeXP == 0 &&
@@ -208,6 +226,28 @@ const smallVehicles = computed(() => {
   return props.data.vehicles.filter(t => !largeVehicles.value.includes(t.tag)).map(t => t.tag)
 })
 
+const crewBooks = computed(() => {
+  const books = props.data.crewBooks
+
+  if (books.length == 1) return books.map(t => ({ tag: t.tag, count: t.count, class: 'big wide' }))
+  if (books.length == 2) return books.map(t => ({ tag: t.tag, count: t.count, class: 'medium' }))
+
+  if (books.length == 4) return books.map(t => ({ tag: t.tag, count: t.count, class: 'super-mini' }))
+
+  return books.map(t => ({ tag: t.tag, count: t.count, class: 'mini' }))
+})
+
+const items = computed(() => {
+  const books = props.data.items
+
+  if (books.length == 1) return books.map(t => ({ tag: t.tag, count: t.count, class: 'big wide' }))
+  if (books.length == 2) return books.map(t => ({ tag: t.tag, count: t.count, class: 'medium' }))
+
+  if (books.length == 4) return books.map(t => ({ tag: t.tag, count: t.count, class: 'super-mini' }))
+
+  return books.map(t => ({ tag: t.tag, count: t.count, class: 'mini' }))
+})
+
 const lootboxNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>(`select * from LootboxesLocalization`, t => new Map(t.map(t => [t.tag, t.nameRU])))
 const artefactsNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>(`select * from ArtefactsLocalization`, t => new Map(t.map(t => [t.tag, t.nameRU])))
 const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }, Map<string, string>>(`select * from VehiclesLocalization`, t => new Map(t.map(t => [t.tag, t.shortRU])))
@@ -223,6 +263,7 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
 .main {
   font-size: 1em;
   overflow: hidden;
+  color: #fffefc;
 
   .card {
     position: relative;
@@ -283,6 +324,63 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
 
     .wide {
       grid-column: 1 / -1;
+    }
+  }
+
+  .crewbooks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5em;
+
+    .wide {
+      grid-column: 1 / -1;
+
+      :deep(.icon) {
+        img {
+          min-width: 5.8em;
+          object-fit: contain;
+          margin-left: -0.4em;
+        }
+      }
+    }
+
+    &:has(> :nth-child(n+3)) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &:has(> :nth-child(n+4)) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    &:has(> :nth-child(n+5)) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5em;
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .mini {
+      :deep(.icon) {
+        height: 2.3em;
+        margin: 0;
+        margin-left: -0.3em;
+        margin-right: -0.45em;
+      }
+    }
+
+    &:has(> :nth-child(n+3)) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &:has(> :nth-child(n+4)) {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 

@@ -1,18 +1,18 @@
 import { defineWidget } from "@/utils/defineWidget";
 
+
+export const SUPPORTED_ITEMS = [
+  'autoExtinguishers',
+  'largeMedkit',
+  'largeRepairkit',
+] as const
+
 export type ContainersData = {
-  containers: {
-    tag: string,
-    count: number
-  }[],
-  modernizations: {
-    tag: string,
-    count: number
-  }[],
-  vehicles: {
-    tag: string,
-    isLegendary: boolean,
-  }[],
+  containers: { tag: string, count: number }[],
+  modernizations: { tag: string, count: number }[],
+  vehicles: { tag: string, isLegendary: boolean }[],
+  crewBooks: { tag: string, count: number }[],
+  items: { tag: string, count: number }[],
   currencies: {
     gold: number
     credits: number

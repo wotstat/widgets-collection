@@ -13,7 +13,7 @@
           {{ title }}
         </p>
         <p class="count nowrap">
-          <TweenValue :value="value" :processor="logProcessor" />
+          <TweenValue :value="value" :processor="props.shortLogProcessor ? shortLogProcessor : logProcessor" />
         </p>
       </div>
     </div>
@@ -23,13 +23,14 @@
 
 <script setup lang="ts">
 import TweenValue from '@/components/TweenValue.vue';
-import { logProcessor } from './utils';
+import { logProcessor, shortLogProcessor } from './utils';
 
 const props = defineProps<{
   title: string,
   value: number,
   icon: string,
   overlayIcon?: string,
+  shortLogProcessor?: boolean,
 }>()
 
 </script>
@@ -109,6 +110,73 @@ const props = defineProps<{
 }
 
 .container {
+
+  &.super-mini {
+
+    &.mini-card {
+      padding: 0.25em;
+    }
+
+    .horizontal {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .long-title {
+      display: none;
+    }
+
+    .title {
+      display: none;
+    }
+
+    .icon {
+      height: 2.5em;
+      margin: -0.5em;
+      margin-top: -0.2em;
+    }
+
+    .count {
+      font-size: 1.2em;
+      // font-weight: normal;
+      text-align: center;
+      line-height: 1;
+      z-index: 2;
+      filter: drop-shadow(0 0 0.2em #000000e7);
+    }
+  }
+
+  &.mini {
+
+    &.mini-card {
+      padding: 0.25em;
+    }
+
+    .horizontal {
+      gap: 0;
+    }
+
+    .long-title {
+      display: none;
+    }
+
+    .title {
+      display: none;
+    }
+
+    .icon {
+      height: 2.7em;
+      margin: -0.2em;
+    }
+
+    .count {
+      font-size: 1.8em;
+      line-height: 1;
+      z-index: 2;
+      filter: drop-shadow(0 0 0.4em #0000008d);
+    }
+  }
+
   &.small {
     .long-title {
       display: none;

@@ -6,6 +6,15 @@
     "freeXP": "Свободный опыт",
     "premium": "Дни премиума",
     "mandarins": "Мандарины",
-    "equipCoin": "Компоненты"
+    "equipCoin": "Компоненты",
+    "personalBook": "Персональное учебное пособие",
+    "universalBook": "Универсальное пособие",
+    "universalBrochure": "Универсальная брошюра",
+    "universalGuide": "Универсальное руководство",
+    "brochure": "Учебная брошюра",
+    "guide": "Учебное руководство",
+    "autoExtinguishers": "Автоматический огнетушитель",
+    "largeMedkit": "Большая аптечка",
+    "largeRepairkit": "Большой ремкомплект"
   }
 }

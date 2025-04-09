@@ -8,7 +8,6 @@
 <script setup lang="ts">
 
 import { computed } from 'vue';
-import WidgetCard from '@/components/WidgetCard.vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from './content/Index.vue';
 import { Props } from './define.widget';
@@ -21,17 +20,19 @@ const props = defineProps<{
 
 const targetProps = computed<Props>(() => ({
   containers: [
-    { tag: "cosm_2025_silver", count: 154 },
+    { tag: "cosm_2025_silver", count: 2165 },
     { tag: "cosmic_2025_standart", count: 9810 },
   ],
   modernizations: [
     // { tag: "modernizedTankRammerSights1", count: 89 },
     // { tag: "modernizedDamageVentilation1", count: 91 }
   ],
+  items: [],
   vehicles: [
     { tag: "uk:GB110_FV4201_Chieftain_Prototype", isLegendary: false },
     { tag: "usa:A146_TL_7_120", isLegendary: false },
   ],
+  crewBooks: [],
   currencies: {
     premium: 0,
     credits: 3470000,

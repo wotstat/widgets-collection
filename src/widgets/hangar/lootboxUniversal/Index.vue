@@ -12,7 +12,7 @@ import { computed, watch } from 'vue';
 import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { ContainersData, Props } from './define.widget';
+import { ContainersData, Props, SUPPORTED_ITEMS } from './define.widget';
 import { query } from '@/utils/db';
 
 
@@ -24,6 +24,8 @@ const data = useWidgetStorage<ContainersData>('mainStats', {
   containers: [],
   modernizations: [],
   vehicles: [],
+  crewBooks: [],
+  items: [],
   currencies: {
     gold: 0,
     credits: 0,
@@ -63,11 +65,25 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   setTimeout(() => {
     for (const element of parsed.items) {
       const [tag, count] = element
-      if (!tag.startsWith('modernized')) continue
+      if (tag.startsWith('modernized')) {
+        const mod = data.value.modernizations.find(t => t.tag == tag)
+        if (mod) mod.count += count
+        else data.value.modernizations.push({ tag, count })
+      }
 
-      const mod = data.value.modernizations.find(t => t.tag == tag)
-      if (mod) mod.count += count
-      else data.value.modernizations.push({ tag, count, })
+      if (SUPPORTED_ITEMS.includes(tag as any)) {
+        const item = data.value.items.find(t => t.tag == tag)
+        if (item) item.count += count
+        else data.value.items.push({ tag, count })
+      }
+    }
+
+    for (const crewBook of parsed.crewBooks) {
+      const [tag, count] = crewBook
+      const fixedTag = tag.split(':')[0]
+      const crewBookItem = data.value.crewBooks.find(t => t.tag == fixedTag)
+      if (crewBookItem) crewBookItem.count += count
+      else data.value.crewBooks.push({ tag: fixedTag, count })
     }
 
     data.value.currencies.gold += parsed.gold
@@ -90,7 +106,7 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
 })
 
 const playerName = useReactiveState(sdk.data.player.name)
-// const playerName = computed(() => 'Renou')
+// const playerName = computed(() => 'Sh0tnik')
 
 const LEGENDARY_TANKS = [
   'ussr:R219_Waffentrager_E100_Gold',
@@ -103,8 +119,9 @@ watch(playerName, async player => {
   await new Promise(resolve => setTimeout(resolve, 1))
   const result = await query<{
     containersCount: [string, number][];
-    modernizedCount: [string, number][];
+    itemsCount: [string, number][];
     addedVehicles: [string, number][];
+    crewBooks: [string, number][];
     prem: number;
     gold: number;
     credits: number;
@@ -140,30 +157,40 @@ watch(playerName, async player => {
                 toUInt32(sum(gold)) as gold
             from data
         ),
-        modernized as (
-            select modernizedTag, sum(modernizedCount) as modernizedCount
+        items as (
+            select tag, sum(count) as count
             from data
-            array join items.tag as modernizedTag, items.count as modernizedCount
-            where startsWith(modernizedTag, 'modernized')
-            group by modernizedTag
+            array join items.tag as tag, items.count as count
+            where startsWith(tag, 'modernized') or tag in (${SUPPORTED_ITEMS.map(t => `'${t}'`).join(',')})
+            group by tag
         ),
-        modernizedCount as (
-            select arrayZip(groupArray(modernizedTag), groupArray(toUInt32(modernizedCount))) as modernizedCount from modernized
+        itemsCount as (
+            select arrayZip(groupArray(tag), groupArray(toUInt32(count))) as itemsCount from items
         ),
         vehicles as (
-            select addedVehicles, level, toUInt8(addedVehicles in LEGENDARY_TANKS) as isLegelnd, min(data.dateTime) as firstOpen
+            select addedVehicles, level, toUInt8(addedVehicles in LEGENDARY_TANKS) as isLegend, min(data.dateTime) as firstOpen
             from data
             array join addedVehicles
             join VehiclesLatest on addedVehicles = tag
             group by addedVehicles, level
-            order by isLegelnd desc, level desc, firstOpen
+            order by isLegend desc, level desc, firstOpen
         ),
         vehiclesGroup as (
-            select arrayZip(groupArray(addedVehicles), groupArray(isLegelnd)) as addedVehicles
+            select arrayZip(groupArray(addedVehicles), groupArray(isLegend)) as addedVehicles
             from vehicles
+        ),
+        crewBooks as (
+            select splitByChar(':', tag)[1] as tag, toUInt32(sum(count)) as count
+            from data
+            array join crewBooks.tag as tag, crewBooks.count as count
+            group by tag
+        ),
+        crewBooksGroup as (
+            select arrayZip(groupArray(tag), groupArray(count)) as crewBooks
+            from crewBooks
         )
     select *
-    from containersCount, currencies, modernizedCount, vehiclesGroup;
+    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup;
     `)
 
 
@@ -174,21 +201,11 @@ watch(playerName, async player => {
   console.log(first);
   if (player != playerName.value) return
 
-
-  data.value.containers = first.containersCount.map(t => ({
-    tag: t[0],
-    count: t[1],
-  }))
-
-  data.value.modernizations = first.modernizedCount.map(t => ({
-    tag: t[0],
-    count: t[1],
-  }))
-
-  data.value.vehicles = first.addedVehicles.map(t => ({
-    tag: t[0],
-    isLegendary: t[1] == 1,
-  }))
+  data.value.containers = first.containersCount.map(t => ({ tag: t[0], count: t[1] }))
+  data.value.modernizations = first.itemsCount.filter(t => t[0].startsWith('modernized')).map(t => ({ tag: t[0], count: t[1] }))
+  data.value.vehicles = first.addedVehicles.map(t => ({ tag: t[0], isLegendary: t[1] == 1 }))
+  data.value.crewBooks = first.crewBooks.map(t => ({ tag: t[0], count: t[1] }))
+  data.value.items = first.itemsCount.filter(t => !t[0].startsWith('modernized')).map(t => ({ tag: t[0], count: t[1] }))
 
   data.value.currencies = {
     gold: first.gold,
