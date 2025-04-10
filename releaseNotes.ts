@@ -117,6 +117,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2025-04-09-lootbox',
     ru: `• В виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-universal?sync=true&delay=long', 'Статистика коробок')} добавлен счётчик учебных пособий и расходников (огнетушитель, аптечка, ремкомплект).`
   },
+  {
+    id: '2025-04-10-lootbox',
+    ru: `• В виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-universal?sync=true&delay=long', 'Статистика коробок')} добавлен счётчик инструкций и боевых резервов.`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {
