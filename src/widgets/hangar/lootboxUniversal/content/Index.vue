@@ -33,20 +33,48 @@
           :icon="modernizationsImages[`../assets/modernizations/${mod.icon}.png`]" :overlay-icon="ModernizedOverlay" />
       </div>
 
-      <div class="space" v-if="crewBooks.length"></div>
+      <div class="space" v-if="boosters.length"></div>
+      <div class="boosters">
+        <Element v-for="booster in boosters" :class="booster.class"
+          :title="t((booster.tag + (boosters.length > 1 ? ':short' : '')) as any).value" :value="booster.count"
+          :icon="boosterImages[`../assets/boosters/${booster.icon}.png`]" :short-log-processor="boosters.length > 2" />
+      </div>
 
+      <div :class="boosters.length >= 3 && crewBooks.length >= 3 ? 'small-space' : 'space'" v-if="crewBooks.length">
+      </div>
       <div class="crewbooks">
         <Element v-for="book in crewBooks" :class="book.class" :title="t(book.tag as any).value" :value="book.count"
           :icon="crewBoolsImages[`../assets/crewBooks/${book.tag}.png`]" :short-log-processor="crewBooks.length > 2" />
       </div>
 
-      <div :class="crewBooks.length >= 3 && items.length >= 3 ? 'small-space' : 'space'" v-if="items.length"></div>
+      <div
+        :class="(crewBooks.length >= 3 || (crewBooks.length == 0 && boosters.length >= 3)) && items.length >= 3 ? 'small-space' : 'space'"
+        v-if="items.length"></div>
 
-      <div class="items">
-        <Element v-for="item in items" :class="item.class" :title="t(item.tag as any).value" :value="item.count"
-          :icon="itemsImages[`../assets/items/${item.tag}.png`]" :short-log-processor="items.length > 2" />
+      <div class="items" :class="items.length == 5 || items.length % 3 == 0 ? 'c-3' : ''">
+        <Element v-for="item in items" :class="item.class" :title="artefactsNames.data.get(item.tag) ?? 'Расходник'"
+          :value="item.count" :icon="itemsImages[`../assets/items/${item.tag}.png`]"
+          :short-log-processor="items.length > 2" />
       </div>
 
+      <div class="space" v-if="battleBoosters.length > 4"></div>
+
+      <div class="battle-boosters-summary" v-if="battleBoosters.length > 4">
+        <Element v-if="equipmentCount" :class="crewSkillsCount == 0 ? 'big' : 'medium'" :title="'К оборудованию'"
+          :value="equipmentCount" :icon="EquipmentBooster" />
+        <Element v-if="crewSkillsCount" :class="equipmentCount == 0 ? 'big' : 'medium'" :title="'Для экипажа'"
+          :value="crewSkillsCount" :icon="SkillBooster" />
+      </div>
+
+      <div v-if="battleBoosters.length"
+        :class="battleBoosters.length >= 3 && (battleBoosters.length > 4 || items.length >= 3 || items.length == 0 && crewBooks.length >= 3) ? 'small-space' : 'space'">
+      </div>
+
+      <div class="battle-boosters">
+        <Element v-for="booster in battleBoosters" :class="booster.class" :icon="booster.icon"
+          :overlay-icon="booster.overlay" :title="artefactsNames.data.get(booster.tag) ?? 'Инструкция'"
+          :value="booster.count" :short-log-processor="battleBoosters.length > 3" />
+      </div>
 
       <div class="space" v-if="largeVehicles.length || smallVehicles.length"></div>
 
@@ -59,7 +87,6 @@
         <SmallVehicle v-for="veh in smallVehicles" :tag="veh" :name="tankNames.data.get(veh) ?? '?'" />
       </div>
     </WidgetCard>
-
   </div>
 </template>
 
@@ -87,11 +114,16 @@ import { computed } from 'vue';
 import { useI18nRef } from '@/composition/useI18n';
 import SmallVehicle from './SmallVehicle.vue';
 import LargeVehicle from './LargeVehicle.vue';
+import SkillBooster from '../assets/icons/skillBooster.png';
+import EquipmentBooster from '../assets/icons/equipmentBooster.png';
+import { getConsumableById, getConsumableIconByTag, isConsumableTag } from '@/components/equipment/equipment';
+import { orderByTable } from './utils';
 
 const containersImages = import.meta.glob<string>('../assets/containers/*.png', { eager: true, import: 'default' })
 const modernizationsImages = import.meta.glob<string>('../assets/modernizations/*.png', { eager: true, import: 'default' })
 const crewBoolsImages = import.meta.glob<string>('../assets/crewBooks/*.png', { eager: true, import: 'default' })
 const itemsImages = import.meta.glob<string>('../assets/items/*.png', { eager: true, import: 'default' })
+const boosterImages = import.meta.glob<string>('../assets/boosters/*.png', { eager: true, import: 'default' })
 
 const { t } = useI18nRef(i18n)
 const currencyIcons = {
@@ -226,8 +258,50 @@ const smallVehicles = computed(() => {
   return props.data.vehicles.filter(t => !largeVehicles.value.includes(t.tag)).map(t => t.tag)
 })
 
+const boostersPriority = [
+  'booster_xp:100',
+  'booster_xp:50',
+  'booster_credits:50',
+  'booster_free_xp_and_crew_xp:200',
+  'booster_free_xp_and_crew_xp:300',
+]
+
+const boosterToImage = {
+  'booster_xp:100': 'booster_xp_premium',
+  'booster_xp:50': 'booster_xp',
+  'booster_credits:50': 'booster_credits',
+  'booster_free_xp_and_crew_xp:300': 'booster_free_xp_and_crew_xp_premium',
+  'booster_free_xp_and_crew_xp:200': 'booster_free_xp_and_crew_xp',
+}
+
+const boosters = computed(() => {
+  const boosters = orderByTable(boostersPriority, props.data.boosters, i => i.tag)
+
+  let targetClass = 'super-mini'
+
+  if (boosters.length == 1) targetClass = 'big wide'
+  else if (boosters.length == 2) targetClass = 'medium'
+  else if (boosters.length == 3) targetClass = 'mini'
+
+  return boosters.map(t => ({
+    tag: t.tag,
+    count: t.count,
+    class: targetClass,
+    icon: t.tag in boosterToImage ? boosterToImage[t.tag as keyof typeof boosterToImage] : undefined
+  }))
+})
+
+const crewBooksPriority = [
+  'personalBook',
+  'universalBook',
+  'universalGuide',
+  'guide',
+  'universalBrochure',
+  'brochure',
+]
+
 const crewBooks = computed(() => {
-  const books = props.data.crewBooks
+  const books = orderByTable(crewBooksPriority, props.data.crewBooks, i => i.tag)
 
   if (books.length == 1) return books.map(t => ({ tag: t.tag, count: t.count, class: 'big wide' }))
   if (books.length == 2) return books.map(t => ({ tag: t.tag, count: t.count, class: 'medium' }))
@@ -237,15 +311,70 @@ const crewBooks = computed(() => {
   return books.map(t => ({ tag: t.tag, count: t.count, class: 'mini' }))
 })
 
+const itemsPriority = [
+  'ration',
+  'largeMedkit',
+  'largeRepairkit',
+  'autoExtinguishers',
+]
+
 const items = computed(() => {
-  const books = props.data.items
+  const items = orderByTable(itemsPriority, props.data.items, i => i.tag)
 
-  if (books.length == 1) return books.map(t => ({ tag: t.tag, count: t.count, class: 'big wide' }))
-  if (books.length == 2) return books.map(t => ({ tag: t.tag, count: t.count, class: 'medium' }))
+  if (items.length == 1) return items.map(t => ({ tag: t.tag, count: t.count, class: 'big wide' }))
+  if (items.length == 2) return items.map(t => ({ tag: t.tag, count: t.count, class: 'medium' }))
+  if (items.length % 3 == 0) return items.map(t => ({ tag: t.tag, count: t.count, class: 'mini' }))
+  return items.map(t => ({ tag: t.tag, count: t.count, class: 'super-mini' }))
+})
 
-  if (books.length == 4) return books.map(t => ({ tag: t.tag, count: t.count, class: 'super-mini' }))
+const crewSkillsCount = computed(() => {
+  return props.data.battleBoosters
+    .filter(t => isConsumableTag(t.tag) && getConsumableById(t.tag)?.tags?.includes('crewSkillBattleBooster'))
+    .reduce((acc, t) => acc + t.count, 0)
+})
+const equipmentCount = computed(() => {
+  return props.data.battleBoosters
+    .filter(t => isConsumableTag(t.tag) && !getConsumableById(t.tag)?.tags?.includes('crewSkillBattleBooster'))
+    .reduce((acc, t) => acc + t.count, 0)
+})
 
-  return books.map(t => ({ tag: t.tag, count: t.count, class: 'mini' }))
+const boosterPriority = [
+  'turbochargerBattleBooster',
+  'additInvisibilityDeviceBattleBooster',
+  'improvedSightsBattleBooster',
+  'rammerBattleBooster',
+  'improvedVentilationBattleBooster',
+  'improvedArmorBattleBooster',
+  'coatedOpticsBattleBooster',
+  'improvedConfigurationBattleBooster',
+  'aimingStabilizerBattleBooster',
+  'enhancedAimDrivesBattleBooster'
+]
+
+const battleBoosters = computed(() => {
+  const boosters = orderByTable(boosterPriority, props.data.battleBoosters, b => b.tag).slice(0, 6)
+
+  let targetClass = 'super-mini'
+  if (boosters.length == 1) targetClass = 'big wide'
+  else if (boosters.length == 2) targetClass = 'medium'
+  else if (boosters.length == 3) targetClass = 'mini'
+
+  return boosters.map(t => {
+
+    if (!isConsumableTag(t.tag)) return { tag: t.tag, icon: 'test', count: t.count, class: 'medium' }
+
+    const consumable = getConsumableById(t.tag)
+
+    const isSkill = consumable?.tags?.includes('crewSkillBattleBooster')
+
+    return {
+      tag: t.tag,
+      count: t.count,
+      icon: getConsumableIconByTag(t.tag, true),
+      overlay: isSkill ? SkillBooster : EquipmentBooster,
+      class: targetClass
+    }
+  })
 })
 
 const lootboxNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>(`select * from LootboxesLocalization`, t => new Map(t.map(t => [t.tag, t.nameRU])))
@@ -327,6 +456,38 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
     }
   }
 
+  .boosters {
+    display: flex;
+    gap: 0.5em;
+
+    div {
+      flex: 1;
+    }
+
+    .mini {
+      :deep(.icon) {
+        height: 2.3em;
+        margin: 0;
+        margin-left: -0.3em;
+        margin-right: -0.45em;
+      }
+    }
+
+    .super-mini {
+      :deep(.icon) {
+        height: 3em;
+        margin: -0.6em;
+        margin-top: -0.2em;
+        margin-bottom: -1em;
+      }
+
+      :deep(.count) {
+        filter: drop-shadow(0 -0.1em 0.2em rgba(0, 0, 0, 1)) drop-shadow(0 -0.1em 0.2em rgba(0, 0, 0, 1))
+      }
+    }
+
+  }
+
   .crewbooks {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -376,11 +537,43 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
     }
 
     &:has(> :nth-child(n+3)) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
+
+      &.c-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  }
+
+  .battle-boosters-summary {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5em;
+
+    &:has(> :nth-child(n+2)) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .battle-boosters {
+    display: grid;
+    display: flex;
+    gap: 0.5em;
+
+    :deep(.overlay-icon) {
+      width: 40%;
+      height: auto;
+      inset: unset;
+      bottom: 0;
+      left: 0;
     }
 
-    &:has(> :nth-child(n+4)) {
-      grid-template-columns: repeat(4, 1fr);
+    :deep(.icon) {
+      filter: drop-shadow(0 0 0.3em rgba(148, 255, 26, 0.4));
+    }
+
+    >div {
+      flex: 1;
     }
   }
 

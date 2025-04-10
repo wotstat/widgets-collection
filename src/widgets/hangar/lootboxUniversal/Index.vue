@@ -26,6 +26,8 @@ const data = useWidgetStorage<ContainersData>('mainStats', {
   vehicles: [],
   crewBooks: [],
   items: [],
+  battleBoosters: [],
+  boosters: [],
   currencies: {
     gold: 0,
     credits: 0,
@@ -76,6 +78,12 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
         if (item) item.count += count
         else data.value.items.push({ tag, count })
       }
+
+      if (tag.endsWith('BattleBooster')) {
+        const item = data.value.battleBoosters.find(t => t.tag == tag)
+        if (item) item.count += count
+        else data.value.battleBoosters.push({ tag, count })
+      }
     }
 
     for (const crewBook of parsed.crewBooks) {
@@ -84,6 +92,14 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
       const crewBookItem = data.value.crewBooks.find(t => t.tag == fixedTag)
       if (crewBookItem) crewBookItem.count += count
       else data.value.crewBooks.push({ tag: fixedTag, count })
+    }
+
+    for (const booster of parsed.boosters) {
+      const [tag, time, value, count] = booster
+      const targetTag = `${tag}:${value}`
+      const boosterItem = data.value.boosters.find(t => t.tag == targetTag)
+      if (boosterItem) boosterItem.count += count
+      else data.value.boosters.push({ tag: targetTag, count })
     }
 
     data.value.currencies.gold += parsed.gold
@@ -122,6 +138,7 @@ watch(playerName, async player => {
     itemsCount: [string, number][];
     addedVehicles: [string, number][];
     crewBooks: [string, number][];
+    boosters: [string, number][];
     prem: number;
     gold: number;
     credits: number;
@@ -158,10 +175,16 @@ watch(playerName, async player => {
             from data
         ),
         items as (
-            select tag, sum(count) as count
+            select 
+              multiIf(startsWith(tag, 'ration'), 'ration', tag) as tag,
+              sum(count) as count
             from data
             array join items.tag as tag, items.count as count
-            where startsWith(tag, 'modernized') or tag in (${SUPPORTED_ITEMS.map(t => `'${t}'`).join(',')})
+            where 
+              startsWith(tag, 'modernized')
+              or startsWith(tag, 'ration')
+              or endsWith(tag, 'BattleBooster')
+              or tag in (${SUPPORTED_ITEMS.map(t => `'${t}'`).join(',')})
             group by tag
         ),
         itemsCount as (
@@ -188,9 +211,19 @@ watch(playerName, async player => {
         crewBooksGroup as (
             select arrayZip(groupArray(tag), groupArray(count)) as crewBooks
             from crewBooks
+        ),
+        boosters as (
+            select concat(tag, ':', value) as tag, toUInt32(sum(count)) as count
+            from data
+            array join boosters.tag as tag, boosters.value as value, boosters.count as count
+            group by tag
+        ),
+        boostersGroup as (
+            select arrayZip(groupArray(tag), groupArray(count)) as boosters
+            from boosters
         )
     select *
-    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup;
+    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup, boostersGroup;
     `)
 
 
@@ -205,7 +238,14 @@ watch(playerName, async player => {
   data.value.modernizations = first.itemsCount.filter(t => t[0].startsWith('modernized')).map(t => ({ tag: t[0], count: t[1] }))
   data.value.vehicles = first.addedVehicles.map(t => ({ tag: t[0], isLegendary: t[1] == 1 }))
   data.value.crewBooks = first.crewBooks.map(t => ({ tag: t[0], count: t[1] }))
-  data.value.items = first.itemsCount.filter(t => !t[0].startsWith('modernized')).map(t => ({ tag: t[0], count: t[1] }))
+  data.value.battleBoosters = first.itemsCount.
+    filter(t => t[0].endsWith('BattleBooster'))
+    .map(t => ({ tag: t[0], count: t[1] }))
+  data.value.items = first.itemsCount.
+    filter(t => !t[0].startsWith('modernized') && !t[0].endsWith('BattleBooster'))
+    .map(t => ({ tag: t[0], count: t[1] }))
+
+  data.value.boosters = first.boosters.map(t => ({ tag: t[0], count: t[1] }))
 
   data.value.currencies = {
     gold: first.gold,

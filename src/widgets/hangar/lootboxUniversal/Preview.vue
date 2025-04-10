@@ -20,7 +20,7 @@ const props = defineProps<{
 
 const targetProps = computed<Props>(() => ({
   containers: [
-    { tag: "cosm_2025_silver", count: 2165 },
+    { tag: "cosm_2025_silver", count: 3165 },
     { tag: "cosmic_2025_standart", count: 9810 },
   ],
   modernizations: [
@@ -33,6 +33,8 @@ const targetProps = computed<Props>(() => ({
     { tag: "usa:A146_TL_7_120", isLegendary: false },
   ],
   crewBooks: [],
+  battleBoosters: [],
+  boosters: [],
   currencies: {
     premium: 0,
     credits: 3470000,

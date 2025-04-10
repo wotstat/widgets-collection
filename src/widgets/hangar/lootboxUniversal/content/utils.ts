@@ -15,3 +15,29 @@ export function shortLogProcessor(value: number) {
   if (value < 1e12) return (value / 1e9).toFixed(1) + 'B';
   return (value / 1e12).toFixed(1) + 'T';
 }
+
+export function orderByTable<T, V>(table: T[], values: V[], getter?: (v: V) => T, comparator?: (a: V, b: V) => number): V[] {
+  return values.sort((a, b) => {
+    const indexA = getter ? table.indexOf(getter(a)) : table.indexOf(a as any);
+    const indexB = getter ? table.indexOf(getter(b)) : table.indexOf(b as any);
+
+    if (indexA === -1 && indexB === -1) {
+      if (comparator) return comparator(a, b);
+      if (getter) {
+        const aValue = getter(a);
+        const bValue = getter(b);
+        if (aValue === bValue) return 0;
+        if (aValue < bValue) return -1;
+        if (aValue > bValue) return 1;
+      }
+
+      return 0;
+    };
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    if (indexA < indexB) return -1;
+    if (indexA > indexB) return 1;
+    if (comparator) return comparator(a, b);
+    return 0;
+  })
+}

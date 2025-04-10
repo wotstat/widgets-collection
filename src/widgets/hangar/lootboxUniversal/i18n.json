@@ -13,8 +13,15 @@
     "universalGuide": "Универсальное руководство",
     "brochure": "Учебная брошюра",
     "guide": "Учебное руководство",
-    "autoExtinguishers": "Автоматический огнетушитель",
-    "largeMedkit": "Большая аптечка",
-    "largeRepairkit": "Большой ремкомплект"
+    "booster_xp:100:short": "+100% опыт",
+    "booster_xp:50:short": "+50% опыт",
+    "booster_credits:50:short": "+50% кредиты",
+    "booster_free_xp_and_crew_xp:200:short": "+200% комбинированный опыт",
+    "booster_free_xp_and_crew_xp:300:short": "+300% комбинированный опыт",
+    "booster_xp:100": "Опыт +100%",
+    "booster_xp:50": "Опыт +50%",
+    "booster_credits:50": "Кредиты +50%",
+    "booster_free_xp_and_crew_xp:200": "Комбинированный +200%",
+    "booster_free_xp_and_crew_xp:300": "Комбинированный +300%"
   }
 }

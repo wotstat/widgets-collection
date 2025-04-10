@@ -13,6 +13,8 @@ export type ContainersData = {
   vehicles: { tag: string, isLegendary: boolean }[],
   crewBooks: { tag: string, count: number }[],
   items: { tag: string, count: number }[],
+  battleBoosters: { tag: string, count: number }[],
+  boosters: { tag: string, count: number }[],
   currencies: {
     gold: number
     credits: number

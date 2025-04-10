@@ -267,7 +267,7 @@ const props = defineProps<{
 
   &.extra {
     .icon {
-      height: 4em;
+      height: 4.5em;
     }
 
     .title {
