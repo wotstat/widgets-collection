@@ -14,10 +14,12 @@ import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { ContainersData, Props, SUPPORTED_ITEMS } from './define.widget';
 import { query } from '@/utils/db';
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
 
 
-const { delay } = useQueryParams({
+const { delay, sync } = useQueryParams({
   delay: oneOf(['disable', 'short', 'long'] as const, 'long'),
+  sync: Boolean
 })
 
 const data = useWidgetStorage<ContainersData>('mainStats', {
@@ -43,7 +45,7 @@ WidgetMetaTags.setPreferredTopLayer(true)
 
 const delayTime = {
   'disable': 0,
-  'short': 3000,
+  'short': 2500,
   'long': 5000,
 } as const
 
@@ -53,8 +55,12 @@ const tankDelayTime = {
   'long': 35000,
 } as const
 
+
+const isMain = useWidgetMainTab()
+
 const { sdk } = useWidgetSdk();
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
+  if (!isMain.value) return
   if (event.eventName != 'OnLootboxOpen') return
   console.log('onEvent', event)
 
@@ -111,7 +117,7 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
     data.value.currencies.equipCoins += (parsed as any).equipCoin
   }, delayTime[delay])
 
-  if (parsed.addedVehicles.length)
+  if (parsed.addedVehicles.length) {
     setTimeout(() => {
       for (const tag of parsed.addedVehicles) {
         const tank = data.value.vehicles.find(t => t.tag == tag)
@@ -119,6 +125,7 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
         data.value.vehicles.push({ tag, isLegendary: LEGENDARY_TANKS.includes(tag) })
       }
     }, tankDelayTime[delay])
+  }
 })
 
 const playerName = useReactiveState(sdk.data.player.name)
@@ -133,6 +140,10 @@ const LEGENDARY_TANKS = [
 
 watch(playerName, async player => {
   await new Promise(resolve => setTimeout(resolve, 1))
+
+  if (!sync) return
+  if (!isMain.value) return
+
   const result = await query<{
     containersCount: [string, number][];
     itemsCount: [string, number][];

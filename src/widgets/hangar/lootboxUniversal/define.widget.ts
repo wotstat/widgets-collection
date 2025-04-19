@@ -42,7 +42,7 @@ export default defineWidget({
         { value: 'disable', label: 'отключена' },
         { value: 'short', label: 'без анимации' },
         { value: 'long', label: 'с анимацией' },
-      ], default: 'long'
+      ], default: 'short'
     },
   ]
 })
