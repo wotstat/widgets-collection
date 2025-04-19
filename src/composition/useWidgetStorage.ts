@@ -3,6 +3,7 @@ import { useRoute } from "vue-router";
 import { useQueryParams } from "./useQueryParams";
 import { useReactiveState, useWidgetSdk } from "./widgetSdk";
 import { computed, onUnmounted, ref, Ref, shallowRef, watch, watchEffect } from "vue";
+import { deepApplyDefaults } from "@/utils/deepApplyDefaults";
 
 function syncRef(a: Ref<any>, b: Ref<any>) {
   const rtl = pausableWatch(b, v => {
@@ -95,6 +96,11 @@ export function useWidgetStorage<T>(postfix: string, defaultValue: T, options?: 
     lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${postfix}`, defaultValue), value)
   }
 
+  if (typeof value.value === 'object' && typeof defaultValue === 'object') {
+    value.value = deepApplyDefaults<any>(value.value, defaultValue)
+  } else if (typeof value.value !== typeof defaultValue) {
+    value.value = structuredClone(defaultValue)
+  }
 
   const { setReadyToClearData, unsubscribe } = sdk.commands.onClearData(() => {
     if (options?.preventClearData) return

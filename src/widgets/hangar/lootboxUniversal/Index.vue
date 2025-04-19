@@ -8,11 +8,11 @@
 <script setup lang="ts">
 import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
 import Content from './content/Index.vue';
-import { computed, watch } from 'vue';
+import { watch } from 'vue';
 import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { ContainersData, Props, SUPPORTED_ITEMS } from './define.widget';
+import { ContainersData, SUPPORTED_ITEMS } from './define.widget';
 import { query } from '@/utils/db';
 import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
 
