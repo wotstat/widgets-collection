@@ -19,7 +19,7 @@ const { startFrom, skin } = useQueryParams({
 })
 
 const { sdk } = useWidgetSdk();
-const count = useWidgetStorage('count', startFrom)
+const count = useWidgetStorage('count', 0)
 
 const keyP = useReactiveState(sdk.data.keyboard.KEY_P)
 const keyO = useReactiveState(sdk.data.keyboard.KEY_O)
