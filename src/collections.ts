@@ -6,6 +6,7 @@ export const collections = [
       '/hangar/lootbox-universal',
       '/nidin/equipments',
       '/meme/bongo-cat',
+      '/counters/speedrun',
     ]
   },
   {
@@ -42,6 +43,7 @@ export const collections = [
       '/counters/battle',
       '/counters/hand',
       '/counters/battle-win-lose',
+      '/counters/speedrun',
     ]
   },
   {

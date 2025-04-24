@@ -1,4 +1,10 @@
 export function deepApplyDefaults<T>(target: Partial<T> = {}, defaults: T): T {
+
+  if (Array.isArray(defaults)) {
+    if (Array.isArray(target)) return target as T;
+    return defaults as T;
+  }
+
   const result = {} as any;
 
   for (const key in defaults) {

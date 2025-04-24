@@ -1,0 +1,42 @@
+{
+  "ru": {
+    "event:dmg": "Урон",
+    "event:ram": "Таран",
+    "event:kill": "Уничтожение",
+    "event:kill-spg": "Уничтожение САУ",
+    "event:death": "Уничтожен",
+    "event:receive-dmg": "Получен урон",
+    "event:loss-50hp": "Потеряно 50% ХП",
+    "event:base-capture-80": "Захват базы 80%",
+    "target": "Цель",
+    "endOfBattle": "Завершение боя",
+    "damage": "Первый урон",
+    "ram": "Первый таран",
+    "kill": "Первый фраг",
+    "killSpg": "Первый фраг САУ",
+    "death": "Смерть",
+    "receiveDamage": "Полученный урон",
+    "loss50hp": "Потеряно 50% ХП",
+    "baseCapture80": "База захвачена на 80%"
+  },
+  "en": {
+    "event:dmg": "Damage",
+    "event:ram": "Ram",
+    "event:kill": "Kill",
+    "event:kill-spg": "Kill SPG",
+    "event:death": "Death",
+    "event:receive-dmg": "Received damage",
+    "event:loss-50hp": "Lost 50% HP",
+    "event:base-capture-80": "Base capture 80%",
+    "target": "Target",
+    "endOfBattle": "End of battle",
+    "damage": "First damage",
+    "ram": "First ram",
+    "kill": "First kill",
+    "killSpg": "First kill SPG",
+    "death": "Death",
+    "receiveDamage": "Received damage",
+    "loss50hp": "Lost 50% HP",
+    "baseCapture80": "Base captured 80%"
+  }
+}
