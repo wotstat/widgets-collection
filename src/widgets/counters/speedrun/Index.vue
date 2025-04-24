@@ -1,5 +1,5 @@
 <template>
-  <WidgetWrapper autoScale autoHeight>
+  <WidgetWrapper autoScale autoHeight topLevel>
     <Content :value="timer" :showEvents :showPb :pb="personalBest" :events />
   </WidgetWrapper>
 </template>

@@ -23,14 +23,16 @@ import { isInWidgetMod as isInWidgetModKey, obsStudioVersion } from '@/utils/pro
 import { useIsInWidgetMod } from '@/composition/utils/useIsInWidgetMod';
 
 const props = defineProps<{
-  autoScale?: boolean,
+  autoScale?: boolean
   autoHeight?: boolean
   hangarOnly?: boolean
+  topLevel?: boolean
 }>()
 
 onMounted(() => {
   if (props.autoHeight) WidgetMetaTags.setAutoHeight(props.autoHeight)
   if (props.hangarOnly) WidgetMetaTags.setHangarOnly(props.hangarOnly)
+  if (props.topLevel) WidgetMetaTags.setPreferredTopLayer(props.topLevel)
 })
 
 const isInWidgetMod = useIsInWidgetMod()

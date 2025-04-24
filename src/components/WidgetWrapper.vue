@@ -1,5 +1,5 @@
 <template>
-  <WidgetRoot :autoScale :autoHeight :hangarOnly>
+  <WidgetRoot :autoScale :autoHeight :hangarOnly :topLevel>
     <WidgetStatusWrapper :requiredExtensions :battleOnly :hideSlotOnWarning>
       <slot></slot>
     </WidgetStatusWrapper>
@@ -16,6 +16,7 @@ const props = defineProps<{
   autoHeight?: boolean,
   hangarOnly?: boolean,
   battleOnly?: boolean,
+  topLevel?: boolean,
   requiredExtensions?: string[]
   hideSlotOnWarning?: boolean
 }>()
