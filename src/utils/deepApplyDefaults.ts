@@ -5,6 +5,16 @@ export function deepApplyDefaults<T>(target: Partial<T> = {}, defaults: T): T {
     return defaults as T;
   }
 
+  if (defaults instanceof Map) {
+    if (target instanceof Map) return target as T;
+    return defaults as T;
+  }
+
+  if (defaults instanceof Set) {
+    if (target instanceof Set) return target as T;
+    return defaults as T;
+  }
+
   const result = {} as any;
 
   for (const key in defaults) {
