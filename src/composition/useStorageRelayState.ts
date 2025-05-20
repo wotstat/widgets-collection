@@ -1,10 +1,10 @@
-import { WidgetsRelay } from "@/utils/widgetsRelay";
 import { useLocalStorage } from "@vueuse/core";
 import { computed, onUnmounted, watch } from "vue";
 import { useReactiveRelayState } from "./useReactiveRelayState";
 import { useQueryParams } from "./useQueryParams";
-import { useWidgetSdk } from "./widgetSdk";
+import { useWidgetSdk, WidgetsRelay } from "./widgetSdk";
 import { useRoute } from "vue-router";
+
 
 export function useStorageRelayState<T>(relay: WidgetsRelay, stateKey: string, defaultValue: T, options?: {
   preventClearData?: boolean

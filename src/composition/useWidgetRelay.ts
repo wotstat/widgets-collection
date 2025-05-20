@@ -1,9 +1,8 @@
-import { WidgetsRelay } from "@/utils/widgetsRelay";
 import { useRoute } from "vue-router";
 import { v4 as uuidv4 } from 'uuid';
 import { computed, MaybeRefOrGetter, shallowRef, toValue } from "vue";
 import { watch } from "vue";
-import { useReactiveState, useWidgetSdk } from "./widgetSdk";
+import { useReactiveState, useWidgetSdk, WidgetsRelay } from "./widgetSdk";
 
 export function useWidgetRelay(postfix: string) {
   const route = useRoute();
