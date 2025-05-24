@@ -10,6 +10,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/demo-widget', redirect: '/tools/debug' },
   { path: '/admin', component: () => import('./pages/admin/Index.vue') },
   { path: '/common-issues', component: () => import('./pages/commonIssues/Index.vue') },
+  { path: '/remote-control', component: () => import('./pages/remoteControl/Index.vue') },
 ]
 
 
