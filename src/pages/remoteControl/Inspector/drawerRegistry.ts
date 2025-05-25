@@ -21,9 +21,11 @@ import StringDrawer from './drawers/StringDrawer.vue'
 import OptionsDrawer from './drawers/OptionsDrawer.vue'
 import NumberDrawer from './drawers/NumberDrawer.vue'
 import CheckboxDrawer from './drawers/CheckboxDrawer.vue'
+import ColorDrawer from './drawers/ColorDrawer.vue'
 
 
 drawerRegistry.register('string', StringDrawer)
 drawerRegistry.register('number', NumberDrawer)
 drawerRegistry.register('boolean', CheckboxDrawer)
 drawerRegistry.register('select', OptionsDrawer)
+drawerRegistry.register('color', ColorDrawer)

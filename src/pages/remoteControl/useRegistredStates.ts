@@ -102,6 +102,7 @@ export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>, cha
     if (t === 'string') return { drawer: 'string', meta: {} }
     if (t === 'number') return { drawer: 'number', meta: {} }
     if (t === 'boolean') return { drawer: 'boolean', meta: {} }
+    if (t === 'color') return { drawer: 'color', meta: {} }
     if (typeof t === 'object' && t.type === 'select') return { drawer: 'select', meta: { variants: t.variants } }
     return { drawer: 'unknown', meta: {} }
   }

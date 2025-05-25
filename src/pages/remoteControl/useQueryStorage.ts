@@ -34,7 +34,7 @@ export function useQueryStorage<T>(
       const decoded = options.base64
         ? atob(raw)
         : decodeURIComponent(raw);
-      return JSON.parse(decoded) as T;
+      return (typeof defaultValue === 'string' ? decoded : JSON.parse(decoded)) as T;
     } catch {
       return null;
     }
@@ -42,7 +42,7 @@ export function useQueryStorage<T>(
 
   // Helper to encode to query string
   function encodeParam(val: T): string {
-    const json = JSON.stringify(val);
+    const json = typeof defaultValue === 'string' ? val as string : JSON.stringify(val);
     return options.base64 ? btoa(json) : encodeURIComponent(json);
   }
 

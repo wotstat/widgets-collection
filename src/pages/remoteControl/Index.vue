@@ -3,9 +3,9 @@
     <header class="overlay-color">
       <h1>WotStat Widgets RC</h1>
       <div class="spacer"></div>
-      <div class="line">
+      <div class="line" @mouseover="passwordInput!.type = 'text'" @mouseleave="passwordInput!.type = 'password'">
         <p>Remote key:</p>
-        <input type="text" v-model="privateKey">
+        <input type="password" ref="passwordInput" v-model="privateKey">
         <button @click="generateNewKey">
           <ReloadIcon />
         </button>
@@ -86,12 +86,15 @@ import CopyIcon from '@/assets/icons/copy.svg'
 
 const widgetIframe = ref<HTMLIFrameElement | null>(null);
 const resizeContainer = ref<HTMLDivElement | null>(null);
+const passwordInput = ref<HTMLInputElement | null>(null);
 
 const widgetUrl = useQueryStorage('widget-url', '', { base64: true })
 const privateKey = useQueryStorage('private-key', '');
 const containerWidth = useQueryStorage('width', 400);
 const containerHeight = useQueryStorage('height', 400);
 const scale = useQueryStorage('scale', 1);
+
+if (privateKey.value == '') generateNewKey();
 
 const rdc = useWidgetRemoteDebugConnection(widgetIframe);
 
@@ -195,12 +198,6 @@ const targetHeight = computed({
   }
 })
 
-
-
-
-// targetWidth.value = containerWidth.value;
-// targetHeight.value = containerHeight.value;
-
 </script>
 
 
@@ -208,7 +205,6 @@ const targetHeight = computed({
 $header-height: 50px;
 
 .page {
-  // background-color: #282828;
   background-color: #1d1d1d;
 }
 
@@ -221,7 +217,7 @@ header {
   display: flex;
   align-items: center;
   height: $header-height;
-  padding: 0 10px;
+  padding: 0 10px 0 13px;
 
   .spacer {
     flex: 1;
@@ -229,9 +225,15 @@ header {
 
   .line {
     display: flex;
+    height: 100%;
+    align-items: center;
 
     p {
       margin-right: 5px;
+    }
+
+    input {
+      text-decoration: dashed;
     }
 
     button {
@@ -246,6 +248,7 @@ header {
       background: field;
 
       width: 26.5px;
+      height: 26.5px;
       padding: 0;
 
       &:hover {
