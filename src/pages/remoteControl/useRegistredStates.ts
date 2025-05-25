@@ -37,11 +37,13 @@ export function useRegisteredStates(rdc: WatchSource<RemoteDebugConnection | nul
 
 export function useWidgetsRemote(channel: WatchSource<string>) {
   const remote = shallowRef<WidgetsRemote | null>(null)
+  const status = ref<'connected' | 'disconnected' | 'connecting'>('disconnected')
 
   watch(channel, channel => {
     remote.value?.dispose()
     if (channel) {
       remote.value = new WidgetsRemote({ channel })
+      remote.value.status.watch(s => status.value = s, { immediate: true })
     }
   }, { immediate: true })
 
@@ -50,7 +52,7 @@ export function useWidgetsRemote(channel: WatchSource<string>) {
     remote.value = null
   })
 
-  return remote
+  return { remote, status }
 }
 
 export function useWidgetsRemoteFullState(remote: WatchSource<WidgetsRemote | null>, onSync?: (key: string, value: any) => void) {
@@ -77,7 +79,7 @@ export function useWidgetsRemoteFullState(remote: WatchSource<WidgetsRemote | nu
 
 export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>, channel: WatchSource<string>) {
 
-  const widgetsRemote = useWidgetsRemote(channel)
+  const { remote: widgetsRemote, status: remoteStatus } = useWidgetsRemote(channel)
   const registered = useRegisteredStates(rdc)
   const remote = useWidgetsRemoteFullState(widgetsRemote, onRemoteSync)
   const overrides = ref(new Map<string, any>())
@@ -151,5 +153,5 @@ export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>, cha
     })
   })
 
-  return { state: registered, remote, overrides, inspector, patch }
+  return { state: registered, remote, overrides, inspector, patch, remoteStatus }
 }

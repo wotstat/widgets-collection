@@ -3,6 +3,8 @@
     <header class="overlay-color">
       <h1>WotStat Widgets RC</h1>
       <div class="spacer"></div>
+      <div class="changes-count" v-if="overrides.size > 0" :overridesCount="overrides.size"></div>
+      <div class="remote-status" :class="remoteStatus" :remoteStatus="remoteStatus"></div>
       <div class="line" @mouseover="passwordInput!.type = 'text'" @mouseleave="passwordInput!.type = 'password'">
         <p>Remote key:</p>
         <input type="password" ref="passwordInput" v-model="privateKey">
@@ -119,7 +121,7 @@ const iframeUrl = computed(() => {
   return widgetUrl.value;
 });
 
-const { overrides, inspector, patch, remote } = useInspector(rdc, () => channelKey.value ?? '');
+const { overrides, inspector, patch, remoteStatus } = useInspector(rdc, () => channelKey.value ?? '');
 
 function onChange({ path, value }: { path: string[]; value: unknown }) {
   patch(path.join('/'), value);
@@ -218,9 +220,60 @@ header {
   align-items: center;
   height: $header-height;
   padding: 0 10px 0 13px;
+  gap: 10px;
 
   .spacer {
     flex: 1;
+  }
+
+  .changes-count,
+  .remote-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+
+    &:hover {
+      position: relative;
+
+      &::after {
+        content: attr(remoteStatus);
+        position: absolute;
+        top: 20px;
+        left: -10px;
+        background-color: rgb(45, 45, 45);
+        border: solid 1px rgba(255, 255, 255, 0.2);
+        padding: 2px 5px;
+        border-radius: 5px;
+        font-size: 12px;
+        text-wrap: nowrap;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .changes-count {
+    background-color: #53a3ff;
+
+    &:hover {
+      &::after {
+        content: 'overrides: ' attr(overridesCount);
+      }
+    }
+  }
+
+  .remote-status {
+
+    &.connected {
+      background-color: #59d05d;
+    }
+
+    &.disconnected {
+      background-color: #f44336;
+    }
+
+    &.connecting {
+      background-color: #ff9800;
+    }
   }
 
   .line {
@@ -274,7 +327,6 @@ header {
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
-    margin-left: 10px;
     font-size: 14px;
     font-weight: 600;
 
@@ -425,7 +477,6 @@ header {
         max-height: 100%;
         overflow: hidden;
         resize: both;
-        // padding: 5px;
         border-radius: 10px;
 
         iframe {
