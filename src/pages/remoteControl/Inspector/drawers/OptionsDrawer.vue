@@ -1,7 +1,6 @@
 <template>
   <label>
     <span>{{ path[path.length - 1] }}</span>
-    {{ value }}
     <select v-model="value">
       <option v-for="variant in meta.meta.variants" :key="variant" :value="variant">
         {{ variant }}
@@ -11,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import { defineEmits } from 'vue'
 type Meta = { drawer: string; meta: { variants: string[]; } }
 
 const props = defineProps<{

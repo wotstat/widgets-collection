@@ -75,9 +75,9 @@ export function useWidgetsRemoteFullState(remote: WatchSource<WidgetsRemote | nu
 }
 
 
-export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>) {
+export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>, channel: WatchSource<string>) {
 
-  const widgetsRemote = useWidgetsRemote(() => 'demo')
+  const widgetsRemote = useWidgetsRemote(channel)
   const registered = useRegisteredStates(rdc)
   const remote = useWidgetsRemoteFullState(widgetsRemote, onRemoteSync)
   const overrides = ref(new Map<string, any>())
@@ -143,5 +143,12 @@ export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>) {
     toValue<RemoteDebugConnection | null>(rdc)?.setState(Object.fromEntries(diff.entries()))
   })
 
-  return { state: registered, overrides, inspector, patch }
+  watch(rdc, rdc => {
+    rdc?.isEnabled.watch(enabled => {
+      if (!enabled) return
+      rdc.setState(Object.fromEntries(targetValue.value.entries()))
+    })
+  })
+
+  return { state: registered, remote, overrides, inspector, patch }
 }
