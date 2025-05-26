@@ -48,32 +48,3 @@ const emits = defineEmits<{
   (e: 'change', data: { path: string[], value: unknown }): void
 }>()
 </script>
-
-<style>
-.section-header {
-  font-weight: bold;
-
-  /* margin-left: -5px; */
-  padding-left: calc(var(--level, 0) * 10px);
-  display: flex;
-  align-items: center;
-
-  cursor: pointer;
-  user-select: none;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 5px;
-  }
-
-  .icon {
-    height: 13px;
-    fill: currentColor;
-    padding: 0 5px;
-
-    &.collapsed {
-      transform: rotate(-90deg);
-    }
-  }
-}
-</style>

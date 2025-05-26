@@ -22,7 +22,15 @@
 
       <div class="inspector overlay-color">
         <h2>Inspector</h2>
-        <Inspector :data="inspector" @change="onChange" />
+        <div class="inspector-select" :class="currentInspector">
+          <button @click="currentInspector = 'remote'" v-if="remoteIsEnabled" class="remote">Remote</button>
+          <button @click="currentInspector = 'relay'" v-if="relayIsEnabled" class="relay">Relay</button>
+          <button @click="currentInspector = 'sdk'" v-if="sdkIsEnabled" class="sdk">Sdk</button>
+        </div>
+        <div class="inspector-content nice-scrollbar">
+          <Inspector :data="inspector" @change="onChange" v-show="currentInspector == 'remote'" />
+          <SdkInspector v-if="sdkDebug && sdkIsEnabled" :debug="sdkDebug" v-show="currentInspector == 'sdk'" />
+        </div>
       </div>
 
       <div class="preview">
@@ -35,12 +43,13 @@
           </div>
 
           <div class="container" v-if="widgetUrl" ref="resizeContainer">
-            <iframe :src="iframeUrl" frameborder="0" allowtransparency="true" ref="widgetIframe" :style="{
-              width: `${100 / scale}%`,
-              height: `${100 / scale}%`,
-              transform: `scale(${scale})`,
-              transformOrigin: 'top left'
-            }"></iframe>
+            <iframe :src="iframeUrl" :key="iframeUrl" frameborder="0" allowtransparency="true" ref="widgetIframe"
+              :style="{
+                width: `${100 / scale}%`,
+                height: `${100 / scale}%`,
+                transform: `scale(${scale})`,
+                transformOrigin: 'top left'
+              }"></iframe>
           </div>
 
           <p class="info-text" v-if="!widgetUrl">Введите URL до виджета которым хотите управлять. Это не обязательно
@@ -75,30 +84,45 @@
 
 
 <script setup lang="ts">
-import { computedAsync, computedWithControl, useDebounce, useDebounceFn, useElementSize, useLocalStorage, useResizeObserver } from '@vueuse/core';
-import { computed, nextTick, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
-import { RemoteDebugConnection, useWidgetRemoteDebugConnection } from "@/composition/widgetSdk";
-import { useInspector, useRegisteredStates } from './useRegistredStates';
+import { computedAsync, useDebounce, useDebounceFn, useElementSize, useEventListener, useResizeObserver, watchOnce } from '@vueuse/core';
+import { computed, ref, watchEffect } from 'vue';
+import { useWidgetRemoteDebugConnection, useWidgetSdkDebugConnection } from "@/composition/widgetSdk";
+import { useInspector } from './useRegistredStates';
 import Inspector from './Inspector/Inspector.vue';
-import { Entry } from './Inspector/tree';
 import { useQueryStorage } from './useQueryStorage';
 import ReloadIcon from '@/assets/icons/reload.svg'
 import CopyIcon from '@/assets/icons/copy.svg'
+import SdkInspector from './SdkInspector/SdkInspector.vue';
 
 
 const widgetIframe = ref<HTMLIFrameElement | null>(null);
 const resizeContainer = ref<HTMLDivElement | null>(null);
 const passwordInput = ref<HTMLInputElement | null>(null);
 
-const widgetUrl = useQueryStorage('widget-url', '', { base64: true })
+const widgetUrl = useQueryStorage('widget-url', '', { base64: true, history: 'push', debounceMs: 500 })
 const privateKey = useQueryStorage('private-key', '');
 const containerWidth = useQueryStorage('width', 400);
 const containerHeight = useQueryStorage('height', 400);
 const scale = useQueryStorage('scale', 1);
 
+const currentInspector = ref<'remote' | 'sdk' | 'relay'>('remote');
+
 if (privateKey.value == '') generateNewKey();
 
-const rdc = useWidgetRemoteDebugConnection(widgetIframe);
+const { debug: remoteDebug, isEnabled: remoteIsEnabled } = useWidgetRemoteDebugConnection(widgetIframe);
+const { debug: sdkDebug, isEnabled: sdkIsEnabled } = useWidgetSdkDebugConnection(widgetIframe)
+
+const relayIsEnabled = ref(false); // Placeholder for relay connection, if needed
+
+watchEffect(() => {
+  const tabs = [remoteIsEnabled, relayIsEnabled, sdkIsEnabled]
+  const targets = ['remote', 'relay', 'sdk'] as const;
+
+  if (!tabs[targets.indexOf(currentInspector.value)].value) {
+    currentInspector.value = targets[tabs.findIndex(tab => tab.value)] ?? 'remote';
+  }
+})
+
 
 const channelKey = computedAsync(async () => {
   const encoder = new TextEncoder();
@@ -121,7 +145,7 @@ const iframeUrl = computed(() => {
   return widgetUrl.value;
 });
 
-const { overrides, inspector, patch, remoteStatus } = useInspector(rdc, () => channelKey.value ?? '');
+const { overrides, inspector, patch, remoteStatus } = useInspector(remoteDebug, () => channelKey.value ?? '');
 
 function onChange({ path, value }: { path: string[]; value: unknown }) {
   patch(path.join('/'), value);
@@ -199,6 +223,11 @@ const targetHeight = computed({
     if (resizeContainer.value) resizeContainer.value.style.height = `${value * scale.value}px`;
   }
 })
+
+useEventListener(window, 'popstate', () => {
+  targetWidth.value = containerWidth.value / scale.value;
+  targetHeight.value = containerHeight.value / scale.value;
+});
 
 </script>
 
@@ -354,11 +383,46 @@ header {
     padding: 10px;
     border-radius: 15px;
     margin: 10px;
+    display: flex;
+    flex-direction: column;
 
     h2 {
       font-size: 20px;
       margin-bottom: 10px;
     }
+
+    .inspector-select {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+
+      button {
+        flex: 1;
+        border: none;
+        border-radius: 8px;
+        height: 30px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      &.sdk>.sdk,
+      &.remote>.remote,
+      &.relay>.relay {
+        background-color: #4c8cff;
+        color: white;
+        flex: 2;
+        font-weight: 600;
+      }
+    }
+
+    .inspector-content {
+      margin: 0 -5px;
+      padding: 0 5px;
+      overflow-y: auto;
+      overflow-x: visible;
+      min-height: 0;
+    }
+
   }
 
   .preview {

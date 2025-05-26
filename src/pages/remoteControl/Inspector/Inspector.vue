@@ -1,5 +1,6 @@
 <template>
-  <InspectorNode :node="treeRoot" :path="[]" @change="t => emits('change', { path: t.path, value: t.value })" />
+  <InspectorNode :node="treeRoot" :path="[]" @change="t => emits('change', { path: t.path, value: t.value })"
+    class="rc-inspector-style" />
 </template>
 
 <script setup lang="ts">
@@ -18,3 +19,7 @@ const emits = defineEmits<{
 }>()
 
 </script>
+
+<style lang="scss">
+@use '../inspectorStyle.scss';
+</style>

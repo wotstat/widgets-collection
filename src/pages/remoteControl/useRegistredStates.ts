@@ -143,6 +143,7 @@ export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>, cha
       }
     }
 
+    if (diff.size === 0) return
     toValue<RemoteDebugConnection | null>(rdc)?.setState(Object.fromEntries(diff.entries()))
   })
 

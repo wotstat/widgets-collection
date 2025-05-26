@@ -16,27 +16,3 @@ const props = defineProps<{
 
 const value = defineModel<boolean>('value')
 </script>
-
-<style lang="scss" scoped>
-label {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 3px;
-  border-radius: 5px;
-
-  padding-left: calc(24px + var(--level, 0) * 10px);
-
-  span {
-    flex: 1;
-  }
-
-  input {
-    cursor: pointer;
-  }
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-}
-</style>

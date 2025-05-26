@@ -22,7 +22,7 @@ const props = defineProps<{
 const value = defineModel<string>('value')
 </script>
 
-<style lang="scss" scoped>
+<!-- <style lang="scss" scoped>
 label {
   display: flex;
   gap: 0.5rem;
@@ -48,4 +48,4 @@ label {
     background-color: rgba(255, 255, 255, 0.1);
   }
 }
-</style>
+</style> -->
