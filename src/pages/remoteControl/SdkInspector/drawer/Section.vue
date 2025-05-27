@@ -3,6 +3,7 @@
     <div class="section-header" @click="collapsed = !collapsed">
       <ArrowDown class="icon" :class="{ 'collapsed': collapsed }" />
       <p> {{ title }}</p>
+      <slot name="header"></slot>
     </div>
 
     <div class="content" v-show="!collapsed">
@@ -30,4 +31,10 @@ const collapsed = useLocalStorage(() => `inspector-section-${path}/${props.title
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.section-header {
+  p {
+    flex: 1;
+  }
+}
+</style>

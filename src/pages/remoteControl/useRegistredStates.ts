@@ -1,6 +1,6 @@
 import { RemoteDebugConnection, useWidgetRemoteDebugConnection, WidgetsRemote } from "@/composition/widgetSdk";
-import { computed, onUnmounted, ref, shallowRef, toValue, triggerRef, watch, watchEffect, WatchSource } from "vue";
-import { Entry } from "./Inspector/tree";
+import { computed, MaybeRefOrGetter, onUnmounted, ref, shallowRef, toValue, triggerRef, watch, watchEffect, WatchSource } from "vue";
+import { Entry } from "./inspector/tree";
 
 
 export type PossibleValues = NonNullable<ReturnType<WidgetsRemote['fullState']['value']['get']>>
@@ -77,7 +77,7 @@ export function useWidgetsRemoteFullState(remote: WatchSource<WidgetsRemote | nu
 }
 
 
-export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>, channel: WatchSource<string>) {
+export function useRemoteInspector(rdc: WatchSource<RemoteDebugConnection | null>, channel: WatchSource<string>, privateKey: MaybeRefOrGetter<string>) {
 
   const { remote: widgetsRemote, status: remoteStatus } = useWidgetsRemote(channel)
   const registered = useRegisteredStates(rdc)
@@ -154,5 +154,26 @@ export function useInspector(rdc: WatchSource<RemoteDebugConnection | null>, cha
     })
   })
 
-  return { state: registered, remote, overrides, inspector, patch, remoteStatus }
+  const sending = ref(false);
+  async function publish() {
+    if (sending.value) return;
+    sending.value = true;
+
+    try {
+      const response = await fetch(`https://widgets-remote.wotstat.info/state?private-key=${toValue(privateKey)}`, {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(overrides.value.entries()))
+      })
+
+      const data = await response.json();
+    }
+    catch (error) {
+      alert('Error sending data: ' + error);
+      console.error('Error sending data:', error);
+    }
+
+    sending.value = false;
+  }
+
+  return { state: registered, remote, overrides, inspector, patch, remoteStatus, sending, publish }
 }

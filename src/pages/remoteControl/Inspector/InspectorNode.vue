@@ -1,5 +1,5 @@
 <template>
-  <div class="inspector-node" :style="{ ['--level']: `${path.length - 1}` }">
+  <div class="inspector-node" :style="{ ['--level']: `${offset + path.length - 1}` }">
 
     <div class="section-header" v-if="hasChildren && path.length != 0" @click="collapsed = !collapsed">
       <ArrowDown class="icon" :class="{ 'collapsed': collapsed }" />
@@ -9,7 +9,7 @@
 
     <div class="content" v-show="!collapsed">
       <template v-if="hasChildren">
-        <InspectorNode v-for="child in childArray" :key="child.key" :node="child" :path="[...path, child.key]"
+        <InspectorNode v-for="child in childArray" :key="child.key" :node="child" :path="[...path, child.key]" :offset
           @change="t => emits('change', { path: t.path, value: t.value })" />
       </template>
       <template v-else>
@@ -30,6 +30,7 @@ import ArrowDown from '@/assets/icons/arrow-down.svg'
 const props = defineProps<{
   node: TreeNode
   path: string[]
+  offset: number
 }>()
 
 const collapsed = ref(false)

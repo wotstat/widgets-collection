@@ -1,6 +1,6 @@
 <template>
-  <InspectorNode :node="treeRoot" :path="[]" @change="t => emits('change', { path: t.path, value: t.value })"
-    class="rc-inspector-style" />
+  <InspectorNode :node="treeRoot" :path="[]" :offset="offset ?? 0"
+    @change="t => emits('change', { path: t.path, value: t.value })" class="rc-inspector-style" />
 </template>
 
 <script setup lang="ts">
@@ -9,7 +9,7 @@ import { buildTree, type Entry } from './tree'
 import InspectorNode from './InspectorNode.vue';
 
 
-const props = defineProps<{ data: Record<string, Entry> }>()
+const props = defineProps<{ data: Record<string, Entry>, offset?: number }>()
 
 const treeRoot = computed(() => buildTree(props.data))
 

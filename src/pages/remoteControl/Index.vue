@@ -28,8 +28,11 @@
           <button @click="currentInspector = 'sdk'" v-if="sdkIsEnabled" class="sdk">Sdk</button>
         </div>
         <div class="inspector-content nice-scrollbar">
-          <Inspector :data="inspector" @change="onChange" v-show="currentInspector == 'remote'" />
+          <RemoteInspector v-if="remoteDebug && remoteIsEnabled" :patch="patch" :data="inspector"
+            v-show="currentInspector == 'remote'" />
           <SdkInspector v-if="sdkDebug && sdkIsEnabled" :debug="sdkDebug" v-show="currentInspector == 'sdk'" />
+          <RelayInspector v-if="relayDebug && relayIsEnabled" :debug="relayDebug"
+            v-show="currentInspector == 'relay'" />
         </div>
       </div>
 
@@ -86,13 +89,14 @@
 <script setup lang="ts">
 import { computedAsync, useDebounce, useDebounceFn, useElementSize, useEventListener, useResizeObserver, watchOnce } from '@vueuse/core';
 import { computed, ref, watchEffect } from 'vue';
-import { useWidgetRemoteDebugConnection, useWidgetSdkDebugConnection } from "@/composition/widgetSdk";
-import { useInspector } from './useRegistredStates';
-import Inspector from './Inspector/Inspector.vue';
+import { useWidgetRelayDebugConnection, useWidgetRemoteDebugConnection, useWidgetSdkDebugConnection } from "@/composition/widgetSdk";
+import { useRemoteInspector } from './useRegistredStates';
 import { useQueryStorage } from './useQueryStorage';
 import ReloadIcon from '@/assets/icons/reload.svg'
 import CopyIcon from '@/assets/icons/copy.svg'
-import SdkInspector from './SdkInspector/SdkInspector.vue';
+import SdkInspector from './sdkInspector/SdkInspector.vue';
+import RemoteInspector from './RemoteInspector.vue';
+import RelayInspector from './RelayInspector.vue';
 
 
 const widgetIframe = ref<HTMLIFrameElement | null>(null);
@@ -107,12 +111,10 @@ const scale = useQueryStorage('scale', 1);
 
 const currentInspector = ref<'remote' | 'sdk' | 'relay'>('remote');
 
-if (privateKey.value == '') generateNewKey();
 
 const { debug: remoteDebug, isEnabled: remoteIsEnabled } = useWidgetRemoteDebugConnection(widgetIframe);
 const { debug: sdkDebug, isEnabled: sdkIsEnabled } = useWidgetSdkDebugConnection(widgetIframe)
-
-const relayIsEnabled = ref(false); // Placeholder for relay connection, if needed
+const { debug: relayDebug, isEnabled: relayIsEnabled } = useWidgetRelayDebugConnection(widgetIframe)
 
 watchEffect(() => {
   const tabs = [remoteIsEnabled, relayIsEnabled, sdkIsEnabled]
@@ -145,33 +147,10 @@ const iframeUrl = computed(() => {
   return widgetUrl.value;
 });
 
-const { overrides, inspector, patch, remoteStatus } = useInspector(remoteDebug, () => channelKey.value ?? '');
+const { overrides, inspector, patch, sending, publish, remoteStatus } = useRemoteInspector(remoteDebug, () => channelKey.value ?? '', () => privateKey.value ?? '');
 
-function onChange({ path, value }: { path: string[]; value: unknown }) {
-  patch(path.join('/'), value);
-}
 
-const sending = ref(false);
-async function publish() {
-  if (sending.value) return;
-  sending.value = true;
-
-  try {
-    const response = await fetch(`https://widgets-remote.wotstat.info/state?private-key=${privateKey.value}`, {
-      method: 'POST',
-      body: JSON.stringify(Object.fromEntries(overrides.value.entries()))
-    })
-
-    const data = await response.json();
-  }
-  catch (error) {
-    alert('Error sending data: ' + error);
-    console.error('Error sending data:', error);
-  }
-
-  sending.value = false;
-}
-
+if (privateKey.value == '') generateNewKey();
 function generateNewKey() {
   privateKey.value = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 6);
 }
@@ -403,6 +382,7 @@ header {
         height: 30px;
         cursor: pointer;
         transition: all 0.2s ease;
+        background-color: field;
       }
 
       &.sdk>.sdk,
