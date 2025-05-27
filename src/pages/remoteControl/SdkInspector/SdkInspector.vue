@@ -1,8 +1,8 @@
 <template>
   <div class="rc-inspector-style">
     <label class="no-ident">
-      <span>Connected</span>
-      <input type="checkbox" v-model="connected">
+      <span>Emulate data-provider</span>
+      <input type="checkbox" v-model="enabled">
     </label>
     <br>
 
@@ -106,7 +106,7 @@
 
 <script setup lang="ts">
 import { SdkDebugConnection } from '@/composition/widgetSdk';
-import { computed, onMounted, provide, ref, toRaw, watch, watchEffect } from 'vue';
+import { computed, provide, ref, watch } from 'vue';
 import { useEventListener, useTimestamp } from '@vueuse/core';
 import { stateMapKey } from './drawer/useSetStateMap';
 import Section from './drawer/Section.vue';
@@ -124,7 +124,7 @@ const { debug } = defineProps<{
 const mapState = ref<Map<string, any>>(new Map());
 provide(stateMapKey, mapState);
 
-const connected = ref(true);
+const enabled = ref(true);
 const passKeyboard = ref(true);
 const battleMode = ref('REGULAR');
 const vehicle = ref<typeof vehicles[number]>('60TP');
@@ -208,12 +208,12 @@ const totalState = computed(() => ({
 }))
 
 
-watch(connected, v => {
+watch(enabled, v => {
   if (v) {
-    debug.connect()
+    debug.enable()
     debug.sendInit(totalState.value)
   } else {
-    debug.disconnect()
+    debug.disable()
   }
 }, { immediate: true });
 

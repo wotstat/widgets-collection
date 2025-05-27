@@ -23,15 +23,15 @@
       <div class="inspector overlay-color">
         <h2>Inspector</h2>
         <div class="inspector-select" :class="currentInspector">
-          <button @click="currentInspector = 'remote'" v-if="remoteIsEnabled" class="remote">Remote</button>
-          <button @click="currentInspector = 'relay'" v-if="relayIsEnabled" class="relay">Relay</button>
-          <button @click="currentInspector = 'sdk'" v-if="sdkIsEnabled" class="sdk">Sdk</button>
+          <button @click="currentInspector = 'remote'" v-if="remoteIsConnected" class="remote">Remote</button>
+          <button @click="currentInspector = 'relay'" v-if="relayIsConnected" class="relay">Relay</button>
+          <button @click="currentInspector = 'sdk'" v-if="sdkIsConnected" class="sdk">Sdk</button>
         </div>
         <div class="inspector-content nice-scrollbar">
-          <RemoteInspector v-if="remoteDebug && remoteIsEnabled" :patch="patch" :data="inspector"
+          <RemoteInspector v-if="remoteDebug && remoteIsConnected" :patch="patch" :data="inspector"
             v-show="currentInspector == 'remote'" />
-          <SdkInspector v-if="sdkDebug && sdkIsEnabled" :debug="sdkDebug" v-show="currentInspector == 'sdk'" />
-          <RelayInspector v-if="relayDebug && relayIsEnabled" :debug="relayDebug"
+          <SdkInspector v-if="sdkDebug && sdkIsConnected" :debug="sdkDebug" v-show="currentInspector == 'sdk'" />
+          <RelayInspector v-if="relayDebug && relayIsConnected" :debug="relayDebug"
             v-show="currentInspector == 'relay'" />
         </div>
       </div>
@@ -76,7 +76,7 @@
               <input type="text" inputmode="numeric" placeholder="Height" v-model.number="targetHeight" />
             </div>
 
-            <div class="empty" :style="{ width: '65px' }"></div>
+            <!-- <div class="empty" :style="{ width: '65px' }"></div> -->
           </div>
         </div>
       </div>
@@ -112,12 +112,12 @@ const scale = useQueryStorage('scale', 1);
 const currentInspector = ref<'remote' | 'sdk' | 'relay'>('remote');
 
 
-const { debug: remoteDebug, isEnabled: remoteIsEnabled } = useWidgetRemoteDebugConnection(widgetIframe);
-const { debug: sdkDebug, isEnabled: sdkIsEnabled } = useWidgetSdkDebugConnection(widgetIframe)
-const { debug: relayDebug, isEnabled: relayIsEnabled } = useWidgetRelayDebugConnection(widgetIframe)
+const { debug: remoteDebug, isConnected: remoteIsConnected } = useWidgetRemoteDebugConnection(widgetIframe);
+const { debug: sdkDebug, isConnected: sdkIsConnected } = useWidgetSdkDebugConnection(widgetIframe)
+const { debug: relayDebug, isConnected: relayIsConnected } = useWidgetRelayDebugConnection(widgetIframe)
 
 watchEffect(() => {
-  const tabs = [remoteIsEnabled, relayIsEnabled, sdkIsEnabled]
+  const tabs = [remoteIsConnected, relayIsConnected, sdkIsConnected]
   const targets = ['remote', 'relay', 'sdk'] as const;
 
   if (!tabs[targets.indexOf(currentInspector.value)].value) {

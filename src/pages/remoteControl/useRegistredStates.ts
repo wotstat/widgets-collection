@@ -148,8 +148,8 @@ export function useRemoteInspector(rdc: WatchSource<RemoteDebugConnection | null
   })
 
   watch(rdc, rdc => {
-    rdc?.isEnabled.watch(enabled => {
-      if (!enabled) return
+    rdc?.isConnected.watch(connected => {
+      if (!connected) return
       rdc.setState(Object.fromEntries(targetValue.value.entries()))
     })
   })

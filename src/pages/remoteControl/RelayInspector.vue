@@ -2,8 +2,8 @@
 
   <div class="rc-inspector-style">
     <label class="no-ident">
-      <span>Connected</span>
-      <input type="checkbox" v-model="connected">
+      <span>Emulate relay</span>
+      <input type="checkbox" v-model="enabled">
     </label>
     <br>
 
@@ -30,8 +30,7 @@ import { ref, shallowRef, toRaw, watch, watchEffect } from 'vue';
 import Section from './sdkInspector/drawer/Section.vue';
 import { Entry } from './inspector/tree';
 
-
-const connected = ref(true);
+const enabled = ref(true);
 
 const { debug } = defineProps<{
   debug: RelayDebugConnection
@@ -43,14 +42,14 @@ watchEffect(() => shallowDebug.value = debug);
 
 const remoteConnections = ref(new Map<string, Map<string, any>>());
 
-watch(connected, v => {
+watch(enabled, v => {
   if (v) {
-    debug.connect()
+    debug.enable()
 
     for (const [uuid, state] of remoteConnections.value)
       for (const [key, value] of state) debug.sendState(uuid, key, toRaw(value));
   }
-  else debug.disconnect();
+  else debug.disable();
 }, { immediate: true });
 
 function onChange({ path, value }: { path: string[]; value: unknown }) {
