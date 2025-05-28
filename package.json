@@ -9,31 +9,31 @@
     "preview": "vite preview --host"
   },
   "dependencies": {
-    "@clickhouse/client-web": "^1.11.0",
-    "@vueuse/core": "^13.0.0",
-    "jsondiffpatch": "^0.6.2",
-    "sass": "^1.86.0",
+    "@clickhouse/client-web": "^1.11.1",
+    "@vueuse/core": "^13.3.0",
+    "jsondiffpatch": "^0.7.3",
+    "sass": "^1.89.0",
     "uuid": "^11.1.0",
-    "vite-plugin-vue-devtools": "^7.7.2",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0",
+    "vite-plugin-vue-devtools": "^7.7.6",
+    "vue": "^3.5.15",
+    "vue-router": "^4.5.1",
     "vue3-colorpicker": "^2.3.0",
-    "wotstat-widgets-sdk": "^1.2.0"
+    "wotstat-widgets-sdk": "^2.0.0"
   },
   "devDependencies": {
-    "@mdit/plugin-alert": "^0.16.0",
-    "@mdit/plugin-align": "^0.16.0",
-    "@mdit/plugin-attrs": "^0.16.7",
-    "@mdit/plugin-container": "^0.16.0",
-    "@types/node": "^22.13.13",
+    "@mdit/plugin-alert": "^0.20.0",
+    "@mdit/plugin-align": "^0.20.0",
+    "@mdit/plugin-attrs": "^0.20.0",
+    "@mdit/plugin-container": "^0.20.0",
+    "@types/node": "^22.15.23",
     "@types/uuid": "^10.0.0",
     "@types/yandex-metrika-tag": "^2.0.7",
     "@types/tinycolor2": "^1.4.6",
-    "@vitejs/plugin-vue": "^5.2.3",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.3",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
     "vite-plugin-markdown": "^2.2.0",
     "vite-svg-loader": "^5.1.0",
-    "vue-tsc": "^2.2.8"
+    "vue-tsc": "^2.2.10"
   }
 }

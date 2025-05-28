@@ -29,7 +29,7 @@ export default defineConfig({
       })
         .use(alert)
         .use(attrs)
-        .use(container)
+        .use(container, { name: 'name' })
         .use(align)
     }),
     releaseNotesPlugin()
