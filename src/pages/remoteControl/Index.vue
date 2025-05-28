@@ -29,7 +29,7 @@
         </div>
         <div class="inspector-content nice-scrollbar">
           <RemoteInspector v-if="remoteDebug && remoteIsConnected" :patch="patch" :data="inspector"
-            v-show="currentInspector == 'remote'" />
+            v-show="currentInspector == 'remote'" @change:over-element="t => hoveredPath = t" />
           <SdkInspector v-if="sdkDebug && sdkIsConnected" :debug="sdkDebug" v-show="currentInspector == 'sdk'" />
           <RelayInspector v-if="relayDebug && relayIsConnected" :debug="relayDebug"
             v-show="currentInspector == 'relay'" />
@@ -53,6 +53,13 @@
                 transform: `scale(${scale})`,
                 transformOrigin: 'top left'
               }"></iframe>
+
+            <div class="bbox-rect" v-if="hoveredBbox" :style="{
+              left: `${hoveredBbox.x * scale}px`,
+              top: `${hoveredBbox.y * scale}px`,
+              width: `${hoveredBbox.width * scale}px`,
+              height: `${hoveredBbox.height * scale}px`
+            }"></div>
           </div>
 
           <p class="info-text" v-if="!widgetUrl">Введите URL до виджета которым хотите управлять. Это не обязательно
@@ -112,9 +119,16 @@ const scale = useQueryStorage('scale', 1);
 const currentInspector = ref<'remote' | 'sdk' | 'relay'>('remote');
 
 
-const { debug: remoteDebug, isConnected: remoteIsConnected } = useWidgetRemoteDebugConnection(widgetIframe);
+const { debug: remoteDebug, isConnected: remoteIsConnected, bbox } = useWidgetRemoteDebugConnection(widgetIframe);
 const { debug: sdkDebug, isConnected: sdkIsConnected } = useWidgetSdkDebugConnection(widgetIframe)
 const { debug: relayDebug, isConnected: relayIsConnected } = useWidgetRelayDebugConnection(widgetIframe)
+
+const hoveredPath = ref<string | null>(null);
+const hoveredBbox = computed(() => {
+  if (!hoveredPath.value || !remoteDebug.value) return null;
+  // const bbox = remoteDebug.value.
+  return bbox.value?.get(hoveredPath.value) ?? null;
+})
 
 watchEffect(() => {
   const tabs = [remoteIsConnected, relayIsConnected, sdkIsConnected]
@@ -522,6 +536,15 @@ header {
         overflow: hidden;
         resize: both;
         border-radius: 10px;
+
+        .bbox-rect {
+          position: absolute;
+          border: solid 2px #4c8cff;
+          border-radius: 5px;
+          pointer-events: none;
+          user-select: none;
+          z-index: 1000;
+        }
 
         iframe {
           width: 100%;

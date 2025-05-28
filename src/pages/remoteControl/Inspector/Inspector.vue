@@ -1,6 +1,7 @@
 <template>
   <InspectorNode :node="treeRoot" :path="[]" :offset="offset ?? 0"
-    @change="t => emits('change', { path: t.path, value: t.value })" class="rc-inspector-style" />
+    @change="t => emits('change', { path: t.path, value: t.value })" @mouse-enter="t => emits('mouseEnter', t)"
+    @mouse-leave="t => emits('mouseLeave', t)" class="rc-inspector-style" />
 </template>
 
 <script setup lang="ts">
@@ -16,6 +17,8 @@ const treeRoot = computed(() => buildTree(props.data))
 
 const emits = defineEmits<{
   (e: 'change', data: { path: string[], value: unknown }): void
+  (e: 'mouseEnter', path: string[]): void
+  (e: 'mouseLeave', path: string[]): void
 }>()
 
 </script>

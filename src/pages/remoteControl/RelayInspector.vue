@@ -9,7 +9,9 @@
 
     <Section :title="`Remote ${key.replace(/^[0,-]*/, '')}`" v-for="([key, value], index) in remoteConnections">
       <template #header>
-        <button @click.stop="remove(key)" class="remove-btn">-</button>
+        <button @click.stop="remove(key)" class="remove-btn">
+          <DisconnectIcon />
+        </button>
       </template>
 
       <Inspector :data="inspectorForState(value)" @change="t => onChange({ path: [key, ...t.path], value: t.value })"
@@ -29,6 +31,8 @@ import Inspector from './inspector/Inspector.vue';
 import { ref, shallowRef, toRaw, watch, watchEffect } from 'vue';
 import Section from './sdkInspector/drawer/Section.vue';
 import { Entry } from './inspector/tree';
+
+import DisconnectIcon from '@/assets/icons/x.svg'
 
 const enabled = ref(true);
 
@@ -169,6 +173,21 @@ function inspectorForState(value: Map<string, any>) {
 
 .remove-btn {
   margin-right: 3px;
+  background-color: transparent;
+  border: none;
+  padding: 5px;
+
+  svg {
+    display: block;
+    width: 15px;
+    height: 15px;
+    color: rgb(226, 226, 226);
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
 }
 
 button {
