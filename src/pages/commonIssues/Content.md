@@ -23,13 +23,15 @@
 **Пример для Касперского:**
 ![Касперский](./kaspersky.png){.medium .center}
 
+### Visual C++ 2015–2019 Redistributable
+На некоторых сборках Windows не предустановлены необходимые компоненты Visual C++. Попробуйте установить [Visual C++ 2015–2019 Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe){target=_blank}. Ссылка взята с официального сайта [Microsoft](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version){target=_blank}
 
 ### Discord
 Одному из пользователей помогло закрытие Discord на момент запуска игры. Это сомнительный способ, но можете попробовать 
 
-
+<!-- 
 ### Распространяемые пакеты Visual C++
-Возможно, у вас урезанная ОС с вырезанными компонентами Visual C++. Скачайте их с сайта Microsoft: [microsoft.com/ru-ru/download/details.aspx?id=40784](https://www.microsoft.com/ru-ru/download/details.aspx?id=40784){target=_blank}. Обычно они предустановлены в системе.
+Возможно, у вас урезанная ОС с вырезанными компонентами Visual C++. Скачайте их с сайта Microsoft: [microsoft.com/ru-ru/download/details.aspx?id=40784](https://www.microsoft.com/ru-ru/download/details.aspx?id=40784){target=_blank}. Обычно они предустановлены в системе. -->
 
 ### Другие решение
 Если вы нашли другое решение, пожалуйста, сообщите нам, чтобы мы могли добавить его в этот раздел
