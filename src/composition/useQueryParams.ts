@@ -55,7 +55,11 @@ export function useQueryParams<T extends PropsOptions>(values: T): ExtractPropTy
 
       return [key, undefined]
     })
-    .map(([key, value]) => [key, typeof value == 'object' && 'valueOf' in value && typeof value.valueOf === 'function' ? value.valueOf() : value])
+    .map(([key, value]) => {
+      if (value instanceof Date) return [key, value];
+
+      return [key, typeof value == 'object' && 'valueOf' in value && typeof value.valueOf === 'function' ? value.valueOf() : value];
+    })
   ) as ExtractPropTypes<T>
 }
 
@@ -87,4 +91,31 @@ export function NumberDefault(defaultValue: number = 0) {
     type: Number,
     default: defaultValue
   }
+}
+
+
+export function DateTimeDefault(defaultValue: Date = new Date()):
+  (value: string | undefined) => Date {
+  return value => {
+    if (value === undefined) {
+      return defaultValue;
+    }
+
+    try {
+      const numValue = Number(value);
+      if (!isNaN(numValue)) {
+        return new Date(numValue);
+      }
+
+      if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [year, month, day] = value.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      }
+
+      const date = new Date(value);
+      return isNaN(date.getTime()) ? defaultValue : date;
+    } catch (err) {
+      return defaultValue;
+    }
+  };
 }

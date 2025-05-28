@@ -9,7 +9,7 @@
 import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
 import Content from './content/Index.vue';
 import { watch } from 'vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
+import { DateTimeDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { ContainersData, SUPPORTED_ITEMS } from './define.widget';
@@ -20,7 +20,7 @@ import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
 const { delay, sync, syncDate } = useQueryParams({
   delay: oneOf(['disable', 'short', 'long'] as const, 'long'),
   sync: Boolean,
-  syncDate: String
+  syncDate: DateTimeDefault(new Date(2020, 0, 1))
 })
 
 const data = useWidgetStorage<ContainersData>('mainStats', {
@@ -165,7 +165,7 @@ watch(playerName, async player => {
         data as (
             select *
             from Event_OnLootboxOpen
-            where playerName = '${playerName.value}' and dateTime > '${syncDate}'
+            where playerName = '${playerName.value}' and dateTime > ${syncDate.getTime() / 1000}
         ),
         containers as (
             select containerTag, toUInt32(count()) as count
