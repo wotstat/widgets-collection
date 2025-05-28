@@ -1,4 +1,4 @@
-import { WidgetsRelay } from "@/utils/widgetsRelay";
+import { WidgetsRelay } from "./widgetSdk";
 import { computed, MaybeRefOrGetter, ref, shallowRef, toValue, triggerRef, watch } from "vue";
 
 export const passive = 'passive-reactive-relay-state' as const
@@ -19,9 +19,10 @@ export function useReactiveRelayState<T>(relay: MaybeRefOrGetter<WidgetsRelay>, 
   }
 
   let unsubscribe: (() => void) | undefined
+
   watch(relayState, state => {
     unsubscribe?.()
-    unsubscribe = state.subscribe((uuid, newValue) => {
+    unsubscribe = state.watch((uuid, newValue) => {
       if (newValue === undefined) all.value.delete(uuid)
       else all.value.set(uuid, structuredClone(newValue))
       triggerRef(all)
