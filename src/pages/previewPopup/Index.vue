@@ -54,6 +54,7 @@ import Color from './settings/Color.vue';
 import String from './settings/String.vue';
 import MultiSlot from './settings/MultiSlot.vue';
 import RandomString from './settings/RandomString.vue';
+import DatePicker from './settings/DatePicker.vue';
 import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
@@ -220,6 +221,15 @@ const settingsValues = computedWithControl(currentOptions, () => {
       return {
         target: param.target, value,
         component: defineComponent(() => () => renderIfVisible(param, h(MultiSlot, { i18n, label: param.label, min: param.min, max: param.max, slots: param.slots, ...vModel(value) })))
+      }
+    }
+
+    if (param.type == 'date-picker') {
+      const defaultDate = param.default ?? new Date().toISOString().slice(0, 10)
+      const value = useWidgetPreviewStorage(param.target, defaultDate)
+      return {
+        target: param.target, value,
+        component: defineComponent(() => () => renderIfVisible(param, h(DatePicker, { label: t(param.label), ...vModel(value) })))
       }
     }
 

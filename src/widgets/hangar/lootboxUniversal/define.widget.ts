@@ -33,9 +33,7 @@ export default defineWidget({
   description: "Подводит итог выпавших ресурсов из коробок",
   params: [
     { type: 'checkbox', target: 'sync', label: 'Синхронизировать с сайтом', default: true },
-    // { type: 'checkbox', target: 'hide-l1', label: 'Скрыть коробки', default: false },
-    // { type: 'checkbox', target: 'hide-l2', label: 'Скрыть ресурсы', default: false },
-    // { type: 'checkbox', target: 'hide-l3', label: 'Скрыть танки', default: false },
+    { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2025-01-01', visible: ctx => ctx['sync'] },
     { type: 'separator' },
     {
       type: 'select', target: 'delay', label: 'Задержка', variants: [

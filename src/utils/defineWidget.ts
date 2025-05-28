@@ -63,6 +63,13 @@ export interface RandomStringParam extends BaseParam {
   default?: string
 }
 
+export interface DatePickerParam extends BaseParam {
+  type: 'date-picker'
+  target: string
+  label: string
+  default?: string
+}
+
 export type MultiSlotParamSlot = {
   value: string,
   icon: IconType,
@@ -79,7 +86,7 @@ export interface MultiSlotParam extends BaseParam {
   default: string[]
 }
 
-export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam
+export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam | DatePickerParam
 
 type Language = string
 

@@ -17,9 +17,10 @@ import { query } from '@/utils/db';
 import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
 
 
-const { delay, sync } = useQueryParams({
+const { delay, sync, syncDate } = useQueryParams({
   delay: oneOf(['disable', 'short', 'long'] as const, 'long'),
-  sync: Boolean
+  sync: Boolean,
+  syncDate: String
 })
 
 const data = useWidgetStorage<ContainersData>('mainStats', {
@@ -164,7 +165,7 @@ watch(playerName, async player => {
         data as (
             select *
             from Event_OnLootboxOpen
-            where playerName = '${playerName.value}' and dateTime > '2025-04-07'
+            where playerName = '${playerName.value}' and dateTime > '${syncDate}'
         ),
         containers as (
             select containerTag, toUInt32(count()) as count
