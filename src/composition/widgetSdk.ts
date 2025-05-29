@@ -5,11 +5,11 @@ import { onUnmounted, provide, ref, ShallowRef, shallowRef, toValue, triggerRef,
 //   WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection
 // } from '../../../wotstat-widgets-sdk/lib/main';
 import {
-  type State, WidgetSDK, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles,
+  type State, WidgetSDK, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles, injectStylesheet,
   WidgetsRelay, WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection
 } from 'wotstat-widgets-sdk';
 
-export { WidgetMetaTags, I18n, type KeyCodes, type Trigger, setupStyles, WidgetsRelay, WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection }
+export { WidgetMetaTags, I18n, type KeyCodes, type Trigger, setupStyles, injectStylesheet, WidgetsRelay, WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection }
 
 
 let currentSdk: WidgetSDK<WidgetsSdkData> | null = null

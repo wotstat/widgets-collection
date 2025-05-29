@@ -46,7 +46,7 @@ import { getAllWidgetsRoutes, pathResolve } from '@/utils'
 import { computed, defineAsyncComponent, defineComponent, h, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { accent, background, defaultAccent, defaultBackground } from "@/composition/wotstatColors";
-import { setupStyles } from "@/composition/widgetSdk"
+import { injectStylesheet } from "@/composition/widgetSdk"
 import Checkbox from './settings/Checkbox.vue';
 import Select from './settings/Select.vue';
 import Int from './settings/Int.vue';
@@ -64,7 +64,7 @@ import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
 import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
 import { WidgetParam } from '@/utils/defineWidget';
 
-setupStyles()
+injectStylesheet()
 
 const BASE_URL = location.origin
 const route = useRoute();

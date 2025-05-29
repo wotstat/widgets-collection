@@ -33,13 +33,13 @@ import { getAllWidgetsRoutes, pathResolve } from '@/utils';
 import Item from './Item.vue';
 import { type Component, provide } from 'vue';
 import { collections } from '@/collections';
-import { setupStyles } from "@/composition/widgetSdk";
+import { injectStylesheet } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
 import { Options } from '@/utils/defineWidget';
 import { isInMiniPreview, isInPreview, language } from '@/utils/provides';
 import.meta.glob('/src/widgets/**/*.md', { eager: true })
 
-setupStyles();
+injectStylesheet();
 useProvideDocumentBounding()
 
 const emit = defineEmits<{
