@@ -93,6 +93,38 @@ export function NumberDefault(defaultValue: number = 0) {
   }
 }
 
+export function Color(defaultValue: string = '000000'): (value: string | undefined) => string {
+  return value => {
+    if (value === undefined) return defaultValue;
+
+    if (typeof value === 'string' && value.match(/^#?[0-9a-fA-F]{6}$/))
+      return value.startsWith('#') ? value.slice(1) : value;
+
+    if (typeof value === 'string' && value.match(/^#?[0-9a-fA-F]{8}$/))
+      return value.startsWith('#') ? value.slice(1) : value;
+
+    if (typeof value === 'string' && value.match(/^[0-9a-fA-F]{6}$/))
+      return value;
+
+    if (typeof value === 'string' && value.match(/^[0-9a-fA-F]{8}$/))
+      return value;
+
+    if (typeof value === 'string' && value.match(/^#?[0-9a-fA-F]{3}$/))
+      return value.length === 4 ? value.slice(1).split('').map(c => c + c).join('') : value.slice(1);
+
+    if (typeof value === 'string' && value.match(/^#?[0-9a-fA-F]{4}$/))
+      return value.length === 5 ? value.slice(1).split('').map(c => c + c).join('') : value.slice(1);
+
+    if (typeof value === 'string' && value.match(/^[0-9a-fA-F]{3}$/))
+      return value.split('').map(c => c + c).join('');
+
+    if (typeof value === 'string' && value.match(/^[0-9a-fA-F]{4}$/))
+      return value.split('').map(c => c + c).join('');
+
+    return defaultValue;
+  };
+}
+
 
 export function DateTimeDefault(defaultValue: Date = new Date()):
   (value: string | undefined) => Date {

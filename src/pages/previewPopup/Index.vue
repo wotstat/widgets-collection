@@ -233,7 +233,12 @@ const settingsValues = computedWithControl(currentOptions, () => {
       }
     }
 
-    return { component: h(Unsupported, { label: param.type }), target: '', model: undefined }
+    if (param.type == 'color') {
+      const value = useWidgetPreviewStorage(param.target, param.default ?? '#ffffff')
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Color, { label: t(param.label), ...vModel(value) }))) }
+    }
+
+    return { component: h(Unsupported, { label: (param as any).type }), target: '', model: undefined }
   })
 })
 
