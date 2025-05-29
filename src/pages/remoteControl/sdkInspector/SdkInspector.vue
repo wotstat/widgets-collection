@@ -100,21 +100,33 @@
       <Checkbox title="Proxy keys" v-model="passKeyboard" />
     </Section>
 
+    <br>
+
+    <Section title="Wotstat Analytics">
+      <Checkbox title="Installed" v-model="wotstatAnalyticsEmulated" />
+      <Checkbox title="Platoon" v-model="wotstatAnalyticsEmulatedPlatoon" />
+      <Button title="Event_OnBattleStart" @trigger="wotstatAnalyticsTrigger('onBattleStart')" />
+      <Button title="Event_OnShot" @trigger="wotstatAnalyticsTrigger('onShot')" />
+      <Button title="Event_OnBattleResult" @trigger="wotstatAnalyticsTrigger('onBattleResult')" />
+    </Section>
+
   </div>
 </template>
 
 
 <script setup lang="ts">
 import { SdkDebugConnection } from '@/composition/widgetSdk';
-import { computed, provide, ref, watch } from 'vue';
+import { computed, onMounted, provide, ref, watch } from 'vue';
 import { useEventListener, useTimestamp } from '@vueuse/core';
 import { stateMapKey } from './drawer/useSetStateMap';
 import Section from './drawer/Section.vue';
 import Options from './drawer/Options.vue';
 import Checkbox from './drawer/Checkbox.vue';
 import String from './drawer/String.vue';
+import Button from './drawer/Button.vue';
 import Number from './drawer/Number.vue';
 import { aimingModes, vehicleInfo, vehicles } from './constants';
+import { getOnBattleResult, getOnBattleStart, getOnShot } from '../wotstatAnalyticsExampleData/exampleData';
 
 
 const { debug } = defineProps<{
@@ -130,12 +142,22 @@ const battleMode = ref('REGULAR');
 const vehicle = ref<typeof vehicles[number]>('60TP');
 const battlePeriod = ref('BATTLE');
 const platoonSlotsCount = ref(3);
+const wotstatAnalyticsEmulated = ref(true);
+const wotstatAnalyticsEmulatedPlatoon = ref(true);
 
 const platoonCrewmateInfo = ref<{
   name: string, joined: boolean,
   id: number, isReady: boolean,
   vehicle: typeof vehicles[number] | undefined
 }[]>([])
+
+const registeredExtensions = computed(() => {
+  const result = []
+
+  if (wotstatAnalyticsEmulated.value) result.push('wotstat')
+
+  return result
+});
 
 watch(platoonSlotsCount, c => {
   platoonCrewmateInfo.value = new Array(c).fill(0)
@@ -205,6 +227,8 @@ const totalState = computed(() => ({
   'hangar.battleMode': battleMode.value,
   'platoon.slots': platoonSlots.value,
   'platoon.maxSlots': platoonSlotsCount.value,
+  'registeredExtensions': registeredExtensions.value,
+  'extensions.wotstat.version': wotstatAnalyticsEmulated.value ? 1 : null,
 }))
 
 
@@ -242,6 +266,39 @@ useEventListener(window, 'keyup', e => {
   debug.sendChangeState(`keyboard.KEY_${key}`, false);
   debug.sendTrigger('keyboard.onAnyKey', { 'key': key, 'isKeyDown': false });
 })
+
+async function wotstatAnalyticsTrigger(event: 'onBattleStart' | 'onShot' | 'onBattleResult') {
+  if (!wotstatAnalyticsEmulated.value) return;
+
+  const overrides = {
+    playerName: mapState.value.get('player.name'),
+    isPlatoon: wotstatAnalyticsEmulatedPlatoon.value,
+  }
+
+  let targetEvent = null as any
+  if (event == 'onBattleStart')
+    targetEvent = await getOnBattleStart(overrides)
+  else if (event == 'onShot') {
+    targetEvent = await getOnShot(overrides)
+    debug.sendTrigger(`extensions.wotstat.onShotBallisticEvent`, {
+      gravity: targetEvent.gravity,
+      gunPoint: targetEvent.gunPoint,
+      shellSpeed: targetEvent.shellSpeed,
+      tracerStart: targetEvent.tracerStart,
+      tracerVel: targetEvent.tracerVel,
+      clientMarkerPoint: targetEvent.clientMarkerPoint,
+      clientShotDispersion: targetEvent.clientShotDispersion,
+      serverMarkerPoint: targetEvent.serverMarkerPoint,
+      serverShotDispersion: targetEvent.serverShotDispersion
+    });
+  }
+  else if (event == 'onBattleResult')
+    targetEvent = await getOnBattleResult(overrides)
+
+  debug.sendTrigger(`extensions.wotstat.onEvent`, targetEvent);
+
+}
+
 
 
 </script>
