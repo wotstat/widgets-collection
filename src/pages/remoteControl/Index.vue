@@ -55,10 +55,10 @@
               }"></iframe>
 
             <div class="bbox-rect" v-if="hoveredBbox" :style="{
-              left: `${hoveredBbox.x * scale}px`,
-              top: `${hoveredBbox.y * scale}px`,
-              width: `${hoveredBbox.width * scale}px`,
-              height: `${hoveredBbox.height * scale}px`
+              left: `${hoveredBbox.x * scale - 5}px`,
+              top: `${hoveredBbox.y * scale - 5}px`,
+              width: `${hoveredBbox.width * scale + 10}px`,
+              height: `${hoveredBbox.height * scale + 10}px`
             }"></div>
           </div>
 
