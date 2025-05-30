@@ -93,6 +93,18 @@
         <Number title="Stun" m-key="battle.efficiency.stun" />
       </Section>
 
+      <Section title="Triggers">
+        <Button title="Feedback kill" />
+        <Button title="Feedback damage" />
+        <Button title="Feedback ram" />
+        <Button title="Damage by self" />
+        <Button title="Damage to self" />
+        <Button title="Damage id10 -> id11" />
+        <Button title="Damage id11 -> id10" />
+        <Button title="Battle result" />
+        <Button title="Battle result platoon" />
+      </Section>
+
     </Section>
 
     <br>
