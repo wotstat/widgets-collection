@@ -1,4 +1,5 @@
 import { defineWidget } from "@/utils/defineWidget";
+import i18n from './i18n.json'
 
 
 export const defaultGradient = {
@@ -35,45 +36,35 @@ export type Props = {
 
 export type HangerBattleVariant = 'never' | 'hangar' | 'battle' | 'both';
 export const hangerBattleVariants = [
-  { value: 'never', label: 'Не отображать' },
-  { value: 'hangar', label: 'В агаре' },
-  { value: 'battle', label: 'В бою' },
-  { value: 'both', label: 'В агаре и бою' },
+  { value: 'never', label: 'options:hangar:never' },
+  { value: 'hangar', label: 'options:hangar:hangar' },
+  { value: 'battle', label: 'options:hangar:battle' },
+  { value: 'both', label: 'options:hangar:both' },
 ]
 
 export type PhotoVariant = 'never' | 'photo' | 'tank';
 export const photoVariants = [
-  { value: 'never', label: 'Не отображать' },
-  { value: 'photo', label: 'Фото' },
-  { value: 'tank', label: 'Танк' },
+  { value: 'never', label: 'options:photo:never' },
+  { value: 'photo', label: 'options:photo:photo' },
+  { value: 'tank', label: 'options:photo:tank' },
 ]
 
 
 export default defineWidget({
   name: "Чак для боя",
   description: "Отображает счётчик очков Чака внутри боя для всех совзводных. Гибко конфигурируется.",
+  i18n,
   params: [
-    { type: 'string', target: 'title', label: 'Название', default: 'ТУРНИР МËРФИ', visible: ctx => ctx['show-title'] != 'never' },
-    { type: 'string', target: 'period', label: 'Этап', default: 'ЭТАП 1', visible: ctx => ctx['period-line'] != 'never' },
-    { type: 'select', target: 'show-title', label: 'Заголовок', variants: hangerBattleVariants, default: 'both' },
-    { type: 'select', target: 'period-line', label: 'Раздел этапа', variants: hangerBattleVariants, default: 'both' },
-    { type: 'select', target: 'battles-line', label: 'Раздел боёв', variants: hangerBattleVariants, default: 'both' },
-    { type: 'checkbox', target: 'photo-line', label: 'Раздел игроков', default: true },
-    { type: 'select', target: 'photo-type', label: 'Фото игроков*', variants: photoVariants, default: 'photo', visible: ctx => ctx['photo-line'] },
-    { type: 'checkbox', target: 'hp-line', label: 'Раздел ХП', default: true },
+    { type: 'string', target: 'title', label: 'options:name', default: 'ТУРНИР МËРФИ', visible: ctx => ctx['show-title'] != 'never' },
+    { type: 'string', target: 'period', label: 'options:step', default: 'ЭТАП 1', visible: ctx => ctx['period-line'] != 'never' },
+    { type: 'select', target: 'show-title', label: 'options:title', variants: hangerBattleVariants, default: 'both' },
+    { type: 'select', target: 'period-line', label: 'options:period-line', variants: hangerBattleVariants, default: 'both' },
+    { type: 'select', target: 'battles-line', label: 'options:battles-line', variants: hangerBattleVariants, default: 'both' },
+    { type: 'select', target: 'photo-type', label: 'options:photo-type', variants: photoVariants, default: 'photo', visible: ctx => ctx['photo-line'] },
+    { type: 'checkbox', target: 'photo-line', label: 'options:photo-line', default: true },
+    { type: 'checkbox', target: 'hp-line', label: 'options:hp-line', default: true },
     { type: 'separator' },
-    { type: 'color', target: 'color-from', label: 'Цвет от', default: defaultGradient.from },
-    { type: 'color', target: 'color-to', label: 'Цвет до', default: defaultGradient.to },
-
-    // {
-    //   type: 'select', target: 'skin', label: 'shared:style:title', variants: [
-    //     { value: 'transparent', label: 'shared:style:transparent' },
-    //     { value: 'default', label: 'shared:style:default' },
-    //   ], default: 'transparent'
-    // },
-    // { type: 'accentColorParam' },
-    // { type: 'backgroundColorParam', visible: cfx => cfx.skin === 'default' },
-    // { type: 'int', target: 'start-from', label: 'Начать с', default: 0 },
-    // { type: 'random-string', target: 'save-key', label: 'Ключ сохранения', length: 5 },
+    { type: 'color', target: 'color-from', label: 'options:color-from', default: defaultGradient.from },
+    { type: 'color', target: 'color-to', label: 'options:color-to', default: defaultGradient.to },
   ]
 })

@@ -205,7 +205,7 @@ const settingsValues = computedWithControl(currentOptions, () => {
 
     if (param.type == 'string') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? '')
-      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(String, { label: param.label, ...vModel(value) }))) }
+      return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(String, { label: t(param.label), ...vModel(value) }))) }
     }
 
     if (param.type == 'random-string') {

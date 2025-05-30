@@ -12,16 +12,16 @@
       <img class="background-image" :src="TopBack"></img>
       <div class="content">
         <p class="gradient uppercase">{{ period }}</p>
-        <p>ОЧКИ: <span class="gradient">{{ score }}</span></p>
+        <p class="uppercase">{{ t('score') }} <span class="gradient">{{ score }}</span></p>
       </div>
     </div>
 
     <div class="line main-count" v-if="shouldShow(battlesLine)">
       <img class="background-image" :src="MiddleBack"></img>
       <div class="content">
-        <p>БОËВ: <span class="gradient">{{ battles }}</span></p>
+        <p class="uppercase">{{ t('battles') }} <span class="gradient">{{ battles }}</span></p>
         <p class="gradient" v-if="shouldShow(periodLine)">~ {{ battles == 0 ? 0 : Math.round(score / battles) }}</p>
-        <p v-else>ОЧКИ: <span class="gradient">{{ score }}</span></p>
+        <p v-else class="uppercase">{{ t('score') }} <span class="gradient">{{ score }}</span></p>
       </div>
     </div>
 
@@ -65,7 +65,7 @@
                     <ForceMono :value="`${value}`" width="1.2em" />
                   </TweenValue>
                 </p>
-                <p class="health-name">ХП</p>
+                <p class="health-name">{{ t('hp') }}</p>
               </div>
             </template>
             <div class="disconnected" v-else>
@@ -90,6 +90,10 @@ import MediumBack from './assets/medium-back.webp'
 import Disconnect from './assets/disconnect.svg'
 import ForceMono from '@/components/ForceMono.vue';
 
+import { useI18nRef } from '@/composition/useI18n';
+import i18n from './i18n.json';
+
+const { t } = useI18nRef(i18n);
 
 const props = defineProps<Props>()
 
