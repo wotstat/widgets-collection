@@ -9,6 +9,17 @@ export const defaultGradient = {
 
 export type Props = {
   isInBattle: boolean;
+  score: number;
+  battles: number;
+  players: {
+    name: string
+    tankName: string
+    score: number
+    hp: number
+    maxHp: number
+    connected: boolean;
+  }[]
+
   colorFrom: string;
   colorTo: string;
   title: string;
@@ -21,16 +32,17 @@ export type Props = {
   hpLine: boolean;
 }
 
+
 export type HangerBattleVariant = 'never' | 'hangar' | 'battle' | 'both';
-const hangerBattleVariants = [
+export const hangerBattleVariants = [
   { value: 'never', label: 'Не отображать' },
   { value: 'hangar', label: 'В агаре' },
   { value: 'battle', label: 'В бою' },
   { value: 'both', label: 'В агаре и бою' },
 ]
 
-type PhotoVariant = 'never' | 'photo' | 'tank';
-const photoVariants = [
+export type PhotoVariant = 'never' | 'photo' | 'tank';
+export const photoVariants = [
   { value: 'never', label: 'Не отображать' },
   { value: 'photo', label: 'Фото' },
   { value: 'tank', label: 'Танк' },
@@ -47,7 +59,7 @@ export default defineWidget({
     { type: 'select', target: 'period-line', label: 'Раздел этапа', variants: hangerBattleVariants, default: 'both' },
     { type: 'select', target: 'battles-line', label: 'Раздел боёв', variants: hangerBattleVariants, default: 'both' },
     { type: 'checkbox', target: 'photo-line', label: 'Раздел игроков', default: true },
-    { type: 'select', target: 'photo-type', label: 'Фото игроков', variants: photoVariants, default: 'photo', visible: ctx => ctx['photo-line'] },
+    { type: 'select', target: 'photo-type', label: 'Фото игроков*', variants: photoVariants, default: 'photo', visible: ctx => ctx['photo-line'] },
     { type: 'checkbox', target: 'hp-line', label: 'Раздел ХП', default: true },
     { type: 'separator' },
     { type: 'color', target: 'color-from', label: 'Цвет от', default: defaultGradient.from },

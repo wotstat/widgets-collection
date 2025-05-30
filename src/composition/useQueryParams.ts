@@ -93,6 +93,13 @@ export function NumberDefault(defaultValue: number = 0) {
   }
 }
 
+export function StringDefault(defaultValue: string = '') {
+  return {
+    type: String,
+    default: defaultValue
+  }
+}
+
 export function Color(defaultValue: string = '000000'): (value: string | undefined) => string {
   return value => {
     if (value === undefined) return defaultValue;

@@ -8,7 +8,6 @@ export function useWidgetRelay(postfix: string) {
   const route = useRoute();
   const uuid = uuidv4()
 
-  console.log(`Setup relay for ${route.path}:${postfix}`);
   const relay = new WidgetsRelay({
     channel: `${route.path}:${postfix}`,
     uuid
@@ -25,8 +24,6 @@ export function useReactiveWidgetRelay(postfix: MaybeRefOrGetter<string>) {
   const uuid = uuidv4()
 
   function setupRelay(postfix: string) {
-    console.log(`Setup relay for ${route.path}:${postfix}`);
-
     return new WidgetsRelay({
       channel: `${route.path}:${postfix}`,
       uuid
@@ -50,11 +47,18 @@ export function usePlatoonWidgetRelay(postfix: MaybeRefOrGetter<string | undefin
   const { sdk } = useWidgetSdk();
 
   const platoonSlots = useReactiveState(sdk.data.platoon.slots)
-  const playerName = useReactiveState(sdk.data.player.name)
-  const platoonId = computed(() => platoonSlots.value?.filter(t => t?.name)
-    .map(t => t?.name)
-    .toSorted()
-    .join(',') || playerName.value || uuidv4())
+  const playerId = useReactiveState(sdk.data.player.id)
+
+  const platoonId = computed(() => {
+    if (!platoonSlots.value || platoonSlots.value.filter(Boolean).length === 0)
+      return playerId.value == undefined ? `id:${uuidv4()}` : `id:${playerId.value}`
+
+    return platoonSlots.value
+      .filter(t => t)
+      .map(slot => `id:${slot!.dbid}`)
+      .sort()
+      .join('_')
+  })
 
   const relayPostfix = computed(() => {
     const postfixValue = toValue(postfix)

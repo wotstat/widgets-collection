@@ -24,6 +24,14 @@ export const vehicleInfo = {
     'class': 'lightTank',
     'role': 'role_LT_universal',
   },
+  'IS-7': {
+    'tag': 'ussr:R45_IS-7',
+    'localizedName': 'ИС-7',
+    'localizedShortName': 'ИС-7',
+    'level': 10,
+    'class': 'heavyTank',
+    'role': 'role_HT_assault',
+  }
 } as const;
 
 export const vehicles = Object.keys(vehicleInfo) as (keyof typeof vehicleInfo)[];

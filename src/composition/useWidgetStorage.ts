@@ -71,20 +71,40 @@ export function useWidgetStorage<T>(postfix: string, defaultValue: T, options?: 
   preventClearData?: boolean
   alwaysClearDataAvailable?: boolean
   groupByPlayerId?: boolean
+  groupByPlatoon?: boolean
 }) {
   const route = useRoute();
   const { saveKey } = useQueryParams({ saveKey: { type: String, default: '' } })
   const { sdk } = useWidgetSdk();
 
   const playerId = useReactiveState(sdk.data.player.id)
+  const platoon = useReactiveState(sdk.data.platoon.slots)
   const value = ref<T>(structuredClone(defaultValue))
 
   let lastHandle: ReturnType<typeof syncRef> | null = null
 
   const groupById = options?.groupByPlayerId === true
+  const groupByPlatoon = options?.groupByPlatoon === true;
 
 
-  if (groupById) {
+  if (groupByPlatoon) {
+    const platoonId = computed(() => {
+      if (!platoon.value || platoon.value.filter(Boolean).length === 0) return playerId.value == undefined ? undefined : `id:${playerId.value}`
+      return platoon.value
+        .filter(t => t)
+        .map(slot => `id:${slot!.dbid}`)
+        .sort()
+        .join('_')
+    })
+
+    watch(platoonId, id => {
+      lastHandle?.()
+
+      if (!id) return
+
+      lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${id}_${postfix}`, defaultValue), value)
+    }, { immediate: true })
+  } else if (groupById) {
     watch(playerId, id => {
       lastHandle?.()
 

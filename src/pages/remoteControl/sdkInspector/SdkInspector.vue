@@ -19,7 +19,7 @@
 
     <Section title="Account">
       <String title="Name" m-key="player.name" :model-value="'Nickname'" />
-      <Number title="Id" m-key="player.id" />
+      <Number title="Id" m-key="player.id" :model-value="1" />
       <Number title="Clan Id" m-key="player.clanId" />
       <String title="Clan Tag" m-key="player.clanTag" :model-value="'TAG'" />
 
@@ -42,6 +42,7 @@
         <Checkbox title="Joined" v-model="info.joined" />
         <Checkbox title="Ready" v-model="info.isReady" />
         <String title="Name" v-model="info.name" />
+        <Number title="Id" v-model="info.id" />
         <Options title="Vehicle" v-model="info.vehicle" :variants="vehicles" />
       </Section>
     </Section>

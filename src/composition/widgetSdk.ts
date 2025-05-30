@@ -47,7 +47,7 @@ export function useReactiveState<T>(state: State<T>, onChange?: (t: T) => void) 
   const unmount = state.watch(t => {
     stateRef.value = t
     onChange?.(t)
-  })
+  }, { immediate: true })
   onUnmounted(() => unmount())
   return stateRef
 }

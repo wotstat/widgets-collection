@@ -32,6 +32,34 @@ const targetProps = computed(() => {
     period: props.period ?? 'ЭТАП 1',
 
     isInBattle: true,
+    score: 60348,
+    battles: 4,
+    players: [
+      {
+        name: 'Spichka',
+        tankName: 'ИС-7',
+        score: 0,
+        hp: 120,
+        maxHp: 3000,
+        connected: true
+      },
+      {
+        name: 'Pykav',
+        tankName: 'Maus',
+        score: 5000,
+        hp: 1500,
+        maxHp: 3000,
+        connected: true
+      },
+      {
+        name: 'PBODY_PRESS_SUPER_LONG',
+        tankName: 'Rinoceronte',
+        score: 1500,
+        hp: 3000,
+        maxHp: 3000,
+        connected: true
+      },
+    ]
   } satisfies Props;
 });
 
