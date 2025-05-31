@@ -18,6 +18,7 @@ import { useBattleResult } from '@/composition/useOnBattleResult';
 import { syncRefs, useLocalStorage } from '@vueuse/core';
 import { usePlatoonWidgetRelay, useWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
 
 function personalScore(damage: number, frags: number): number {
   return damage + frags * 300;
@@ -63,6 +64,8 @@ const scoreByPlayer = useWidgetStorage('scoreByPlayer',
   new Map<number, { frags: number, damage: number }>(),
   { groupByPlatoon: true })
 const fragsCount = ref(0)
+
+const isMain = useWidgetMainTab()
 
 const { relay, uuid } = usePlatoonWidgetRelay(channelKey)
 const relayState = useReactiveRelayState(relay, 'stats', {
@@ -153,6 +156,8 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
 
 
 useBattleResult((parsed, result) => {
+  if (!isMain.value) return;
+
   battles.value += 1
   totalScore.value += parsed.platoon
     .filter(p => p !== undefined)
