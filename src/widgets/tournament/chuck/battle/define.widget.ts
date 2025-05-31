@@ -15,10 +15,12 @@ export type Props = {
   players: {
     name: string
     tankName: string
+    tankTag: string
     score: number
+    totalScore: number
     hp: number
     maxHp: number
-    connected: boolean;
+    connected: boolean
   }[]
 
   colorFrom: string;

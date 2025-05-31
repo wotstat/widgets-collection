@@ -1,80 +1,124 @@
 <template>
-  <div class="main center preview-drop-shadow" :style="{
+  <div class="main preview-drop-shadow" :style="{
     '--color-from': `#${props.colorFrom}`,
     '--color-to': `#${props.colorTo}`,
   }">
+    <ClipWrapper>
 
-    <div class="title" v-if="shouldShow(showTitle)">
-      <p class="gradient">{{ title }}</p>
-    </div>
+      <template #overlay>
+        <div class="overlay">
+          <div class="box"></div>
+          <div class="triangle-grid"></div>
+          <div class="gradients">
+            <div class="triangle t1"></div>
+            <div class="triangle t2"></div>
+            <div class="triangle t3"></div>
+          </div>
+        </div>
+      </template>
 
-    <div class="line step-info" v-if="shouldShow(periodLine)">
-      <img class="background-image" :src="TopBack"></img>
-      <div class="content">
-        <p class="gradient uppercase">{{ period }}</p>
-        <p class="uppercase">{{ t('score') }} <span class="gradient">{{ score }}</span></p>
-      </div>
-    </div>
+      <div class="lines" ref="lines">
+        <div class="title" v-if="shouldShow(showTitle)">
+          <p class="gradient min-width">{{ title }}</p>
+        </div>
 
-    <div class="line main-count" v-if="shouldShow(battlesLine)">
-      <img class="background-image" :src="MiddleBack"></img>
-      <div class="content">
-        <p class="uppercase">{{ t('battles') }} <span class="gradient">{{ battles }}</span></p>
-        <p class="gradient" v-if="shouldShow(periodLine)">~ {{ battles == 0 ? 0 : Math.round(score / battles) }}</p>
-        <p v-else class="uppercase">{{ t('score') }} <span class="gradient">{{ score }}</span></p>
-      </div>
-    </div>
+        <div class="line step-info" v-if="shouldShow(periodLine)">
+          <ClipContent :root="lines" :svg="SmallTopBack" class="background-image">
+            <div class="ice"></div>
+          </ClipContent>
+          <SmallTopLine class="background-line" />
+          <div class="content">
+            <p class="gradient uppercase">{{ period }}</p>
+            <p class="uppercase">{{ t('score') }} <span class="gradient ">{{ score }}</span></p>
+          </div>
+        </div>
 
-    <div class="line photo" v-if="photoLine && isInBattle">
-      <img class="background-image" :src="BigBack"></img>
-      <div class="content">
-        <div class="players">
-          <div class="player" v-for="(player, i) in players">
-            <div class="person" v-if="photoType == 'photo'"></div>
-            <div class="info">
-              <p class="name uppercase">{{ player.name }}</p>
-              <p class="score gradient" v-if="player.connected || hpLine" :class="{
-                hidden: !player.connected,
-              }">{{ player.score }}</p>
-              <div class="disconnected" v-else>
-                <Disconnect />
+        <div class="line main-count" v-if="shouldShow(battlesLine)">
+          <ClipContent :root="lines" :svg="SmallBottomBack" class="background-image">
+            <div class="ice"></div>
+          </ClipContent>
+          <SmallBottomLine class="background-line" />
+          <div class="content">
+            <p class="uppercase">{{ t('battles') }} <span class="gradient min-width">{{ battles }}</span></p>
+            <p class="gradient" v-if="shouldShow(periodLine)">
+              &lt;{{ battles == 0 ? 0 : Math.round(score / battles) }}&gt;
+            </p>
+            <p v-else class="uppercase">{{ t('score') }} <span class="gradient">{{ score }}</span></p>
+          </div>
+        </div>
+
+        <div class="line photo" :class="`photo-type-${photoType}`" v-if="photoLine">
+          <ClipContent :root="lines"
+            :svg="photoType == 'photo' ? LargePhotoBack : photoType == 'tank' ? MediumPhotoBack : SmallPhotoBack"
+            class="background-image">
+            <div class="ice"></div>
+            <div class="gradients">
+              <div class="grad" v-for="(player, i) in players"></div>
+            </div>
+          </ClipContent>
+          <LargePhotoLine class="background-line" v-if="photoType == 'photo'" />
+          <MediumPhotoLine class="background-line" v-else-if="photoType == 'tank'" />
+          <SmallPhotoLine class="background-line" v-else />
+          <div class="content">
+            <div class="players">
+              <div class="player" v-for="(player, i) in players">
+                <div class="person" v-if="photoType == 'photo'"></div>
+                <div class="tank" v-if="photoType == 'tank'">
+                  <img :src="`https://static.wotstat.info/vehicles/shop/${player.tankTag.replace(':', '-')}.png`">
+                </div>
+                <div class="info">
+                  <div class="name">
+                    <Disconnect class="disconnected" v-if="!player.connected && !isInBattle" />
+                    <p class="uppercase">{{ player.name }}</p>
+                  </div>
+                  <p class="score gradient min-width-small center" v-if="player.connected || !isInBattle">
+                    {{ isInBattle ? player.score : `<${battles == 0 ? 0 : Math.round(player.totalScore / battles)}>` }}
+                  </p>
+                  <div class="disconnected" v-else>
+                    <Disconnect />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="line health" v-if="hpLine && isInBattle">
-      <img class="background-image" :src="MediumBack"></img>
+        <div class="line health" v-if="hpLine && isInBattle">
+          <ClipContent :root="lines" :svg="MediumBack" class="background-image">
+            <div class="ice"></div>
+          </ClipContent>
+          <MediumBackLine class="background-line" />
 
-      <div class="content">
-        <div class="players">
-          <div class="player" v-for="(player, i) in players">
-            <p class="tank-name uppercase">{{ player.tankName }}</p>
-            <template v-if="player.connected">
-              <div class="health-bar" :style="{
-                '--health-progress': `${hpPercent(player.hp, player.maxHp) * 100}%`,
-                '--health-color': hpColor(player.hp, player.maxHp)
-              }">
-                <div class="bar"></div>
+          <div class="content">
+            <div class="players">
+              <div class="player" v-for="(player, i) in players">
+                <p class="tank-name uppercase">{{ player.tankName }}</p>
+                <template v-if="player.connected">
+                  <div class="health-bar" :style="{
+                    '--health-progress': `${hpPercent(player.hp, player.maxHp) * 100}%`,
+                    '--health-color': hpColor(player.hp, player.maxHp)
+                  }">
+                    <div class="bar"></div>
+                  </div>
+                  <div class="health-info">
+                    <p class="health gradient">
+                      <TweenValue :value="Math.max(0, player.hp)" v-slot="{ value }" :options="{ duration: 250 }">
+                        <ForceMono :value="`${value}`" width="1.2em" />
+                      </TweenValue>
+                    </p>
+                    <p class="health-name">{{ t('hp') }}</p>
+                  </div>
+                </template>
+                <div class="disconnected" v-else>
+                  <Disconnect />
+                </div>
               </div>
-              <div class="health-info">
-                <p class="health gradient">
-                  <TweenValue :value="player.hp" v-slot="{ value }" :options="{ duration: 250 }">
-                    <ForceMono :value="`${value}`" width="1.2em" />
-                  </TweenValue>
-                </p>
-                <p class="health-name">{{ t('hp') }}</p>
-              </div>
-            </template>
-            <div class="disconnected" v-else>
-              <Disconnect />
             </div>
           </div>
         </div>
+
       </div>
-    </div>
+    </ClipWrapper>
   </div>
 </template>
 
@@ -82,20 +126,35 @@
 <script setup lang="ts">
 import TweenValue from '@/components/TweenValue.vue';
 import { HangerBattleVariant, Props } from './define.widget';
-
-import TopBack from './assets/top-back.webp'
-import MiddleBack from './assets/middle-back.webp'
-import BigBack from './assets/big-back.webp'
-import MediumBack from './assets/medium-back.webp'
 import Disconnect from './assets/disconnect.svg'
 import ForceMono from '@/components/ForceMono.vue';
 
+import LargePhotoBack from './assets/background/large-photo.svg?raw';
+import MediumPhotoBack from './assets/background/medium-photo.svg?raw';
+import MediumBack from './assets/background/medium.svg?raw';
+import SmallBottomBack from './assets/background/small-bottom.svg?raw';
+import SmallPhotoBack from './assets/background/small-photo.svg?raw';
+import SmallTopBack from './assets/background/small-top.svg?raw';
+
+import LargePhotoLine from './assets/lines/large-photo.svg';
+import MediumPhotoLine from './assets/lines/medium-photo.svg'
+import MediumBackLine from './assets/lines/medium.svg';
+import SmallBottomLine from './assets/lines/small-bottom.svg';
+import SmallPhotoLine from './assets/lines/small-photo.svg';
+import SmallTopLine from './assets/lines/small-top.svg';
+
+
+
 import { useI18nRef } from '@/composition/useI18n';
 import i18n from './i18n.json';
+import ClipContent from './ClipContent.vue';
+import ClipWrapper from './ClipWrapper.vue';
+import { ref } from 'vue';
 
 const { t } = useI18nRef(i18n);
 
 const props = defineProps<Props>()
+const lines = ref<HTMLElement | null>(null);
 
 function shouldShow(show: HangerBattleVariant) {
   if (show === 'both') return true;
@@ -106,12 +165,12 @@ function shouldShow(show: HangerBattleVariant) {
 }
 
 function hpPercent(hp: number, maxHp: number) {
-  return Math.max(0, Math.min(1, hp / maxHp));
+  return Math.max(0, Math.min(1, Math.max(0, hp) / maxHp));
 }
 
 function hpColor(hp: number, maxHp: number) {
   const percent = hpPercent(hp, maxHp);
-  if (hp == 0) return '#7a7a7a'; // Grey
+  if (hp <= 0) return '#7a7a7a'; // Grey
   if (percent >= 0.75) return '#00ffb7'; // Green
   if (percent >= 0.5) return '#fffd00'; // Yellow
   if (percent >= 0.25) return '#ffbc00'; // Red
@@ -135,12 +194,10 @@ function hpColor(hp: number, maxHp: number) {
 }
 
 .main {
+  position: relative;
   font-size: 1em;
   line-height: 1;
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  gap: 0.3em;
   font-family: Drukwidecyr, sans-serif;
 
   p {
@@ -153,22 +210,114 @@ function hpColor(hp: number, maxHp: number) {
     -webkit-text-fill-color: transparent;
   }
 
+  .min-width {
+    min-width: 6em;
+  }
+
+  .min-width-small {
+    min-width: 2.5em;
+  }
+
   .uppercase {
     text-transform: uppercase;
   }
 }
 
+.overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  .gradients,
+  .box,
+  .triangle-grid {
+    position: absolute;
+    inset: 0;
+  }
+
+  .box {
+    background: #282828;
+  }
+
+  .triangle-grid {
+    mask: url('./assets/triangle.webp');
+    mask-size: 8em;
+    mask-position: -2em -2.2em;
+    background: var(--color-to);
+    filter: saturate(2) brightness(1.5);
+    opacity: 0.3;
+  }
+
+  .gradients {
+    .triangle {
+      position: absolute;
+      width: 5em;
+      height: 9em;
+      background: var(--color-from);
+      filter: blur(2.2em) saturate(1.2);
+      opacity: 0.2;
+      // mix-blend-mode: hard-light;
+
+      &.t1 {
+        left: -2em;
+        bottom: -3em;
+      }
+
+      &.t2 {
+        right: -2em;
+        top: -3em;
+      }
+
+      &.t3 {
+        background: var(--color-to);
+        right: -3em;
+        top: 20%;
+        height: 12em;
+        opacity: 0.4;
+        // mix-blend-mode: lighten;
+      }
+    }
+  }
+}
+
+.lines {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
 .line {
   position: relative;
+  overflow: hidden;
 
   .background-image {
     width: 100%;
     display: block;
+    // color: #2f2f2f;
+    color: transparent;
+  }
+
+  .background-line {
+    position: absolute;
+    inset: 0;
+
+    :deep(path) {
+      stroke-width: 0.4%;
+    }
   }
 
   .content {
     position: absolute;
     inset: 0;
+  }
+
+  .ice {
+    position: absolute;
+    inset: -1.2em;
+    background: url('./assets/ice.webp') no-repeat;
+    background-size: 100% 100%;
+    opacity: 0.8;
   }
 }
 
@@ -192,6 +341,26 @@ $photo-width: 5.6em;
 
 
 .photo {
+
+  .gradients {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-bottom: 4.5em;
+
+    .grad {
+      width: 6em;
+      height: 9em;
+      background: var(--color-from);
+      filter: blur(1em) saturate(1.2);
+      transform: rotate(30deg);
+      mix-blend-mode: hard-light;
+      opacity: 0.2;
+    }
+  }
+
   .players {
     display: flex;
     gap: 0.2em;
@@ -204,13 +373,38 @@ $photo-width: 5.6em;
       flex-direction: column;
       align-items: center;
       flex: 1;
-      // background: rgba(60, 155, 57, 0.1);
 
-
-      .person {
+      .person,
+      .tank {
         width: $photo-width;
         height: 8em;
-        // background-color: rgba(255, 0, 0, 0.3);
+        background: linear-gradient(180deg, var(--color-from), var(--color-to));
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: url('./assets/granite.jpg') no-repeat center center;
+          background-size: cover;
+          mix-blend-mode: multiply;
+          opacity: 0.2;
+        }
+      }
+
+      .tank {
+        position: relative;
+        height: 5em;
+
+        img {
+          position: absolute;
+          right: -15%;
+          bottom: -5%;
+          width: 160%;
+          height: 110%;
+          object-fit: contain;
+          z-index: 6;
+        }
       }
 
       .info {
@@ -222,10 +416,26 @@ $photo-width: 5.6em;
         justify-content: space-evenly;
 
         .name {
-          font-size: 0.6em;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          max-width: 11em;
+          display: flex;
+          align-items: center;
+          max-width: 6.8em;
+
+          p {
+            font-size: 0.6em;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+
+          .disconnected {
+            min-height: 0.8em;
+            min-width: 0.8em;
+            max-height: 0.8em;
+            max-width: 0.8em;
+            margin: -0.1em;
+            margin-right: 0.1em;
+
+            display: block;
+          }
         }
 
         .score {
@@ -249,6 +459,24 @@ $photo-width: 5.6em;
           }
         }
       }
+    }
+  }
+
+
+  &.photo-type-never {
+    .gradients {
+      padding-bottom: 0;
+
+      .grad {
+        width: 3em;
+        height: 5em;
+        transform: rotate(90deg);
+        opacity: 0.1;
+      }
+    }
+
+    .players {
+      padding: 0.2em
     }
   }
 }

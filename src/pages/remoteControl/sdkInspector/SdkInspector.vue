@@ -60,7 +60,7 @@
     <Section title="Battle">
       <Checkbox title="Is in battle" m-key="battle.isInBattle" />
       <Section title="Arena">
-        <Number title="Arena id" m-key="battle.arenaId" />
+        <Number title="Arena id" m-key="battle.arenaId" :model-value="1" />
         <Options title="Arena" m-key="battle.arena" :model-value="'02_malinovka'"
           :variants="['02_malinovka', '05_prohorovka']" />
         <Options title="Mode" v-model="battleMode" :variants="['REGULAR', 'TRAINING']" />
@@ -94,15 +94,14 @@
       </Section>
 
       <Section title="Triggers">
-        <Button title="Feedback kill" />
-        <Button title="Feedback damage" />
-        <Button title="Feedback ram" />
-        <Button title="Damage by self" />
-        <Button title="Damage to self" />
-        <Button title="Damage id10 -> id11" />
-        <Button title="Damage id11 -> id10" />
-        <Button title="Battle result" />
-        <Button title="Battle result platoon" />
+        <Button title="Feedback kill" @trigger="feedbackTrigger('kill')" />
+        <Button title="Feedback damage" @trigger="feedbackTrigger('damage')" />
+        <Button title="Damage by self" @trigger="onDamageTrigger('bySelf')" />
+        <Button title="Damage to self" @trigger="onDamageTrigger('toSelf')" />
+        <Button title="Damage id10 -> id11" @trigger="onDamageTrigger('id10ToId11')" />
+        <Button title="Damage id11 -> id10" @trigger="onDamageTrigger('id11ToId10')" />
+        <Button title="Battle result" @trigger="onBattleResult(false)" />
+        <Button title="Battle result platoon" @trigger="onBattleResult(true)" />
       </Section>
 
     </Section>
@@ -139,7 +138,7 @@ import String from './drawer/String.vue';
 import Button from './drawer/Button.vue';
 import Number from './drawer/Number.vue';
 import { aimingModes, vehicleInfo, vehicles } from './constants';
-import { getOnBattleResult, getOnBattleStart, getOnShot } from '../wotstatAnalyticsExampleData/exampleData';
+import { getOnBattleResult, getOnBattleStart, getOnShot, getFeedback, getOnDamage, getOnBattleResultRaw } from '../exampleData/exampleData';
 
 
 const { debug } = defineProps<{
@@ -312,7 +311,56 @@ async function wotstatAnalyticsTrigger(event: 'onBattleStart' | 'onShot' | 'onBa
 
 }
 
+async function feedbackTrigger(type: 'kill' | 'damage') {
+  const feedback = await getFeedback(type, {
+    playerName: mapState.value.get('player.name'),
+    isPlatoon: wotstatAnalyticsEmulatedPlatoon.value,
+  });
 
+  debug.sendTrigger(`battle.onPlayerFeedback`, feedback);
+}
+
+async function onDamageTrigger(type: 'bySelf' | 'toSelf' | 'id10ToId11' | 'id11ToId10') {
+
+  const attackerId = (() => {
+    if (type === 'bySelf') return mapState.value.get('player.id');
+    if (type === 'toSelf') return 404;
+    if (type === 'id10ToId11') return 10;
+    if (type === 'id11ToId10') return 11;
+    return 0;
+  })()
+
+  const targetId = (() => {
+    if (type === 'bySelf') return 404;
+    if (type === 'toSelf') return mapState.value.get('player.id');
+    if (type === 'id10ToId11') return 11;
+    if (type === 'id11ToId10') return 10;
+    return 0;
+  })()
+
+  const damage = await getOnDamage({
+    attackerId,
+    targetId
+  })
+
+  debug.sendTrigger(`battle.onDamage`, damage);
+}
+
+async function onBattleResult(platoon: boolean) {
+
+  const playerId = mapState.value.get('player.id');
+  const result = await getOnBattleResultRaw({
+    playerId: playerId,
+    arenaUniqueID: mapState.value.get('battle.arenaId'),
+    platoon: platoon ?
+      platoonCrewmateInfo.value
+        .filter(t => t.id != playerId && t.joined)
+        .map(t => t.id) :
+      null,
+  })
+
+  debug.sendTrigger(`battle.onBattleResult`, result);
+}
 
 </script>
 

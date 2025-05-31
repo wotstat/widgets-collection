@@ -289,7 +289,7 @@ const RMC = defineAsyncComponent(async () => {
   return VueComponent
 })
 
-const widgetUrl = computed(() => `${BASE_URL}${currentOptions.value?.route}?${targetQuery.value}`)
+const widgetUrl = computed(() => encodeURI(`${BASE_URL}${currentOptions.value?.route}?${targetQuery.value}`))
 
 const isActivatedUrl = ref(false)
 function copy() {

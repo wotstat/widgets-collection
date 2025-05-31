@@ -38,7 +38,9 @@ const targetProps = computed(() => {
       {
         name: 'Spichka',
         tankName: 'ИС-7',
+        tankTag: 'ussr:R45_IS-7',
         score: 0,
+        totalScore: 60348,
         hp: 120,
         maxHp: 3000,
         connected: true
@@ -46,7 +48,9 @@ const targetProps = computed(() => {
       {
         name: 'Pykav',
         tankName: 'Maus',
+        tankTag: 'germany:G42_Maus',
         score: 5000,
+        totalScore: 40348,
         hp: 1500,
         maxHp: 3000,
         connected: true
@@ -54,7 +58,9 @@ const targetProps = computed(() => {
       {
         name: 'PBODY_PRESS_SUPER_LONG',
         tankName: 'Rinoceronte',
+        tankTag: 'italy:It15_Rinoceronte',
         score: 1500,
+        totalScore: 58848,
         hp: 3000,
         maxHp: 3000,
         connected: true

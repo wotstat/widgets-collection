@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 51">
+  <defs>
+    <linearGradient id="gradient-stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="var(--color-from, red)" />
+      <stop offset="100%" stop-color="var(--color-to, blue)" />
+    </linearGradient>
+  </defs>
+  <g class="medium-photo">
+    <path stroke-width="0.5" stroke="url(#gradient-stroke)"
+      d="M6.5 27.901v3.236l-5 5V49.2h42.706M6.5 16.804V7.38L1.621 2.5v-1H112.92M84.976 49.2h36.594V24.28l5-5v-6.442"
+      class="medium-photo-line" />
+  </g>
+</svg>

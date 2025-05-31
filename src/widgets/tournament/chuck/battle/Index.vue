@@ -19,6 +19,14 @@ import { syncRefs, useLocalStorage } from '@vueuse/core';
 import { usePlatoonWidgetRelay, useWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 
+function personalScore(damage: number, frags: number): number {
+  return damage + frags * 300;
+}
+
+function teamScore(isWin: boolean) {
+  return isWin ? 3000 : 0;
+}
+
 const { colorFrom, colorTo, title, period, showTitle, periodLine,
   battlesLine, photoLine, photoType, hpLine, channelKey } = useQueryParams({
     colorFrom: Color(defaultGradient.from),
@@ -46,10 +54,14 @@ const playerId = useReactiveState(sdk.data.player.id)
 const maxHp = useReactiveState(sdk.data.battle.maxHealth)
 const hp = useReactiveState(sdk.data.battle.health)
 const vehicle = useReactiveState(sdk.data.battle.vehicle)
+const hangarVehicle = useReactiveState(sdk.data.hangar.vehicle.info)
 const damage = useReactiveState(sdk.data.battle.efficiency.damage)
 
 const battles = useWidgetStorage('battleCount', 0, { groupByPlatoon: true })
 const totalScore = useWidgetStorage('score', 0, { groupByPlatoon: true })
+const scoreByPlayer = useWidgetStorage('scoreByPlayer',
+  new Map<number, { frags: number, damage: number }>(),
+  { groupByPlatoon: true })
 const fragsCount = ref(0)
 
 const { relay, uuid } = usePlatoonWidgetRelay(channelKey)
@@ -57,6 +69,8 @@ const relayState = useReactiveRelayState(relay, 'stats', {
   id: 0,
   name: '',
   tankName: '',
+  tankTag: '',
+  totalScore: 0,
   score: 0,
   hp: 0,
   maxHp: 0,
@@ -65,15 +79,20 @@ const relayState = useReactiveRelayState(relay, 'stats', {
 
 const currentBattleScore = computed(() => {
   if (!isInBattle.value) return 0;
-  return 300 * fragsCount.value + (damage.value ?? 0);
+  return personalScore(damage.value ?? 0, fragsCount.value);
 })
 
 const target = computed(() => {
+  const totalInfo = scoreByPlayer.value.get(playerId.value ?? -1) ?? { frags: 0, damage: 0 }
+  const totalScore = personalScore(totalInfo.damage, totalInfo.frags)
+
   return {
     id: playerId.value ?? 0,
     name: playerName.value ?? 'Loading...',
-    tankName: (isInBattle.value ? vehicle.value?.localizedShortName : '???') ?? '???',
+    tankName: (isInBattle.value ? vehicle.value?.localizedShortName : hangarVehicle.value?.localizedShortName) ?? '???',
+    tankTag: (isInBattle.value ? vehicle.value?.tag : hangarVehicle.value?.tag) ?? 'unknown',
     score: currentBattleScore.value,
+    totalScore,
     hp: hp.value ?? 0,
     maxHp: maxHp.value ?? 0,
     connected: true
@@ -99,10 +118,15 @@ const players = computed(() => {
     const id = slot.dbid
     const remote = relayValuesByPlayerId.value.get(id)
 
+    const totalInfo = scoreByPlayer.value.get(id) ?? { frags: 0, damage: 0 }
+    const totalScore = personalScore(totalInfo.damage, totalInfo.frags)
+
     if (!remote) return {
       name: slot.name ?? 'Loading...',
       tankName: slot.vehicle?.localizedShortName ?? '???',
+      tankTag: slot.vehicle?.tag ?? 'unknown',
       score: 0,
+      totalScore,
       hp: 0,
       maxHp: 0,
       connected: false,
@@ -111,7 +135,9 @@ const players = computed(() => {
     return {
       name: remote.name ?? 'Loading...',
       tankName: remote.tankName ?? '???',
+      tankTag: remote.tankTag ?? 'unknown',
       score: remote.score,
+      totalScore,
       hp: remote.hp,
       maxHp: remote.maxHp,
       connected: remote.connected,
@@ -127,7 +153,20 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
 
 
 useBattleResult((parsed, result) => {
+  battles.value += 1
+  totalScore.value += parsed.platoon
+    .filter(p => p !== undefined)
+    .map(p => personalScore(p.stats.damageDealt, p.stats.kills))
+    .reduce((a, b) => a + b, 0) + teamScore(parsed.result == 'win')
 
+  for (const person of parsed.platoon) {
+    if (!person || person.player == 'bot') continue;
+    const current = scoreByPlayer.value.get(person.player.bdid) ?? { frags: 0, damage: 0 }
+    scoreByPlayer.value.set(person.player.bdid, {
+      frags: current.frags + person.stats.kills,
+      damage: current.damage + person.stats.damageDealt
+    })
+  }
 })
 
 

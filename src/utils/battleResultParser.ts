@@ -207,6 +207,15 @@ export function parseBattleResult(result: unknown) {
 
   const arenaTypeID = get<number>(common, 'arenaTypeID') ?? 0
 
+
+  let prebattleID = 0
+  if (personalVehicle && personalVehicle?.player !== 'bot' && 'prebattleID' in personalVehicle.player) {
+    prebattleID = personalVehicle.player.prebattleID;
+  }
+
+  const platoon = prebattleID == 0 ? [personalVehicle] :
+    playerVehiclePairs.filter(t => t.player != 'bot' && t.player.prebattleID == prebattleID)
+
   return {
     arenaUniqueID,
     result: resultType as typeof resultType,
@@ -224,5 +233,6 @@ export function parseBattleResult(result: unknown) {
       comp7,
       details,
     } : undefined,
+    platoon
   }
 }
