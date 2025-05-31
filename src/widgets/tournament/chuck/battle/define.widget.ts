@@ -54,7 +54,7 @@ export const photoVariants = [
 
 export default defineWidget({
   name: "Чак для боя",
-  description: "Отображает счётчик очков Чака внутри боя для всех совзводных. Гибко конфигурируется.",
+  description: "Отображает счётчик очков Чака. Гибко конфигурируется.",
   i18n,
   params: [
     { type: 'string', target: 'title', label: 'options:name', default: 'ТУРНИР МËРФИ', visible: ctx => ctx['show-title'] != 'never' },

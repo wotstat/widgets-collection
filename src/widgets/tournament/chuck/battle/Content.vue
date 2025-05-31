@@ -62,7 +62,9 @@
           <div class="content">
             <div class="players">
               <div class="player" v-for="(player, i) in players">
-                <div class="person" v-if="photoType == 'photo'"></div>
+                <div class="person" v-if="photoType == 'photo'">
+                  <img :src="getPhotoByNickname(player.name)">
+                </div>
                 <div class="tank" v-if="photoType == 'tank'">
                   <img :src="`https://static.wotstat.info/vehicles/shop/${player.tankTag.replace(':', '-')}.png`">
                 </div>
@@ -144,12 +146,14 @@ import SmallPhotoLine from './assets/lines/small-photo.svg';
 import SmallTopLine from './assets/lines/small-top.svg';
 
 
-
 import { useI18nRef } from '@/composition/useI18n';
 import i18n from './i18n.json';
 import ClipContent from './ClipContent.vue';
 import ClipWrapper from './ClipWrapper.vue';
 import { ref } from 'vue';
+
+import PhotoMerfi from './assets/photos/Merfi.png'
+
 
 const { t } = useI18nRef(i18n);
 
@@ -175,6 +179,14 @@ function hpColor(hp: number, maxHp: number) {
   if (percent >= 0.5) return '#fffd00'; // Yellow
   if (percent >= 0.25) return '#ffbc00'; // Red
   if (percent > 0) return '#ff5b00'; // Red
+}
+
+const photoUrls = import.meta.glob<{ default: string }>('./assets/photos/*.png', { eager: true });
+
+function getPhotoByNickname(name: string) {
+  const photo = photoUrls[`./assets/photos/${name}.png`];
+  if (photo) return photo.default;
+  return PhotoMerfi;
 }
 </script>
 
@@ -324,6 +336,7 @@ function hpColor(hp: number, maxHp: number) {
 .title {
   display: flex;
   font-size: 0.8em;
+  filter: drop-shadow(0px 0px 0.5em rgba(0, 0, 0, 0.2));
 }
 
 .step-info,
@@ -392,18 +405,35 @@ $photo-width: 5.6em;
         }
       }
 
+      .person {
+        img {
+          position: absolute;
+          bottom: 0;
+          width: 105%;
+          height: 105%;
+          z-index: 6;
+          object-fit: cover;
+        }
+      }
+
       .tank {
         position: relative;
         height: 5em;
 
         img {
           position: absolute;
-          right: -15%;
-          bottom: -5%;
+          right: -25%;
+          bottom: -10%;
           width: 160%;
-          height: 110%;
+          height: 130%;
           object-fit: contain;
           z-index: 6;
+
+          clip-path: polygon(0% -10%,
+              84.4% -10%,
+              84.4% 100%,
+              0% 100%);
+          ;
         }
       }
 
