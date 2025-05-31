@@ -26,14 +26,21 @@
         </div>
       </div>
       <div class="flex url-container">
-        <div class="url" :class="{ 'active': isActivatedUrl }" :key="'url'">
-          {{ widgetUrl }}
-          <CopyIcon class="icon" @click="copy" />
+        <div class="url-line" :class="{ 'active': isActivatedUrl }">
+          <div class="url-small">{{ widgetUrl }}</div>
+          <div class="url-big">
+            <div class="url-content">
+              {{ widgetUrl }}
+            </div>
+          </div>
+
         </div>
+        <CopyIcon class="icon" @click="copy" />
         <Transition>
           <button v-if="predictedStatus == 'predict-open' || predictedStatus == 'open'" :key="'button'"
-            :class="{ 'active': isActivatedButton }" @click="add">Добавить в
-            игру</button>
+            :class="{ 'active': isActivatedButton }" @click="add">
+            Добавить в игру
+          </button>
         </Transition>
       </div>
     </div>
@@ -461,8 +468,90 @@ const accentColor = computed(() => '#' + accent.value)
   }
 
   .url-container {
-    gap: 10px;
-    overflow: hidden;
+    display: flex;
+    gap: 5px;
+    max-width: 100%;
+
+    .url-line {
+      max-width: 100%;
+      position: relative;
+      min-width: 0%;
+
+      .url-small {
+        background-color: #1a1a1a;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 10px;
+        border-radius: 10px;
+        transition: background-color 0.2s;
+      }
+
+      .url-big {
+        opacity: 0;
+        position: absolute;
+        pointer-events: none;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        border-radius: 10px;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+
+        transition: opacity 0.1s 0.2s ease-in-out;
+
+        overflow: hidden;
+
+        .url-content {
+          user-select: none;
+          background-color: #1a1a1a;
+          padding: 10px;
+          border-radius: 10px;
+          transform: translateY(calc(100% - 2.8em));
+          transition: transform 0.2s ease-in-out;
+        }
+      }
+
+      &:hover {
+        .url-big {
+          pointer-events: auto;
+          opacity: 1;
+          transition: opacity 0s ease-in-out;
+
+          .url-content {
+            user-select: text;
+            transform: translateY(0);
+          }
+        }
+      }
+
+      &.active {
+        .url-big .url-content {
+          background-color: #30D158;
+        }
+
+        .url-small {
+          background-color: #30D158;
+        }
+      }
+    }
+
+    .icon {
+      min-width: 44px;
+      width: 44px;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      user-select: none;
+      background-color: #1a1a1a;
+      display: block;
+
+      &:hover {
+        background-color: #1f1f1f;
+      }
+    }
 
     button {
       background-color: #1a1a1a;
@@ -496,43 +585,7 @@ const accentColor = computed(() => '#' + accent.value)
       }
 
     }
-
-    .url {
-      background-color: #1a1a1a;
-      padding: 10px;
-      border-radius: 10px;
-      font-variant-numeric: tabular-nums;
-      line-height: 1.4;
-      font-family: monospace;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      justify-content: space-between;
-      word-wrap: break-word;
-      word-break: break-all;
-      flex: 1;
-
-      transition: background-color 0.2s;
-
-      &.active {
-        background-color: #30D158;
-      }
-
-      .icon {
-        min-width: 40px;
-        width: 40px;
-        cursor: pointer;
-        margin: -5px;
-        padding: 10px;
-        border-radius: 8px;
-        transition: background-color 0.2s;
-        user-select: none;
-
-        &:hover {
-          background-color: #333;
-        }
-      }
-    }
   }
+
 }
 </style>
