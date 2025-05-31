@@ -15,5 +15,6 @@ const props = defineProps<{
 span {
   display: inline-block;
   width: var(--char-width, 0.6em);
+  text-align: center;
 }
 </style>
