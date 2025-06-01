@@ -27,8 +27,8 @@
       </div>
       <div class="flex url-container">
         <div class="url-line" :class="{ 'active': isActivatedUrl }">
-          <div class="url-small">{{ widgetUrl }}</div>
-          <div class="url-big">
+          <div class="url-small" ref="urlContent">{{ widgetUrl }}</div>
+          <div class="url-big" v-if="urlBoxScrollWidth > urlBoxWidth">
             <div class="url-content">
               {{ widgetUrl }}
             </div>
@@ -63,18 +63,22 @@ import MultiSlot from './settings/MultiSlot.vue';
 import RandomString from './settings/RandomString.vue';
 import DatePicker from './settings/DatePicker.vue';
 import Unsupported from './settings/Unsupported.vue';
-import { computedWithControl } from '@vueuse/core';
+import { computedWithControl, useElementBounding } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
 import IconReset from '@/assets/icons/reset.svg'
 import { isInPreview, language } from '@/utils/provides';
 import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
 import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
 import { WidgetParam } from '@/utils/defineWidget';
+import { useElementScrollSize } from '@/composition/utils/useElementScrollSize';
 
 injectStylesheet()
 
 const BASE_URL = location.origin
 const route = useRoute();
+const urlContent = ref<HTMLElement | null>(null)
+const { width: urlBoxWidth } = useElementBounding(urlContent)
+const { scrollWidth: urlBoxScrollWidth } = useElementScrollSize(urlContent)
 
 const widgetPreviews = import.meta.glob('/src/widgets/**/*.vue')
 const widgetReadmes = import.meta.glob('/src/widgets/**/*.md')

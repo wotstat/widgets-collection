@@ -63,10 +63,11 @@
             <div class="players">
               <div class="player" v-for="(player, i) in players">
                 <div class="person" v-if="photoType == 'photo'">
-                  <img :src="getPhotoByNickname(player.name)">
+                  <img :src="getPhotoByNickname(player.name)" :key="getPhotoByNickname(player.name)">
                 </div>
                 <div class="tank" v-if="photoType == 'tank'">
-                  <img :src="`https://static.wotstat.info/vehicles/shop/${player.tankTag.replace(':', '-')}.png`">
+                  <img :src="`https://static.wotstat.info/vehicles/shop/${player.tankTag.replace(':', '-')}.png`"
+                    :key="player.tankTag">
                 </div>
                 <div class="info">
                   <div class="name">
