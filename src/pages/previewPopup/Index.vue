@@ -476,6 +476,7 @@ const accentColor = computed(() => '#' + accent.value)
       max-width: 100%;
       position: relative;
       min-width: 0%;
+      flex: 1;
 
       .url-small {
         background-color: #1a1a1a;

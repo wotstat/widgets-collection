@@ -70,6 +70,7 @@ export const collections = [
       '/tools/debug',
       '/tools/gun-mark-debug',
       '/tools/meta-tags-debug',
+      '/tools/connection-check',
     ]
   },
   {
