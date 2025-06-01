@@ -2,10 +2,7 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
-      '/efficiency/comp7',
-      '/hangar/lootbox-universal',
       '/nidin/equipments',
-      '/meme/bongo-cat',
       '/counters/speedrun',
     ]
   },
@@ -50,6 +47,7 @@ export const collections = [
   {
     name: 'Прогрессия',
     widgets: [
+      '/efficiency/comp7',
       '/efficiency/sum/solo/blocked',
       '/efficiency/sum/solo/assist-radio',
       '/efficiency/sum/solo/damage',
