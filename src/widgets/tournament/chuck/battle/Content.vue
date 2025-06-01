@@ -507,7 +507,7 @@ $photo-width: 5.6em;
     }
 
     .players {
-      padding: 0.2em
+      padding: 0.2em 1.6em 0.2em 1.8em;
     }
   }
 }
