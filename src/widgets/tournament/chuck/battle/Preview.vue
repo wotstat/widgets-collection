@@ -49,7 +49,7 @@ const targetProps = computed(() => {
     hpLine: props.isMiniPreview || props.hpLine,
     period: props.period ?? 'Тренировка',
     animation: props.animation ?? true,
-    gradient: props.gradient ?? true,
+    gradient: props.isMiniPreview || (props.gradient ?? true),
     widgetStyle: props.widgetStyle ?? 'merfi',
 
     isInBattle: true,
