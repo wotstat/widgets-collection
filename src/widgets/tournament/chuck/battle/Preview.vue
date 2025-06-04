@@ -1,5 +1,5 @@
 <template>
-  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1">
+  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="isMiniPreview ? 1.4 : 1">
     <Content v-bind="targetProps" />
   </WidgetPreviewRoot>
 </template>
@@ -12,26 +12,45 @@ import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from './Content.vue';
 
 
-import { defaultGradient, Props } from './define.widget'
+import { merfiGradient, Props } from './define.widget'
+import { accent } from '@/composition/wotstatColors';
+
 const props = defineProps<Partial<Props> & {
   isMiniPreview: boolean
 }>();
 
 
+const targetGradient = computed(() => {
+
+  let from = merfiGradient.from;
+  let to = merfiGradient.to;
+
+  if (props.widgetStyle === 'simple') {
+    from = accent.value;
+    to = accent.value;
+  } else if (props.widgetStyle === 'custom') {
+    from = props.colorFrom ?? merfiGradient.from;
+    to = props.colorTo ?? merfiGradient.to;
+  }
+
+  return { from, to };
+});
+
 const targetProps = computed(() => {
   return {
-    colorFrom: props.colorFrom ?? defaultGradient.from,
-    colorTo: props.colorTo ?? defaultGradient.to,
+    colorFrom: targetGradient.value.from,
+    colorTo: targetGradient.value.to,
     title: props.title ?? 'ТУРНИР МËРФИ',
-    showTitle: props.showTitle ?? 'both',
+    showTitle: props.isMiniPreview ? 'never' : (props.showTitle ?? 'both'),
     periodLine: props.periodLine ?? 'both',
     battlesLine: props.battlesLine ?? 'both',
     photoLine: props.isMiniPreview || props.photoLine,
-    photoType: props.photoType ?? 'photo',
+    photoType: props.photoType ?? 'tank',
     hpLine: props.isMiniPreview || props.hpLine,
-    period: props.period ?? 'ЭТАП 1',
+    period: props.period ?? 'Тренировка',
     animation: props.animation ?? true,
     gradient: props.gradient ?? true,
+    widgetStyle: props.widgetStyle ?? 'merfi',
 
     isInBattle: true,
     score: 60348,

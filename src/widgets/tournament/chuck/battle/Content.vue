@@ -1,10 +1,21 @@
 <template>
   <div class="main preview-drop-shadow" :class="{
     'no-animation': !props.animation,
+    'no-gradient': !props.gradient,
+    [`style-${props.widgetStyle}`]: true,
   }" :style="{
     '--color-from': `#${props.colorFrom}`,
     '--color-to': `#${props.colorTo}`,
   }">
+    <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute" width="0" height="0" viewBox="0 0 0 0">
+      <defs>
+        <linearGradient :id="gradientId" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" :stop-color="`#${props.colorFrom}`" />
+          <stop offset="100%" :stop-color="`#${props.colorTo}`" />
+        </linearGradient>
+      </defs>
+    </svg>
+
     <ClipWrapper>
 
       <template #overlay>
@@ -68,8 +79,8 @@
                   <img :src="getPhotoByNickname(player.name)" :key="getPhotoByNickname(player.name)">
                 </div>
                 <div class="tank" v-if="photoType == 'tank'">
-                  <img :src="`https://static.wotstat.info/vehicles/shop/${player.tankTag.replace(':', '-')}.png`"
-                    :key="player.tankTag">
+                  <Image class="tank-image"
+                    :src="`https://static.wotstat.info/vehicles/shop/${player.tankTag.replace(':', '-')}.png`" />
                 </div>
                 <div class="info">
                   <div class="name">
@@ -155,10 +166,13 @@ import { useI18nRef } from '@/composition/useI18n';
 import i18n from './i18n.json';
 import ClipContent from './ClipContent.vue';
 import ClipWrapper from './ClipWrapper.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import PhotoMerfi from './assets/photos/Merfi.png'
+import Image from '@/components/Image.vue';
 
+const gradientId = Math.random().toString(36).substring(2, 15);
+const gradientUrl = computed(() => `url(#${gradientId})`);
 
 const { t } = useI18nRef(i18n);
 
@@ -320,7 +334,9 @@ function getPhotoByNickname(name: string) {
     inset: 0;
 
     :deep(path) {
-      stroke-width: 0.4%;
+      vector-effect: non-scaling-stroke;
+      stroke-width: max(0.5px, 0.08em);
+      stroke: v-bind(gradientUrl);
     }
   }
 
@@ -425,7 +441,13 @@ $photo-width: 5.6em;
         position: relative;
         height: 5em;
 
-        img {
+        clip-path: polygon(-100% -10%,
+            100% -10%,
+            100% 100%,
+            -100% 100%);
+        ;
+
+        .tank-image {
           position: absolute;
           right: -25%;
           bottom: -10%;
@@ -434,11 +456,15 @@ $photo-width: 5.6em;
           object-fit: contain;
           z-index: 6;
 
-          clip-path: polygon(0% -10%,
-              84.4% -10%,
-              84.4% 100%,
-              0% 100%);
-          ;
+          :deep(.loader) {
+            margin-left: 4%;
+            margin-top: 2%;
+          }
+
+          :deep(.error-image) {
+            padding: 4% 25% 0% 30%;
+            scale: 0.7;
+          }
         }
       }
 
@@ -454,9 +480,10 @@ $photo-width: 5.6em;
           display: flex;
           align-items: center;
           max-width: 6.8em;
+          font-family: "Bebas Neue", sans-serif;
 
           p {
-            font-size: 0.6em;
+            font-size: 1.05em;
             text-overflow: ellipsis;
             overflow: hidden;
           }
@@ -468,6 +495,7 @@ $photo-width: 5.6em;
             max-width: 0.8em;
             margin: -0.1em;
             margin-right: 0.1em;
+            margin-bottom: 0.055em;
 
             display: block;
           }
@@ -593,6 +621,49 @@ $photo-width: 5.6em;
   .health-bar,
   .bar {
     transition: none !important;
+  }
+}
+
+.no-gradient,
+.style-simple {
+  .overlay {
+    .gradients {
+      display: none;
+    }
+  }
+
+  .ice {
+    display: none;
+  }
+
+  .photo {
+    .gradients {
+      display: none;
+    }
+  }
+}
+
+.style-simple {
+  .triangle-grid {
+    display: none;
+  }
+
+  .box {
+    background: var(--wotstat-background);
+  }
+
+  .photo {
+    .player {
+
+      .person,
+      .tank {
+        border-radius: 0.4em;
+
+        &::after {
+          display: none;
+        }
+      }
+    }
   }
 }
 </style>

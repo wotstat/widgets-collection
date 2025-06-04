@@ -29,12 +29,12 @@ export const collections = [
       '/hangar/lootbox-universal'
     ]
   },
-  // {
-  //   name: 'Турниры',
-  //   widgets: [
-  //     '/tournament/chuck/battle',
-  //   ]
-  // },
+  {
+    name: 'Турниры',
+    widgets: [
+      '/tournament/chuck/battle',
+    ]
+  },
   {
     name: 'Счётчики',
     widgets: [

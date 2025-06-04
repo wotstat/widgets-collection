@@ -132,4 +132,11 @@
     @include markdown-alert(caution, #ff4b4b, #ff4b4b);
   }
 
+  hr {
+    margin: 1em 0;
+    border: none;
+    border-top: 1px solid #4b4b4b;
+    width: 100%;
+    max-width: 100%;
+  }
 }

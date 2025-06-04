@@ -77,9 +77,11 @@ export function useWidgetStorage<T>(postfix: string, defaultValue: T, options?: 
   const { saveKey } = useQueryParams({ saveKey: { type: String, default: '' } })
   const { sdk } = useWidgetSdk();
 
+  const defaultValueCopy = () => structuredClone(defaultValue);
+
   const playerId = useReactiveState(sdk.data.player.id)
   const platoon = useReactiveState(sdk.data.platoon.slots)
-  const value = ref<T>(structuredClone(defaultValue))
+  const value = ref<T>(defaultValueCopy())
 
   let lastHandle: ReturnType<typeof syncRef> | null = null
 
@@ -102,7 +104,7 @@ export function useWidgetStorage<T>(postfix: string, defaultValue: T, options?: 
 
       if (!id) return
 
-      lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${id}_${postfix}`, defaultValue), value)
+      lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${id}_${postfix}`, defaultValueCopy()), value)
     }, { immediate: true })
   } else if (groupById) {
     watch(playerId, id => {
@@ -110,21 +112,21 @@ export function useWidgetStorage<T>(postfix: string, defaultValue: T, options?: 
 
       if (!id) return
 
-      lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${id}_${postfix}`, defaultValue), value)
+      lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${id}_${postfix}`, defaultValueCopy()), value)
     }, { immediate: true })
   } else {
-    lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${postfix}`, defaultValue), value)
+    lastHandle = syncRef(useLocalStorage(`${route.path}_${saveKey}_${postfix}`, defaultValueCopy()), value)
   }
 
   if (typeof value.value === 'object' && typeof defaultValue === 'object') {
     value.value = deepApplyDefaults<any>(value.value, defaultValue)
   } else if (typeof value.value !== typeof defaultValue) {
-    value.value = structuredClone(defaultValue)
+    value.value = defaultValueCopy()
   }
 
   const { setReadyToClearData, unsubscribe } = sdk.commands.onClearData(() => {
     if (options?.preventClearData) return
-    value.value = structuredClone(defaultValue)
+    value.value = defaultValueCopy()
   })
 
   const isValueDefault = computed(() => isEqual(value.value, defaultValue))

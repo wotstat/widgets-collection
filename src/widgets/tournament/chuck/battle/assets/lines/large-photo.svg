@@ -1,13 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 66">
-  <defs>
-    <linearGradient id="gradient-stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="var(--color-from, red)" />
-      <stop offset="100%" stop-color="var(--color-to, blue)" />
-    </linearGradient>
-  </defs>
-
   <g class="medium-photo">
-    <path stroke-width="0.5" stroke="url(#gradient-stroke)"
+    <path stroke-width="0.5" stroke="red"
       d="M6.5 42.386v3.235l-5 5V64.5h42.705M6.5 16.804V7.38L1.621 2.5v-1h111.3m-28.015 63H121.5V39.379l5-5V17.86"
       class="medium-photo-line" />
   </g>

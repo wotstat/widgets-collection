@@ -1,7 +1,8 @@
 <template>
   <WidgetWrapper autoScale autoHeight>
-    <Content :colorFrom :colorTo :title :period :showTitle :periodLine :battlesLine :photoLine :hpLine :photoType
-      :isInBattle="isInBattle ?? false" :battles :score="totalScore" :players :gradient :animation />
+    <Content :colorFrom="targetGradient.from" :colorTo="targetGradient.to" :title :period :showTitle :periodLine
+      :battlesLine :photoLine :hpLine :photoType :isInBattle="isInBattle ?? false" :battles :score="totalScore" :players
+      :gradient :animation :widgetStyle />
   </WidgetWrapper>
 </template>
 
@@ -13,7 +14,7 @@ import Content from './Content.vue';
 import { computed, ref, watch } from 'vue';
 import { Color, NumberDefault, oneOf, StringDefault, useQueryParams, } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { defaultGradient } from './define.widget';
+import { merfiGradient } from './define.widget';
 import { useBattleResult } from '@/composition/useOnBattleResult';
 import { syncRefs, useLocalStorage } from '@vueuse/core';
 import { usePlatoonWidgetRelay, useWidgetRelay } from '@/composition/useWidgetRelay';
@@ -29,9 +30,9 @@ function teamScore(isWin: boolean) {
 }
 
 const { colorFrom, colorTo, title, period, showTitle, periodLine,
-  battlesLine, photoLine, photoType, hpLine, channelKey, gradient, widgetStyle, animation } = useQueryParams({
-    colorFrom: Color(defaultGradient.from),
-    colorTo: Color(defaultGradient.to),
+  battlesLine, photoLine, photoType, hpLine, channelKey, gradient, widgetStyle, animation, accent } = useQueryParams({
+    colorFrom: Color(merfiGradient.from),
+    colorTo: Color(merfiGradient.to),
     title: StringDefault(),
     period: StringDefault(),
     showTitle: oneOf(['never', 'hangar', 'battle', 'both'] as const, 'both'),
@@ -44,8 +45,23 @@ const { colorFrom, colorTo, title, period, showTitle, periodLine,
     hpLine: Boolean,
     gradient: Boolean,
     channelKey: String,
+    accent: Color('#ff9800')
   })
 
+const targetGradient = computed(() => {
+  let from = merfiGradient.from;
+  let to = merfiGradient.to;
+
+  if (widgetStyle === 'simple') {
+    from = accent;
+    to = accent;
+  } else if (widgetStyle === 'custom') {
+    from = colorFrom ?? merfiGradient.from;
+    to = colorTo ?? merfiGradient.to;
+  }
+
+  return { from, to };
+});
 
 
 const { sdk } = useWidgetSdk();
