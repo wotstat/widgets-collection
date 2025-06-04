@@ -52,6 +52,8 @@
                 height: `${100 / scale}%`,
                 transform: `scale(${scale})`,
                 transformOrigin: 'top left'
+              }" :class="{
+                'dragging': isDragging,
               }"></iframe>
 
             <div class="bbox-rect" v-if="hoveredBbox" :style="{
@@ -60,6 +62,8 @@
               width: `${hoveredBbox.width * scale + 10}px`,
               height: `${hoveredBbox.height * scale + 10}px`
             }"></div>
+
+            <div class="resize-handle" @pointerdown.stop="onPointerHandlerDown"></div>
           </div>
 
           <p class="info-text" v-if="!widgetUrl">Введите URL до виджета которым хотите управлять. Это не обязательно
@@ -83,7 +87,6 @@
               <input type="text" inputmode="numeric" placeholder="Height" v-model.number="targetHeight" />
             </div>
 
-            <!-- <div class="empty" :style="{ width: '65px' }"></div> -->
           </div>
         </div>
       </div>
@@ -126,7 +129,6 @@ const { debug: relayDebug, isConnected: relayIsConnected } = useWidgetRelayDebug
 const hoveredPath = ref<string | null>(null);
 const hoveredBbox = computed(() => {
   if (!hoveredPath.value || !remoteDebug.value) return null;
-  // const bbox = remoteDebug.value.
   return bbox.value?.get(hoveredPath.value) ?? null;
 })
 
@@ -221,6 +223,28 @@ useEventListener(window, 'popstate', () => {
   targetWidth.value = containerWidth.value / scale.value;
   targetHeight.value = containerHeight.value / scale.value;
 });
+
+const isDragging = ref(false);
+useEventListener(window, 'pointermove', onHandlerMove);
+useEventListener(window, 'pointerup', () => isDragging.value = false);
+
+function onPointerHandlerDown(event: PointerEvent) {
+  isDragging.value = true;
+}
+
+function onHandlerMove(event: PointerEvent) {
+  if (!resizeContainer.value) return;
+  if (!isDragging.value) return;
+
+  event.stopPropagation();
+  event.preventDefault();
+
+  const rect = resizeContainer.value.getBoundingClientRect();
+  const newWidth = Math.max(100, event.clientX - rect.left);
+  const newHeight = Math.max(100, event.clientY - rect.top);
+  targetWidth.value = Math.round(newWidth / scale.value);
+  targetHeight.value = Math.round(newHeight / scale.value);
+}
 
 </script>
 
@@ -527,14 +551,11 @@ header {
 
       .container {
         border: solid 5px rgba(255, 255, 255, 0.2);
-        resize: both;
         position: relative;
         box-sizing: content-box;
 
         max-width: 2000px;
         max-height: 100%;
-        overflow: hidden;
-        resize: both;
         border-radius: 10px;
 
         .bbox-rect {
@@ -550,7 +571,26 @@ header {
           width: 100%;
           height: 100%;
           border: none;
-          // border: dashed 1px rgba(255, 255, 255, 0.5);
+          user-select: none;
+          overflow: hidden;
+
+          &.dragging {
+            pointer-events: none;
+          }
+        }
+
+        .resize-handle {
+          position: absolute;
+          right: -5px;
+          bottom: -5px;
+          width: 20px;
+          height: 20px;
+          cursor: se-resize;
+          border-bottom-right-radius: 10px;
+
+          border-right: solid 5px rgba(255, 255, 255, 1);
+          border-bottom: solid 5px rgba(255, 255, 255, 1);
+          z-index: 2000;
         }
       }
     }
