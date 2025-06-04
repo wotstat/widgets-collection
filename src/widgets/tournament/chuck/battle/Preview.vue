@@ -30,6 +30,8 @@ const targetProps = computed(() => {
     photoType: props.photoType ?? 'photo',
     hpLine: props.isMiniPreview || props.hpLine,
     period: props.period ?? 'ЭТАП 1',
+    animation: props.animation ?? true,
+    gradient: props.gradient ?? true,
 
     isInBattle: true,
     score: 60348,

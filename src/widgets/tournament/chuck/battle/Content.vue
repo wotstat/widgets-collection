@@ -1,5 +1,7 @@
 <template>
-  <div class="main preview-drop-shadow" :style="{
+  <div class="main preview-drop-shadow" :class="{
+    'no-animation': !props.animation,
+  }" :style="{
     '--color-from': `#${props.colorFrom}`,
     '--color-to': `#${props.colorTo}`,
   }">
@@ -105,9 +107,11 @@
                   </div>
                   <div class="health-info">
                     <p class="health gradient">
-                      <TweenValue :value="Math.max(0, player.hp)" v-slot="{ value }" :options="{ duration: 250 }">
-                        <ForceMono :value="`${value}`" width="1.2em" />
+                      <TweenValue :value="Math.max(0, player.hp)" v-slot="{ value }" :options="{ duration: 250 }"
+                        v-if="animation">
+                        <ForceMono :value="`${value}`" width="1.1em" />
                       </TweenValue>
+                      <template v-else>{{ player.hp }}</template>
                     </p>
                     <p class="health-name">{{ t('hp') }}</p>
                   </div>
@@ -581,6 +585,14 @@ $photo-width: 5.6em;
       }
 
     }
+  }
+}
+
+.no-animation {
+
+  .health-bar,
+  .bar {
+    transition: none !important;
   }
 }
 </style>

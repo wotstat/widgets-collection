@@ -1,7 +1,7 @@
 <template>
   <WidgetWrapper autoScale autoHeight>
     <Content :colorFrom :colorTo :title :period :showTitle :periodLine :battlesLine :photoLine :hpLine :photoType
-      :isInBattle="isInBattle ?? false" :battles :score="totalScore" :players />
+      :isInBattle="isInBattle ?? false" :battles :score="totalScore" :players :gradient :animation />
   </WidgetWrapper>
 </template>
 
@@ -29,7 +29,7 @@ function teamScore(isWin: boolean) {
 }
 
 const { colorFrom, colorTo, title, period, showTitle, periodLine,
-  battlesLine, photoLine, photoType, hpLine, channelKey } = useQueryParams({
+  battlesLine, photoLine, photoType, hpLine, channelKey, gradient, widgetStyle, animation } = useQueryParams({
     colorFrom: Color(defaultGradient.from),
     colorTo: Color(defaultGradient.to),
     title: StringDefault(),
@@ -38,8 +38,11 @@ const { colorFrom, colorTo, title, period, showTitle, periodLine,
     periodLine: oneOf(['never', 'hangar', 'battle', 'both'] as const, 'both'),
     battlesLine: oneOf(['never', 'hangar', 'battle', 'both'] as const, 'both'),
     photoLine: Boolean,
+    animation: Boolean,
     photoType: oneOf(['never', 'photo', 'tank'] as const, 'photo'),
+    widgetStyle: oneOf(['merfi', 'simple', 'custom'] as const, 'custom'),
     hpLine: Boolean,
+    gradient: Boolean,
     channelKey: String,
   })
 

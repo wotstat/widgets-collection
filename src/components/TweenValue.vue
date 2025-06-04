@@ -29,6 +29,7 @@ const props = defineProps<{
   space?: boolean
   precision?: number
   startAnimationInPreview?: boolean
+  disabled?: boolean
 }>()
 
 const isPreview = inject(isInPreview, false)
@@ -40,20 +41,27 @@ watch(() => props.value, t => {
   value.value = t
 }, { immediate: true })
 
+
+const displayValue = computed(() => {
+  if (props.disabled) return props.value
+  return tweenValue.value
+})
+
 const processed = computed(() => {
+
   if ('processor' in props && props.processor)
-    return props.processor(tweenValue.value)
+    return props.processor(displayValue.value)
 
   const space = 'space' in props && props.space
 
   if ('precision' in props && Number.isInteger(props.precision)) {
-    const val = tweenValue.value.toFixed(props.precision)
+    const val = displayValue.value.toFixed(props.precision)
     return space ? spaceProcessor(val) : val
   }
 
-  if (props.raw) return tweenValue.value
+  if (props.raw) return displayValue.value
 
-  const val = Math.round(tweenValue.value)
+  const val = Math.round(displayValue.value)
   return space ? spaceProcessor(val.toString()) : val
 })
 </script>

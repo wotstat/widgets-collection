@@ -33,6 +33,8 @@ export type Props = {
   photoLine: boolean;
   photoType: PhotoVariant;
   hpLine: boolean;
+  gradient: boolean;
+  animation: boolean;
 }
 
 
@@ -51,6 +53,7 @@ export const photoVariants = [
   { value: 'tank', label: 'options:photo:tank' },
 ]
 
+export type WidgetStyle = 'merfi' | 'simple' | 'custom'
 
 export default defineWidget({
   name: "Чак для боя",
@@ -65,8 +68,17 @@ export default defineWidget({
     { type: 'select', target: 'photo-type', label: 'options:photo-type', variants: photoVariants, default: 'photo', visible: ctx => ctx['photo-line'] },
     { type: 'checkbox', target: 'photo-line', label: 'options:photo-line', default: true },
     { type: 'checkbox', target: 'hp-line', label: 'options:hp-line', default: true },
+    { type: 'checkbox', target: 'animation', label: 'options:animation', default: true },
     { type: 'separator' },
-    { type: 'color', target: 'color-from', label: 'options:color-from', default: defaultGradient.from },
-    { type: 'color', target: 'color-to', label: 'options:color-to', default: defaultGradient.to },
+    {
+      type: 'select', target: 'widget-style', label: 'options:widget-style', variants: [
+        { value: 'merfi', label: 'options:widget-style:merfi' },
+        { value: 'simple', label: 'options:widget-style:simple' },
+        { value: 'custom', label: 'options:widget-style:custom' }
+      ], default: 'merfi'
+    },
+    { type: 'checkbox', target: 'gradient', label: 'options:gradient', default: true },
+    { type: 'color', target: 'color-from', label: 'options:color-from', default: defaultGradient.from, visible: ctx => ctx['widget-style'] == 'custom' },
+    { type: 'color', target: 'color-to', label: 'options:color-to', default: defaultGradient.to, visible: ctx => ctx['widget-style'] == 'custom' },
   ]
 })
