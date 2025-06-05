@@ -481,6 +481,7 @@ $photo-width: 5.6em;
           align-items: center;
           max-width: 6.8em;
           font-family: "Bebas Neue", sans-serif;
+          letter-spacing: 0.1em;
 
           p {
             font-size: 1.05em;
