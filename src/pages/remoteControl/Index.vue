@@ -45,7 +45,10 @@
             </button>
           </div>
 
-          <div class="container" v-if="widgetUrl" ref="resizeContainer">
+          <div class="container" v-if="widgetUrl" ref="resizeContainer" :style="{
+            width: `${targetWidth * scale}px`,
+            height: `${targetHeight * scale}px`,
+          }">
             <iframe :src="iframeUrl" :key="iframeUrl" frameborder="0" allowtransparency="true" ref="widgetIframe"
               :style="{
                 width: `${100 / scale}%`,
@@ -88,6 +91,13 @@
               <input type="text" inputmode="numeric" placeholder="Height" v-model.number="targetHeight" />
             </div>
 
+            <div class="presets">
+              <button @click="setPreset('720p')">720p</button>
+              <button @click="setPreset('1080p')">1080p</button>
+              <button @click="setPreset('1440p')">1440p</button>
+              <button @click="setPreset('2160p')">2160p</button>
+            </div>
+
           </div>
         </div>
       </div>
@@ -99,7 +109,7 @@
 
 <script setup lang="ts">
 import { computedAsync, useDebounce, useDebounceFn, useElementSize, useEventListener, useResizeObserver, watchOnce } from '@vueuse/core';
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useWidgetRelayDebugConnection, useWidgetRemoteDebugConnection, useWidgetSdkDebugConnection } from "@/composition/widgetSdk";
 import { useRemoteInspector } from './useRegistredStates';
 import { useQueryStorage } from './useQueryStorage';
@@ -189,40 +199,12 @@ const setContainerSize = useDebounceFn((width: number, height: number) => {
   setTimeout(() => containerWidth.value = width, 0)
 }, 100)
 
-
-let firstResize = true;
-useResizeObserver(resizeContainer, (entries) => {
-  if (!entries.length) return;
-
-  const { width, height } = entries[0].contentRect;
-  if (firstResize) {
-    firstResize = false;
-    targetWidth.value = containerWidth.value / scale.value;
-    targetHeight.value = containerHeight.value / scale.value;;
-  } else {
-    setContainerSize(width, height);
-  }
-});
-
-const { width: containerWidthRef, height: containerHeightRef } = useElementSize(resizeContainer);
-
-const targetWidth = computed({
-  get: () => Math.round(containerWidthRef.value / scale.value),
-  set: (value) => {
-    if (resizeContainer.value) resizeContainer.value.style.width = `${value * scale.value}px`;
-  }
-})
-
-const targetHeight = computed({
-  get: () => Math.round(containerHeightRef.value / scale.value),
-  set: (value) => {
-    if (resizeContainer.value) resizeContainer.value.style.height = `${value * scale.value}px`;
-  }
-})
+const targetWidth = ref(containerWidth.value);
+const targetHeight = ref(containerHeight.value);
 
 useEventListener(window, 'popstate', () => {
-  targetWidth.value = containerWidth.value / scale.value;
-  targetHeight.value = containerHeight.value / scale.value;
+  targetWidth.value = containerWidth.value;
+  targetHeight.value = containerHeight.value;
 });
 
 const isDragging = ref(false);
@@ -243,9 +225,46 @@ function onHandlerMove(event: PointerEvent) {
   const rect = resizeContainer.value.getBoundingClientRect();
   const newWidth = Math.max(100, event.clientX - rect.left);
   const newHeight = Math.max(100, event.clientY - rect.top);
-  targetWidth.value = Math.round(newWidth / scale.value);
-  targetHeight.value = Math.round(newHeight / scale.value);
+  targetWidth.value = Math.round(newWidth) / scale.value;
+  targetHeight.value = Math.round(newHeight) / scale.value;
 }
+
+function setPreset(preset: '720p' | '1080p' | '1440p' | '2160p') {
+  switch (preset) {
+    case '720p':
+      targetWidth.value = 1280;
+      targetHeight.value = 720;
+      break;
+    case '1080p':
+      targetWidth.value = 1920;
+      targetHeight.value = 1080;
+      break;
+    case '1440p':
+      targetWidth.value = 2560;
+      targetHeight.value = 1440;
+      break;
+    case '2160p':
+      targetWidth.value = 3840;
+      targetHeight.value = 2160;
+      break;
+  }
+
+  const w = targetWidth.value;
+  const h = targetHeight.value;
+  const maxWidth = window.innerWidth - 300;
+  const maxHeight = window.innerHeight - 100;
+
+  let targetMaxScale = 1;
+
+  if (w > maxWidth || h > maxHeight) {
+    targetMaxScale = Math.min(maxWidth / w, maxHeight / h);
+  }
+
+  const nearestLessScale = [1, 0.75, 0.5, 0.25].find(s => s <= targetMaxScale) ?? 1;
+  scale.value = nearestLessScale;
+}
+
+watch(() => [targetWidth.value, targetHeight.value], ([width, height]) => setContainerSize(width, height));
 
 </script>
 
@@ -466,6 +485,7 @@ header {
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      overflow: hidden;
 
       .top {
         display: flex;
@@ -541,6 +561,37 @@ header {
             font-size: 16px;
             border: none;
             text-align: right;
+          }
+        }
+
+        .presets {
+
+          background: field;
+          border-radius: 50px;
+          display: flex;
+
+          button {
+            padding: 0 10px;
+            margin: 0 -3px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+
+            background-color: transparent;
+
+
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.05);
+            }
+
+            &:first-child {
+              margin-left: 0;
+            }
+
+            &:last-child {
+              margin-right: 0;
+            }
           }
         }
       }
