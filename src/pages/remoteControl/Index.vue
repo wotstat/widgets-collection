@@ -177,7 +177,7 @@ const iframeUrl = computed(() => {
 const { overrides, inspector, patch, sending, publish, remoteStatus } = useRemoteInspector(remoteDebug, () => channelKey.value ?? '', () => privateKey.value ?? '');
 
 useEventListener(window, 'keypress', (event: KeyboardEvent) => {
-  if (event.key === 'Enter' && event.ctrlKey && !sending.value) {
+  if (event.code === 'Enter' && event.ctrlKey && !sending.value) {
     event.preventDefault();
     event.stopPropagation();
     publish();
