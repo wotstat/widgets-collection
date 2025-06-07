@@ -176,6 +176,14 @@ const iframeUrl = computed(() => {
 
 const { overrides, inspector, patch, sending, publish, remoteStatus } = useRemoteInspector(remoteDebug, () => channelKey.value ?? '', () => privateKey.value ?? '');
 
+useEventListener(window, 'keypress', (event: KeyboardEvent) => {
+  if (event.key === 'Enter' && event.ctrlKey && !sending.value) {
+    event.preventDefault();
+    event.stopPropagation();
+    publish();
+  }
+});
+
 
 if (privateKey.value == '') generateNewKey();
 function generateNewKey() {
@@ -210,7 +218,6 @@ useEventListener(window, 'popstate', () => {
 const isDragging = ref(false);
 useEventListener(window, 'pointermove', onHandlerMove);
 useEventListener(window, 'pointerup', () => isDragging.value = false);
-
 function onPointerHandlerDown(event: PointerEvent) {
   isDragging.value = true;
 }
