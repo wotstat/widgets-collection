@@ -1,5 +1,5 @@
 <template>
-  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="isMiniPreview ? 1.4 : 1">
+  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="isMiniPreview ? 1.45 : 1">
     <Content v-bind="targetProps" />
   </WidgetPreviewRoot>
 </template>
@@ -40,9 +40,9 @@ const targetProps = computed(() => {
   return {
     colorFrom: targetGradient.value.from,
     colorTo: targetGradient.value.to,
-    title: props.title ?? 'ТУРНИР МËРФИ',
+    title: props.title ?? 'ТУРНИР ЧАКА',
     showTitle: props.isMiniPreview ? 'never' : (props.showTitle ?? 'both'),
-    periodLine: props.periodLine ?? 'both',
+    periodLine: props.periodLine ?? 'never',
     battlesLine: props.battlesLine ?? 'both',
     photoLine: props.isMiniPreview || props.photoLine,
     photoType: props.photoType ?? 'tank',
@@ -77,7 +77,7 @@ const targetProps = computed(() => {
         connected: true
       },
       {
-        name: 'PBODY_PRESS_SUPER_LONG',
+        name: 'SUPER_LONG_NAME',
         tankName: 'Rinoceronte',
         tankTag: 'italy:It15_Rinoceronte',
         score: 1500,

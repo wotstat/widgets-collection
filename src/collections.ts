@@ -2,8 +2,10 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
+      '/efficiency/comp7',
       '/nidin/equipments',
       '/counters/speedrun',
+      '/tournament/chuck/battle',
     ]
   },
   {
@@ -77,7 +79,6 @@ export const collections = [
       '/tournament/trovo/bb-official',
       '/competitive/battle-royale/custom',
       '/tournament/osg/battle-royale',
-      '/tournament/rtk/random',
       '/hangar/lootbox-lesta-ny25',
       '/tournament/granny',
     ]

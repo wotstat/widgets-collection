@@ -42,7 +42,8 @@
           <SmallTopLine class="background-line" />
           <div class="content">
             <p class="gradient uppercase">{{ period }}</p>
-            <p class="uppercase">{{ t('score') }} <span class="gradient ">{{ score }}</span></p>
+            <p class="uppercase">{{ t('score') }} <span class="gradient ">{{ spaceProcessor(score) }}</span>
+            </p>
           </div>
         </div>
 
@@ -54,9 +55,11 @@
           <div class="content">
             <p class="uppercase">{{ t('battles') }} <span class="gradient min-width">{{ battles }}</span></p>
             <p class="gradient" v-if="shouldShow(periodLine)">
-              &lt;{{ battles == 0 ? 0 : Math.round(score / battles) }}&gt;
+              &lt;{{ battles == 0 ? 0 : spaceProcessor(Math.round(score / battles)) }}&gt;
             </p>
-            <p v-else class="uppercase">{{ t('score') }} <span class="gradient">{{ score }}</span></p>
+            <p v-else class="uppercase">{{ t('score') }}
+              <span class="gradient">{{ spaceProcessor(score) }}</span>
+            </p>
           </div>
         </div>
 
@@ -85,10 +88,12 @@
                 <div class="info">
                   <div class="name">
                     <Disconnect class="disconnected" v-if="!player.connected && !isInBattle" />
-                    <p class="uppercase">{{ player.name }}</p>
+                    <p class="uppercase">{{ shorterNickname(player.name) }}</p>
                   </div>
                   <p class="score gradient min-width-small center" v-if="player.connected || !isInBattle">
-                    {{ isInBattle ? player.score : `<${battles == 0 ? 0 : Math.round(player.totalScore / battles)}>` }}
+                    {{ isInBattle ?
+                      spaceProcessor(player.score) :
+                      `<${battles == 0 ? 0 : spaceProcessor(Math.round(player.totalScore / battles))}>` }}
                   </p>
                   <div class="disconnected" v-else>
                     <Disconnect />
@@ -170,6 +175,8 @@ import { computed, ref } from 'vue';
 
 import PhotoMerfi from './assets/photos/Merfi.png'
 import Image from '@/components/Image.vue';
+import { shorterNickname } from '@/utils/nicknameShorter';
+import { spaceProcessor } from '@/composition/processors/useSpaceProcessor';
 
 const gradientId = Math.random().toString(36).substring(2, 15);
 const gradientUrl = computed(() => `url(#${gradientId})`);

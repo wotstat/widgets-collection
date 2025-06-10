@@ -12,12 +12,12 @@ import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed, ref, watch } from 'vue';
-import { Color, NumberDefault, oneOf, StringDefault, useQueryParams, } from '@/composition/useQueryParams';
+import { Color, oneOf, StringDefault, useQueryParams, } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import { merfiGradient } from './define.widget';
 import { useBattleResult } from '@/composition/useOnBattleResult';
-import { syncRefs, useLocalStorage } from '@vueuse/core';
-import { usePlatoonWidgetRelay, useWidgetRelay } from '@/composition/useWidgetRelay';
+import { syncRefs } from '@vueuse/core';
+import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay';
 import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
 import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
 
