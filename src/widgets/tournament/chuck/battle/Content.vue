@@ -122,7 +122,7 @@
                         v-if="animation">
                         <ForceMono :value="`${value}`" width="1.1em" />
                       </TweenValue>
-                      <template v-else>{{ player.hp }}</template>
+                      <template v-else>{{ Math.max(0, player.hp) }}</template>
                     </p>
                     <p class="health-name">{{ t('hp') }}</p>
                   </div>
