@@ -55,7 +55,7 @@
                 height: `${100 / scale}%`,
                 transform: `scale(${scale})`,
                 transformOrigin: 'top left',
-                colorScheme: 'normal',
+                colorScheme: 'dark',
               }" :class="{
                 'dragging': isDragging,
               }"></iframe>
