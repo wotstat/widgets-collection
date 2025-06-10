@@ -88,7 +88,7 @@
                 <div class="info">
                   <div class="name">
                     <Disconnect class="disconnected" v-if="!player.connected && !isInBattle" />
-                    <p class="uppercase">{{ shorterNickname(player.name) }}</p>
+                    <p class="uppercase">{{ playerNameProcessor(player.name) }}</p>
                   </div>
                   <p class="score gradient min-width-small center" v-if="player.connected || !isInBattle">
                     {{ isInBattle ?
@@ -175,8 +175,10 @@ import { computed, ref } from 'vue';
 
 import PhotoMerfi from './assets/photos/Merfi.png'
 import Image from '@/components/Image.vue';
-import { shorterNickname } from '@/utils/nicknameShorter';
 import { spaceProcessor } from '@/composition/processors/useSpaceProcessor';
+import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor';
+
+
 
 const gradientId = Math.random().toString(36).substring(2, 15);
 const gradientUrl = computed(() => `url(#${gradientId})`);
