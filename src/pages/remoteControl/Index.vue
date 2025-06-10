@@ -286,6 +286,7 @@ $header-height: 50px;
 
 .page {
   background-color: #1d1d1d;
+  color: white;
 }
 
 .overlay-color {
@@ -376,7 +377,7 @@ header {
       margin-left: 3px;
       cursor: pointer;
       border-bottom: solid 1px rgba(129, 129, 129, 0.2431372549);
-      background: field;
+      background: rgb(59, 59, 59);
 
       width: 26.5px;
       height: 26.5px;
@@ -452,7 +453,11 @@ header {
         height: 30px;
         cursor: pointer;
         transition: all 0.2s ease;
-        background-color: field;
+        background-color: rgb(59, 59, 59);
+      }
+
+      input {
+        background-color: rgb(59, 59, 59);
       }
 
       &.sdk>.sdk,
@@ -481,7 +486,7 @@ header {
     flex-direction: column;
 
     button {
-      background: field;
+      background: rgb(59, 59, 59);
 
       &:hover {
         background-color: #464646;
@@ -534,7 +539,7 @@ header {
         gap: 10px;
 
         .size {
-          background: field;
+          background: rgb(59, 59, 59);
           border-radius: 50px;
 
           input {
@@ -562,7 +567,7 @@ header {
         }
 
         .scale {
-          background: field;
+          background: rgb(59, 59, 59);
           border-radius: 50px;
 
           select {
@@ -578,7 +583,7 @@ header {
 
         .presets {
 
-          background: field;
+          background: rgb(59, 59, 59);
           border-radius: 50px;
           display: flex;
 
@@ -660,7 +665,6 @@ header {
     }
   }
 }
-
 
 .loader {
   width: 34.23px;

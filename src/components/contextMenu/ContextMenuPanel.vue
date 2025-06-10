@@ -29,7 +29,7 @@ import ContextMenuLine from './lines/Index.vue'
 
 type TimeoutHandler = ReturnType<typeof setTimeout> | null;
 
-const PADDING = 10
+const PADDING = 0
 const SHOW_CHILD_PANEL_DELAY = 150
 const HIDE_CHILD_PANEL_DELAY = 500
 const ZERO_SPEED_DELAY = 200
