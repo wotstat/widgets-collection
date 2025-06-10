@@ -4,7 +4,7 @@
 Если столкнулись с проблемой, напишите в Discord [@WotStat](https://discord.gg/7K8W9JE6xU){target=_blank} или в на электронную почту [support@wotstat.info](mailto:support@wotstat.info){target=_blank}.
 
 
-## Наиболее частая проблема
+## Основная проблема
 Мод корректно установлен, запустился, однако окно с добавлением виджета пишет ошибку
 
 ![Пример ошибки](./error.png){.small .center}
@@ -12,6 +12,27 @@
 Это ошибка означает, что мод не может связаться с дочерним процессом обработки виджетов `wotstat.widgets.cef.exe` по адресу `localhost:33100`
 
 Соединение может блокироваться по разным причинам. Ниже представлены причины, с которыми сталкивались пользователи
+
+## Решение
+
+Первое, что вам следует сделать – запустить `wot/mods/wotstat.widgets.cef/wotstat.widgets.cef.exe` вручную (двойным кликом) при **выключенной** игре. Должно открыться окно с консолью и предложением ввести порт, введите `33100` и нажмите `Enter`.
+- Если окно закроется, то переходите к разделу **Visual C++ Redistributable**.
+- Если окно осталось открытым, то закройте его и попробуйте снова запустить игру. Если ошибка не исчезла, то переходите к следующим разделам.
+
+*Иногда, система не даёт запускать новые приложения от имени других процессов, однако после ручного запуска, всё начинает работать*
+
+![Пример корректной работы wotstat.widgets.cef.exe](./cef-cmd.png){.medium .center}
+:::center
+*Пример корректной работы wotstat.widgets.cef.exe*
+:::
+
+
+### Visual C++ Redistributable
+На некоторых сборках Windows не предустановлены необходимые компоненты Visual C++. Попробуйте установить [Visual C++ 2015–2022 Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe){target=_blank}. Ссылка взята с официального сайта [Microsoft](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version){target=_blank}. Даже если установщик сообщит, что у вас уже установлен этот компонент, нажмите кнопку `Repair` (Исправить) и дождитесь окончания процесса.
+
+
+> [!NOTE]
+> Все последующие шаги пробуйте только после ручного запуска и установки Visual C++ Redistributable.
 
 ### Брендмауэр
 Попробуйте отключить брендмауэр системы, либо добавить исключение для `wotstat.widgets.cef.exe`
@@ -23,15 +44,9 @@
 **Пример для Касперского:**
 ![Касперский](./kaspersky.png){.medium .center}
 
-### Visual C++ 2015–2019 Redistributable
-На некоторых сборках Windows не предустановлены необходимые компоненты Visual C++. Попробуйте установить [Visual C++ 2015–2019 Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe){target=_blank}. Ссылка взята с официального сайта [Microsoft](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version){target=_blank}
 
 ### Discord
 Одному из пользователей помогло закрытие Discord на момент запуска игры. Это сомнительный способ, но можете попробовать 
-
-<!-- 
-### Распространяемые пакеты Visual C++
-Возможно, у вас урезанная ОС с вырезанными компонентами Visual C++. Скачайте их с сайта Microsoft: [microsoft.com/ru-ru/download/details.aspx?id=40784](https://www.microsoft.com/ru-ru/download/details.aspx?id=40784){target=_blank}. Обычно они предустановлены в системе. -->
 
 ### Другие решение
 Если вы нашли другое решение, пожалуйста, сообщите нам, чтобы мы могли добавить его в этот раздел
