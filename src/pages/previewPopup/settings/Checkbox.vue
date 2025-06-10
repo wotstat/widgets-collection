@@ -1,8 +1,8 @@
 <template>
-  <div class="line">
+  <label class="line">
     <p>{{ label }}</p>
     <input type="checkbox" v-model="value">
-  </div>
+  </label>
 </template>
 
 
