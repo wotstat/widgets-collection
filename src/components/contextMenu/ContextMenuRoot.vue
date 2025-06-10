@@ -6,7 +6,7 @@
   <Teleport to="#context-menu-root" v-if="currentContextMenu && targetRect">
     <ContextMenuPanel :rect="targetRect" :items="currentContextMenu.items" ref="currentMenuPanel" @on-action="onAction"
       :options="panelOptions" :key="currentContextMenu.id" :min-width="currentContextMenu.options.minWidth"
-      :direction="'center'" />
+      :align-x="currentContextMenu.options.alignX" :align-y="currentContextMenu.options.alignY" />
   </Teleport>
 </template>
 
@@ -47,6 +47,7 @@ watch(currentContextMenu, menu => {
   if (menu) {
     if (isPointerDown) {
       canActivateCloseByPointerUp = true
+      shouldCloseByPointerUp.value = false
       shouldCloseByPointerUpTimeout = setTimeout(() => {
         shouldCloseByPointerUpTimeout = null
         canActivateCloseByPointerUp = false
@@ -120,12 +121,11 @@ useEventListener(document, 'pointerup', (e) => {
 const targetRect = computed(() => {
   if (!currentContextMenu.value) return
 
-  return new DOMRect(
-    currentContextMenu.value.options.x,
-    currentContextMenu.value.options.y,
-    0,
-    0,
-  )
+  const pos = currentContextMenu.value.options.position;
+
+  if (pos instanceof DOMRect) return pos;
+
+  return new DOMRect(pos.x, pos.y, 0, 0)
 })
 
 const panelOptions = computed(() => {

@@ -1,7 +1,7 @@
 <template>
   <label>
     <span>{{ path[path.length - 1] }}</span>
-    <Select v-model="value" :variants="meta.meta.variants.map(value => ({ value }))" />
+    <Select v-model="value" :variants="meta.meta.variants.map(value => ({ value }))" :align="'left'" />
   </label>
 </template>
 

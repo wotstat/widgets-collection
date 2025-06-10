@@ -1,4 +1,4 @@
-import { type Component, shallowRef, type MaybeRef, nextTick } from "vue"
+import { type Component, shallowRef, type MaybeRef } from "vue"
 
 export const enum ContextMenuItemVariant {
   Child = "child",
@@ -41,11 +41,15 @@ export type ContextMenuItem =
   ContextMenuItemHeader
 
 export type ContextMenuOptions = {
-  x: number,
-  y: number,
+  position: {
+    x: number,
+    y: number,
+  } | DOMRect
   closeOnAction?: boolean,
   actionOnPointerUp?: boolean,
   minWidth?: number,
+  alignX?: 'left' | 'right' | 'center',
+  alignY?: 'normal' | 'bottom'
 }
 
 export type ContextMenu = {
@@ -57,6 +61,8 @@ export type ContextMenu = {
 const defaultOptions: Partial<ContextMenuOptions> = {
   closeOnAction: true,
   actionOnPointerUp: true,
+  alignX: 'left',
+  alignY: 'normal',
 }
 
 export const currentContextMenu = shallowRef<ContextMenu | null>(null)
@@ -79,10 +85,11 @@ export function createContextMenu(options: ContextMenuOptions, items: ContextMen
 
 /* Example 
 
-import { useCheckbox, useSwitcher } from "./composition"
+import { useCheckbox } from "./composition"
+import { ref, computed } from "vue"
 
 const checkbox = useCheckbox(false)
-const option = useSwitcher(['a', 'b', 'c'] as const, 'a')
+const option = ref<'a' | 'b' | 'c'>('a')
 
 function items(): ContextMenuItem[] {
   return [
@@ -96,15 +103,15 @@ function items(): ContextMenuItem[] {
       items: items
     },
     { type: ContextMenuItemVariant.Separator },
-    { type: ContextMenuItemVariant.Button, label: 'A', checkbox: option.a, action: () => option.setActive('a') },
-    { type: ContextMenuItemVariant.Button, label: 'B', checkbox: option.b, action: () => option.setActive('b') },
-    { type: ContextMenuItemVariant.Button, label: 'C', checkbox: option.c, action: () => option.setActive('c') },
+    { type: ContextMenuItemVariant.Button, label: 'A', checkbox: computed(() => option.value == 'a'), action: () => option.value = 'a' },
+    { type: ContextMenuItemVariant.Button, label: 'B', checkbox: computed(() => option.value == 'b'), action: () => option.value = 'b' },
+    { type: ContextMenuItemVariant.Button, label: 'C', checkbox: computed(() => option.value == 'c'), action: () => option.value = 'c' },
     { type: ContextMenuItemVariant.Separator },
   ]
 }
 
 setTimeout(() => {
-  const close = createContextMenu({ x: 512, y: 512 }, items())
+  const close = createContextMenu({ position: { x: 512, y: 512 } }, items())
 })
 
 */

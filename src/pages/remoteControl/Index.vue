@@ -82,7 +82,7 @@
                 { value: 0.75, label: '75%' },
                 { value: 0.50, label: '50%' },
                 { value: 0.25, label: '25%' },
-              ]" />
+              ]" :offset-x="2.5" />
             </div>
 
             <div class="size">

@@ -15,6 +15,9 @@ const element = ref<HTMLSelectElement | null>(null)
 
 const props = defineProps<{
   variants: { value: T, label?: string }[]
+  offsetX?: number
+  offsetY?: number
+  align?: 'left' | 'right' | 'center'
 }>()
 
 const value = defineModel<T>({ required: true })
@@ -28,7 +31,15 @@ function pointerDown(event: PointerEvent) {
 
   const rect = element.value.getBoundingClientRect()
 
-  simpleContextMenu({ x: rect.x + rect.width / 2, y: rect.y + rect.height + 7, minWidth: 50 + rect.width }, [
+  rect.x += props.offsetX ?? 0
+  rect.y += props.offsetY ?? 0
+
+  simpleContextMenu({
+    position: rect,
+    minWidth: rect.width,
+    alignX: 'center',
+    alignY: 'bottom',
+  }, [
     ...options(value, props.variants.map(variant => ({
       key: variant.value,
       label: variant.label ?? String(variant.value)

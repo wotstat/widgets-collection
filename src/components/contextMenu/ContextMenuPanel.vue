@@ -57,7 +57,9 @@ const props = withDefaults(defineProps<{
     closeOnAction?: boolean,
   }
   minWidth?: number,
-  direction?: 'left' | 'right' | 'center',
+  direction?: 'left' | 'right',
+  alignX?: 'left' | 'right' | 'center',
+  alignY?: 'normal' | 'bottom',
   order?: number,
 }>(), {
   direction: 'right',
@@ -85,22 +87,41 @@ const contextMenuStyle = computed(() => {
 
   const width = props.rect.width
   const selfWidth = menuSize.width.value
-  let isRightDirection = props.direction != 'left'
-  const isRoot = width == 0
-
+  const isRoot = props.order == 0
   if (selfWidth == 0) return {}
 
-  pos.y -= 6
+  if (isRoot && props.rect.width != 0) {
+    if (props.alignX == 'right') {
+      pos.x += width - selfWidth
+      pos.x = Math.max(PADDING, pos.x)
+    } else if (props.alignX == 'left') {
+      pos.x = Math.min(containerSize.width.value - selfWidth - PADDING, pos.x)
+    } else if (props.alignX == 'center') {
+      pos.x += (width - selfWidth) / 2
+      pos.x = Math.min(containerSize.width.value - selfWidth - PADDING, pos.x)
+      pos.x = Math.max(PADDING, pos.x)
+    }
+  } else {
+    const rightPos = pos.x + width + (isRoot ? 1 : -5);
+    const leftPos = pos.x - selfWidth - (isRoot ? 1 : -5)
 
-  if (pos.x + width + selfWidth > containerSize.width.value) {
-    isRightDirection = false
-  } else if (pos.x - selfWidth < 0) {
-    isRightDirection = true
+    if (props.direction == 'right') {
+      if (rightPos + selfWidth + PADDING > containerSize.width.value) targetDirection.value = 'left'
+    }
+    else if (props.direction == 'left') {
+      if (leftPos - selfWidth - PADDING < 0) targetDirection.value = 'right'
+    }
+
+    pos.x = targetDirection.value == 'right' ? rightPos : leftPos
   }
 
-  targetDirection.value = isRightDirection ? 'right' : 'left'
 
-  pos.x = pos.x + (isRightDirection ? width : -selfWidth) + (isRoot ? 1 : -5) * (isRightDirection ? 1 : -1)
+  if (props.alignY == 'bottom') {
+    pos.y += props.rect.height + 1
+  } else {
+    pos.y -= 6
+  }
+
 
   if (menuSize.height.value + pos.y > containerSize.height.value - PADDING) {
     pos.y = containerSize.height.value - menuSize.height.value - PADDING

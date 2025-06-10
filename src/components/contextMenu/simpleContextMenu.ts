@@ -1,5 +1,5 @@
-import { computed, ref, type Component, type MaybeRef, type Ref, type WatchSource } from "vue"
-import { createContextMenu, type ContextMenuItem, ContextMenuItemVariant, closeContextMenu, ContextMenu, ContextMenuOptions } from "./createContextMenu"
+import { computed, type Component, type MaybeRef, type Ref } from "vue"
+import { createContextMenu, type ContextMenuItem, ContextMenuItemVariant, ContextMenuOptions } from "./createContextMenu"
 
 
 export const separator = Symbol('separator')
@@ -176,14 +176,14 @@ export function simpleContextMenu(options: ContextMenuOptions,
 }
 
 /* Example
-
 import { useCheckbox } from "./composition"
+import { ref } from "vue"
 
 const checkbox = useCheckbox(false)
 const option = ref<'a' | 'b' | 'c'>('a')
 
 setTimeout(() => {
-  const close = simpleContextMenu({ x: 512, y: 512, closeOnAction: false, actionOnPointerUp: true }, [
+  const close = simpleContextMenu({ position: { x: 512, y: 512 }, closeOnAction: false, actionOnPointerUp: true }, [
     button('Button', () => console.log('Button')),
     separator,
     header('Header'),
@@ -199,6 +199,5 @@ setTimeout(() => {
     childOptions('Childs', option, ['a', 'b', 'c']),
   ])
 }, 100)
-
 
 */
