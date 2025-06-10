@@ -40,7 +40,7 @@ function action() {
   emit('onAction')
 }
 
-function onClick(e: PointerEvent) {
+function onClick(e: MouseEvent) {
   if (!props.options.actionOnPointerUp) action()
 }
 
