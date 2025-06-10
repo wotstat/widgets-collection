@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from 'vue'
+
 type Meta = { drawer: string; /* … */ }
 
 const props = defineProps<{

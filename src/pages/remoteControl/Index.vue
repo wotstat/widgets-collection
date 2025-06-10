@@ -77,12 +77,12 @@
           <div class="bottom" v-if="widgetUrl">
 
             <div class="scale">
-              <select v-model="scale">
-                <option :value="1">100%</option>
-                <option :value="0.75">75%</option>
-                <option :value="0.50">50%</option>
-                <option :value="0.25">25%</option>
-              </select>
+              <Select v-model="scale" :variants="[
+                { value: 1, label: '100%' },
+                { value: 0.75, label: '75%' },
+                { value: 0.50, label: '50%' },
+                { value: 0.25, label: '25%' },
+              ]" />
             </div>
 
             <div class="size">
@@ -103,6 +103,8 @@
       </div>
 
     </div>
+
+    <ContextMenuRoot />
   </div>
 </template>
 
@@ -118,6 +120,9 @@ import CopyIcon from '@/assets/icons/copy.svg'
 import SdkInspector from './sdkInspector/SdkInspector.vue';
 import RemoteInspector from './RemoteInspector.vue';
 import RelayInspector from './RelayInspector.vue';
+import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue';
+import Select from '@/components/Select.vue';
+
 
 
 const widgetIframe = ref<HTMLIFrameElement | null>(null);
@@ -422,8 +427,8 @@ header {
   display: flex;
 
   .inspector {
-    width: 30%;
-    max-width: 310px;
+    width: 310px;
+    min-width: 310px;
     padding: 10px;
     border-radius: 15px;
     margin: 10px;
