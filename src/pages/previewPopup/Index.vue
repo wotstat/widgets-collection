@@ -44,6 +44,8 @@
         </Transition>
       </div>
     </div>
+
+    <ContextMenuRoot />
   </template>
 </template>
 
@@ -71,6 +73,7 @@ import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
 import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
 import { WidgetParam } from '@/utils/defineWidget';
 import { useElementScrollSize } from '@/composition/utils/useElementScrollSize';
+import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue';
 
 injectStylesheet()
 
