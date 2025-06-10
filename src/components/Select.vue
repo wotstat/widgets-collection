@@ -35,6 +35,8 @@ const variants = computed(() => {
 
 function pointerDown(event: PointerEvent) {
   if (!element.value) return;
+  if (event.pointerType == 'touch') return;
+
 
   event.preventDefault();
   event.stopPropagation();
