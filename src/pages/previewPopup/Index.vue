@@ -167,7 +167,11 @@ function isVisible(param?: WidgetParam) {
   return !!param.visible
 }
 
-const currentPreviewComponent = defineAsyncComponent(currentPreview.value as any)
+const currentPreviewComponent = defineAsyncComponent(async () => {
+  const result = await (currentPreview.value as any)()
+  parent.postMessage({ type: 'preview-component-loaded' }, '*')
+  return result
+})
 
 const settingsValues = computedWithControl(currentOptions, () => {
   if (!currentOptions.value) return null
