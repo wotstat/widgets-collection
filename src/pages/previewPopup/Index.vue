@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
-import { computed, defineAsyncComponent, defineComponent, h, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, h, onMounted, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { accent, background, defaultAccent, defaultBackground } from "@/composition/wotstatColors";
 import { injectStylesheet } from "@/composition/widgetSdk"
@@ -301,8 +301,11 @@ const RMC = defineAsyncComponent(async () => {
     attributes
   }, '*')
 
-
   return VueComponent
+})
+
+onMounted(() => {
+  parent.postMessage({ type: 'preview-mounted' }, '*')
 })
 
 const widgetUrl = computed(() => encodeURI(`${BASE_URL}${currentOptions.value?.route}?${targetQuery.value}`))

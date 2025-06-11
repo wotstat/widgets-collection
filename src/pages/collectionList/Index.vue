@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils';
 import Item from './Item.vue';
-import { type Component, defineAsyncComponent, provide } from 'vue';
+import { type Component, defineAsyncComponent, onMounted, provide } from 'vue';
 import { collections } from '@/collections';
 import { injectStylesheet } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
@@ -99,6 +99,10 @@ function onClick(widget: {
     title: widget.options.name
   }, '*')
 }
+
+onMounted(() => {
+  parent.postMessage({ type: 'collection-mounted' }, '*')
+})
 
 </script>
 
