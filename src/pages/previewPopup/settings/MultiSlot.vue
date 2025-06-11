@@ -48,16 +48,17 @@
 
 
 <script setup lang="ts">
-import Icon from '@/components/efficiencyIcon/Icon.vue';
 import { isIconType } from '@/components/efficiencyIcon/utils';
 import { useHasScroll } from '@/composition/utils/useHasScroll';
 import { MultiSlotParamSlot } from '@/utils/defineWidget';
 import { useElementBounding, useToggle } from '@vueuse/core';
 import { onClickOutside } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 
 import IconX from "@/assets/icons/x.svg";
 import IconSearch from "@/assets/icons/search.svg";
+
+const Icon = defineAsyncComponent(() => import('@/components/efficiencyIcon/Icon.vue'));
 
 
 const props = defineProps<{

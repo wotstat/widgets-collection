@@ -1,10 +1,13 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 import { getAllWidgetsRoutes, pathResolve } from "./utils";
 
+import CollectionList from './pages/collectionList/Index.vue'
+import PreviewPopup from './pages/previewPopup/Index.vue'
+
 const routes: RouteRecordRaw[] = [
   { path: '/', component: () => import('./pages/main/Index.vue') },
-  { path: '/iframe/collection', component: () => import('./pages/collectionList/Index.vue') },
-  { path: '/iframe/preview/:widget*', component: () => import('./pages/previewPopup/Index.vue') },
+  { path: '/iframe/collection', component: CollectionList },
+  { path: '/iframe/preview/:widget*', component: PreviewPopup },
   { path: '/manual-install', component: () => import('./pages/manualInstall/Index.vue') },
   { path: '/preview/:widget*', component: () => import('./pages/main/Index.vue') },
   { path: '/demo-widget', redirect: '/tools/debug' },

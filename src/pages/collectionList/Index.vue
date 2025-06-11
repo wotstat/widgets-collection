@@ -31,13 +31,13 @@
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils';
 import Item from './Item.vue';
-import { type Component, provide } from 'vue';
+import { type Component, defineAsyncComponent, provide } from 'vue';
 import { collections } from '@/collections';
 import { injectStylesheet } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
 import { Options } from '@/utils/defineWidget';
 import { isInMiniPreview, isInPreview, language } from '@/utils/provides';
-import.meta.glob('/src/widgets/**/*.md', { eager: true })
+import LoadingWidgetPreview from './LoadingWidgetPreview.vue';
 
 injectStylesheet();
 useProvideDocumentBounding()
@@ -51,7 +51,7 @@ const emit = defineEmits<{
 
 const widgets = getAllWidgetsRoutes()
 const widgetsMap = new Map(widgets.map(w => ([w.route, w])))
-const widgetPreviews = import.meta.glob<{ default: Component }>('/src/widgets/**/*.vue', { eager: true })
+const widgetPreviews = import.meta.glob<{ default: Component }>('/src/widgets/**/Preview.vue')
 
 provide(language, 'ru')
 provide(isInPreview, true)
@@ -70,7 +70,10 @@ const collectionsWithWidgets = collections.map(collection => ({
     }
 
     const previewPath = '/' + pathResolve('src', widget.path, widget.options.preview)
-    const previewComponent = widgetPreviews[previewPath].default
+    const previewComponent = defineAsyncComponent({
+      loader: widgetPreviews[previewPath],
+      loadingComponent: LoadingWidgetPreview, delay: 0
+    })
 
     return {
       ...widget,

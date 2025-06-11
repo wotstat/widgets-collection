@@ -56,15 +56,6 @@ import { computed, defineAsyncComponent, defineComponent, h, provide, Ref, ref, 
 import { useRoute } from 'vue-router'
 import { accent, background, defaultAccent, defaultBackground } from "@/composition/wotstatColors";
 import { injectStylesheet } from "@/composition/widgetSdk"
-import Checkbox from './settings/Checkbox.vue';
-import Select from './settings/Select.vue';
-import Int from './settings/Int.vue';
-import Color from './settings/Color.vue';
-import String from './settings/String.vue';
-import MultiSlot from './settings/MultiSlot.vue';
-import RandomString from './settings/RandomString.vue';
-import DatePicker from './settings/DatePicker.vue';
-import Unsupported from './settings/Unsupported.vue';
 import { computedWithControl, useElementBounding } from '@vueuse/core';
 import CopyIcon from '@/assets/icons/copy.svg';
 import IconReset from '@/assets/icons/reset.svg'
@@ -74,6 +65,17 @@ import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
 import { WidgetParam } from '@/utils/defineWidget';
 import { useElementScrollSize } from '@/composition/utils/useElementScrollSize';
 import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue';
+
+import Checkbox from './settings/Checkbox.vue';
+import Select from './settings/Select.vue';
+import Int from './settings/Int.vue';
+import String from './settings/String.vue';
+import MultiSlot from './settings/MultiSlot.vue';
+import RandomString from './settings/RandomString.vue';
+import DatePicker from './settings/DatePicker.vue';
+import Unsupported from './settings/Unsupported.vue';
+const Color = defineAsyncComponent(() => import('./settings/Color.vue'))
+
 
 injectStylesheet()
 
