@@ -40,6 +40,7 @@ export type Props = {
   gradient: boolean;
   animation: boolean;
   widgetStyle: WidgetStyle;
+  lastBattleTotalScore: number | null;
 }
 
 

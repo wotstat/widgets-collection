@@ -2,7 +2,7 @@
   <WidgetWrapper autoScale autoHeight>
     <Content :colorFrom="targetGradient.from" :colorTo="targetGradient.to" :title :period :showTitle :periodLine
       :battlesLine :photoLine :hpLine :photoType :isInBattle="isInBattle ?? false" :battles :score="totalScore" :players
-      :gradient :animation :widgetStyle />
+      :gradient :animation :widgetStyle :lastBattleTotalScore />
   </WidgetWrapper>
 </template>
 
@@ -174,14 +174,20 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
 })
 
 
+const lastBattleTotalScore = useWidgetStorage<number | null>('lastBattleTotalScore', null, { groupByPlatoon: true })
+
 useBattleResult((parsed, result) => {
   if (!isMain.value) return;
 
   battles.value += 1
-  totalScore.value += parsed.platoon
+
+  const battleScore = parsed.platoon
     .filter(p => p !== undefined)
     .map(p => personalScore(p.stats.damageDealt, p.stats.kills))
     .reduce((a, b) => a + b, 0) + teamScore(parsed.result == 'win')
+
+  totalScore.value += battleScore
+  lastBattleTotalScore.value = battleScore
 
   for (const person of parsed.platoon) {
     if (!person || person.player == 'bot') continue;

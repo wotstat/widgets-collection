@@ -42,7 +42,7 @@
           <SmallTopLine class="background-line" />
           <div class="content">
             <p class="gradient uppercase">{{ period }}</p>
-            <p class="uppercase">{{ t('score') }} <span class="gradient ">{{ spaceProcessor(score) }}</span>
+            <p class="uppercase nowrap">{{ t('score') }} <span class="gradient">{{ spaceProcessor(score) }}</span>
             </p>
           </div>
         </div>
@@ -54,10 +54,13 @@
           <SmallBottomLine class="background-line" />
           <div class="content">
             <p class="uppercase">{{ t('battles') }} <span class="gradient min-width">{{ battles }}</span></p>
-            <p class="gradient" v-if="shouldShow(periodLine)">
-              &lt;{{ battles == 0 ? 0 : spaceProcessor(Math.round(score / battles)) }}&gt;
-            </p>
-            <p v-else class="uppercase">{{ t('score') }}
+            <template v-if="shouldShow(periodLine)">
+              <p class="gradient nowrap" v-if="isInBattle">{{ battleSum }}</p>
+              <p class="gradient nowrap" v-else>
+                &lt;{{ battles == 0 ? 0 : spaceProcessor(Math.round(score / battles)) }}&gt;
+              </p>
+            </template>
+            <p v-else class="uppercase nowrap">{{ t('score') }}
               <span class="gradient">{{ spaceProcessor(score) }}</span>
             </p>
           </div>
@@ -90,7 +93,7 @@
                     <Disconnect class="disconnected" v-if="!player.connected && !isInBattle" />
                     <p class="uppercase">{{ playerNameProcessor(player.name) }}</p>
                   </div>
-                  <p class="score gradient min-width-small center" v-if="player.connected || !isInBattle">
+                  <p class="score gradient min-width-small center nowrap" v-if="player.connected || !isInBattle">
                     {{ isInBattle ?
                       spaceProcessor(player.score) :
                       `<${battles == 0 ? 0 : spaceProcessor(Math.round(player.totalScore / battles))}>` }}
@@ -140,6 +143,19 @@
           </div>
         </div>
 
+        <div class="line last-battle-info" v-if="!isInBattle && lastBattleTotalScore !== null">
+          <ClipContent :root="lines" :svg="SmallBottomAltBack" class="background-image">
+            <div class="ice"></div>
+          </ClipContent>
+          <SmallBottomAltLine class="background-line" />
+          <div class="content">
+            <p class="uppercase">Прошлый бой:</p>
+            <p class="uppercase nowrap">
+              <span class="gradient">{{ spaceProcessor(lastBattleTotalScore) }}</span>
+            </p>
+          </div>
+        </div>
+
       </div>
     </ClipWrapper>
   </div>
@@ -158,6 +174,7 @@ import MediumBack from './assets/background/medium.svg?raw';
 import SmallBottomBack from './assets/background/small-bottom.svg?raw';
 import SmallPhotoBack from './assets/background/small-photo.svg?raw';
 import SmallTopBack from './assets/background/small-top.svg?raw';
+import SmallBottomAltBack from './assets/background/small-bottom-alt.svg?raw';
 
 import LargePhotoLine from './assets/lines/large-photo.svg';
 import MediumPhotoLine from './assets/lines/medium-photo.svg'
@@ -165,6 +182,7 @@ import MediumBackLine from './assets/lines/medium.svg';
 import SmallBottomLine from './assets/lines/small-bottom.svg';
 import SmallPhotoLine from './assets/lines/small-photo.svg';
 import SmallTopLine from './assets/lines/small-top.svg';
+import SmallBottomAltLine from './assets/lines/small-bottom-alt.svg';
 
 
 import { useI18nRef } from '@/composition/useI18n';
@@ -216,6 +234,10 @@ function getPhotoByNickname(name: string) {
   if (photo) return photo.default;
   return PhotoMerfi;
 }
+
+const battleSum = computed(() => {
+  return props.players.reduce((sum, player) => sum + player.score, 0);
+});
 </script>
 
 
@@ -241,7 +263,7 @@ function getPhotoByNickname(name: string) {
   font-family: Drukwidecyr, sans-serif;
 
   p {
-    font-size: 1em;
+    font-size: 0.9em;
   }
 
   .gradient {
@@ -370,13 +392,20 @@ function getPhotoByNickname(name: string) {
 }
 
 .step-info,
-.main-count {
+.main-count,
+.last-battle-info {
   .content {
     display: flex;
     align-items: center;
     padding: 0 1em;
     padding-bottom: 0.1em;
     justify-content: space-between;
+  }
+}
+
+.last-battle-info {
+  .content {
+    padding-right: 1.4em;
   }
 }
 

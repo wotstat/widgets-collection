@@ -55,6 +55,7 @@ const targetProps = computed(() => {
     isInBattle: true,
     score: 60348,
     battles: 4,
+    lastBattleTotalScore: 123,
     players: [
       {
         name: 'Spichka',
