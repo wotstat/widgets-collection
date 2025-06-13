@@ -18,8 +18,6 @@
 ## Проверка установки
 Убедитесь, что внутри папки `mods/wotstat.widgets.cef` находится исполняемый файл `wotstat.widgets.cef.exe`. Промежуточных папок быть не должно.
 
-<storage-link src="wotstat.widgets.cef.d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca.zip" text="Скачать"></storage-link>
-
 
 ## Старые версии
 | Версия мода | Ссылка                                                                                                          | Контрольная сумма                                                |
