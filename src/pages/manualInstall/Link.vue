@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const prefix = (() => {
   const match = location.host.match(/^(.*)\.widgets\.wotstat\.info$/i)
-  return match ? `${match[0]}.` : ''
+  return match ? `${match[1]}.` : ''
 })()
 
 </script>
