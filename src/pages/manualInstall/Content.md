@@ -6,7 +6,7 @@
 По умолчанию мод самостоятельно скачивает актуальную версию `CEF` при первом запуске, однако если у вас возникли проблемы с загрузкой, вы можете установить его вручную. **Это легко**.
 
 ## Инструкция по установке
-1. Скачайте актуальную версию `wotstat.widgets.cef.xxx.zip` – [Скачать](https://cef-storage.wotstat.info/wotstat.widgets.cef.f85d404db45185ddb02d012038b63b37889b316b3b0c1fd2526a6c7ea8a2aad6.zip)
+1. Скачайте актуальную версию `wotstat.widgets.cef.xxx.zip` – <storage-link src="wotstat.widgets.cef.e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25.zip"/>
 2. Распакуйте `zip` архив в папку `mods` в конревой папке игры. *(Нужно рапаковать именно внутри `mods`, а **не** `mods/версия игры`)*
 3. Готово! Теперь мод будет использовать установленную версию `CEF`.
 
@@ -18,10 +18,13 @@
 ## Проверка установки
 Убедитесь, что внутри папки `mods/wotstat.widgets.cef` находится исполняемый файл `wotstat.widgets.cef.exe`. Промежуточных папок быть не должно.
 
+<storage-link src="wotstat.widgets.cef.d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca.zip" text="Скачать"></storage-link>
+
+
 ## Старые версии
-| Версия мода | Ссылка                                                                                                                               | Контрольная сумма                                                |
-| :---------: | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-|    1.3.3    | [Скачать](https://cef-storage.wotstat.info/wotstat.widgets.cef.eb52eec84d4870579506761367617c1d635384a2a23a875bc4d534b57e0309ed.zip) | eb52eec84d4870579506761367617c1d635384a2a23a875bc4d534b57e0309ed |
-|    1.3.0    | [Скачать](https://cef-storage.wotstat.info/wotstat.widgets.cef.d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca.zip) | d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca |
-|    1.4.0    | [Скачать](https://cef-storage.wotstat.info/wotstat.widgets.cef.f85d404db45185ddb02d012038b63b37889b316b3b0c1fd2526a6c7ea8a2aad6.zip) | f85d404db45185ddb02d012038b63b37889b316b3b0c1fd2526a6c7ea8a2aad6 |
-|    2.0.0    | [Скачать](https://cef-storage.wotstat.info/wotstat.widgets.cef.e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25.zip) | e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25 |
+| Версия мода | Ссылка                                                                                                          | Контрольная сумма                                                |
+| :---------: | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+|    1.3.3    | <storage-link src="wotstat.widgets.cef.eb52eec84d4870579506761367617c1d635384a2a23a875bc4d534b57e0309ed.zip"/>  | eb52eec84d4870579506761367617c1d635384a2a23a875bc4d534b57e0309ed |
+|    1.3.0    | <storage-link src="wotstat.widgets.cef.d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca.zip"/>) | d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca |
+|    1.4.0    | <storage-link src="wotstat.widgets.cef.f85d404db45185ddb02d012038b63b37889b316b3b0c1fd2526a6c7ea8a2aad6.zip"/>) | f85d404db45185ddb02d012038b63b37889b316b3b0c1fd2526a6c7ea8a2aad6 |
+|    2.0.0    | <storage-link src="wotstat.widgets.cef.e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25.zip"/>) | e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25 |
