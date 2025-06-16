@@ -1,9 +1,10 @@
 
 import { ResponseJSON, createClient, type ClickHouseSettings } from "@clickhouse/client-web";
 import { computed, ref, shallowRef, watch } from "vue";
+import { CLICKHOUSE_URL } from "./externalUrl";
 
 export const clickhouse = createClient({
-  url: import.meta.env.VITE_CLICKHOUSE_URL,
+  url: CLICKHOUSE_URL,
   username: import.meta.env.VITE_CLICKHOUSE_USER,
   database: import.meta.env.VITE_CLICKHOUSE_DATABASE,
   password: import.meta.env.VITE_CLICKHOUSE_PASSWORD,

@@ -26,13 +26,14 @@
 
 
 <script setup lang="ts">
+import { RELAY_HTTP_URL, RELAY_URL } from '@/utils/externalUrl';
 import { useFetch, useLocalStorage, useVirtualList, useWebSocket } from '@vueuse/core';
 import { computed, ref, watchEffect } from 'vue';
 
 const password = useLocalStorage<string>('admin_password', '');
 const listSearchText = ref<string>('');
 
-const channelList = useFetch(`${import.meta.env.VITE_RELAY_HTTP_URL}/channel-list`, {
+const channelList = useFetch(`${RELAY_HTTP_URL}/channel-list`, {
   beforeFetch: ({ url, options, cancel }) => {
     options.headers = {
       ...options.headers,
@@ -54,7 +55,7 @@ function selectChannel(channel: string) {
   selectedChannel.value = channel;
 }
 
-const wsUrl = computed(() => `${import.meta.env.VITE_RELAY_URL}/silent?channel=${selectedChannel.value}`);
+const wsUrl = computed(() => `${RELAY_URL}/silent?channel=${selectedChannel.value}`);
 const { status } = useWebSocket(wsUrl, {
   onMessage: (ws, e) => {
     console.log(JSON.parse(e.data));
