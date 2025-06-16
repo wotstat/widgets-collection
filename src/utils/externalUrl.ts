@@ -12,3 +12,4 @@ export const WIDGETS_URL = import.meta.env.VITE_WIDGETS_URL || `https://${prefix
 export const POSITIONS_URL = import.meta.env.VITE_POSITIONS_URL || `https://${prefix}positions.wotstat.info`;
 export const RELAY_URL = import.meta.env.VITE_RELAY_URL || `wss://${prefix}widgets-relay.wotstat.info`;
 export const RELAY_HTTP_URL = import.meta.env.VITE_RELAY_HTTP_URL || `https://${prefix}widgets-relay.wotstat.info`;
+export const REMOTE_URL = import.meta.env.VITE_REMOTE_URL || `wss://${prefix}widgets-remote.wotstat.info`;

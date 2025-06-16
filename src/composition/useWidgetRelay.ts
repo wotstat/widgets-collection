@@ -3,12 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { computed, MaybeRefOrGetter, shallowRef, toValue } from "vue";
 import { watch } from "vue";
 import { useReactiveState, useWidgetSdk, WidgetsRelay } from "./widgetSdk";
+import { RELAY_URL } from "@/utils/externalUrl";
 
 export function useWidgetRelay(postfix: string) {
   const route = useRoute();
   const uuid = uuidv4()
 
   const relay = new WidgetsRelay({
+    url: RELAY_URL,
     channel: `${route.path}:${postfix}`,
     uuid
   })

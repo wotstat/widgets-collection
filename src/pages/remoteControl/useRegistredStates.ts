@@ -1,6 +1,7 @@
 import { RemoteDebugConnection, useWidgetRemoteDebugConnection, WidgetsRemote } from "@/composition/widgetSdk";
 import { computed, MaybeRefOrGetter, onUnmounted, ref, shallowRef, toValue, triggerRef, watch, watchEffect, WatchSource } from "vue";
 import { Entry } from "./inspector/tree";
+import { REMOTE_URL } from "@/utils/externalUrl";
 
 
 export type PossibleValues = NonNullable<ReturnType<WidgetsRemote['fullState']['value']['get']>>
@@ -42,7 +43,7 @@ export function useWidgetsRemote(channel: WatchSource<string>) {
   watch(channel, channel => {
     remote.value?.dispose()
     if (channel) {
-      remote.value = new WidgetsRemote({ channel })
+      remote.value = new WidgetsRemote({ channel, url: REMOTE_URL })
       remote.value.status.watch(s => status.value = s, { immediate: true })
     }
   }, { immediate: true })

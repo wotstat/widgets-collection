@@ -13,9 +13,8 @@ import { Status } from './define.widget';
 import WidgetRoot from '@/components/WidgetRoot.vue';
 import { useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
+import { CLICKHOUSE_URL, REMOTE_URL, WIDGETS_URL } from '@/utils/externalUrl';
 
-
-const gunMark = useGunMarkCalculator()
 
 const widget = ref<Status>('connecting')
 const database = ref<Status>('connecting')
@@ -34,13 +33,13 @@ watchEffect(() => {
 const widgetRelay = useWidgetRelay('connection-check')
 widgetRelay.relay.status.watch((status) => relay.value = status)
 
-const widgetRemote = new WidgetsRemote({ channel: 'connection-check' })
+const widgetRemote = new WidgetsRemote({ channel: 'connection-check', url: REMOTE_URL })
 widgetRemote.status.watch((status) => remote.value = status)
 
 
 async function checkWeb() {
   try {
-    const result = await fetch('https://widgets.wotstat.info')
+    const result = await fetch(WIDGETS_URL)
     const text = await result.text()
 
     if (text.includes('<div id="app"></div>')) {
@@ -57,7 +56,7 @@ async function checkWeb() {
 
 async function checkDb() {
   try {
-    const result = await fetch('https://db.wotstat.info/?user=public&default_format=JSON&add_http_cors_header=1', {
+    const result = await fetch(`${CLICKHOUSE_URL}/?user=public&default_format=JSON&add_http_cors_header=1`, {
       method: 'POST',
       body: 'SELECT 1;'
     })
