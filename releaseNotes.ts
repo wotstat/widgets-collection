@@ -121,6 +121,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2025-04-10-lootbox',
     ru: `• В виджет ${Utils.addWidget('https://widgets.wotstat.info/hangar/lootbox-universal?sync=true&delay=long', 'Статистика коробок')} добавлен счётчик инструкций и боевых резервов.`
   },
+  {
+    id: '2025-06-18-rkn',
+    ru: `• Если у вас в России медленно грузятся или не работают виджеты, воспользуйтесь резервным сервером: ${Utils.openUrl('https://ru.wotstat.info/widgets', 'ru.wotstat.info')}`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {
