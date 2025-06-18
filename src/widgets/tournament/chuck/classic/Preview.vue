@@ -1,5 +1,5 @@
 <template>
-  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2.9">
+  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2.5">
     <Content :players :battles-count="57" :total-avg="15304" :total-last="17209" :skin="skin ?? 'transparent'" />
   </WidgetPreviewRoot>
 </template>

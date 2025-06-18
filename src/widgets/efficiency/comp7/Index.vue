@@ -1,6 +1,6 @@
 <template>
   <WidgetWrapper auto-height auto-scale>
-    <Content v-bind="targetProps" :hideIcon />
+    <Content v-bind="targetProps" :hideIcon :skin />
   </WidgetWrapper>
 </template>
 
@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import Content from './Content.vue';
 import { computed } from 'vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
 import { Props } from './define.widget';
 import { queryAsync } from '@/utils/db';
@@ -16,9 +16,12 @@ import { useBattleResultHistory } from '@/composition/shared/useBattleResultHist
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
 
 
-const { hideIcon, historyLength } = useQueryParams({
+const COMP_7_BONUS_TYPE = 43;
+
+const { hideIcon, historyLength, skin } = useQueryParams({
   hideIcon: Boolean,
-  historyLength: Number
+  historyLength: Number,
+  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
 
@@ -30,13 +33,15 @@ const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
   return {
     delta: parsed.personal.comp7.ratingDelta ?? 0,
     rating: parsed.personal.comp7.rating ?? 0,
+    isQualification: parsed.personal.comp7.qualActive ?? false,
+    battleResult: parsed.result,
     arena: parsed.common.arenaId,
     bonusType: parsed.common.bonusType,
     arenaUniqueID: parsed.arenaUniqueID
   }
 }, { order: 'result', groupByPlayerId: true })
 
-const comp7History = computed(() => history.value.filter(h => h?.arena != null && h.bonusType == 43))
+const comp7History = computed(() => history.value.filter(h => h?.arena != null && h.bonusType == COMP_7_BONUS_TYPE))
 
 const arenas = queryAsync<{ id: number, name: string }>(`select id, argMax(name, datetime) as name from Arenas where region = 'RU' group by id;`)
 
@@ -49,7 +54,8 @@ const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.
   history: comp7History.value.toReversed().slice(0, historyLength).map(t => ({
     arena: getArenaName(t?.arena ?? 0),
     delta: t.delta ?? 0,
-    key: `${t.arena}_${t.delta}_${t.rating}_${t.arenaUniqueID}`
+    key: `${t.arena}_${t.delta}_${t.rating}_${t.arenaUniqueID}`,
+    result: t.battleResult,
   })),
   game: region.value == 'RU' ? 'lesta' : 'wg'
 }))

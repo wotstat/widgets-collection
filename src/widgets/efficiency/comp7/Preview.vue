@@ -1,6 +1,6 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="aspect">
-    <Content v-bind="targetProps" />
+    <Content v-bind="targetProps" :skin />
   </WidgetPreviewRoot>
 </template>
 
@@ -16,10 +16,11 @@ import { Props } from './define.widget';
 const props = defineProps<{
   isMiniPreview: boolean
   hideIcon?: boolean
-  historyLength?: number | string
+  historyLength?: number | string,
+  skin?: 'transparent' | 'default'
 }>();
 
-const targetProps = computed<Props>(() => ({
+const targetProps = computed<Omit<Props, 'skin'>>(() => ({
   currentRank: 925,
   history: [
     { delta: +19, key: '1', arena: 'Утёс' },

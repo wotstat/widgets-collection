@@ -1,6 +1,6 @@
 <template>
   <InsetsWrapper :insets="insets" :edge-mask="edgeMask">
-    <div class="main preview-card">
+    <div class="main preview-card" :class="{ [`skin-${skin}`]: true, 'hide-icon': hideIcon }">
       <div class="flex">
         <img :src="RankTabHighlight" class="highlight-hide-icon" v-if="hideIcon">
         <img :src="RankTabHighlight" class="highlight" v-if="!hideIcon">
@@ -16,8 +16,11 @@
                 'positive': line.delta > 0,
                 'negative': line.delta < 0
               }">
-                <span class="sign">{{ line.delta < 0 ? '-' : '+' }}</span>
-                    <span class="value">{{ Math.abs(line.delta) }}</span>
+                <template v-if="line.delta != 0 || line.result == undefined">
+                  <span class="sign">{{ line.delta < 0 ? '-' : '+' }}</span>
+                      <span class="value">{{ Math.abs(line.delta) }}</span>
+                </template>
+                <Battles v-else :class="line.result" class="result-icon" />
               </p>
             </div>
           </TransitionGroup>
@@ -35,6 +38,7 @@ import { type Props } from "./define.widget";
 import InsetsWrapper from "@/components/InsetsWrapper.vue";
 
 import RankTabHighlight from "./assets/rankTabHighlight.png";
+import Battles from "./assets/battles.svg";
 import { preloadImage } from '@/utils/preload';
 import { isInPreview as isInPreviewKey } from '@/utils/provides';
 
@@ -113,11 +117,13 @@ watch(currentImage, () => {
 })
 
 const insets = computed(() => {
+  if (props.skin == 'default') return 0
   if (props.hideIcon) return { top: 20, bottom: 5, left: 10, right: 10 }
   return { top: 5, bottom: 5, left: 10, right: 10 }
 })
 
 const edgeMask = computed(() => {
+  if (props.skin == 'default') return 0
   if (props.hideIcon) return { top: 10, bottom: 5, left: 10, right: 10 }
   return { top: 5, bottom: 5, left: 10, right: 10 }
 })
@@ -190,15 +196,6 @@ const edgeMask = computed(() => {
     width: 100%;
     position: relative;
 
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0.5em;
-      background: rgba(0, 0, 0, 0.1);
-      filter: blur(1em);
-      z-index: -1;
-    }
-
     .line {
       gap: 0.4em;
       font-size: 1.25em;
@@ -231,6 +228,20 @@ const edgeMask = computed(() => {
         text-align: right;
       }
 
+      .result-icon {
+        width: 2em;
+        margin-right: -0.5em;
+
+        &.win {
+          color: #f1ffeb;
+          filter: drop-shadow(0 0 0.3em #6ab528);
+        }
+
+        &.lose {
+          color: #fff0f0;
+          filter: drop-shadow(0 0 0.3em #e11818);
+        }
+      }
 
       &.contrast {
         &.positive {
@@ -255,6 +266,39 @@ const edgeMask = computed(() => {
       }
     }
   }
+
+  &.skin-transparent {
+    .history {
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0.5em;
+        background: rgba(0, 0, 0, 0.1);
+        filter: blur(1em);
+        z-index: -1;
+      }
+    }
+  }
+
+  &.skin-default {
+    padding: 0.8em 1em;
+    font-size: 1.7em;
+    overflow: hidden;
+
+    &:not(.hide-icon) {
+      padding-top: 0.3em;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0em;
+      background: var(--wotstat-background);
+      border-radius: 1em;
+      z-index: -1;
+    }
+  }
+
 
   .list-move,
   .list-enter-active,
