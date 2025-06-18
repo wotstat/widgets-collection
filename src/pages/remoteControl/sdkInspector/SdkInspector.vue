@@ -60,7 +60,7 @@
     <Section title="Battle">
       <Checkbox title="Is in battle" m-key="battle.isInBattle" />
       <Section title="Arena">
-        <Number title="Arena id" m-key="battle.arenaId" :model-value="1" />
+        <Number title="Arena id" v-model="arenaId" />
         <Options title="Arena" m-key="battle.arena" :model-value="'02_malinovka'"
           :variants="['02_malinovka', '05_prohorovka']" />
         <Options title="Mode" v-model="battleMode" :variants="['REGULAR', 'TRAINING']" />
@@ -154,6 +154,7 @@ const battleMode = ref('REGULAR');
 const vehicle = ref<typeof vehicles[number]>('60TP');
 const battlePeriod = ref('BATTLE');
 const platoonSlotsCount = ref(3);
+const arenaId = ref(1);
 const wotstatAnalyticsEmulated = ref(true);
 const wotstatAnalyticsEmulatedPlatoon = ref(true);
 
@@ -211,6 +212,7 @@ const totalState = computed(() => ({
   'game.ping': 0.015,
   'game.fps': 144,
   'game.isInReplay': false,
+  'battle.arenaId': arenaId.value,
   'battle.arena': {
     tag: mapState.value.get('battle.arena'),
     localizedName: mapState.value.get('battle.arena'),
@@ -349,9 +351,11 @@ async function onDamageTrigger(type: 'bySelf' | 'toSelf' | 'id10ToId11' | 'id11T
 async function onBattleResult(platoon: boolean) {
 
   const playerId = mapState.value.get('player.id');
+  arenaId.value++
+
   const result = await getOnBattleResultRaw({
     playerId: playerId,
-    arenaUniqueID: mapState.value.get('battle.arenaId'),
+    arenaUniqueID: arenaId.value,
     platoon: platoon ?
       platoonCrewmateInfo.value
         .filter(t => t.id != playerId && t.joined)

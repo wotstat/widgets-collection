@@ -143,14 +143,6 @@ const edgeMask = computed(() => {
   padding: 0 0.3em;
   color: white;
 
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: -100%;
-    z-index: 0;
-  }
-
   >.flex {
     justify-content: center;
     align-items: center;
@@ -273,7 +265,7 @@ const edgeMask = computed(() => {
         content: '';
         position: absolute;
         inset: 0.5em;
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.13);
         filter: blur(1em);
         z-index: -1;
       }
@@ -313,6 +305,11 @@ const edgeMask = computed(() => {
 
   .list-leave-to {
     opacity: 0;
+  }
+
+  .list-leave-active {
+    position: absolute;
+    width: 100%;
   }
 }
 </style>

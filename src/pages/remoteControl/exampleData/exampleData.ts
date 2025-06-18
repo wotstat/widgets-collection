@@ -174,5 +174,7 @@ export async function getOnBattleResultRaw(options: {
 
   res.arenaUniqueID = options.arenaUniqueID;
 
+  res.common.arenaCreateTime = Math.floor(Date.now() / 1000) - res.common.duration;
+
   return res
 }
