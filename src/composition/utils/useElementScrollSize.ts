@@ -1,4 +1,4 @@
-import { MaybeComputedElementRef, unrefElement, useMutationObserver, useResizeObserver } from "@vueuse/core";
+import { MaybeComputedElementRef, unrefElement, useElementBounding, useEventListener, useMutationObserver, useResizeObserver } from "@vueuse/core";
 import { onMounted, ref, toValue, watch } from "vue";
 
 export function useElementScrollSize(element: MaybeComputedElementRef) {
@@ -9,15 +9,22 @@ export function useElementScrollSize(element: MaybeComputedElementRef) {
   function calc() {
     const el = toValue(element) as HTMLElement;
     if (!el) return;
-    scrollWidth.value = el.scrollWidth;
-    scrollHeight.value = el.scrollHeight;
+    if (scrollWidth.value != el.scrollWidth) scrollWidth.value = el.scrollWidth;
+    if (scrollHeight.value != el.scrollHeight) scrollHeight.value = el.scrollHeight;
   }
 
+
+  const { width } = useElementBounding(element)
+  watch(width, () => calc());
   useMutationObserver(element, () => calc(), { childList: true, subtree: true, attributes: true });
   onMounted(() => calc())
   watch(() => unrefElement(element), () => calc());
+  useEventListener(window, 'resize', () => calc());
 
+  function update() {
+    calc();
+  }
 
-  return { scrollWidth, scrollHeight };
+  return { scrollWidth, scrollHeight, update };
 
 }

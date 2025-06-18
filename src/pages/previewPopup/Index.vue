@@ -28,7 +28,7 @@
       <div class="flex url-container">
         <div class="url-line" :class="{ 'active': isActivatedUrl }">
           <div class="url-small" ref="urlContent">{{ widgetUrl }}</div>
-          <div class="url-big" v-if="urlBoxScrollWidth > urlBoxWidth">
+          <div class="url-big" v-if="urlBoxScrollWidth > Math.round(urlBoxWidth)">
             <div class="url-content">
               {{ widgetUrl }}
             </div>
@@ -342,6 +342,7 @@ const accentColor = computed(() => '#' + accent.value)
   left: 0;
   right: 0;
   bottom: 0;
+  overflow: hidden;
   // padding: 20px;
 
   display: flex;
