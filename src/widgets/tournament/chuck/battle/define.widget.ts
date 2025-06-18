@@ -40,7 +40,7 @@ export type Props = {
   gradient: boolean;
   animation: boolean;
   widgetStyle: WidgetStyle;
-  lastBattleTotalScore: number | null;
+  lastBattleTotalScore: number;
 }
 
 
@@ -55,7 +55,6 @@ export const hangerBattleVariants = [
 export type PhotoVariant = 'never' | 'photo' | 'tank';
 export const photoVariants = [
   { value: 'never', label: 'options:photo:never' },
-  { value: 'photo', label: 'options:photo:photo' },
   { value: 'tank', label: 'options:photo:tank' },
 ]
 

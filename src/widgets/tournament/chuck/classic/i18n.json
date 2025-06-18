@@ -1,0 +1,12 @@
+{
+  "ru": {
+    "avg-title": "Очки в ср.",
+    "last-battle": "Посл. бой",
+    "total": "Итог"
+  },
+  "en": {
+    "avg-title": "Avg. score",
+    "last-battle": "Last battle",
+    "total": "Total"
+  }
+}

@@ -5,7 +5,6 @@ export const collections = [
       '/efficiency/comp7',
       '/nidin/equipments',
       '/counters/speedrun',
-      '/tournament/chuck/battle',
     ]
   },
   {
@@ -35,6 +34,7 @@ export const collections = [
     name: 'Турниры',
     widgets: [
       '/tournament/chuck/battle',
+      '/tournament/chuck/classic',
     ]
   },
   {

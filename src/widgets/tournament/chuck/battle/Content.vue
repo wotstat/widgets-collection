@@ -143,7 +143,7 @@
           </div>
         </div>
 
-        <div class="line last-battle-info" v-if="!isInBattle && lastBattleTotalScore !== null">
+        <div class="line last-battle-info" v-if="!isInBattle && lastBattleTotalScore >= 0">
           <ClipContent :root="lines" :svg="SmallBottomAltBack" class="background-image">
             <div class="ice"></div>
           </ClipContent>

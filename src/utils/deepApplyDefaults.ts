@@ -1,5 +1,9 @@
 export function deepApplyDefaults<T>(target: Partial<T> = {}, defaults: T): T {
 
+  if (target === undefined || target === null) {
+    return defaults;
+  }
+
   if (Array.isArray(defaults)) {
     if (Array.isArray(target)) return target as T;
     return defaults as T;

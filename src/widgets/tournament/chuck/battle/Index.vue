@@ -174,7 +174,7 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
 })
 
 
-const lastBattleTotalScore = useWidgetStorage<number | null>('lastBattleTotalScore', null, { groupByPlatoon: true })
+const lastBattleTotalScore = useWidgetStorage<number>('lastBattleTotalScore', -1, { groupByPlatoon: true })
 
 useBattleResult((parsed, result) => {
   if (!isMain.value) return;
