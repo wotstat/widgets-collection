@@ -113,7 +113,26 @@ const iconByName = {
   'role_HT_flame_pair_4_1': 'improvedSpallingResistance',
   'role_HT_flame_pair_4_2': 'increasedThickness',
   'role_HT_flame_pair_5_1': 'improvedObservationDevice',
-  'role_HT_flame_pair_5_2': 'improvedEnginePower'
+  'role_HT_flame_pair_5_2': 'improvedEnginePower',
+  'role_XI_pair_1_1': 'reinforcedInteriorModules',
+  'role_XI_pair_1_2': 'improvedTurretRingStability',
+  'role_XI_pair_2_1': 'improvedChassisDurability',
+  'role_XI_pair_2_2': 'improvedAimingHandling',
+  'role_XI_pair_3_1': 'increasedThickness',
+  'role_XI_pair_3_2': 'improvedChassisStability',
+  'role_XI_279_pair_4_1': 'reinforcedStructure',
+  'role_XI_279_pair_4_2': 'improvedObservationDevice',
+  'role_XI_279_pair_5_1': 'improvedGunBreech',
+  'role_XI_279_pair_5_2': 'improvedScope',
+  'role_XI_MBT_B_pair_4_1': 'improvedSpeedIndicator',
+  'role_XI_MBT_B_pair_4_2': 'improvedScope',
+  'role_XI_MBT_B_pair_5_1': 'improvedObservationDevice',
+  'role_XI_MBT_B_pair_5_2': 'improvedMuzzleBreak',
+  'role_XI_BZT_70_pair_4_1': 'reinforcedStructure',
+  'role_XI_BZT_70_pair_4_2': 'improvedSpeedIndicatorBackwards',
+  'role_XI_BZT_70_pair_5_1': 'improvedEnginePower',
+  'role_XI_BZT_70_pair_5_2': 'improvedScope'
+
 }
 
 type Glob = { default: string }
