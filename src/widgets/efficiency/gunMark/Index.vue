@@ -30,7 +30,7 @@ const dossier = useReactiveState(sdk.data.dossier.current)
 
 
 const getAwaitedDossierKey = (totalBattles: number, tankTag: string) => `${totalBattles}_${tankTag}`
-const awaitedDossiers = ref(new Map<string, { arenaId: number, damageRating: number }>())
+const awaitedDossiers = useWidgetStorage('awaited-dossiers', new Map<string, { arenaId: number, damageRating: number }>())
 const knownDossiers = useWidgetStorage('known-dossiers', new Map<number, { totalBattles: number, tankTag: string, damageRating: number, damageRatingDelta: number }>(), { groupByPlayerId: true })
 
 const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
