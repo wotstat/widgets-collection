@@ -21,14 +21,14 @@ const props = defineProps<{
 }>();
 
 const targetProps = computed<Omit<Props, 'skin'>>(() => ({
-  currentRank: 925,
+  currentPercent: 50.21,
   history: [
-    { delta: +19, key: '1', arena: 'Утёс' },
-    { delta: +29, key: '2', arena: 'Химмльсдорф' },
-    { delta: -15, key: '3', arena: 'Степи' },
-    { delta: +12, key: '4', arena: 'Карелия' },
-    { delta: +12, key: '5', arena: 'Тихий берег' },
-    { delta: +12, key: '6', arena: 'Карелия' },
+    { delta: +1.24, key: '1', arena: 'Утёс' },
+    { delta: +0.72, key: '2', arena: 'Химмльсдорф' },
+    { delta: -0.41, key: '3', arena: 'Степи' },
+    { delta: +0.68, key: '4', arena: 'Карелия' },
+    { delta: +2.79, key: '5', arena: 'Тихий берег' },
+    { delta: +1.82, key: '6', arena: 'Линия Маннергейма' },
   ].slice(0, Number.parseInt((props.historyLength ?? 3).toString())),
   hideIcon: props.hideIcon,
   game: 'lesta'
@@ -37,7 +37,6 @@ const targetProps = computed<Omit<Props, 'skin'>>(() => ({
 
 const aspect = computed((() => {
   let height = 50;
-  if (!targetProps.value.hideIcon) height += 150;
   height += 22 * targetProps.value.history.length;
 
 

@@ -50,6 +50,7 @@ export const collections = [
     name: 'Прогрессия',
     widgets: [
       '/efficiency/comp7',
+      // '/efficiency/gun-mark',
       '/efficiency/sum/solo/blocked',
       '/efficiency/sum/solo/assist-radio',
       '/efficiency/sum/solo/damage',
