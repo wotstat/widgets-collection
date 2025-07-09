@@ -1,7 +1,9 @@
 <template>
   <label>
     <span>{{ path[path.length - 1] }}</span>
-    <Select v-model="value" :variants="meta.meta.variants.map(value => ({ value }))" :align="'left'" />
+    <Select v-model="value"
+      :variants="meta.meta.variants.map(value => typeof value == 'string' ? { value: value } : value)"
+      :align="'left'" />
   </label>
 </template>
 
@@ -14,7 +16,6 @@ const props = defineProps<{
   meta: Meta
   path: string[]
 }>()
-
 
 const value = defineModel<string>('value', { required: true })
 </script>
