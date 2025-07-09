@@ -1,5 +1,5 @@
 
-import { onUnmounted, provide, ref, ShallowRef, shallowRef, toValue, triggerRef, watch, WatchSource } from 'vue';
+import { onUnmounted, provide, Ref, ref, ShallowRef, shallowRef, toValue, triggerRef, watch, WatchSource } from 'vue';
 // import {
 //   WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles, WidgetsRelay,
 //   WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection
@@ -119,4 +119,31 @@ export function useWidgetSdkDebugConnection(frame: WatchSource<HTMLIFrameElement
 
 export function useWidgetRelayDebugConnection(frame: WatchSource<HTMLIFrameElement | null>) {
   return useDebugConnection(frame, RelayDebugConnection)
+}
+
+type DefineStateType = Parameters<typeof WidgetsRemote.prototype.defineState>
+type DefineStateMetaType = NonNullable<DefineStateType[2]>
+export function useReactiveRemoteValue<T extends string | number | boolean>(remote: WidgetsRemote, key: string, defaultValue: T, meta?: {
+  type?: DefineStateMetaType['type'];
+  elementHelper?: Ref<HTMLElement> | string;
+}): ShallowRef<T> {
+
+  const elementHelper = meta?.elementHelper
+  const state = remote.defineState<T>(key, defaultValue, {
+    type: meta?.type,
+    elementHelper: typeof elementHelper == 'string' ? elementHelper : (() => elementHelper?.value as any)
+  })
+  const stateRef = shallowRef<T>(state.value)
+
+  const unwatch = state.watch(value => {
+    stateRef.value = value
+    triggerRef(stateRef)
+  }, { immediate: true })
+
+  onUnmounted(() => {
+    unwatch()
+    remote.dispose()
+  })
+
+  return stateRef as ShallowRef<T>
 }
