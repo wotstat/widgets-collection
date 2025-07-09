@@ -14,7 +14,7 @@ type Item = {
   items?: SimpleContextMenuItem[]
 }
 
-type SimpleContextMenuItem = Item | Item[] | typeof separator
+export type SimpleContextMenuItem = Item | Item[] | typeof separator
 
 export function checkboxItem(label: string, checkbox: { value: MaybeRef<boolean>, toggle: () => void }, icon?: Component): SimpleContextMenuItem {
   return {

@@ -1,6 +1,8 @@
 <template>
-  <div class="context-menu-panel" :style="contextMenuStyle" ref="panelElement" @pointerleave="panelLeave"
-    @pointerenter="panelEnter" @pointermove="pointerMove" @pointerdown.stop @pointerup.stop>
+  <div class="context-menu-panel" :style="contextMenuStyle" :class="{
+    'some-element-has-checkbox': props.items.some(i => i.type == ContextMenuItemVariant.Button && i.checkbox != undefined),
+  }" ref="panelElement" @pointerleave="panelLeave" @pointerenter="panelEnter" @pointermove="pointerMove"
+    @pointerdown.stop @pointerup.stop>
 
     <div v-for="item in props.items" ref="itemsElement" @mouseenter="setHover(item)">
       <div class="context-line" :class="{
@@ -351,6 +353,14 @@ function onAction() {
 
     &.hover:not(.is-active) .hover-highlight {
       background-color: var(--color-gray-3, #48484A);
+    }
+  }
+
+  &.some-element-has-checkbox {
+    .context-line {
+      .context-menu-child-line {
+        padding-left: 1.4em;
+      }
     }
   }
 }
