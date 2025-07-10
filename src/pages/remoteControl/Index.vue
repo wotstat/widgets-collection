@@ -122,6 +122,7 @@ import RemoteInspector from './RemoteInspector.vue';
 import RelayInspector from './RelayInspector.vue';
 import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue';
 import Select from '@/components/Select.vue';
+import { channelKey as generatePublicKey } from './channelKey';
 
 
 
@@ -158,15 +159,7 @@ watchEffect(() => {
 })
 
 
-const channelKey = computedAsync(async () => {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(privateKey.value);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-  const base64String = btoa(String.fromCharCode(...hashArray));
-  return base64String.replace(/[^a-zA-Z0-9]/g, '').substring(0, 10);
-})
+const channelKey = computedAsync(async () => await generatePublicKey(privateKey.value))
 const debounceChannelKey = useDebounce(channelKey, 500);
 
 const iframeUrl = computed(() => {

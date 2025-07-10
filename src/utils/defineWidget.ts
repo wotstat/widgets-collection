@@ -70,12 +70,17 @@ export interface DatePickerParam extends BaseParam {
   default?: string
 }
 
+export interface RemoteControlParam extends BaseParam {
+  type: 'remote-control'
+}
+
 export type MultiSlotParamSlot = {
   value: string,
   icon: IconType,
   label: string,
   modifications?: Omit<MultiSlotParamSlot, 'modifications'>[]
 }
+
 export interface MultiSlotParam extends BaseParam {
   type: 'multi-slot'
   target: string
@@ -86,7 +91,7 @@ export interface MultiSlotParam extends BaseParam {
   default: string[]
 }
 
-export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam | DatePickerParam
+export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam | DatePickerParam | RemoteControlParam
 
 type Language = string
 

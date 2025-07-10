@@ -73,6 +73,7 @@ import String from './settings/String.vue';
 import MultiSlot from './settings/MultiSlot.vue';
 import RandomString from './settings/RandomString.vue';
 import DatePicker from './settings/DatePicker.vue';
+import RemoteControl from './settings/RemoteControl.vue';
 import Unsupported from './settings/Unsupported.vue';
 const Color = defineAsyncComponent(() => import('./settings/Color.vue'))
 
@@ -129,6 +130,7 @@ const canReset = computed(() => {
     if (element.type == 'separator') continue
 
     if (!settings) continue
+    if (!('default' in element)) continue
     if (element.default === undefined) continue
 
     const value = settings.value?.value
@@ -152,6 +154,7 @@ function resetToDefault() {
 
     if (!settingsValues.value) return
     if (!settingsValues.value[i].value) return
+    if (!('default' in v)) return
     if (v.default === undefined) return
     settingsValues.value[i].value.value = structuredClone(v.default)
   })
@@ -256,6 +259,21 @@ const settingsValues = computedWithControl(currentOptions, () => {
     if (param.type == 'color') {
       const value = useWidgetPreviewStorage(param.target, param.default ?? '#ffffff')
       return { value, target: param.target, component: defineComponent(() => () => renderIfVisible(param, h(Color, { label: t(param.label), ...vModel(value) }))) }
+    }
+
+    if (param.type == 'remote-control') {
+      const value = useWidgetPreviewStorage('remote-key', '')
+
+      const openRemote = (privateKey: string) => {
+        console.log('privateKey', privateKey);
+        console.log(widgetUrl.value);
+        window.open(`/remote-control?widget-url=${btoa(widgetUrl.value)}&private-key=${privateKey}`, '_blank', 'noopener,noreferrer')
+      }
+
+      return {
+        target: 'remote-key', value,
+        component: defineComponent(() => () => renderIfVisible(param, h(RemoteControl, { ...vModel(value), "onOpen-remote": openRemote })))
+      }
     }
 
     return { component: h(Unsupported, { label: (param as any).type }), target: '', model: undefined }
