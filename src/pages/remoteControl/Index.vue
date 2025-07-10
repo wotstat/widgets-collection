@@ -38,7 +38,7 @@
 
       <div class="preview">
         <div class="content">
-          <div class="top">
+          <div class="top" :class="{ 'copy-highlight': copyHighlight }">
             <input type="text" class="url" v-model="widgetUrl" placeholder="Enter widget URL" />
             <button class="copy" v-if="widgetUrl" @click="copyUrl">
               <CopyIcon />
@@ -203,8 +203,11 @@ watchEffect(() => {
   widgetUrl.value = url.toString();
 })
 
+const copyHighlight = ref(false);
 function copyUrl() {
   navigator.clipboard.writeText(widgetUrl.value)
+  copyHighlight.value = true;
+  setTimeout(() => copyHighlight.value = false, 300);
 }
 
 const setContainerSize = useDebounceFn((width: number, height: number) => {
@@ -529,6 +532,16 @@ header {
 
           svg {
             display: block;
+          }
+        }
+
+        .url {
+          transition: background-color 0.15s ease;
+        }
+
+        &.copy-highlight {
+          .url {
+            background-color: #30D158;
           }
         }
       }
