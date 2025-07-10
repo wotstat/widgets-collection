@@ -1,6 +1,6 @@
 <template>
-  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="0.8">
-    <Content :header="{ title: 'Г-8', subtitle: 1 }" :tasks="tasks" />
+  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.16">
+    <Content :header="{ title: 'Г-10', subtitle: 'Фланг разведки', levels: [5, 7] }" :tasks="tasks" />
   </WidgetPreviewRoot>
 </template>
 
@@ -16,72 +16,111 @@ const props = defineProps<{
   isMiniPreview: boolean
 }>();
 
-const tasks = {
-  "assistedKills": {
-    "type": "valueProgress",
-    "config": {
-      "goal": 1,
-      "isMain": true,
-      "isAward": false,
-      "visibleScope": [
-        "battle",
-        "hangar"
-      ],
-      "params": {
-        "assistTypes": [
-          "radio"
+const tasks = [
+  [
+    {
+      "key": "battlesSeries",
+      "type": "valueProgress",
+      "config": {
+        "goal": 5,
+        "isMain": true,
+        "isAward": false,
+        "isCumulative": true,
+        "visibleScope": [
+          "battle",
+          "hangar"
         ]
+      },
+      "description": {
+        "displayType": "limited",
+        "isInOrGroup": false,
+        "containerType": "header",
+        "description": "Уложиться в <b>5</b> боёв",
+        "title": null
       }
     },
-    "description": {
-      "iconID": "assist_radio",
-      "limiterID": null,
-      "isInOrGroup": false,
-      "containerType": "body",
-      title: "Разведданные",
-      description: "Передать разведданные для уничтожения машины противника."
+    {
+      "key": "assist",
+      "type": "valueProgress",
+      "config": {
+        "goal": 15000,
+        "isMain": true,
+        "isAward": true,
+        "isCumulative": true,
+        "visibleScope": [
+          "hangar",
+          "battle"
+        ],
+        "params": {
+          "assistTypes": [
+            "track",
+            "radio"
+          ]
+        }
+      },
+      "description": {
+        "iconID": "assist",
+        "limiterID": null,
+        "isInOrGroup": false,
+        "containerType": "body",
+        "description": "Суммарно <b>15000</b> ассиста за бой",
+        "title": "Содействие"
+      }
     }
-  },
-  "alive": {
-    "type": "binaryProgress",
-    "config": {
-      "isMain": true,
-      "isAward": false,
-      "visibleScope": [
-        "hangar",
-        "battle"
-      ]
+  ],
+  [
+    {
+      "key": "battlesSeriesAdv",
+      "type": "valueProgress",
+      "config": {
+        "goal": 5,
+        "isMain": false,
+        "isAward": false,
+        "isCumulative": true,
+        "visibleScope": [
+          "battle",
+          "hangar"
+        ]
+      },
+      "description": {
+        "displayType": "limited",
+        "isInOrGroup": false,
+        "containerType": "header",
+        "description": "Уложиться в <b>5</b> боёв",
+        "title": null
+      }
     },
-    "description": {
-      "iconID": "survive",
-      "limiterID": null,
-      "isInOrGroup": false,
-      "containerType": "body",
-      title: "Результат",
-      description: "Выжить в бою."
+    {
+      "key": "assistAdv",
+      "type": "valueProgress",
+      "config": {
+        "goal": 20000,
+        "isMain": false,
+        "isAward": true,
+        "isCumulative": true,
+        "visibleScope": [
+          "hangar",
+          "battle"
+        ],
+        "params": {
+          "assistTypes": [
+            "track",
+            "radio"
+          ]
+        }
+      },
+      "description": {
+        "iconID": "assist",
+        "limiterID": null,
+        "isInOrGroup": false,
+        "containerType": "body",
+        "description": "Суммарно <b>20000</b> ассиста",
+        "title": "Содействие"
+      }
     }
-  },
-  "battlesSeries": {
-    "type": "valueProgress",
-    "config": {
-      "goal": 5,
-      "isMain": true,
-      "isAward": true,
-      "isCumulative": true,
-      "visibleScope": [
-        "hangar",
-        "battle"
-      ]
-    },
-    "description": {
-      "displayType": "counter",
-      "isInOrGroup": false,
-      "containerType": "header",
-      description: "Выполнить в 5 боях",
-      title: null
-    }
-  }
-} as const
+  ]
+] as any
+
 
 </script>
 

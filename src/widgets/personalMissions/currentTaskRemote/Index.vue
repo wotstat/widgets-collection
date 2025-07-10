@@ -1,28 +1,30 @@
 <template>
-  <WidgetWrapper autoScale autoHeight>
-    <Content v-if="currentConfig" :header="{ title: currentConfig.title ?? '', subtitle: currentConfig.type }"
-      :tasks="currentConfig.tasks" />
-  </WidgetWrapper>
+  <WidgetRoot autoScale autoHeight>
+    <Content v-if="currentConfig" :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels }"
+      :tasks="taskGroups" />
+  </WidgetRoot>
 </template>
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveRemoteValue, useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk';
+import { useReactiveRemoteValue, WidgetsRemote } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import { computed, watch, watchEffect } from 'vue';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
+import { compile, computed } from 'vue';
+import { useQueryParams } from '@/composition/useQueryParams';
+import i18n from './i18n.json'
+import { useI18n } from '@/composition/useI18n';
 
-import PersonalMissionsI18n from '../assets/data/localizaiton/personal_missions_details.json'
+import PersonalMissionsI18n from '../assets/data/localizaiton/personal_missions_details_short.json'
 import PersonalMissionsConfig from '../assets/data/pm3/config.json'
 import { gettext } from '@/utils/gettextJson';
-import { TaskType } from './define.widget';
+import { Props, TaskType } from './define.widget';
+import WidgetRoot from '@/components/WidgetRoot.vue';
 
 const { } = useQueryParams({
   // skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
+const { t } = useI18n(i18n)
 
 const nameToType = (name: string): TaskType => {
   if (name.length === 0) return TaskType.UNKNOWN;
@@ -36,6 +38,7 @@ const nameToType = (name: string): TaskType => {
     default: return TaskType.UNKNOWN;
   }
 }
+
 
 const translate = <T extends undefined | null | string>(
   key: string,
@@ -92,13 +95,72 @@ const currentTask = useReactiveRemoteValue(remote, 'Задача', 'pm3_8_1_1' a
   elementHelper: '.header'
 })
 
-const currentConfig = computed(() => variants.get(currentTask.value) ?? null)
-
-watchEffect(() => {
-  console.log(currentConfig.value);
+const displayTask = useReactiveRemoteValue<'all' | 'main' | 'additional'>(remote, 'Отображать задачи', 'all', {
+  type: {
+    type: 'select',
+    variants: [
+      { value: 'all', label: t('allTasks') },
+      { value: 'main', label: t('mainTasks') },
+      { value: 'additional', label: t('additionalTasks') },
+    ]
+  },
+  elementHelper: '.header'
 })
 
-const { sdk } = useWidgetSdk();
+
+const currentConfig = computed(() => variants.get(currentTask.value) ?? null)
+
+const taskTypeToLocale = {
+  [TaskType.HIT]: t('questTypeHit'),
+  [TaskType.KILLS]: t('questTypeKills'),
+  [TaskType.ASSIST]: t('questTypeAssist'),
+  [TaskType.BATTLE]: t('questTypeBattle'),
+  [TaskType.MASTER]: t('questTypeMaster'),
+  [TaskType.UNKNOWN]: '???',
+}
+
+const subtitle = computed(() => !currentConfig.value ? '' : taskTypeToLocale[currentConfig.value.type]);
+
+const taskGroups = computed(() => {
+  if (!currentConfig.value) return [];
+
+  const tasks = Object.entries(currentConfig.value.tasks)
+    .map(([key, task]) => ({ key, ...task }))
+    .sort((a, b) => a.description.containerType === 'header' ? -1 : 1);
+
+  const mainGroup = tasks.filter(task => task.config.isMain)
+  const additionalGroup = tasks.filter(task => !task.config.isMain);
+
+  const mainGroups = mainGroup
+    .reduce((acc, task) => {
+      const gridID = task.config.groupID ?? 1;
+      if (!acc[gridID]) acc[gridID] = [];
+      acc[gridID].push(task);
+      return acc;
+    }, {}) as Record<number, Props['tasks']>
+
+
+  const sortedMainGroups = Object.entries(mainGroups)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([key, group]) => group)
+
+  if (displayTask.value === 'main') return Object.values(sortedMainGroups);
+  if (displayTask.value === 'additional') return [additionalGroup];
+
+  return [...sortedMainGroups, additionalGroup]
+})
+
+const currentLevels = computed<[number, number]>(() => {
+  if (!currentTask.value) return [0, 0];
+  const taskPeriod = currentTask.value.split('_')[2];
+
+  if (taskPeriod === '1') return [6, 7];
+  if (taskPeriod === '2') return [8, 9];
+  if (taskPeriod === '3') return [10, 11];
+
+  return [0, 0];
+});
+
 
 </script>
 

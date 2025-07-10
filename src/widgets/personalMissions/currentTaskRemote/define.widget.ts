@@ -4,22 +4,22 @@ export type Props = {
   header: {
     title: string;
     subtitle: TaskType | string;
+    levels: [number, number]
   }
   tasks: {
-    [key: string]: {
-      type: string
-      description: {
-        iconID?: string
-        isInOrGroup: boolean
-        title: string | null
-        description: string
-        containerType: 'body' | 'header'
-      }
-      config: {
-        isMain: boolean
-      }
+    type: string
+    description: {
+      iconID?: string
+      isInOrGroup: boolean
+      title: string | null
+      description: string
+      containerType: 'body' | 'header'
     }
-  }
+    config: {
+      isMain: boolean
+      groupID?: number
+    }
+  }[][]
 }
 
 export const enum TaskType {

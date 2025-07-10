@@ -1,21 +1,51 @@
 <template>
-  <div class="main">
-    <div class="header">
-      <h1>{{ header.title }}</h1>
-      <h2>{{ subtitle }}</h2>
+  <DefineGroup v-slot="{ tasks }">
+    <div class="container-header">
+      <div class="badge" v-if="tasks.some(t => !t.config.isMain)">С отличием</div>
+      <div class="badge" v-for="task in tasks.filter(t => t.description.containerType === 'header')"
+        v-html="task.description.description"></div>
     </div>
 
-    <hr>
+    <div class="task" v-for="task in tasks.filter(t => t.description.containerType === 'body')">
+      <div class="image-container" v-if="task.description.iconID">
+        <img :src="imageByKeys.get(task.description.iconID)">
+      </div>
+      <div class="content">
+        <div class="flex">
+          <h3 v-html="task.description.title"></h3>
+          <h3 class="badge" v-if="task.description.description.match(perBattle)">За бой</h3>
+        </div>
+        <p v-html="task.description.description.replaceAll(perBattle, '')"></p>
+      </div>
+    </div>
+  </DefineGroup>
 
-    <div class="tasks">
-      <div class="task" v-for="task in tasks">
-        <div class="image-container" v-if="task.description.iconID">
-          <img :src="imageByKeys.get(task.description.iconID)">
-        </div>
-        <div class="content">
-          <h3>{{ task.description.title }}</h3>
-          <p>{{ task.description.description }}</p>
-        </div>
+  <div class="main" :class="{ animated }">
+    <div class="background" :style="{ height: `calc(5.1em + ${tasksHeight}px)` }"></div>
+
+    <div class="header">
+      <h1>{{ header.title }}</h1>
+      <h2>{{ header.subtitle }}</h2>
+      <div class="levels wg-font">
+        {{ roman(header.levels[0]) }} - {{ roman(header.levels[1]) }}
+      </div>
+    </div>
+
+    <div class="content" :style="{
+      height: enterHeight > 0 ? Math.max(leaveHeight, enterHeight) + 'px' : 'auto',
+    }">
+      <div class="content-mask" :style="{ height: `calc(${tasksHeight}px)` }">
+        <Transition @enter="t => enterHeight = t.clientHeight" @before-leave="t => leaveHeight = t.clientHeight"
+          @after-leave="() => { enterHeight = -1; animated = false }" @before-enter="() => { animated = true }">
+          <div class="tasks" :key="header.title" ref="tasksElement">
+            <template v-for="(group, i) in tasks.filter(g => g.length > 0)">
+              <div class="group">
+                <Group :tasks="Object.values(group)" />
+              </div>
+              <div class="separator"></div>
+            </template>
+          </div>
+        </Transition>
       </div>
     </div>
   </div>
@@ -23,43 +53,29 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import TweenValue from '@/components/TweenValue.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import { useStateClass } from '@/composition/utils/useStateClass';
-import { Props, TaskType } from './define.widget';
+import { computed, ref } from 'vue';
+import { Props } from './define.widget';
+import { createReusableTemplate, useElementBounding } from '@vueuse/core';
+import { roman } from '@/utils/romanNumbers';
 
-import i18n from './i18n.json'
-import { useI18n } from '@/composition/useI18n';
-import { computed } from 'vue';
+const leaveHeight = ref(0);
+const enterHeight = ref(-1);
+const animated = ref(false)
+
+const tasksElement = ref<HTMLElement | null>(null);
+const { height: tasksHeight } = useElementBounding(tasksElement);
+
+const perBattle = /,?\s?за бой/g
 
 const props = defineProps<Props>()
 
-const { t } = useI18n(i18n)
+const [DefineGroup, Group] = createReusableTemplate<{ tasks: Props['tasks'][number] }>()
 
 const images = import.meta.glob<string>('../assets/battleConditions/*.png', { eager: true, import: 'default' });
 const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, value]) => {
   const imageKey = key.split('/').pop()?.replace('.png', '') ?? '';
   return [imageKey, value];
 }));
-
-
-const taskTypeToLocale = {
-  [TaskType.HIT]: t('questTypeHit'),
-  [TaskType.KILLS]: t('questTypeKills'),
-  [TaskType.ASSIST]: t('questTypeAssist'),
-  [TaskType.BATTLE]: t('questTypeBattle'),
-  [TaskType.MASTER]: t('questTypeMaster'),
-  [TaskType.UNKNOWN]: '???',
-}
-
-const subtitle = computed(() => {
-  if (typeof props.header.subtitle === 'string') {
-    return props.header.subtitle;
-  }
-
-  return taskTypeToLocale[props.header.subtitle as TaskType] ?? '';
-})
 
 </script>
 
@@ -68,60 +84,176 @@ const subtitle = computed(() => {
 .main {
   font-size: 1.5em;
   line-height: 1.2;
-  background: linear-gradient(180deg, rgba(24, 24, 24, 0.8) 0%, rgba(24, 24, 24, 0.3) 100%);
   border-radius: 1em;
+
+  overflow: hidden;
+  position: relative;
+
+  .background {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    border-radius: 1em;
+
+    background: linear-gradient(180deg, rgba(24, 24, 24, 0.8) 0%, rgba(24, 24, 24, 0.3) 100%);
+  }
 
   .header {
     padding: 1em;
+    position: relative;
 
     h1 {
       font-size: 2em;
+      line-height: 1;
+      margin-bottom: 0.1em;
     }
 
     h2 {
       font-weight: normal;
       font-size: 0.8em;
     }
+
+    .levels {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      border: 0.1em solid rgba(255, 255, 255, 0.3);
+      border-radius: 1em;
+      padding: 0.2em 0.5em;
+      font-size: 0.7em;
+    }
   }
 
+  .content-mask {
+    overflow: hidden;
+    position: relative;
+  }
 
   .tasks {
     padding: 1em;
-    padding-left: 0;
+    padding-top: 0;
     display: flex;
     flex-direction: column;
-    gap: 1em;
 
-    .task {
+    .separator {
+      height: 0.1em;
+      border-radius: 1em;
+      background-color: rgba(255, 255, 255, 0.3);
+      margin: 0.5em 0;
 
+      &:last-child {
+        display: none;
+      }
+    }
+
+    .group {
       display: flex;
+      flex-direction: column;
+      gap: 1em;
 
-      .image-container {
+      .container-header {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 4em;
-        max-width: 4em;
+        justify-content: start;
+        gap: 0.3em;
+        margin-bottom: -0.5em;
 
-        // filter: drop-shadow(0px 200em 0 rgb(255, 141, 40));
-        // transform: translateY(-200em);
+        &:not(:has(:nth-child(n+1))) {
+          display: none;
+        }
+      }
 
-        img {
-          height: 4em;
-          margin: -1em -0.2em;
+      .task {
+        display: flex;
+        margin-left: -1em;
+
+        .image-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 4em;
+          max-width: 4em;
+
+          // filter: drop-shadow(0px 200em 0 rgb(255, 137, 34));
+          // transform: translateY(-200em);
+
+          img {
+            height: 3.5em;
+            margin: -1em -0.2em;
+            pointer-events: none;
+          }
         }
 
-      }
+        h3 {
+          margin-bottom: 0.2em;
+          font-size: 0.75em;
+        }
 
-      h3 {
-        margin-bottom: 0.2em;
-        font-size: 0.9em;
-      }
+        p {
+          font-size: 0.75em;
+          color: rgb(215, 215, 215);
+        }
 
-      p {
-        font-size: 0.7em;
+        .badge {
+          padding: 0.1em 0.5em;
+          font-size: 0.6em;
+          margin-left: 0.5em;
+        }
       }
     }
   }
+
+  .badge {
+    background-color: rgb(27, 27, 27);
+    color: white;
+    padding: 0.2em 0.5em;
+    border-radius: 1em;
+    font-size: 0.7em;
+
+    :deep(b) {
+      font-size: 1em;
+      font-weight: normal;
+    }
+
+  }
+
+  :deep(b) {
+    font-size: 1.1em;
+    line-height: 0;
+    color: white;
+  }
+
+
+
+  &.animated {
+
+    .content-mask {
+      transition: height 0.5s ease-in-out;
+    }
+
+    .background {
+      transition: height 0.5s ease-in-out;
+    }
+  }
+
+
+
+  .v-enter-active,
+  .v-leave-active {
+    transition: all 0.5s ease-in-out;
+    position: absolute;
+  }
+
+  .v-enter-from {
+    opacity: 0;
+    transform: translateX(20em);
+  }
+
+  .v-leave-to {
+    opacity: 0;
+    transform: translateX(-20em);
+  }
+
 }
 </style>

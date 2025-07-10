@@ -12,6 +12,6 @@ if (!Array.prototype.toReversed) {
 
 // Uncomment for working clickhouse in not secure context (like by ip in local network)
 // @ts-ignore
-crypto.randomUUID = function () {
-  return Math.random().toString(36).slice(2);
-}
+// crypto.randomUUID = function () {
+//   return Math.random().toString(36).slice(2);
+// }
