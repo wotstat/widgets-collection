@@ -265,14 +265,15 @@ const settingsValues = computedWithControl(currentOptions, () => {
       const value = useWidgetPreviewStorage('remote-key', '')
 
       const openRemote = (privateKey: string) => {
-        console.log('privateKey', privateKey);
-        console.log(widgetUrl.value);
         window.open(`/remote-control?widget-url=${btoa(widgetUrl.value)}&private-key=${privateKey}`, '_blank', 'noopener,noreferrer')
       }
 
       return {
         target: 'remote-key', value,
-        component: defineComponent(() => () => renderIfVisible(param, h(RemoteControl, { ...vModel(value), "onOpen-remote": openRemote })))
+        component: defineComponent(() => () => renderIfVisible(param, h(RemoteControl, {
+          label: t('shared:remote-control:key'), buttonLabel: t('shared:remote-control:button-label'),
+          ...vModel(value), "onOpen-remote": openRemote
+        })))
       }
     }
 

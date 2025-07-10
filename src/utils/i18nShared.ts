@@ -9,5 +9,7 @@ export const i18n = {
     'shared:style:default': 'Классический',
     'shared:style:transparent': 'Прозрачный',
     'shared:color-palette:title': 'Цветовая палитра',
+    'shared:remote-control:key': 'Ключ управления',
+    'shared:remote-control:button-label': 'Перейти к панели управления',
   }
 } as const 

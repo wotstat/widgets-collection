@@ -1,13 +1,13 @@
 <template>
   <div class="line">
-    <p>Ключ управления</p>
+    <p>{{ label }}</p>
     <div class="flex">
       <input v-model="privateKey" id="random-string">
       <ReloadIcon class="icon" @click.stop.prevent="generateNewValue" />
     </div>
   </div>
   <div class="line">
-    <button @click="emits('open-remote', privateKey)">Перейти к панели управления</button>
+    <button @click="emits('open-remote', privateKey)">{{ buttonLabel }}</button>
   </div>
 </template>
 
@@ -18,7 +18,11 @@ import { channelKey as generatePublicKey } from '@/pages/remoteControl/channelKe
 import { computedAsync } from '@vueuse/core';
 import { onMounted, ref, watch } from 'vue';
 
-const props = defineProps<{}>()
+const props = defineProps<{
+  label: string;
+  buttonLabel: string;
+}>()
+
 const emits = defineEmits<{
   (e: 'open-remote', privateKey: string): void
 }>()
