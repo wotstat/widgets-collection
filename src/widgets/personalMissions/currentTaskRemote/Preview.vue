@@ -1,6 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.16">
-    <Content :header="{ title: 'Г-10', subtitle: 'Фланг разведки', levels: [5, 7] }" :tasks="tasks" />
+    <Content :header="{ title: 'Г-10', subtitle: 'Фланг разведки', levels: [5, 7] }" :tasks="tasks"
+      :styleParams="styleParam" />
   </WidgetPreviewRoot>
 </template>
 
@@ -10,10 +11,15 @@
 import { computed } from 'vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from './Content.vue';
+import { ColorScheme, styleParams } from './define.widget';
 
 
 const props = defineProps<{
   isMiniPreview: boolean
+  accent?: string
+  badge?: string
+  badgeText?: string
+  colorScheme?: ColorScheme
 }>();
 
 const tasks = [
@@ -121,6 +127,7 @@ const tasks = [
   ]
 ] as any
 
+const styleParam = computed(() => styleParams(props.colorScheme ?? 'dark', props.accent, props.badge, props.badgeText));
 
 </script>
 

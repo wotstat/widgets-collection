@@ -20,7 +20,8 @@
     </div>
   </DefineGroup>
 
-  <div class="main" :class="{ animated }">
+  <div class="main" :class="{ animated }"
+    :style="{ '--accent': '#' + props.styleParams.accent, '--badge': '#' + props.styleParams.badge, '--badge-text': '#' + props.styleParams.badgeText }">
     <div class="background" :style="{ height: `calc(5.1em + ${tasksHeight}px)` }"></div>
 
     <div class="header">
@@ -188,6 +189,7 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
         h3 {
           margin-bottom: 0.2em;
           font-size: 0.75em;
+          color: var(--accent, #fff);
         }
 
         p {
@@ -199,14 +201,15 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
           padding: 0.1em 0.5em;
           font-size: 0.6em;
           margin-left: 0.5em;
+          color: var(--badge-text, #fff);
         }
       }
     }
   }
 
   .badge {
-    background-color: rgb(27, 27, 27);
-    color: white;
+    background-color: var(--badge, #000);
+    color: var(--badge-text, #fff);
     padding: 0.2em 0.5em;
     border-radius: 1em;
     font-size: 0.7em;
@@ -214,6 +217,7 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
     :deep(b) {
       font-size: 1em;
       font-weight: normal;
+      color: currentColor;
     }
 
   }
@@ -221,7 +225,7 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
   :deep(b) {
     font-size: 1.1em;
     line-height: 0;
-    color: white;
+    color: var(--accent, #fff);
   }
 
 

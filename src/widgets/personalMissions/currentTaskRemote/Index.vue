@@ -1,7 +1,7 @@
 <template>
   <WidgetRoot autoScale autoHeight>
     <Content v-if="currentConfig" :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels }"
-      :tasks="taskGroups" />
+      :tasks="taskGroups" :styleParams="styleParam" />
   </WidgetRoot>
 </template>
 
@@ -9,20 +9,26 @@
 <script setup lang="ts">
 import { useReactiveRemoteValue, WidgetsRemote } from '@/composition/widgetSdk';
 import Content from './Content.vue';
-import { compile, computed } from 'vue';
-import { useQueryParams } from '@/composition/useQueryParams';
+import { computed } from 'vue';
+import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams';
 import i18n from './i18n.json'
 import { useI18n } from '@/composition/useI18n';
 
 import PersonalMissionsI18n from '../assets/data/localizaiton/personal_missions_details_short.json'
 import PersonalMissionsConfig from '../assets/data/pm3/config.json'
 import { gettext } from '@/utils/gettextJson';
-import { Props, TaskType } from './define.widget';
+import { Props, styleParams, TaskType } from './define.widget';
 import WidgetRoot from '@/components/WidgetRoot.vue';
 
-const { } = useQueryParams({
-  // skin: oneOf(['transparent', 'default'] as const, 'transparent'),
+const query = useQueryParams({
+  accent: Color(),
+  badge: Color(),
+  badgeText: Color(),
+  colorScheme: oneOf(['dark', 'red', 'orange', 'green', 'cyan', 'blue', 'purple', 'custom'] as const, 'dark')
 })
+
+const styleParam = computed(() => styleParams(query.colorScheme ?? 'dark', query.accent, query.badge, query.badgeText));
+
 
 const { t } = useI18n(i18n)
 
