@@ -89,7 +89,7 @@ export function useReactiveWatchableValue<T, B>(base: ShallowRef<B | null>, gett
 
 function useDebugConnection<T extends BaseDebugConnection>(frame: WatchSource<HTMLIFrameElement | null>, constructor: new (frame: HTMLIFrameElement) => T) {
   const debug = shallowRef<T | null>(null)
-  const isConnected = useReactiveWatchableValue(debug, b => b.isConnected)
+  const isConnected = useReactiveWatchableValue<boolean, BaseDebugConnection>(debug, b => b.isConnected)
 
   watch(frame, _ => {
     debug.value?.dispose()
