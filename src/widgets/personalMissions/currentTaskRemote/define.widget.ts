@@ -38,15 +38,25 @@ export const enum TaskType {
 
 export type ColorScheme = 'dark' | 'red' | 'orange' | 'green' | 'cyan' | 'blue' | 'purple' | 'custom';
 
+export const accentColors = {
+  dark: 'fff',
+  red: 'ff4245',
+  orange: 'ffa500',
+  green: '33ff65',
+  cyan: '29f1ff',
+  blue: '50b3ff',
+  purple: 'be63ff',
+} as const;
+
 export function styleParams(colorScheme: ColorScheme, accent?: string, badge?: string, badgeText?: string) {
   switch (colorScheme) {
     case 'dark': return { accent: 'fff', badge: '000', badgeText: 'fff' }
-    case 'red': return { accent: 'ff2e2e', badge: '4d0000', badgeText: 'ffdbdb' }
-    case 'orange': return { accent: 'ff7029', badge: '823f12', badgeText: 'fff1e6' }
-    case 'green': return { accent: '0f0', badge: '0b3800', badgeText: 'f4fff2' }
-    case 'cyan': return { accent: '29f1ff', badge: '012324', badgeText: 'e1fcfc' }
-    case 'blue': return { accent: '00a2ff', badge: '062269', badgeText: 'e1e7fc' }
-    case 'purple': return { accent: 'c16bff', badge: '49046b', badgeText: 'f5e1fc' }
+    case 'red': return { accent: accentColors.red, badge: '4d0001', badgeText: 'ffdbdb' }
+    case 'orange': return { accent: accentColors.orange, badge: '4d3200', badgeText: 'fff1e6' }
+    case 'green': return { accent: accentColors.green, badge: '003d0f', badgeText: 'f4fff2' }
+    case 'cyan': return { accent: accentColors.cyan, badge: '00393d', badgeText: 'e1fcfc' }
+    case 'blue': return { accent: accentColors.blue, badge: '00233d', badgeText: 'e1e7fc' }
+    case 'purple': return { accent: accentColors.purple, badge: '2d004d', badgeText: 'f5e1fc' }
     default:
       return {
         accent: accent || 'fff',
@@ -70,7 +80,7 @@ export default defineWidget({
         { value: 'blue', label: 'Синий' },
         { value: 'purple', label: 'Фиолетовый' },
         { value: 'custom', label: 'Свой' },
-      ], default: 'green'
+      ], default: 'orange'
     },
     { type: 'color', target: 'accent', label: 'Акцент', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' },
     { type: 'color', target: 'badge', label: 'Фон бейджей', default: '1b1b1b', visible: (params) => params['color-scheme'] === 'custom' },

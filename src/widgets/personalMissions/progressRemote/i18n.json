@@ -1,0 +1,12 @@
+{
+  "ru": {
+    "questTypeAssist": "Фланг скрытого присутствия",
+    "questTypeBattle": "Фланг разведки",
+    "questTypeHit": "Фланг активного боя",
+    "questTypeKills": "Фланг содействия",
+    "questTypeMaster": "Фланг личного мастерства",
+    "allTasks": "Все задачи",
+    "mainTasks": "Основные задачи",
+    "additionalTasks": "С отличием"
+  }
+}
