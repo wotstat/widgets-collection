@@ -1,7 +1,7 @@
 <template>
   <div class="mini-card">
-    <FallbackImg :src="`https://static.wotstat.info/vehicles/small/${tag.replace(':', '-')}.png`" class="img"
-      :fallback="`https://static.wotstat.info/vehicles/small/noImage.png`" />
+    <FallbackImg :src="`${STATIC_URL}/vehicles/small/${tag.replace(':', '-')}.png`" class="img"
+      :fallback="`${STATIC_URL}/vehicles/small/noImage.png`" />
     <img class="checkmark" :src="Checkmark" alt="">
     <p class="name wg-font nowrap">{{ name }}</p>
   </div>
@@ -12,7 +12,7 @@
 import FallbackImg from '@/components/shared/FallbackImg.vue';
 
 import Checkmark from '../assets/icons/checkmark.png'
-
+import { STATIC_URL } from '@/utils/externalUrl';
 
 const props = defineProps<{
   tag: string,

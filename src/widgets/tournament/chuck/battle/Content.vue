@@ -86,7 +86,7 @@
                 </div>
                 <div class="tank" v-if="photoType == 'tank'">
                   <Image class="tank-image"
-                    :src="`https://static.wotstat.info/vehicles/shop/${player.tankTag.replace(':', '-')}.png`" />
+                    :src="`${STATIC_URL}/vehicles/shop/${player.tankTag.replace(':', '-')}.png`" />
                 </div>
                 <div class="info">
                   <div class="name">
@@ -195,6 +195,7 @@ import PhotoMerfi from './assets/photos/Merfi.png'
 import Image from '@/components/Image.vue';
 import { spaceProcessor } from '@/composition/processors/useSpaceProcessor';
 import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor';
+import { STATIC_URL } from '@/utils/externalUrl';
 
 
 

@@ -56,8 +56,8 @@
 
       <DefineTank v-slot="{ tag }">
         <div class="tank">
-          <FallbackImg :src="`https://static.wotstat.info/vehicles/preview/${tag.replace(':', '-')}.png`" class="img"
-            :fallback="`https://static.wotstat.info/vehicles/preview/noImage.png`" />
+          <FallbackImg :src="`${STATIC_URL}/vehicles/preview/${tag.replace(':', '-')}.png`" class="img"
+            :fallback="`${STATIC_URL}/vehicles/preview/noImage.png`" />
           <p class="nowrap name">{{ getTankName(tag) }}</p>
         </div>
       </DefineTank>
@@ -83,7 +83,7 @@ import FallbackImg from '@/components/shared/FallbackImg.vue';
 import { loading, queryAsync } from '@/utils/db';
 import { computed } from 'vue';
 import { Props } from './define.widget';
-
+import { STATIC_URL } from '@/utils/externalUrl';
 
 const [DefineLine, ReuseLine] = createReusableTemplate<{ img: string, value: number }>()
 const [DefineTank, ReuseTank] = createReusableTemplate<{ tag: string }>()
