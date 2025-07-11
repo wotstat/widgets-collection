@@ -161,7 +161,7 @@ export function useRemoteInspector(rdc: WatchSource<RemoteDebugConnection | null
     sending.value = true;
 
     try {
-      const response = await fetch(`https://widgets-remote.wotstat.info/state?private-key=${toValue(privateKey)}`, {
+      const response = await fetch(`${REMOTE_URL}/state?private-key=${toValue(privateKey)}`, {
         method: 'POST',
         body: JSON.stringify(Object.fromEntries(overrides.value.entries()))
       })
