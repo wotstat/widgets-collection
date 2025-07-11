@@ -52,7 +52,7 @@ export function styleParams(colorScheme: ColorScheme, accent?: string, badge?: s
   switch (colorScheme) {
     case 'dark': return { accent: 'fff', badge: '000', badgeText: 'fff' }
     case 'red': return { accent: accentColors.red, badge: '4d0001', badgeText: 'ffdbdb' }
-    case 'orange': return { accent: accentColors.orange, badge: '4d3200', badgeText: 'fff1e6' }
+    case 'orange': return { accent: accentColors.orange, badge: '361b00', badgeText: 'fff1e6' }
     case 'green': return { accent: accentColors.green, badge: '003d0f', badgeText: 'f4fff2' }
     case 'cyan': return { accent: accentColors.cyan, badge: '00393d', badgeText: 'e1fcfc' }
     case 'blue': return { accent: accentColors.blue, badge: '00233d', badgeText: 'e1e7fc' }

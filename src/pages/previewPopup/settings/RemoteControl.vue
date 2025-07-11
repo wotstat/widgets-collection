@@ -2,7 +2,8 @@
   <div class="line">
     <p>{{ label }}</p>
     <div class="flex">
-      <input v-model="privateKey" id="random-string">
+      <input :value="displayPrivateKey" @input="event => privateKey = (event as any).target.value" ref="inputLine"
+        id="random-string" @mouseout="mouseOverPassword = false" @mouseover="mouseOverPassword = true" />
       <ReloadIcon class="icon" @click.stop.prevent="generateNewValue" />
     </div>
   </div>
@@ -16,7 +17,10 @@
 import ReloadIcon from '@/assets/icons/reload.svg';
 import { channelKey as generatePublicKey } from '@/pages/remoteControl/channelKey';
 import { computedAsync } from '@vueuse/core';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+
+const inputLine = ref<HTMLElement | null>(null)
+const mouseOverPassword = ref(false)
 
 const props = defineProps<{
   label: string;
@@ -29,6 +33,14 @@ const emits = defineEmits<{
 
 const privateKey = ref<string>('')
 const publicKey = computedAsync(async () => await generatePublicKey(privateKey.value))
+const displayPrivateKey = computed(() => {
+  const key = privateKey.value || ''
+  if (mouseOverPassword.value) return key
+
+  if (!key) return ''
+  if (key.length < 3) return `${key.at(0)}${new Array(key.length - 1).fill('*').join('')}`
+  return `${key.slice(0, 3)}${new Array(key.length - 3).fill('*').join('')}`
+})
 
 const value = defineModel<string>({ required: true })
 
