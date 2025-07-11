@@ -127,7 +127,7 @@ const tasks = [
   ]
 ] as any
 
-const styleParam = computed(() => styleParams(props.colorScheme ?? 'dark', props.accent, props.badge, props.badgeText));
+const styleParam = computed(() => styleParams(props.colorScheme ?? 'orange', props.accent, props.badge, props.badgeText));
 
 </script>
 

@@ -75,6 +75,13 @@ export const collections = [
     ]
   },
   {
+    name: 'С удалённым управлением (для стримеров)',
+    widgets: [
+      '/personal-missions/progress-remote',
+      '/personal-missions/current-task-remote',
+    ]
+  },
+  {
     name: 'Архив',
     widgets: [
       '/tournament/trovo/bb-official',

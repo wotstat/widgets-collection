@@ -19,7 +19,6 @@
       </div>
     </div>
   </DefineGroup>
-
   <div class="main" :class="{ animated }"
     :style="{ '--accent': '#' + props.styleParams.accent, '--badge': '#' + props.styleParams.badge, '--badge-text': '#' + props.styleParams.badgeText }">
     <div class="background" :style="{ height: `calc(5.1em + ${tasksHeight}px)` }"></div>
@@ -58,6 +57,7 @@ import { computed, ref } from 'vue';
 import { Props } from './define.widget';
 import { createReusableTemplate, useElementBounding } from '@vueuse/core';
 import { roman } from '@/utils/romanNumbers';
+
 
 const leaveHeight = ref(0);
 const enterHeight = ref(-1);

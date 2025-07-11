@@ -1,38 +1,42 @@
 <template>
-  <div class="main" :style="{ '--accent': `#${props.accent}` }">
-    <div class="header">
-      <h1>{{ props.targetTank }}</h1>
-      <h2>{{ info.title }}</h2>
 
-      <FallbackImg :src="`${STATIC_URL}/vehicles/shop/${info.tag}`" class="tank"
-        :fallback="`${STATIC_URL}/vehicles/preview/noImage.png`" :key="info.tag" />
-    </div>
+  <InsetsWrapper :insets="{ top: 3, right: 0, bottom: 0, left: 0 }">
+    <div class="main" :style="{ '--accent': `#${props.accent}` }">
+      <div class="header">
+        <h1>{{ props.targetTank }}</h1>
+        <h2>{{ info.title }}</h2>
 
-    <div class="content">
-      <div class="progress-sections">
-        <div class="section" v-for="section in sections" :class="section.title.toLowerCase().replace(/ /g, '')">
-          <h2>{{ section.title }}</h2>
-          <h4>Уровень</h4>
-          <div class="value">
-            <span class="current">{{ Math.max(0, Math.min(25, section.value)) }}</span><span>/25</span>
-          </div>
-          <div class="progress" :style="{ '--progress': `${Math.max(0, Math.min(25, section.value)) / 25 * 100}%` }">
+        <FallbackImg :src="`${STATIC_URL}/vehicles/shop/${info.tag}`" class="tank"
+          :fallback="`${STATIC_URL}/vehicles/preview/noImage.png`" :key="info.tag" />
+      </div>
+
+      <div class="content">
+        <div class="progress-sections">
+          <div class="section" v-for="section in sections" :class="section.title.toLowerCase().replace(/ /g, '')">
+            <h2>{{ section.title }}</h2>
+            <h4>Уровень</h4>
+            <div class="value">
+              <span class="current">{{ Math.max(0, Math.min(25, section.value)) }}</span><span>/25</span>
+            </div>
+            <div class="progress" :style="{ '--progress': `${Math.max(0, Math.min(25, section.value)) / 25 * 100}%` }">
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="perfect">
-      <div class="line">
-        <h3>Задачи с отличием</h3>
-        <p>
-          <span class="current">{{ Math.max(0, Math.min(45, props.perfect)) }}</span><span>/45</span>
-        </p>
+      <div class="perfect">
+        <div class="line">
+          <h3>Задачи с отличием</h3>
+          <p>
+            <span class="current">{{ Math.max(0, Math.min(45, props.perfect)) }}</span><span>/45</span>
+          </p>
+        </div>
+        <div class="progress" :style="{ '--progress': `${Math.max(0, Math.min(45, props.perfect)) / 45 * 100}%` }">
+        </div>
       </div>
-      <div class="progress" :style="{ '--progress': `${Math.max(0, Math.min(45, props.perfect)) / 45 * 100}%` }"></div>
-    </div>
 
-  </div>
+    </div>
+  </InsetsWrapper>
 </template>
 
 
@@ -41,7 +45,7 @@ import { computed } from 'vue';
 import { Props } from './define.widget';
 import { STATIC_URL } from '@/utils/externalUrl';
 import FallbackImg from '@/components/shared/FallbackImg.vue';
-
+import InsetsWrapper from '@/components/InsetsWrapper.vue';
 
 const props = defineProps<Props>();
 
