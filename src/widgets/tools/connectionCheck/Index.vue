@@ -13,7 +13,7 @@ import { Status } from './define.widget';
 import WidgetRoot from '@/components/WidgetRoot.vue';
 import { useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk';
 import { useWidgetRelay } from '@/composition/useWidgetRelay';
-import { CLICKHOUSE_URL, REMOTE_URL, WIDGETS_URL } from '@/utils/externalUrl';
+import { CLICKHOUSE_URL, REMOTE_URL_WS, WIDGETS_URL } from '@/utils/externalUrl';
 
 
 const widget = ref<Status>('connecting')
@@ -33,7 +33,7 @@ watchEffect(() => {
 const widgetRelay = useWidgetRelay('connection-check')
 widgetRelay.relay.status.watch((status) => relay.value = status)
 
-const widgetRemote = new WidgetsRemote({ channel: 'connection-check', url: REMOTE_URL })
+const widgetRemote = new WidgetsRemote({ channel: 'connection-check', url: REMOTE_URL_WS })
 widgetRemote.status.watch((status) => remote.value = status)
 
 
