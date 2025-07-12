@@ -22,7 +22,3 @@ const emits = defineEmits<{
 }>()
 
 </script>
-
-<style lang="scss">
-@use '../inspectorStyle.scss';
-</style>

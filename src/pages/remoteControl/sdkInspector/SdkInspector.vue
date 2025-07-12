@@ -369,7 +369,3 @@ async function onBattleResult(platoon: boolean) {
 </script>
 
 <style lang="scss" scoped></style>
-
-<style lang="scss">
-@use '../inspectorStyle.scss';
-</style>

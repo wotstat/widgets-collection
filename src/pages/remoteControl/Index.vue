@@ -278,6 +278,7 @@ watch(() => [targetWidth.value, targetHeight.value], ([width, height]) => setCon
 
 
 <style lang="scss" scoped>
+@use './inspectorStyle.scss' as inspectorStyle;
 $header-height: 50px;
 
 .page {
@@ -474,6 +475,9 @@ header {
       min-height: 0;
     }
 
+    :deep() {
+      @include inspectorStyle.inspector-style;
+    }
   }
 
   .preview {

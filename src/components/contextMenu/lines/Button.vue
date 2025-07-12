@@ -53,7 +53,7 @@ function onPointerUp(e: PointerEvent) {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use './shared.scss';
 
 .context-menu-child-button {

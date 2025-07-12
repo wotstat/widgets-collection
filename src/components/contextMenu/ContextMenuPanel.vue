@@ -324,7 +324,7 @@ function onAction() {
 
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 .context-menu-panel {
   position: fixed;
 

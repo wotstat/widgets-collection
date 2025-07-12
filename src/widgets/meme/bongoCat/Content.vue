@@ -56,7 +56,7 @@ const classes = computed(() => {
 }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .bongo-cat-widget-root {
 
   .bongo-cat {
