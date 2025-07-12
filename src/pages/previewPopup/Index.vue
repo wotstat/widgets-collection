@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
-import { computed, defineAsyncComponent, defineComponent, h, onMounted, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, h, onMounted, onUnmounted, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { accent, background, defaultAccent, defaultBackground } from "@/composition/wotstatColors";
 import { injectStylesheet } from "@/composition/widgetSdk"
@@ -351,6 +351,9 @@ function add() {
 
 const accentColor = computed(() => '#' + accent.value)
 
+onMounted(() => document.body.style.minHeight = '100vh')
+onUnmounted(() => document.body.style.minHeight = '')
+
 </script>
 
 
@@ -624,11 +627,5 @@ const accentColor = computed(() => '#' + accent.value)
     }
   }
 
-}
-</style>
-
-<style lang="scss">
-body {
-  min-height: 100vh;
 }
 </style>
