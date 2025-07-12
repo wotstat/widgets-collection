@@ -66,19 +66,19 @@ export const collections = [
     ]
   },
   {
+    name: 'С удалённым управлением (для стримеров)',
+    widgets: [
+      '/personal-missions/progress-remote',
+      '/personal-missions/current-task-remote',
+    ]
+  },
+  {
     name: 'Служебные',
     widgets: [
       '/tools/debug',
       '/tools/gun-mark-debug',
       '/tools/meta-tags-debug',
       '/tools/connection-check',
-    ]
-  },
-  {
-    name: 'С удалённым управлением (для стримеров)',
-    widgets: [
-      '/personal-missions/progress-remote',
-      '/personal-missions/current-task-remote',
     ]
   },
   {
