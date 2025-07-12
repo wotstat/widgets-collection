@@ -1,7 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.16">
     <Content :header="{ title: 'Г-10', subtitle: 'Фланг разведки', levels: [5, 7] }" :tasks="tasks"
-      :styleParams="styleParam" />
+      :styleParams="styleParam" :colorizeIcon="colorizeIcon ?? false" />
   </WidgetPreviewRoot>
 </template>
 
@@ -20,6 +20,7 @@ const props = defineProps<{
   badge?: string
   badgeText?: string
   colorScheme?: ColorScheme
+  colorizeIcon?: boolean
 }>();
 
 const tasks = [

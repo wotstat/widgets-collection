@@ -184,7 +184,7 @@ const info = computed(() => {
 
   .progress {
     height: 0.2em;
-    background-color: rgb(193, 193, 193);
+    background-color: rgb(170, 170, 170);
     border-radius: 0.1em;
     margin-top: 0.3em;
     position: relative;

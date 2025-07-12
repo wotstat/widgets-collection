@@ -19,8 +19,12 @@
       </div>
     </div>
   </DefineGroup>
-  <div class="main" :class="{ animated }"
-    :style="{ '--accent': '#' + props.styleParams.accent, '--badge': '#' + props.styleParams.badge, '--badge-text': '#' + props.styleParams.badgeText }">
+
+  <div class="main" :class="{ animated, 'colorize-icon': colorizeIcon }" :style="{
+    '--accent': '#' + props.styleParams.accent,
+    '--badge': '#' + props.styleParams.badge,
+    '--badge-text': '#' + props.styleParams.badgeText
+  }">
     <div class="background" :style="{ height: `calc(5.1em + ${tasksHeight}px)` }"></div>
 
     <div class="header">
@@ -173,11 +177,9 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
           display: flex;
           align-items: center;
           justify-content: center;
-          min-width: 4em;
-          max-width: 4em;
-
-          // filter: drop-shadow(0px 200em 0 rgb(255, 137, 34));
-          // transform: translateY(-200em);
+          margin-left: 0.5em;
+          min-width: 3em;
+          max-width: 3em;
 
           img {
             height: 3.5em;
@@ -228,7 +230,12 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
     color: var(--accent, #fff);
   }
 
-
+  &.colorize-icon {
+    .image-container {
+      filter: drop-shadow(0px 200em 0 var(--accent, #fff));
+      transform: translateY(-199.98em);
+    }
+  }
 
   &.animated {
 

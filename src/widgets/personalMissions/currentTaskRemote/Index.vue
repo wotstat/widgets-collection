@@ -1,7 +1,7 @@
 <template>
   <WidgetRoot autoScale autoHeight>
     <Content v-if="currentConfig" :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels }"
-      :tasks="taskGroups" :styleParams="styleParam" />
+      :tasks="taskGroups" :styleParams="styleParam" :colorizeIcon="query.colorizeIcon" />
   </WidgetRoot>
 </template>
 
@@ -24,6 +24,7 @@ const query = useQueryParams({
   accent: Color(),
   badge: Color(),
   badgeText: Color(),
+  colorizeIcon: Boolean,
   colorScheme: oneOf(['dark', 'red', 'orange', 'green', 'cyan', 'blue', 'purple', 'custom'] as const, 'dark')
 })
 

@@ -25,6 +25,7 @@ export type Props = {
     badge: string
     badgeText: string
   }
+  colorizeIcon: boolean
 }
 
 export const enum TaskType {
@@ -85,6 +86,7 @@ export default defineWidget({
     { type: 'color', target: 'accent', label: 'Акцент', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' },
     { type: 'color', target: 'badge', label: 'Фон бейджей', default: '1b1b1b', visible: (params) => params['color-scheme'] === 'custom' },
     { type: 'color', target: 'badge-text', label: 'Текст бейджей', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' },
+    { type: 'checkbox', target: 'colorize-icon', label: 'Цветные иконки', default: false },
     { type: 'separator' },
     { type: 'remote-control' }
   ]
