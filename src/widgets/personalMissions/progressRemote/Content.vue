@@ -1,7 +1,9 @@
 <template>
 
   <InsetsWrapper :insets="{ top: 3, right: 0, bottom: 0, left: 0 }">
-    <div class="main" :style="{ '--accent': `#${props.accent}` }">
+    <div class="main"
+      :style="{ '--accent': `#${props.accent}`, '--color-from': `#${props.backColorFrom}`, '--color-to': `#${props.backColorTo}` }"
+      :class="{ [`background-scheme-${props.backgroundScheme}`]: true }">
       <div class="header">
         <h1>{{ props.targetTank }}</h1>
         <h2>{{ info.title }}</h2>
@@ -76,6 +78,15 @@ const info = computed(() => {
   gap: 1em;
 
   background: linear-gradient(180deg, rgba(24, 24, 24, 0.8) 0%, rgba(24, 24, 24, 0.3) 100%);
+
+  &.background-scheme-color {
+    background: var(--wotstat-background, #fff);
+  }
+
+  &.background-scheme-gradient {
+    background: linear-gradient(180deg, var(--color-from) 0%, var(--color-to) 100%);
+  }
+
   padding: 1em 0;
 
   .header {

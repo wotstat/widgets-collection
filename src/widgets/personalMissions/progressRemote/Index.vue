@@ -1,6 +1,8 @@
 <template>
   <WidgetRoot autoScale autoHeight>
-    <Content :target-tank="currentTank" :section1 :section2 :section3 :perfect :accent="color" />
+    <Content :target-tank="currentTank" :section1 :section2 :section3 :perfect :accent="color"
+      :backgroundScheme="query.backgroundScheme" :back-color-from="query.backColorFrom"
+      :back-color-to="query.backColorTo" />
   </WidgetRoot>
 </template>
 
@@ -16,7 +18,10 @@ import WidgetRoot from '@/components/WidgetRoot.vue';
 
 const query = useQueryParams({
   accent: Color(),
-  colorScheme: oneOf(['red', 'orange', 'green', 'cyan', 'blue', 'purple', 'custom'] as const, 'orange')
+  colorScheme: oneOf(['red', 'orange', 'green', 'cyan', 'blue', 'purple', 'custom'] as const, 'orange'),
+  backgroundScheme: oneOf(['default', 'color', 'gradient'] as const, 'default'),
+  backColorFrom: Color('1c1c1c'),
+  backColorTo: Color('1a1a1a69')
 })
 
 const color = computed(() => styleParams(query.colorScheme, query.accent))

@@ -24,6 +24,9 @@ export type Props = {
     accent: string
     badge: string
     badgeText: string
+    backgroundScheme: BackgroundScheme
+    backColorFrom?: string
+    backColorTo?: string
   }
   colorizeIcon: boolean
 }
@@ -49,6 +52,7 @@ export const accentColors = {
   purple: 'be63ff',
 } as const;
 
+export type BackgroundScheme = 'default' | 'color' | 'gradient';
 export function styleParams(colorScheme: ColorScheme, accent?: string, badge?: string, badgeText?: string) {
   switch (colorScheme) {
     case 'dark': return { accent: 'fff', badge: '000', badgeText: 'fff' }
@@ -85,7 +89,16 @@ export default defineWidget({
     },
     { type: 'color', target: 'accent', label: 'Акцент', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' },
     { type: 'color', target: 'badge', label: 'Фон бейджей', default: '1b1b1b', visible: (params) => params['color-scheme'] === 'custom' },
-    { type: 'color', target: 'badge-text', label: 'Текст бейджей', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' },
+    { type: 'color', target: 'badge-text', label: 'Текст бейджей', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' }, {
+      type: 'select', target: 'background-scheme', label: 'Вариант фона', variants: [
+        { value: 'default', label: 'Стандартный' },
+        { value: 'color', label: 'Цвет' },
+        { value: 'gradient', label: 'Градиент' },
+      ], default: 'default'
+    },
+    { type: 'backgroundColorParam', visible: (params) => params['background-scheme'] === 'color' },
+    { type: 'color', target: 'back-color-from', label: 'Цвет От', default: '1c1c1c', visible: (params) => params['background-scheme'] === 'gradient' },
+    { type: 'color', target: 'back-color-to', label: 'Цвет До', default: '1a1a1a69', visible: (params) => params['background-scheme'] === 'gradient' },
     { type: 'checkbox', target: 'colorize-icon', label: 'Цветные иконки', default: false },
     { type: 'separator' },
     { type: 'remote-control' }

@@ -20,11 +20,15 @@
     </div>
   </DefineGroup>
 
-  <div class="main" :class="{ animated, 'colorize-icon': colorizeIcon }" :style="{
-    '--accent': '#' + props.styleParams.accent,
-    '--badge': '#' + props.styleParams.badge,
-    '--badge-text': '#' + props.styleParams.badgeText
-  }">
+  <div class="main"
+    :class="{ animated, 'colorize-icon': colorizeIcon, [`background-scheme-${props.styleParams.backgroundScheme}`]: true }"
+    :style="{
+      '--accent': '#' + props.styleParams.accent,
+      '--badge': '#' + props.styleParams.badge,
+      '--badge-text': '#' + props.styleParams.badgeText,
+      '--color-from': `#${props.styleParams.backColorFrom}`,
+      '--color-to': `#${props.styleParams.backColorTo}`
+    }">
     <div class="background" :style="{ height: `calc(5.1em + ${tasksHeight}px)` }"></div>
 
     <div class="header">
@@ -104,6 +108,15 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
 
     background: linear-gradient(180deg, rgba(24, 24, 24, 0.8) 0%, rgba(24, 24, 24, 0.3) 100%);
   }
+
+  &.background-scheme-color .background {
+    background: var(--wotstat-background, #fff);
+  }
+
+  &.background-scheme-gradient .background {
+    background: linear-gradient(180deg, var(--color-from) 0%, var(--color-to) 100%);
+  }
+
 
   .header {
     padding: 1em;

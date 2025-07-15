@@ -25,11 +25,18 @@ const query = useQueryParams({
   badge: Color(),
   badgeText: Color(),
   colorizeIcon: Boolean,
-  colorScheme: oneOf(['dark', 'red', 'orange', 'green', 'cyan', 'blue', 'purple', 'custom'] as const, 'dark')
+  colorScheme: oneOf(['dark', 'red', 'orange', 'green', 'cyan', 'blue', 'purple', 'custom'] as const, 'dark'),
+  backgroundScheme: oneOf(['default', 'color', 'gradient'] as const, 'default'),
+  backColorFrom: Color('1c1c1c'),
+  backColorTo: Color('1a1a1a69')
 })
 
-const styleParam = computed(() => styleParams(query.colorScheme ?? 'dark', query.accent, query.badge, query.badgeText));
-
+const styleParam = computed(() => ({
+  ...styleParams(query.colorScheme ?? 'dark', query.accent, query.badge, query.badgeText),
+  backgroundScheme: query.backgroundScheme ?? 'default',
+  backColorFrom: query.backColorFrom ?? '1c1c1c',
+  backColorTo: query.backColorTo ?? '1a1a1a69'
+}));
 
 const { t } = useI18n(i18n)
 
