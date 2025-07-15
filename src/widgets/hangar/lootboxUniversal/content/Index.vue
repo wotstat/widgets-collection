@@ -612,7 +612,7 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
 .background-elements {
   position: absolute;
   inset: 0;
-  border-radius: 1em;
+  border-radius: 2em;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
