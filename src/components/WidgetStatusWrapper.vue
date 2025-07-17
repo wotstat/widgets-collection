@@ -111,7 +111,7 @@ div.card {
   align-items: center;
   text-align: center;
   font-size: 1.2em;
-  z-index: 10000;
+  z-index: 1000;
 
   p {
     margin: 0;

@@ -1,14 +1,16 @@
 <template>
   <div class="line">
     <p>{{ label }}</p>
-    <ColorPicker v-model:pureColor="value" :debounce="0" :lang="'En'" :disable-history="true" :picker-type="'chrome'"
+    <ColorPicker v-model:pureColor="value" :debounce="100" :lang="'En'" :disable-history="false" :picker-type="'chrome'"
       :format="'hex4'" />
+    <ColorPickerMy v-model="value" />
   </div>
 </template>
 
 
 <script setup lang="ts">
 import { ColorPicker } from "vue3-colorpicker";
+import ColorPickerMy from "@/components/colorPicker/ColorPicker.vue";
 import "vue3-colorpicker/style.css";
 
 const props = defineProps<{
@@ -30,6 +32,10 @@ const value = defineModel<string>({
   border-radius: 5px;
   border: 1px solid #858585;
   margin: 0;
+}
+
+:deep(.color-preview) {
+  height: 21.5px;
 }
 </style>
 

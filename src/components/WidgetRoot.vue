@@ -91,7 +91,7 @@ function onClickToContextOption(option: 'clear') {
 }
 
 .settings-context {
-  z-index: 10000;
+  z-index: 1000;
   font-size: 2.5vw;
   position: absolute;
   top: var(--y);

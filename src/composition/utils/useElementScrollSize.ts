@@ -16,7 +16,7 @@ export function useElementScrollSize(element: MaybeComputedElementRef) {
 
   const { width } = useElementBounding(element)
   watch(width, () => calc());
-  useMutationObserver(element, () => calc(), { childList: true, subtree: true, attributes: true });
+  useMutationObserver(element, () => calc(), { childList: true, subtree: true, });
   onMounted(() => calc())
   watch(() => unrefElement(element), () => calc());
   useEventListener(window, 'resize', () => calc());

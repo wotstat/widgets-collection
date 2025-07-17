@@ -134,7 +134,7 @@ const contextMenuStyle = computed(() => {
   return {
     left: pos.x + 'px',
     top: pos.y + 'px',
-    zIndex: props.order + 100,
+    zIndex: props.order + 10000,
     minWidth: props.minWidth ? props.minWidth + 'px' : 'unset',
   }
 })

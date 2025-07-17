@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div id="context-menu-root" :class="{ 'fade-leave-active': fadeLeaveActive }"></div>
+    <div id="context-menu-root" :class="{ 'fade-leave-active': fadeLeaveActive }" ref="contextMenuRoot"></div>
   </Teleport>
 
   <Teleport to="#context-menu-root" v-if="currentContextMenu && targetRect">
@@ -26,6 +26,7 @@ type Timeout = ReturnType<typeof setTimeout>
 
 const currentMenuPanel = ref<InstanceType<typeof ContextMenuPanel> | null>(null)
 
+const contextMenuRoot = ref<HTMLElement | null>(null)
 const shouldCloseByPointerUp = ref(false)
 let canActivateCloseByPointerUp = false
 let isPointerDown = false
@@ -103,7 +104,9 @@ watch(currentContextMenu, menu => {
   if (fadeLeaveEndTimeout) clearTimeout(fadeLeaveEndTimeout)
 })
 
-useEventListener(document, 'pointerdown', () => closeWithAnim())
+useEventListener(document, 'pointerdown', (event: PointerEvent) => {
+  if (!contextMenuRoot.value?.contains(event.target as Node)) closeWithAnim()
+}, { passive: true, capture: true })
 useEventListener(document, 'keydown', (e) => {
   if (e.key === 'Escape') {
     closeWithAnim()
