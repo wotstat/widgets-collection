@@ -13,8 +13,9 @@
 
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core';
-import { computed, inject, MaybeRefOrGetter, ref, toValue } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { accent, background } from "@/composition/wotstatColors";
+import { isInMiniPreview as isInMiniPreviewKey } from '@/utils/provides';
 
 const containerElement = ref<HTMLElement | null>(null)
 
@@ -26,11 +27,18 @@ const props = defineProps<{
 const { width } = useElementSize(containerElement)
 const fontSize = computed(() => width.value / 100 * 4 + 'px')
 
-const targetStyle = computed(() => ({
-  '--wotstat-accent': `#` + accent.value,
-  '--wotstat-background': `#` + background.value,
-  fontSize: fontSize.value
-} as any))
+const isInMiniPreview = inject(isInMiniPreviewKey, false)
+const targetStyle = computed(() => {
+
+  if (isInMiniPreview) return { fontSize: fontSize.value }
+
+  return {
+    '--wotstat-accent': `#` + accent.value,
+    '--wotstat-background': `#` + background.value,
+    fontSize: fontSize.value
+  }
+})
+
 </script>
 
 

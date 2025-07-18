@@ -1,5 +1,8 @@
 <template>
-  <div class="collections">
+  <div class="collections" :style="{
+    '--wotstat-accent': '#' + accentColor,
+    '--wotstat-background': '#' + backgroundColor
+  }">
     <div class="collection" v-for="collection in collectionsWithWidgets">
       <h2>{{ collection.name }}</h2>
       <div class="collection-content">
@@ -31,13 +34,18 @@
 <script setup lang="ts">
 import { getAllWidgetsRoutes, pathResolve } from '@/utils';
 import Item from './Item.vue';
-import { type Component, defineAsyncComponent, onMounted, provide } from 'vue';
+import { type Component, computed, defineAsyncComponent, onMounted, provide, watchEffect } from 'vue';
 import { collections } from '@/collections';
 import { injectStylesheet } from "@/composition/widgetSdk";
 import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
 import { Options } from '@/utils/defineWidget';
 import { isInMiniPreview, isInPreview, language } from '@/utils/provides';
 import LoadingWidgetPreview from './LoadingWidgetPreview.vue';
+import { accent, background } from '@/composition/wotstatColors';
+import { useDebounce } from '@vueuse/core';
+
+const accentColor = useDebounce(accent, 100)
+const backgroundColor = useDebounce(background, 100)
 
 injectStylesheet();
 useProvideDocumentBounding()
