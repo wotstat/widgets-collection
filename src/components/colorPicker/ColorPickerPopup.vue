@@ -119,8 +119,8 @@
 
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
-import { ColorHSVA } from './ColorHSVA';
+import { computed, nextTick, ref, watch } from 'vue';
+import { ColorHSVA, HSLA, RGBA } from './ColorHSVA';
 import { useLocalStorage, watchPausable } from '@vueuse/core';
 import { options, simpleContextMenu } from '../contextMenu/simpleContextMenu';
 import ArrowUpDown from './arrow-up-down.svg';
@@ -130,12 +130,13 @@ const PX_GAMMA = 1.25;
 const PY_GAMMA = 1;
 
 
-const { allowAlpha = true, savedColors: displaySavedColors = true } = defineProps<{
+const { allowAlpha = true, savedColors: displaySavedColors = true, format } = defineProps<{
   allowAlpha?: boolean
   savedColors?: boolean
+  format: 'hex' | 'rgba' | 'hsla'
 }>()
 
-const value = defineModel<string>({
+const value = defineModel<string | RGBA | HSLA>({
   required: false,
 })
 
@@ -154,12 +155,12 @@ const color = ref(new ColorHSVA(0, 0, 0, 1));
 const hsla = computed(() => color.value.toHsla());
 
 const { stop, pause, resume } = watchPausable(value, (newValue) => {
-  if (newValue) color.value.setHex(newValue);
+  if (newValue) color.value.parseFormat(format, newValue);
 }, { immediate: true });
 
 watch(color, (newColor) => {
   pause()
-  value.value = newColor.toHex();
+  value.value = newColor.toFormat(format);
   nextTick(() => resume());
 }, { immediate: true, deep: true });
 

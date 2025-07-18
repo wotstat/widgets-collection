@@ -11,6 +11,9 @@ function clamp01(value: number): number {
   return clamp(value, 0, 1);
 }
 
+export type RGBA = { r: number, g: number, b: number, a: number };
+export type HSLA = { h: number, s: number, l: number, a: number };
+
 export class ColorHSVA {
 
   constructor(
@@ -172,6 +175,27 @@ export class ColorHSVA {
     return hex;
   }
 
+  parseFormat(format: 'hex' | 'rgba' | 'hsla', value: string | RGBA | HSLA) {
+    const v = value as any
+
+    try {
+      if (format == 'hex') this.setHex(v);
+      else if (format == 'rgba') this.setRgba(v.r, v.g, v.b, v.a);
+      else if (format == 'hsla') this.setHsla(v.h, v.s, v.l, v.a);
+      else console.error(`Unsupported color format: ${format}`);
+    } catch (error) {
+      console.error(`Error parsing color in format ${format}:`, error);
+    }
+  }
+
+  toFormat(format: 'hex' | 'rgba' | 'hsla'): string | RGBA | HSLA {
+    if (format === 'hex') return this.toHex();
+    if (format === 'rgba') return this.toRgba();
+    if (format === 'hsla') return this.toHsla();
+    console.error(`Unsupported color format: ${format}`);
+
+    return { h: 0, s: 0, l: 0, a: 1 } as HSLA; // Default return value
+  }
 
   get cssString(): string {
     const l = (2 - this.s) * this.v / 2

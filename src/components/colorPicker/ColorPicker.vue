@@ -1,27 +1,41 @@
 <template>
   <div class="color-preview" :style="{
-    backgroundColor: `#${color}`,
-  }" @click="showPopup = true" ref="colorPreview"></div>
+    backgroundColor: `#${colorProc.toHex()}`,
+  }" @click="showPopup = true" ref="colorPreview">
 
-  <PopoverStyled :target="colorPreview" :display="showPopup" @on-click-outside="showPopup = false" :offset="5"
-    :placement="'left'">
-    <ColorPickerPopup v-model="color" />
-  </PopoverStyled>
-
+    <PopoverStyled :target="colorPreview" :display="showPopup" @on-click-outside="showPopup = false" :offset="5"
+      :placement="placement">
+      <ColorPickerPopup v-model="color" :allowAlpha :savedColors :format />
+    </PopoverStyled>
+  </div>
 </template>
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import ColorPickerPopup from './ColorPickerPopup.vue';
 import PopoverStyled from '../popover/PopoverStyled.vue';
+import { ColorHSVA, HSLA, RGBA } from './ColorHSVA';
+import { Placement } from '../popover/utils';
+
+const { allowAlpha = true, savedColors = true, format = 'hex', placement = 'left' } = defineProps<{
+  allowAlpha?: boolean
+  savedColors?: boolean
+  format?: 'hex' | 'rgba' | 'hsla'
+  placement?: Placement
+}>()
 
 const colorPreview = ref<HTMLElement | null>(null);
 const showPopup = ref(false);
 
-const color = defineModel<string>({
+const color = defineModel<string | RGBA | HSLA>({
   required: false,
 })
+
+let colorProc = ref(new ColorHSVA(0, 0, 0, 1));
+watch(color, (newColor) => {
+  if (newColor) colorProc.value.parseFormat(format, newColor);
+}, { immediate: true, deep: true });
 
 </script>
 
