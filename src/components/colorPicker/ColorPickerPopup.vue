@@ -402,6 +402,8 @@ function showColorContextMenu(event: MouseEvent, index: number) {
 <style lang="scss" scoped>
 .picker-container {
   width: 230px;
+  touch-action: none;
+  user-select: none;
 }
 
 .preview {
