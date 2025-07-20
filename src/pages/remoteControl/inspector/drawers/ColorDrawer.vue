@@ -1,7 +1,8 @@
 <template>
   <label>
     <span>{{ path[path.length - 1] }}</span>
-    <ColorPicker v-model="value" :format="'hex'" class="color-picker" :placement="'bottom-start'" />
+    <ColorPicker v-model="value" :format="'hex'" class="color-picker"
+      :placement="['bottom-start-float', 'right-start-float']" />
   </label>
 </template>
 

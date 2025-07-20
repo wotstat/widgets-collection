@@ -1,6 +1,11 @@
 
+export type Placement =
+  'top' | 'top-start' | 'top-end' |
+  'bottom' | 'bottom-start' | 'bottom-end' |
+  'left' | 'left-start' | 'left-end' |
+  'right' | 'right-start' | 'right-end';
 
-export type Placement = 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end';
+export type PlacementWithModifiers = Placement | `${Placement}-float`;
 
 export type Params = {
   target: { x: number, y: number, width: number, height: number }
@@ -95,116 +100,191 @@ type Bbox = {
   bottom: number;
 }
 
-export function generateBbox(bbox?: DOMRect | 'window' | false | null): Bbox | null {
+export function generateBbox(bbox: DOMRect | 'window' | false | null | undefined, offset: Offset): Bbox | null {
   if (bbox === 'window') {
     return {
-      left: 0,
-      top: 0,
-      right: window.innerWidth,
-      bottom: window.innerHeight
+      left: 0 + offset.left,
+      top: 0 + offset.top,
+      right: document.documentElement.clientWidth - offset.right,
+      bottom: document.documentElement.clientHeight - offset.bottom
     };
   }
 
   if (bbox instanceof DOMRect) {
     return {
-      left: bbox.left,
-      top: bbox.top,
-      right: bbox.right,
-      bottom: bbox.bottom
+      left: bbox.left + offset.left,
+      top: bbox.top + offset.top,
+      right: bbox.right - offset.right,
+      bottom: bbox.bottom - offset.bottom
     };
   }
 
   return null;
 }
 
-const horizontalPlacements = new Set<Placement>(['left', 'right', 'left-start', 'left-end', 'right-start', 'right-end']);
-const verticalPlacements = new Set<Placement>(['top', 'bottom', 'top-start', 'top-end', 'bottom-start', 'bottom-end']);
-
-export function calculatePopoverPosition(params: Params, placement: Placement,
-  options: {
-    bbox?: DOMRect | 'window' | false | null
-    offset: Offset
-  }): { x: number, y: number } {
+function calculateBasePosition(placement: Placement, offset: Offset, params: Params) {
 
   const { target, popup } = params;
-  const { offset } = options;
-
-  const bbox = generateBbox(options.bbox);
-
-  let x = 0
-  let y = 0
 
   const targetCenterX = target.x + target.width / 2;
   const targetCenterY = target.y + target.height / 2;
 
   switch (placement) {
-    case 'top':
-      x = targetCenterX - popup.width / 2;
-      y = target.y - popup.height - offset.bottom;
-      break;
-    case 'bottom':
-      x = targetCenterX - popup.width / 2;
-      y = target.y + target.height + offset.top;
-      break;
-    case 'left':
-      x = target.x - popup.width - offset.right;
-      y = targetCenterY - popup.height / 2;
-      break;
-    case 'right':
-      x = target.x + target.width + offset.left;
-      y = targetCenterY - popup.height / 2;
-      break;
-    case 'top-start':
-      x = target.x;
-      y = target.y - popup.height - offset.bottom;
-      break;
-    case 'top-end':
-      x = target.x + target.width - popup.width;
-      y = target.y - popup.height - offset.bottom;
-      break;
-    case 'bottom-start':
-      x = target.x;
-      y = target.y + target.height + offset.top;
-      break;
-    case 'bottom-end':
-      x = target.x + target.width - popup.width;
-      y = target.y + target.height + offset.top;
-      break;
-    case 'left-start':
-      x = target.x - popup.width - offset.right;
-      y = target.y;
-      break;
-    case 'left-end':
-      x = target.x - popup.width - offset.right;
-      y = target.y + target.height - popup.height;
-      break;
-    case 'right-start':
-      x = target.x + target.width + offset.left;
-      y = target.y;
-      break;
-    case 'right-end':
-      x = target.x + target.width + offset.left;
-      y = target.y + target.height - popup.height;
-      break;
+    case 'top': return { x: targetCenterX - popup.width / 2, y: target.y - popup.height - offset.bottom };
+    case 'bottom': return { x: targetCenterX - popup.width / 2, y: target.y + target.height + offset.top };
+    case 'left': return { x: target.x - popup.width - offset.right, y: targetCenterY - popup.height / 2 };
+    case 'right': return { x: target.x + target.width + offset.left, y: targetCenterY - popup.height / 2 };
+    case 'top-start': return { x: target.x, y: target.y - popup.height - offset.bottom };
+    case 'top-end': return { x: target.x + target.width - popup.width, y: target.y - popup.height - offset.bottom };
+    case 'bottom-start': return { x: target.x, y: target.y + target.height + offset.top };
+    case 'bottom-end': return { x: target.x + target.width - popup.width, y: target.y + target.height + offset.top };
+    case 'left-start': return { x: target.x - popup.width - offset.right, y: target.y };
+    case 'left-end': return { x: target.x - popup.width - offset.right, y: target.y + target.height - popup.height };
+    case 'right-start': return { x: target.x + target.width + offset.left, y: target.y };
+    case 'right-end': return { x: target.x + target.width + offset.left, y: target.y + target.height - popup.height };
   }
+}
 
-  if (bbox) {
+const horizontalPlacements = new Set<Placement>(['left', 'right', 'left-start', 'left-end', 'right-start', 'right-end']);
+const verticalPlacements = new Set<Placement>(['top', 'bottom', 'top-start', 'top-end', 'bottom-start', 'bottom-end']);
+
+function calculatePosition(placement: Placement, offset: Offset, params: Params, floatModifier: boolean, bbox: Bbox | null) {
+  const { popup, target } = params;
+
+  let { x, y } = calculateBasePosition(placement, offset, params);
+
+  if (bbox && floatModifier) {
     if (!verticalPlacements.has(placement)) {
-      if (y + popup.height > bbox.bottom - offset.bottom) {
-        y = bbox.bottom - offset.bottom - popup.height;
-      } else if (y < bbox.top + offset.top) {
-        y = bbox.top + offset.top;
+      if (y + popup.height > bbox.bottom) {
+        y = bbox.bottom - popup.height;
+
+        if (target.height > popup.height) {
+          if (y < target.y) y = target.y
+        } else {
+          if (target.y + target.height > y + popup.height) y = target.y + target.height - popup.height;
+        }
+
+      } else if (y < bbox.top) {
+        y = bbox.top;
+
+        if (target.height > popup.height) {
+          if (y + popup.height > target.y + target.height) y = target.y + target.height - popup.height;
+        } else {
+          if (y > target.y) y = target.y;
+        }
       }
     }
 
     if (!horizontalPlacements.has(placement)) {
-      if (x + popup.width > bbox.right - offset.right) {
-        x = bbox.right - offset.right - popup.width;
-      } else if (x < bbox.left + offset.left) {
-        x = bbox.left + offset.left;
+      if (x + popup.width > bbox.right) {
+        x = bbox.right - popup.width;
+
+        if (target.width > popup.width) {
+          if (x < target.x) x = target.x;
+        } else {
+          if (target.x + target.width > x + popup.width) x = target.x + target.width - popup.width;
+        }
+
+      } else if (x < bbox.left) {
+        x = bbox.left;
+
+        if (target.width > popup.width) {
+          if (x + popup.width > target.x + target.width) x = target.x + target.width - popup.width;
+        } else {
+          if (x > target.x) x = target.x;
+        }
       }
     }
   }
 
   return { x, y };
+}
+
+function isInside(x: number, y: number, bbox: Bbox, params: Params) {
+  const { popup } = params;
+
+  return x + popup.width <= bbox.right &&
+    x >= bbox.left &&
+    y + popup.height <= bbox.bottom &&
+    y >= bbox.top
+}
+
+function getPlacement(placementWithModifiers: PlacementWithModifiers) {
+  const placement = placementWithModifiers.replace(/-float$/, '') as Placement;
+  const floatModifier = placementWithModifiers.match(/-float$/) !== null;
+
+  return {
+    placement,
+    float: floatModifier
+  }
+}
+
+export type PlacementParam = PlacementWithModifiers[] | PlacementWithModifiers;
+export function calculatePopoverPosition(params: Params, preferredPlacement: PlacementWithModifiers[],
+  options: {
+    bbox?: DOMRect | 'window' | false | null
+    lastPlacement?: PlacementWithModifiers
+    preserveLastPlacement?: boolean
+    offset: Offset,
+    viewportOffset: Offset
+  }): { x: number, y: number, placement?: PlacementWithModifiers } {
+
+  const { offset, lastPlacement, preserveLastPlacement, viewportOffset } = options;
+
+  const bbox = generateBbox(options.bbox, viewportOffset);
+
+  const checkedPlacements = [...preferredPlacement];
+  if (preserveLastPlacement && lastPlacement) checkedPlacements.splice(0, 0, lastPlacement);
+
+  for (const placementWithModifiers of checkedPlacements) {
+    const { placement, float: floatModifier } = getPlacement(placementWithModifiers);
+    const { x, y } = calculatePosition(placement, offset, params, floatModifier, bbox);
+
+    if (!bbox) return { x, y, placement: placementWithModifiers }
+    if (isInside(x, y, bbox, params)) return { x, y, placement: placementWithModifiers }
+  }
+
+  if (!lastPlacement) return { x: 0, y: 0 };
+  const { placement, float: floatModifier } = getPlacement(lastPlacement);
+  const { x, y } = calculatePosition(placement, offset, params, floatModifier, bbox);
+  return { x, y, placement: lastPlacement };
+}
+
+export function getArrowPosition(position: ReturnType<typeof calculatePopoverPosition>, params: Params) {
+  const { target, popup } = params;
+
+  if (!position.placement) return null;
+
+  const { placement } = getPlacement(position.placement);
+
+  let x = 0
+  let y = 0
+
+  let direction: 'top' | 'bottom' | 'left' | 'right' = 'top';
+
+  switch (placement) {
+    case 'top': case 'top-start': case 'top-end': direction = 'bottom'; break;
+    case 'bottom': case 'bottom-start': case 'bottom-end': direction = 'top'; break;
+    case 'left': case 'left-start': case 'left-end': direction = 'right'; break;
+    case 'right': case 'right-start': case 'right-end': direction = 'left'; break;
+  }
+
+
+  if (direction == 'left') x = 0
+  else if (direction == 'right') x = popup.width
+  else if (direction == 'top') y = 0
+  else if (direction == 'bottom') y = popup.height
+
+  if (horizontalPlacements.has(placement)) {
+    if (popup.height > target.height) y = target.y + target.height / 2 - position.y;
+    else y = popup.height / 2
+  }
+
+  if (verticalPlacements.has(placement)) {
+    if (popup.width > target.width) x = target.x + target.width / 2 - position.x;
+    else x = popup.width / 2
+  }
+
+
+  return { x, y, direction };
 }

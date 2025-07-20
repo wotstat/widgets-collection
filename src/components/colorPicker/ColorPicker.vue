@@ -3,8 +3,8 @@
     backgroundColor: `#${colorProc.toHex()}`,
   }" @click="showPopup = true" ref="colorPreview">
 
-    <PopoverStyled :target="colorPreview" :display="showPopup" @on-click-outside="showPopup = false" :offset="5"
-      :placement="placement">
+    <PopoverStyled :target="colorPreview" :display="showPopup" @on-click-outside="showPopup = false"
+      :placement="placement" :arrow-size="0" :offset="5">
       <ColorPickerPopup v-model="color" :allowAlpha :savedColors :format />
     </PopoverStyled>
   </div>
@@ -16,13 +16,13 @@ import { ref, watch } from 'vue';
 import ColorPickerPopup from './ColorPickerPopup.vue';
 import PopoverStyled from '../popover/PopoverStyled.vue';
 import { ColorHSVA, HSLA, RGBA } from './ColorHSVA';
-import { Placement } from '../popover/utils';
+import { PlacementParam } from '../popover/utils';
 
-const { allowAlpha = true, savedColors = true, format = 'hex', placement = 'left' } = defineProps<{
+const { allowAlpha = true, savedColors = true, format = 'hex', placement = ['left-float', 'right-float', 'bottom-float'] } = defineProps<{
   allowAlpha?: boolean
   savedColors?: boolean
   format?: 'hex' | 'rgba' | 'hsla'
-  placement?: Placement
+  placement?: PlacementParam
 }>()
 
 const colorPreview = ref<HTMLElement | null>(null);

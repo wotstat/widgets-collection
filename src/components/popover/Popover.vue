@@ -1,16 +1,18 @@
 <template>
-  <Teleport :to="'body'" defer v-if="display">
-    <div class="popup-container" ref="popupContainer" :style="targetStyle">
-      <slot></slot>
-    </div>
-  </Teleport>
+  <Transition>
+    <Teleport :to="'body'" defer v-if="display">
+      <div class="popup-container" ref="popupContainer" :style="targetStyle">
+        <slot :arrow="arrowProps"></slot>
+      </div>
+    </Teleport>
+  </Transition>
 </template>
 
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onUnmounted, ref, shallowRef, watch } from 'vue';
-import { calculatePopoverPosition, generateOffset, getParams, isParamsEqual, OffsetValue, Params, Placement } from './utils';
-import { onClickOutside, useEventListener } from '@vueuse/core';
+import { computed, onBeforeMount, onUnmounted, ref, shallowRef, triggerRef, watch } from 'vue';
+import { calculatePopoverPosition, generateOffset, getArrowPosition, getParams, isParamsEqual, OffsetValue, Params, PlacementParam, PlacementWithModifiers } from './utils';
+import { useEventListener } from '@vueuse/core';
 
 const targetParams = shallowRef<Params | null>(null);
 
@@ -18,7 +20,9 @@ const props = defineProps<{
   target: HTMLElement | null
   display: boolean
   offset?: OffsetValue
-  placement?: Placement
+  viewportOffset?: OffsetValue
+  placement?: PlacementParam
+  preserveLastPlacement?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -39,6 +43,7 @@ useEventListener(window, 'pointerdown', (event: PointerEvent) => {
 });
 
 
+let lastHtmlSize = { width: 0, height: 0 };
 function onAnimationFrame() {
   animationHandle = null;
 
@@ -53,10 +58,19 @@ function onAnimationFrame() {
   if (!targetParams.value || !isParamsEqual(targetParams.value, targetNewParams)) {
     targetParams.value = targetNewParams;
   }
+
+  const htmlSize = { width: document.documentElement.clientWidth, height: document.documentElement.clientHeight };
+  if (lastHtmlSize.width !== htmlSize.width || lastHtmlSize.height !== htmlSize.height) {
+    lastHtmlSize = htmlSize;
+    triggerRef(targetParams);
+  }
+
 }
 
 watch(() => props.display, display => {
   if (display && animationHandle === null) {
+    lastPlacement = undefined;
+    targetParams.value = null;
     onAnimationFrame();
   } else if (!display && animationHandle !== null) {
     cancelAnimationFrame(animationHandle);
@@ -73,19 +87,55 @@ onUnmounted(() => {
 });
 
 const offset = computed(() => generateOffset(props.offset ?? 0))
+const viewportOffset = computed(() => generateOffset(props.viewportOffset ?? props.offset ?? 0))
+const placementParam = computed<PlacementWithModifiers[]>(() => {
+  if (Array.isArray(props.placement)) return props.placement.length == 0 ? ['top-float'] : props.placement
+  return [props.placement ?? 'top-float']
+})
 
-const targetStyle = computed(() => {
-  if (!targetParams.value) return {}
+let lastPlacement: PlacementWithModifiers | undefined = undefined;
+const positions = computed(() => {
+  if (!targetParams.value) return null
 
   const params = targetParams.value
 
-  const position = calculatePopoverPosition(params, props.placement ?? 'top', {
+  const position = calculatePopoverPosition(params, placementParam.value, {
     offset: offset.value,
-    bbox: 'window'
+    viewportOffset: viewportOffset.value,
+    bbox: 'window',
+    lastPlacement,
+    preserveLastPlacement: props.preserveLastPlacement ?? true
   });
 
+  lastPlacement = position.placement;
+
+  const arrowPosition = getArrowPosition(position, params);
+
   return {
-    transform: `translate3d(${position.x}px, ${position.y}px, 0px)`
+    x: position.x,
+    y: position.y,
+    placement: position.placement,
+    arrowX: arrowPosition?.x,
+    arrowY: arrowPosition?.y,
+    arrowDirection: arrowPosition?.direction
+  }
+})
+
+const targetStyle = computed(() => {
+  if (!positions.value) return {}
+
+  return {
+    transform: `translate3d(${positions.value.x}px, ${positions.value.y}px, 0px)`
+  }
+})
+
+const arrowProps = computed(() => {
+  if (!positions.value || !positions.value.placement) return { x: 0, y: 0 }
+
+  return {
+    x: positions.value.arrowX,
+    y: positions.value.arrowY,
+    direction: positions.value.arrowDirection
   }
 })
 
@@ -100,5 +150,18 @@ const targetStyle = computed(() => {
   top: 0px;
   left: 0px;
   margin: 0px;
+}
+
+.v-enter-active {
+  transition: opacity 0.1s ease;
+}
+
+.v-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
