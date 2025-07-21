@@ -1,23 +1,28 @@
 <template>
-  <Popover :target :display :offset="targetOffset" :viewportOffset :placement :preserveLastPlacement
-    @on-click-outside="emit('onClickOutside')" v-slot="{ arrow }">
-    <div class="popover-card"
-      :class="{ [`arrow-${arrow.direction}`]: arrow.direction, 'arrow-disabled': arrowSize == 0 }" :style="{
-        '--background-color': '#2a2a2a',
-        '--arrow-x': `${arrow.x}px`,
-        '--arrow-y': `${arrow.y}px`,
-        '--arrow-size': `${arrowSize ?? 5}px`
-      }">
-      <slot></slot>
+  <PopoverAnimated :target :display :offset="targetOffset" :viewportOffset :placement :preserveLastPlacement
+    @on-click-outside="emit('onClickOutside')" v-slot="{ arrow, transitionClass }" :duration="200">
+    <div class="popover-card" ref="popoverCard" :class="{
+      [`arrow-${arrow.direction}`]: arrow.direction,
+      'arrow-disabled': arrowSize == 0,
+      ...transitionClass.reduce((acc, cls) => ({ ...acc, [cls]: true }), {})
+    }" :style="{
+      '--background-color': '#2a2a2a',
+      '--arrow-x': `${arrow.x}px`,
+      '--arrow-y': `${arrow.y}px`,
+      '--arrow-size': `${arrowSize ?? 5}px`
+    }">
+      <div class="popover-content">
+        <slot></slot>
+      </div>
     </div>
-  </Popover>
+  </PopoverAnimated>
 </template>
 
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import Popover from './Popover.vue';
-import { OffsetValue, PlacementParam, PlacementWithModifiers } from './utils';
+import { OffsetValue, PlacementParam } from './utils';
+import PopoverAnimated from './PopoverAnimated.vue';
 
 const { target,
   display,
@@ -52,6 +57,7 @@ const targetOffset = computed<OffsetValue>(() => {
 <style lang="scss" scoped>
 $background-color: var(--background-color, #2a2a2a);
 $border-color: var(--border-color, #444);
+$animation-offset: var(--animation-transition-offset, 3px);
 
 
 .popover-card {
@@ -60,10 +66,15 @@ $border-color: var(--border-color, #444);
   border-radius: 10px;
   border: 1px solid $border-color;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
-  overflow: hidden;
 
-  $arrow-offset: calc(var(--arrow-size) / -2);
+  $arrow-offset: calc(var(--arrow-size) / -2 - 1px);
   $arrow-offset-bordered: calc($arrow-offset - 2px);
+  position: relative;
+
+  .popover-content {
+    overflow: hidden;
+    border-radius: 9px;
+  }
 
   &::after {
     content: '';
@@ -100,5 +111,39 @@ $border-color: var(--border-color, #444);
     display: none;
   }
 
+}
+
+.v-prepare {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.v-enter-active {
+  transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+.v-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+
+  &.arrow-left {
+    transform: translate(calc(-1 * $animation-offset), 0);
+  }
+
+  &.arrow-right {
+    transform: translate($animation-offset, 0);
+  }
+
+  &.arrow-top {
+    transform: translate(0, calc(-1 * $animation-offset));
+  }
+
+  &.arrow-bottom {
+    transform: translate(0, $animation-offset);
+  }
 }
 </style>

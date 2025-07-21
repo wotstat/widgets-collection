@@ -1,11 +1,9 @@
 <template>
-  <Transition>
-    <Teleport :to="'body'" defer v-if="display">
-      <div class="popup-container" ref="popupContainer" :style="targetStyle">
-        <slot :arrow="arrowProps"></slot>
-      </div>
-    </Teleport>
-  </Transition>
+  <Teleport :to="'body'" defer v-if="display">
+    <div class="popup-container" ref="popupContainer" :style="targetStyle">
+      <slot :arrow="arrowProps"></slot>
+    </div>
+  </Teleport>
 </template>
 
 
@@ -26,7 +24,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'onClickOutside'): void
+  (e: 'onClickOutside'): void,
+  (e: 'readyToVisible'): void
 }>()
 
 const popupContainer = ref<HTMLElement | null>(null);
@@ -67,6 +66,7 @@ function onAnimationFrame() {
 
 }
 
+let lastPlacement: PlacementWithModifiers | undefined = undefined;
 watch(() => props.display, display => {
   if (display && animationHandle === null) {
     lastPlacement = undefined;
@@ -93,7 +93,6 @@ const placementParam = computed<PlacementWithModifiers[]>(() => {
   return [props.placement ?? 'top-float']
 })
 
-let lastPlacement: PlacementWithModifiers | undefined = undefined;
 const positions = computed(() => {
   if (!targetParams.value) return null
 
@@ -120,6 +119,10 @@ const positions = computed(() => {
     arrowDirection: arrowPosition?.direction
   }
 })
+
+watch(() => positions.value?.arrowDirection, (direction, old) => {
+  if (direction && old === undefined) emit('readyToVisible');
+}, { immediate: true });
 
 const targetStyle = computed(() => {
   if (!positions.value) return {}
@@ -150,18 +153,5 @@ const arrowProps = computed(() => {
   top: 0px;
   left: 0px;
   margin: 0px;
-}
-
-.v-enter-active {
-  transition: opacity 0.1s ease;
-}
-
-.v-leave-active {
-  transition: opacity 0.15s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 </style>

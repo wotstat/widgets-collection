@@ -244,7 +244,12 @@ export function calculatePopoverPosition(params: Params, preferredPlacement: Pla
     if (isInside(x, y, bbox, params)) return { x, y, placement: placementWithModifiers }
   }
 
-  if (!lastPlacement) return { x: 0, y: 0 };
+  if (!lastPlacement) {
+    const { placement, float: floatModifier } = getPlacement(checkedPlacements[0]);
+    const { x, y } = calculatePosition(placement, offset, params, floatModifier, bbox);
+    return { x, y, placement };
+  }
+
   const { placement, float: floatModifier } = getPlacement(lastPlacement);
   const { x, y } = calculatePosition(placement, offset, params, floatModifier, bbox);
   return { x, y, placement: lastPlacement };
