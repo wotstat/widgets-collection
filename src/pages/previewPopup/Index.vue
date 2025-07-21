@@ -75,7 +75,7 @@ import RandomString from './settings/RandomString.vue';
 import DatePicker from './settings/DatePicker.vue';
 import RemoteControl from './settings/RemoteControl.vue';
 import Unsupported from './settings/Unsupported.vue';
-const Color = defineAsyncComponent(() => import('./settings/Color.vue'))
+import Color from './settings/Color.vue';
 
 
 injectStylesheet()
