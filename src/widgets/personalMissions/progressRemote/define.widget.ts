@@ -1,5 +1,6 @@
 import { defineWidget } from "@/utils/defineWidget";
 import { accentColors } from "../currentTaskRemote/define.widget";
+import i18n from './i18n.json'
 
 export type Props = {
   targetTank: 'ARMT' | 'TF-2 Clark' | 'Project Murat'
@@ -24,6 +25,7 @@ export function styleParams(colorScheme: ColorScheme, accent?: string) {
 export default defineWidget({
   name: "Прогресс ЛБЗ (удалённое управление)",
   description: "Позволяет вывести на экран прогресс выполнения ЛБЗ",
+  i18n,
   params: [{
     type: 'select', target: 'color-scheme', label: 'shared:color-palette:title', variants: [
       { value: 'red', label: 'Красный' },
@@ -46,6 +48,14 @@ export default defineWidget({
   { type: 'backgroundColorParam', visible: (params) => params['background-scheme'] === 'color' },
   { type: 'color', target: 'back-color-from', label: 'Цвет От', default: '1c1c1c', visible: (params) => params['background-scheme'] === 'gradient' },
   { type: 'color', target: 'back-color-to', label: 'Цвет До', default: '1a1a1a69', visible: (params) => params['background-scheme'] === 'gradient' },
+  { type: 'separator' },
+  {
+    type: 'select', target: 'display-mode', label: 'Отображение', variants: [
+      { value: 'battle', label: 'options:hangar:battle' },
+      { value: 'hangar', label: 'options:hangar:hangar' },
+      { value: 'both', label: 'options:hangar:both' },
+    ], default: 'both'
+  },
   { type: 'separator' },
   { type: 'remote-control' }
   ]

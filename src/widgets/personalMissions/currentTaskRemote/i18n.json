@@ -7,6 +7,9 @@
     "questTypeMaster": "Фланг личного мастерства",
     "allTasks": "Все задачи",
     "mainTasks": "Основные задачи",
-    "additionalTasks": "С отличием"
+    "additionalTasks": "С отличием",
+    "options:hangar:hangar": "В ангаре",
+    "options:hangar:battle": "В бою",
+    "options:hangar:both": "В ангаре и бою"
   }
 }

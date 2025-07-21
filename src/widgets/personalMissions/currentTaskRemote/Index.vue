@@ -1,13 +1,17 @@
 <template>
   <WidgetRoot autoScale autoHeight>
-    <Content v-if="currentConfig" :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels }"
-      :tasks="taskGroups" :styleParams="styleParam" :colorizeIcon="query.colorizeIcon" />
+    <Transition>
+      <div v-if="currentConfig && shouldDisplay">
+        <Content :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels }" :tasks="taskGroups"
+          :styleParams="styleParam" :colorizeIcon="query.colorizeIcon" />
+      </div>
+    </Transition>
   </WidgetRoot>
 </template>
 
 
 <script setup lang="ts">
-import { useReactiveRemoteValue, WidgetsRemote } from '@/composition/widgetSdk';
+import { useReactiveRemoteValue, useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk';
 import Content from './Content.vue';
 import { computed } from 'vue';
 import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams';
@@ -28,7 +32,8 @@ const query = useQueryParams({
   colorScheme: oneOf(['dark', 'red', 'orange', 'green', 'cyan', 'blue', 'purple', 'custom'] as const, 'dark'),
   backgroundScheme: oneOf(['default', 'color', 'gradient'] as const, 'default'),
   backColorFrom: Color('1c1c1c'),
-  backColorTo: Color('1a1a1a69')
+  backColorTo: Color('1a1a1a69'),
+  displayMode: oneOf(['battle', 'hangar', 'both'] as const, 'both')
 })
 
 const styleParam = computed(() => ({
@@ -37,6 +42,17 @@ const styleParam = computed(() => ({
   backColorFrom: query.backColorFrom ?? '1c1c1c',
   backColorTo: query.backColorTo ?? '1a1a1a69'
 }));
+
+
+const { sdk, status } = useWidgetSdk()
+const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
+const shouldDisplay = computed(() => {
+  if (status.value != 'connected') return true
+  if (query.displayMode === 'both') return true
+  if (query.displayMode === 'battle' && isInBattle.value) return true
+  if (query.displayMode === 'hangar' && !isInBattle.value) return true
+  return false
+})
 
 const { t } = useI18n(i18n)
 
@@ -179,4 +195,14 @@ const currentLevels = computed<[number, number]>(() => {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

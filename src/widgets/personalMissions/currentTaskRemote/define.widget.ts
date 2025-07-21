@@ -1,4 +1,5 @@
 import { defineWidget } from "@/utils/defineWidget";
+import i18n from './i18n.json'
 
 export type Props = {
   header: {
@@ -74,6 +75,7 @@ export function styleParams(colorScheme: ColorScheme, accent?: string, badge?: s
 export default defineWidget({
   name: "Текущая ЛБЗ (удалённое управление)",
   description: "Позволяет вывести на экран текущую выполняемую ЛБЗ",
+  i18n,
   params: [
     {
       type: 'select', target: 'color-scheme', label: 'shared:color-palette:title', variants: [
@@ -100,6 +102,14 @@ export default defineWidget({
     { type: 'color', target: 'back-color-from', label: 'Цвет От', default: '1c1c1c', visible: (params) => params['background-scheme'] === 'gradient' },
     { type: 'color', target: 'back-color-to', label: 'Цвет До', default: '1a1a1a69', visible: (params) => params['background-scheme'] === 'gradient' },
     { type: 'checkbox', target: 'colorize-icon', label: 'Цветные иконки', default: false },
+    { type: 'separator' },
+    {
+      type: 'select', target: 'display-mode', label: 'Отображение', variants: [
+        { value: 'battle', label: 'options:hangar:battle' },
+        { value: 'hangar', label: 'options:hangar:hangar' },
+        { value: 'both', label: 'options:hangar:both' },
+      ], default: 'both'
+    },
     { type: 'separator' },
     { type: 'remote-control' }
   ]
