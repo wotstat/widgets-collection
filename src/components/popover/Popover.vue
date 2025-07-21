@@ -24,7 +24,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'onClickOutside'): void,
+  (e: 'clickOutside'): void,
   (e: 'readyToVisible'): void
 }>()
 
@@ -36,9 +36,7 @@ useEventListener(window, 'pointerdown', (event: PointerEvent) => {
 
   if (!popupContainer.value) return;
 
-  if (!popupContainer.value.contains(event.target as Node)) {
-    emit('onClickOutside');
-  }
+  if (!popupContainer.value.contains(event.target as Node)) emit('clickOutside');
 });
 
 

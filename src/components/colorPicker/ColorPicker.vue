@@ -3,8 +3,8 @@
     backgroundColor: `#${colorProc.toHex()}`,
   }" @click="showPopup = true" ref="colorPreview">
 
-    <PopoverStyled :target="colorPreview" :display="showPopup" @on-click-outside="showPopup = false"
-      :placement="placement" :arrow-size="0" :offset="5">
+    <PopoverStyled :target="colorPreview" :display="showPopup" @click-outside="showPopup = false" :placement="placement"
+      :arrow-size="0" :offset="5">
       <ColorPickerPopup v-model="color" :allowAlpha :savedColors :format />
     </PopoverStyled>
   </div>

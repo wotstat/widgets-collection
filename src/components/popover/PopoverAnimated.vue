@@ -1,6 +1,6 @@
 <template>
   <Popover :target :display :offset :viewportOffset :placement :preserveLastPlacement
-    @on-click-outside="emit('onClickOutside')" @ready-to-visible="onReadyToVisible" v-slot="{ arrow }">
+    @click-outside="emit('clickOutside')" @ready-to-visible="onReadyToVisible" v-slot="{ arrow }">
     <slot :arrow :transition-class="[...transitionClass.values()]" _class="test"></slot>
   </Popover>
 </template>
@@ -23,7 +23,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'onClickOutside'): void
+  (e: 'clickOutside'): void
 }>()
 
 const display = ref(props.display);
