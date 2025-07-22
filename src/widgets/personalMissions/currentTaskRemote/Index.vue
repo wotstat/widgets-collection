@@ -1,12 +1,13 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
+  <WidgetWrapper autoScale autoHeight hideSlotOnWarning allowWithoutSdk :battleOnly="query.displayMode === 'battle'"
+    :hangarOnly="query.displayMode === 'hangar'">
     <Transition>
       <div v-if="currentConfig && shouldDisplay">
         <Content :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels }" :tasks="taskGroups"
           :styleParams="styleParam" :colorizeIcon="query.colorizeIcon" />
       </div>
     </Transition>
-  </WidgetRoot>
+  </WidgetWrapper>
 </template>
 
 
@@ -22,7 +23,8 @@ import PersonalMissionsI18n from '../assets/data/localizaiton/personal_missions_
 import PersonalMissionsConfig from '../assets/data/pm3/config.json'
 import { gettext } from '@/utils/gettextJson';
 import { Props, styleParams, TaskType } from './define.widget';
-import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
+
 
 const query = useQueryParams({
   accent: Color(),

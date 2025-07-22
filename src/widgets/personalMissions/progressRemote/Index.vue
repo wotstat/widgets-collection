@@ -1,5 +1,6 @@
 <template>
-  <WidgetRoot autoScale autoHeight>
+  <WidgetWrapper autoScale autoHeight hideSlotOnWarning allowWithoutSdk :battleOnly="query.displayMode === 'battle'"
+    :hangarOnly="query.displayMode === 'hangar'">
     <Transition>
       <div v-if="shouldDisplay">
         <Content :target-tank="currentTank" :section1 :section2 :section3 :perfect :accent="color"
@@ -7,7 +8,7 @@
           :back-color-to="query.backColorTo" />
       </div>
     </Transition>
-  </WidgetRoot>
+  </WidgetWrapper>
 </template>
 
 
@@ -18,7 +19,9 @@ import { computed } from 'vue';
 import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams';
 
 import { styleParams } from './define.widget';
-import WidgetRoot from '@/components/WidgetRoot.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue';
+
+
 
 const query = useQueryParams({
   accent: Color(),

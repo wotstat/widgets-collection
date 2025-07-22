@@ -1,6 +1,6 @@
 <template>
   <WidgetRoot :autoScale :autoHeight :hangarOnly :topLevel>
-    <WidgetStatusWrapper :requiredExtensions :battleOnly :hideSlotOnWarning>
+    <WidgetStatusWrapper :requiredExtensions :battleOnly :hideSlotOnWarning :allowWithoutSdk>
       <slot></slot>
     </WidgetStatusWrapper>
   </WidgetRoot>
@@ -19,6 +19,7 @@ const props = defineProps<{
   topLevel?: boolean,
   requiredExtensions?: string[]
   hideSlotOnWarning?: boolean
+  allowWithoutSdk?: boolean
 }>()
 </script>
 

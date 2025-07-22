@@ -2,12 +2,12 @@
   <slot v-if="shouldShowContent || !hideSlotOnWarning"></slot>
   <Transition>
     <div class="card warning-text" v-if="!shouldShowContent" ref="warningOverlay">
-      <div v-if="!isConnected">
+      <div v-if="!isConnected && !allowWithoutSdk">
         <p class="primary">Ожидание клиента игры</p>
         <p class="secondary">Для работы виджета необходим мод wotstat-widgets. Подробнее на сайте wotstat.info</p>
         <p class="secondary ellipsis">{{ ellipsis.join(' ') }}</p>
       </div>
-      <div v-else-if="!isExtensionsReady">
+      <div v-else-if="!isExtensionsReady && !allowWithoutSdk">
         <p class="primary">Необходим мод-расширение</p>
         <p class="secondary" v-if="missingExtensions.length === 1">
           Для работы виджета необходимы мод-расширение –
@@ -18,10 +18,10 @@
           <span class="primary"> {{ missingExtensions!.join(', ') }}</span>
         </p>
       </div>
-      <div v-else-if="props.battleOnly && isInHangar">
+      <div v-else-if="props.battleOnly && isInHangar && isInWidgetMod">
         <p class="primary">Виджет доступен только в бою</p>
         <p class="secondary">В ангаре вы можете свернуть его</p>
-        <ArrowUp class="arrow-up-icon" v-if="isInWidgetMod" />
+        <ArrowUp class="arrow-up-icon" />
       </div>
     </div>
   </Transition>
@@ -50,6 +50,7 @@ const props = defineProps<{
   requiredExtensions?: string[]
   battleOnly?: boolean
   hideSlotOnWarning?: boolean
+  allowWithoutSdk?: boolean
 }>()
 
 const ctx = useWidgetSdk();
@@ -67,7 +68,7 @@ const isConnected = computed(() => ctx.status.value === 'connected')
 const isExtensionsReady = computed(() => missingExtensions.value.length === 0)
 
 const isInHangar = useReactiveState(ctx.sdk.data.hangar.isInHangar)
-const shouldShowContent = computed(() => isConnected.value && isExtensionsReady.value && !(props.battleOnly && isInHangar.value))
+const shouldShowContent = computed(() => (isConnected.value && isExtensionsReady.value || props.allowWithoutSdk) && !(props.battleOnly && isInHangar.value && isInWidgetMod.value))
 
 const isInWidgetMod = inject(isInWidgetModKey, ref(false))
 
