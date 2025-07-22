@@ -88,10 +88,12 @@ const translatedConfig = Object.fromEntries(
           description: {
             ...targetValue.description,
             description: translate(`${key}_description_${targetKey}`, {
+              goal: 1,
               ...targetValue.config,
               ...targetValue.config.params
             }),
             title: translate(`${key}_title_${targetKey}`, {
+              goal: 1,
               ...targetValue.config,
               ...targetValue.config.params,
             }, null),
