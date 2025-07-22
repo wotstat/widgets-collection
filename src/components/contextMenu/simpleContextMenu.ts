@@ -16,12 +16,21 @@ type Item = {
 
 export type SimpleContextMenuItem = Item | Item[] | typeof separator
 
-export function checkboxItem(label: string, checkbox: { value: MaybeRef<boolean>, toggle: () => void }, icon?: Component): SimpleContextMenuItem {
+export function checkboxItem(label: string, checkbox: { value: MaybeRef<boolean>, toggle: () => void } | Ref<boolean>, icon?: Component): SimpleContextMenuItem {
+
+  if (typeof checkbox === 'object' && 'value' in checkbox && 'toggle' in checkbox)
+    return {
+      label,
+      icon,
+      checkbox: checkbox.value,
+      action: checkbox.toggle
+    }
+
   return {
     label,
     icon,
-    checkbox: checkbox.value,
-    action: checkbox.toggle
+    checkbox: checkbox,
+    action: () => checkbox.value = !checkbox.value
   }
 }
 

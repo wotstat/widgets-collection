@@ -148,6 +148,11 @@ function onAction() {
 </script>
 
 <style lang="scss" scoped>
+#context-menu-root {
+  position: relative;
+  z-index: 10000;
+}
+
 .fade-leave-active {
   transition: opacity v-bind(FADE_LEAVE_DURATION_MS) ease-in;
   opacity: 0;

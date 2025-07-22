@@ -31,7 +31,7 @@ import ContextMenuLine from './lines/Index.vue'
 
 type TimeoutHandler = ReturnType<typeof setTimeout> | null;
 
-const PADDING = 0
+const PADDING = 10
 const SHOW_CHILD_PANEL_DELAY = 150
 const HIDE_CHILD_PANEL_DELAY = 500
 const ZERO_SPEED_DELAY = 200
@@ -134,7 +134,7 @@ const contextMenuStyle = computed(() => {
   return {
     left: pos.x + 'px',
     top: pos.y + 'px',
-    zIndex: props.order + 10000,
+    zIndex: props.order,
     minWidth: props.minWidth ? props.minWidth + 'px' : 'unset',
   }
 })

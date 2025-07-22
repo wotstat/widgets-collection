@@ -1,4 +1,4 @@
-import { type Component, shallowRef, type MaybeRef } from "vue"
+import { type Component, shallowRef, type MaybeRef, ref } from "vue"
 
 export const enum ContextMenuItemVariant {
   Child = "child",
@@ -67,8 +67,9 @@ const defaultOptions: Partial<ContextMenuOptions> = {
 
 export const currentContextMenu = shallowRef<ContextMenu | null>(null)
 
-export function closeContextMenu() {
-  currentContextMenu.value = null
+export function closeContextMenu(id?: number) {
+  if (id === undefined) currentContextMenu.value = null
+  else if (currentContextMenu.value?.id === id) currentContextMenu.value = null
 }
 
 let id = 0
@@ -80,7 +81,12 @@ export function createContextMenu(options: ContextMenuOptions, items: ContextMen
   }
   currentContextMenu.value = { options: optionsWithDefaults, items, id: id++ }
 
-  return () => currentContextMenu.value = null
+  return { close: () => currentContextMenu.value = null, id: currentContextMenu.value.id }
+}
+
+export function isContextMenuOpen(id?: number): boolean {
+  if (id === undefined) return currentContextMenu.value !== null
+  return currentContextMenu.value?.id === id
 }
 
 /* Example 
