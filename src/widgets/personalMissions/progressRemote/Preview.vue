@@ -1,8 +1,8 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.19">
     <Content :target-tank="'ARMT'" :section1="4" :section2="16" :section3="20" :perfect="12" :accent="color"
-      :background-scheme="backgroundScheme ?? 'default'" :back-color-from="backColorFrom"
-      :back-color-to="backColorTo" />
+      :background-scheme="backgroundScheme ?? 'default'" :back-color-from="backColorFrom" :back-color-to="backColorTo"
+      :headerMode="headerMode" />
   </WidgetPreviewRoot>
 </template>
 
@@ -22,6 +22,7 @@ const props = defineProps<{
   backColorFrom?: string,
   backColorTo?: string,
   backgroundScheme?: BackgroundScheme
+  headerMode?: 'full' | 'compact' | 'hide'
 }>();
 
 

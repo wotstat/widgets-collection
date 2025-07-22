@@ -5,7 +5,7 @@
       <div v-if="shouldDisplay">
         <Content :target-tank="currentTank" :section1 :section2 :section3 :perfect :accent="color"
           :backgroundScheme="query.backgroundScheme" :back-color-from="query.backColorFrom"
-          :back-color-to="query.backColorTo" />
+          :back-color-to="query.backColorTo" :headerMode="query.headerMode" />
       </div>
     </Transition>
   </WidgetWrapper>
@@ -29,7 +29,8 @@ const query = useQueryParams({
   backgroundScheme: oneOf(['default', 'color', 'gradient'] as const, 'default'),
   backColorFrom: Color('1c1c1c'),
   backColorTo: Color('1a1a1a69'),
-  displayMode: oneOf(['battle', 'hangar', 'both'] as const, 'both')
+  displayMode: oneOf(['battle', 'hangar', 'both'] as const, 'both'),
+  headerMode: oneOf(['full', 'compact', 'hide'] as const, 'full'),
 })
 
 const { sdk, status } = useWidgetSdk()

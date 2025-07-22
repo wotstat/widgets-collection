@@ -3,7 +3,10 @@
   <InsetsWrapper :insets="{ top: 3, right: 0, bottom: 0, left: 0 }">
     <div class="main"
       :style="{ '--accent': `#${props.accent}`, '--color-from': `#${props.backColorFrom}`, '--color-to': `#${props.backColorTo}` }"
-      :class="{ [`background-scheme-${props.backgroundScheme}`]: true }">
+      :class="{
+        [`background-scheme-${props.backgroundScheme}`]: true,
+        [`header-mode-${props.headerMode}`]: true
+      }">
       <div class="header">
         <h1>{{ props.targetTank }}</h1>
         <h2>{{ info.title }}</h2>
@@ -210,6 +213,30 @@ const info = computed(() => {
       background-color: var(--accent, rgb(255, 165, 0));
       border-radius: 0.1em;
       transition: width 0.3s ease-in-out;
+    }
+  }
+
+  &.header-mode-compact {
+    .header {
+      h1 {
+        font-size: 1.5em;
+        margin-bottom: 0;
+      }
+
+      h2 {
+        display: none;
+      }
+
+      .tank {
+        height: 4em;
+        bottom: -60%;
+      }
+    }
+  }
+
+  &.header-mode-hide {
+    .header {
+      display: none;
     }
   }
 }
