@@ -24,6 +24,7 @@ const props = defineProps<{
   backColorFrom?: string,
   backColorTo?: string,
   backgroundScheme?: BackgroundScheme
+  headerMode?: 'full' | 'compact' | 'hide'
 }>();
 
 const tasks = [
@@ -135,7 +136,8 @@ const styleParam = computed(() => ({
   ...styleParams(props.colorScheme ?? 'orange', props.accent, props.badge, props.badgeText),
   backgroundScheme: props.backgroundScheme ?? 'default',
   backColorFrom: props.backColorFrom ?? '1c1c1c',
-  backColorTo: props.backColorTo ?? '1a1a1a69'
+  backColorTo: props.backColorTo ?? '1a1a1a69',
+  headerMode: props.headerMode ?? 'full'
 }));
 
 </script>

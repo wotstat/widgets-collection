@@ -20,16 +20,18 @@
     </div>
   </DefineGroup>
 
-  <div class="main"
-    :class="{ animated, 'colorize-icon': colorizeIcon, [`background-scheme-${props.styleParams.backgroundScheme}`]: true }"
-    :style="{
-      '--accent': '#' + props.styleParams.accent,
-      '--badge': '#' + props.styleParams.badge,
-      '--badge-text': '#' + props.styleParams.badgeText,
-      '--color-from': `#${props.styleParams.backColorFrom}`,
-      '--color-to': `#${props.styleParams.backColorTo}`
-    }">
-    <div class="background" :style="{ height: `calc(5.1em + ${tasksHeight}px)` }"></div>
+  <div class="main" :class="{
+    animated, 'colorize-icon': colorizeIcon,
+    [`background-scheme-${props.styleParams.backgroundScheme}`]: true,
+    [`header-mode-${props.styleParams.headerMode}`]: true
+  }" :style="{
+    '--accent': '#' + props.styleParams.accent,
+    '--badge': '#' + props.styleParams.badge,
+    '--badge-text': '#' + props.styleParams.badgeText,
+    '--color-from': `#${props.styleParams.backColorFrom}`,
+    '--color-to': `#${props.styleParams.backColorTo}`
+  }">
+    <div class="background" :style="{ '--task-height': `${tasksHeight}px` }"></div>
 
     <div class="header">
       <h1>{{ header.title }}</h1>
@@ -105,6 +107,7 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
     top: 0;
     z-index: -1;
     border-radius: 1em;
+    height: calc(var(--task-height) + 5.1em);
 
     background: linear-gradient(180deg, rgba(24, 24, 24, 0.8) 0%, rgba(24, 24, 24, 0.3) 100%);
   }
@@ -143,6 +146,51 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
       font-size: 0.7em;
     }
   }
+
+  &.header-mode-full {
+    .background {
+      height: calc(var(--task-height) + 5.1em);
+    }
+  }
+
+  &.header-mode-compact {
+    .background {
+      height: calc(var(--task-height) + 2.6em);
+    }
+
+    .header {
+      padding: 0.7em;
+      padding-bottom: 0.7em;
+
+      h1 {
+        font-size: 1.3em;
+        margin-bottom: 0;
+        margin-left: 0.4em;
+      }
+
+      h2 {
+        display: none;
+      }
+
+      .levels {
+        top: 1em;
+        right: 1em;
+      }
+    }
+  }
+
+  &.header-mode-hide {
+    padding-top: 1em;
+
+    .background {
+      height: calc(var(--task-height) + 1em);
+    }
+
+    .header {
+      display: none;
+    }
+  }
+
 
   .content-mask {
     overflow: hidden;

@@ -28,6 +28,7 @@ export type Props = {
     backgroundScheme: BackgroundScheme
     backColorFrom?: string
     backColorTo?: string
+    headerMode?: 'full' | 'compact' | 'hide'
   }
   colorizeIcon: boolean
 }
@@ -101,8 +102,15 @@ export default defineWidget({
     { type: 'backgroundColorParam', visible: (params) => params['background-scheme'] === 'color' },
     { type: 'color', target: 'back-color-from', label: 'Цвет От', default: '1c1c1c', visible: (params) => params['background-scheme'] === 'gradient' },
     { type: 'color', target: 'back-color-to', label: 'Цвет До', default: '1a1a1a69', visible: (params) => params['background-scheme'] === 'gradient' },
-    { type: 'checkbox', target: 'colorize-icon', label: 'Цветные иконки', default: false },
     { type: 'separator' },
+    { type: 'checkbox', target: 'colorize-icon', label: 'Цветные иконки', default: false },
+    {
+      type: 'select', target: 'header-mode', label: 'Заголовок', variants: [
+        { value: 'full', label: 'Полный' },
+        { value: 'compact', label: 'Компактный' },
+        { value: 'hide', label: 'Скрыть' },
+      ], default: 'full'
+    },
     {
       type: 'select', target: 'display-mode', label: 'Отображение', variants: [
         { value: 'battle', label: 'options:hangar:battle' },

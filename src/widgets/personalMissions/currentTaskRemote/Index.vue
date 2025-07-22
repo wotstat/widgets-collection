@@ -35,14 +35,16 @@ const query = useQueryParams({
   backgroundScheme: oneOf(['default', 'color', 'gradient'] as const, 'default'),
   backColorFrom: Color('1c1c1c'),
   backColorTo: Color('1a1a1a69'),
-  displayMode: oneOf(['battle', 'hangar', 'both'] as const, 'both')
+  displayMode: oneOf(['battle', 'hangar', 'both'] as const, 'both'),
+  headerMode: oneOf(['full', 'compact', 'hide'] as const, 'full'),
 })
 
 const styleParam = computed(() => ({
   ...styleParams(query.colorScheme ?? 'dark', query.accent, query.badge, query.badgeText),
   backgroundScheme: query.backgroundScheme ?? 'default',
   backColorFrom: query.backColorFrom ?? '1c1c1c',
-  backColorTo: query.backColorTo ?? '1a1a1a69'
+  backColorTo: query.backColorTo ?? '1a1a1a69',
+  headerMode: query.headerMode ?? 'full',
 }));
 
 
