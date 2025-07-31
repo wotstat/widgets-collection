@@ -1,6 +1,6 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="0.74">
-    <Content :data="targetProps" />
+    <Content :data="targetProps" :game="'mt'" />
   </WidgetPreviewRoot>
 </template>
 
@@ -10,7 +10,7 @@
 import { computed } from 'vue';
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
 import Content from './content/Index.vue';
-import { Props } from './define.widget';
+import { ContainersData, Props } from './define.widget';
 
 
 const props = defineProps<{
@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 
-const targetProps = computed<Props>(() => ({
+const targetProps = computed<ContainersData>(() => ({
   containers: [
     { tag: "cosm_2025_silver", count: 3165 },
     { tag: "cosmic_2025_standart", count: 9810 },

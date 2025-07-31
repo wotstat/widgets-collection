@@ -26,7 +26,10 @@ export type ContainersData = {
   },
 }
 
-export type Props = ContainersData & {}
+export type Props = {
+  data: ContainersData,
+  game: 'mt' | 'wot',
+}
 
 export default defineWidget({
   name: "Статистика коробок",

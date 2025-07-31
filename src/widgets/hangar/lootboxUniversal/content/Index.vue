@@ -93,15 +93,17 @@
 
 <script setup lang="ts">
 import WidgetCard from '@/components/WidgetCard.vue';
-import { ContainersData } from '../define.widget';
+import { ContainersData, Props } from '../define.widget';
 import NoImageLB from '../assets/containers/noImageLB.png'
 import { queryAsyncMap } from '@/utils/db';
 
 
-import GoldIcon from '../assets/currencies/gold.png'
-import CreditsIcon from '../assets/currencies/credits.png'
+import GoldWotIcon from '../assets/currencies/gold.png'
+import GoldMtIcon from '../assets/currencies/gold-mt.png'
+import CreditsWotIcon from '../assets/currencies/credits.png'
+import CreditsMtIcon from '../assets/currencies/credits-mt.png'
 import FreeXpIcon from '../assets/currencies/freeXP.png'
-import PremiumIcon from '../assets/currencies/premiumLesta.png'
+import PremiumMtIcon from '../assets/currencies/premium-mt.png'
 import MandarinsIcon from '../assets/currencies/nyMandarins.png'
 import EquipCoinIcon from '../assets/currencies/equipCoin.png'
 import CrystalIcon from '../assets/currencies/bon.png'
@@ -126,19 +128,19 @@ const itemsImages = import.meta.glob<string>('../assets/items/*.png', { eager: t
 const boosterImages = import.meta.glob<string>('../assets/boosters/*.png', { eager: true, import: 'default' })
 
 const { t } = useI18nRef(i18n)
-const currencyIcons = {
-  gold: GoldIcon,
-  credits: CreditsIcon,
+
+const props = defineProps<Props>()
+
+const currencyIcons = computed(() => ({
+  gold: props.game == 'wot' ? GoldWotIcon : GoldMtIcon,
+  credits: props.game == 'wot' ? CreditsWotIcon : CreditsMtIcon,
   freeXP: FreeXpIcon,
-  premium: PremiumIcon,
+  premium: props.game == 'wot' ? PremiumMtIcon : PremiumMtIcon,
   mandarins: MandarinsIcon,
   equipCoins: EquipCoinIcon,
   crystals: CrystalIcon,
-}
+}))
 
-const props = defineProps<{
-  data: ContainersData
-}>()
 
 const isEmpty = computed(() => {
   return props.data.containers.length == 0 &&

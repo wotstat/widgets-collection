@@ -1,6 +1,6 @@
 <template>
   <WidgetWrapper auto-height auto-scale hangar-only :required-extensions="['wotstat']">
-    <Content :data="data" />
+    <Content :data="data" :game />
   </WidgetWrapper>
 </template>
 
@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
 import Content from './content/Index.vue';
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 import { DateTimeDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
@@ -138,6 +138,8 @@ const LEGENDARY_TANKS = [
   'germany:G171_E77_02',
 ]
 
+const region = useReactiveState(sdk.data.game.region)
+const game = computed(() => region.value == 'RU' ? 'mt' : 'wot')
 
 watch(playerName, async player => {
   await new Promise(resolve => setTimeout(resolve, 1))
