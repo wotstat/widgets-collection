@@ -28,6 +28,7 @@ const targetProps = computed<ContainersData>(() => ({
     // { tag: "modernizedDamageVentilation1", count: 91 }
   ],
   items: [],
+  entitlements: [],
   vehicles: [
     { tag: "uk:GB110_FV4201_Chieftain_Prototype", isLegendary: false },
     { tag: "usa:A146_TL_7_120", isLegendary: false },
