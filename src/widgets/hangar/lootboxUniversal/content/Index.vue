@@ -13,7 +13,8 @@
       <div class="flex line containers">
         <Element v-for="container in containers" :class="containersClass"
           :title="lootboxNames.data.get(container.tag) ?? 'Контейнер'" :value="container.count"
-          :icon="`${STATIC_URL}/mt/latest/lootboxes/large/${container.tag}.webp`" :icon-fallback="NoImageLB" />
+          :icon="`${STATIC_URL}/mt/latest/lootboxes/large/${containerTagToImageName(container.tag)}.webp`"
+          :icon-fallback="NoImageLB" />
       </div>
 
       <div class="space" v-if="currenciesLines.length"></div>
@@ -125,7 +126,7 @@ import LargeVehicle from './LargeVehicle.vue';
 import SkillBooster from '../assets/icons/skillBooster.png';
 import EquipmentBooster from '../assets/icons/equipmentBooster.png';
 import { getConsumableById, getConsumableIconByTag, isConsumableTag } from '@/components/equipment/equipment';
-import { orderByTable } from './utils';
+import { containerTagToImageName, orderByTable } from './utils';
 import { STATIC_URL } from '@/utils/externalUrl';
 
 const modernizationsImages = import.meta.glob<string>('../assets/modernizations/*.png', { eager: true, import: 'default' })

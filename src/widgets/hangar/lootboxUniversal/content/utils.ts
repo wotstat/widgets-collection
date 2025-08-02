@@ -41,3 +41,17 @@ export function orderByTable<T, V>(table: T[], values: V[], getter?: (v: V) => T
     return 0;
   })
 }
+
+export function containerTagToImageName(tag: string) {
+  const convert = {
+    'tanks_birthday_2023_premium': 'tanks_birthday_2023_3',
+    'tanks_birthday_2023_VI': 'tanks_birthday_2023_2',
+    'tanks_birthday_2023_X': 'tanks_birthday_2023_1',
+  } as Record<string, string>;
+
+  if (convert[tag]) return convert[tag]
+
+  if (tag.endsWith('_standart')) return tag.replace('_standart', '_1');
+  if (tag.endsWith('_silver')) return tag.replace('_silver', '_2');
+  return tag
+}
