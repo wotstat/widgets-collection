@@ -12,7 +12,7 @@ import { computed, watch } from 'vue';
 import { DateTimeDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
 import { useWidgetStorage } from '@/composition/useWidgetStorage';
 import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { ContainersData, SUPPORTED_ITEMS } from './define.widget';
+import { ContainersData, SUPPORTED_ENTITLEMENTS, SUPPORTED_ITEMS } from './define.widget';
 import { query } from '@/utils/db';
 import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
 
@@ -31,6 +31,7 @@ const data = useWidgetStorage<ContainersData>('mainStats', {
   items: [],
   battleBoosters: [],
   boosters: [],
+  entitlements: [],
   currencies: {
     gold: 0,
     credits: 0,
@@ -109,6 +110,35 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
       else data.value.boosters.push({ tag: targetTag, count })
     }
 
+    // TODO: remove this after entitlements will be parsed correctly
+    if (parsed.entitlements === undefined) {
+      try {
+        let rawEntitlementsTags: string[] = []
+        let rawEntitlementsCount: number[] = []
+        const raw = JSON.parse(event.raw)
+        if ('entitlements' in raw && typeof raw.entitlements === 'object' && raw.entitlements !== null) {
+          const entitlements = raw.entitlements
+          const keys = Object.keys(entitlements)
+          rawEntitlementsTags = keys
+          rawEntitlementsCount = keys.map(k => {
+            const v = entitlements[k as keyof typeof entitlements] as unknown
+            if (typeof v === 'object' && v !== null && 'count' in v && typeof v.count === 'number') return v.count
+            return 0
+          })
+        }
+        parsed.entitlements = rawEntitlementsTags.map((tag, index) => [tag, rawEntitlementsCount[index]])
+      } catch (error) { }
+    }
+
+    for (const entitlement of parsed.entitlements || []) {
+      const [tag, count] = entitlement
+      if (SUPPORTED_ENTITLEMENTS.includes(tag as any)) {
+        const item = data.value.entitlements.find(t => t.tag == tag)
+        if (item) item.count += count
+        else data.value.entitlements.push({ tag, count })
+      }
+    }
+
     data.value.currencies.gold += parsed.gold
     data.value.currencies.credits += parsed.credits
     data.value.currencies.freeXP += parsed.freeXP
@@ -153,6 +183,7 @@ watch(playerName, async player => {
     addedVehicles: [string, number][];
     crewBooks: [string, number][];
     boosters: [string, number][];
+    entitlements: [string, number][];
     prem: number;
     gold: number;
     credits: number;
@@ -235,9 +266,20 @@ watch(playerName, async player => {
         boostersGroup as (
             select arrayZip(groupArray(tag), groupArray(count)) as boosters
             from boosters
+        ),
+        entitlements as (
+          select tag, toUInt32(sum(count)) as count
+          from data
+          array join entitlements.tag as tag, entitlements.count as count
+          where tag in (${SUPPORTED_ENTITLEMENTS.map(t => `'${t}'`).join(',')})
+          group by tag
+        ),
+        entitlementsGroup as (
+          select arrayZip(groupArray(tag), groupArray(count)) as entitlements
+          from entitlements
         )
     select *
-    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup, boostersGroup;
+    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup, boostersGroup, entitlementsGroup;
     `)
 
 
@@ -252,6 +294,7 @@ watch(playerName, async player => {
   data.value.modernizations = first.itemsCount.filter(t => t[0].startsWith('modernized')).map(t => ({ tag: t[0], count: t[1] }))
   data.value.vehicles = first.addedVehicles.map(t => ({ tag: t[0], isLegendary: t[1] == 1 }))
   data.value.crewBooks = first.crewBooks.map(t => ({ tag: t[0], count: t[1] }))
+  data.value.entitlements = first.entitlements.map(t => ({ tag: t[0], count: t[1] }))
   data.value.battleBoosters = first.itemsCount.
     filter(t => t[0].endsWith('BattleBooster'))
     .map(t => ({ tag: t[0], count: t[1] }))

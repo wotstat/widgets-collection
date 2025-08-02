@@ -1,7 +1,7 @@
 <template>
   <div class="mini-card">
-    <FallbackImg :src="`${STATIC_URL}/vehicles/shop/${tag.replace(':', '-')}.png`" class="img"
-      :fallback="`${STATIC_URL}/vehicles/preview/noImage.png`" />
+    <FallbackImg :src="`${STATIC_URL}/mt/latest/vehicles/shop/${tag.split(':')[1].toLowerCase()}.webp`" class="img"
+      :fallback="`${STATIC_URL}/mt/latest/vehicles/preview/no-image.webp`" />
     <img class="checkmark" :src="Checkmark" alt="">
     <p class="name wg-font nowrap">{{ name }}</p>
   </div>

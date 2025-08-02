@@ -5,7 +5,8 @@
     </p>
     <div class="horizontal">
       <div class="icon">
-        <img :src="icon" alt="" />
+        <FallbackImg v-if="iconFallback" :src="icon" class="img" :fallback="iconFallback" />
+        <img :src="icon" alt="" v-else />
         <img v-if="overlayIcon" class="overlay-icon" :src="overlayIcon" alt="" />
       </div>
       <div class="content">
@@ -24,11 +25,14 @@
 <script setup lang="ts">
 import TweenValue from '@/components/TweenValue.vue';
 import { logProcessor, shortLogProcessor } from './utils';
+import FallbackImg from '@/components/shared/FallbackImg.vue';
+
 
 const props = defineProps<{
   title: string,
   value: number,
   icon: string,
+  iconFallback?: string,
   overlayIcon?: string,
   shortLogProcessor?: boolean,
 }>()

@@ -7,6 +7,10 @@ export const SUPPORTED_ITEMS = [
   'largeRepairkit',
 ] as const
 
+export const SUPPORTED_ENTITLEMENTS = [
+  'birthday2025_golden_ticket',
+] as const
+
 export type ContainersData = {
   containers: { tag: string, count: number }[],
   modernizations: { tag: string, count: number }[],
@@ -15,6 +19,7 @@ export type ContainersData = {
   items: { tag: string, count: number }[],
   battleBoosters: { tag: string, count: number }[],
   boosters: { tag: string, count: number }[],
+  entitlements: { tag: string, count: number }[],
   currencies: {
     gold: number
     credits: number
@@ -36,7 +41,7 @@ export default defineWidget({
   description: "Подводит итог выпавших ресурсов из коробок",
   params: [
     { type: 'checkbox', target: 'sync', label: 'Синхронизировать с сайтом', default: true },
-    { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2025-01-01', visible: ctx => ctx['sync'] },
+    { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2025-08-01', visible: ctx => ctx['sync'] },
     { type: 'separator' },
     {
       type: 'select', target: 'delay', label: 'Задержка', variants: [

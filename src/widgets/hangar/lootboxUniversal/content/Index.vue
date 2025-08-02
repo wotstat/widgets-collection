@@ -13,7 +13,7 @@
       <div class="flex line containers">
         <Element v-for="container in containers" :class="containersClass"
           :title="lootboxNames.data.get(container.tag) ?? 'Контейнер'" :value="container.count"
-          :icon="containersImages[`../assets/containers/${container.tag}.png`] ?? NoImageLB" />
+          :icon="`${STATIC_URL}/mt/latest/lootboxes/large/${container.tag}.webp`" :icon-fallback="NoImageLB" />
       </div>
 
       <div class="space" v-if="currenciesLines.length"></div>
@@ -31,6 +31,12 @@
         <Element v-for="mod in modernizations" :class="mod.class"
           :title="(artefactsNames.data.get(mod.tag) ?? 'Модернизация').replace('Т1', '')" :value="mod.count"
           :icon="modernizationsImages[`../assets/modernizations/${mod.icon}.png`]" :overlay-icon="ModernizedOverlay" />
+      </div>
+
+      <div class="space" v-if="entitlements.length"></div>
+      <div class="entitlements" v-if="entitlements.length">
+        <Element v-for="entitlement in entitlements" :class="entitlement.class" :title="t(entitlement.tag as any).value"
+          :value="entitlement.count" :icon="entitlementsImages[`../assets/entitlements/${entitlement.tag}.png`]" />
       </div>
 
       <div class="space" v-if="boosters.length"></div>
@@ -93,7 +99,7 @@
 
 <script setup lang="ts">
 import WidgetCard from '@/components/WidgetCard.vue';
-import { ContainersData, Props } from '../define.widget';
+import { Props } from '../define.widget';
 import NoImageLB from '../assets/containers/noImageLB.png'
 import { queryAsyncMap } from '@/utils/db';
 
@@ -120,12 +126,13 @@ import SkillBooster from '../assets/icons/skillBooster.png';
 import EquipmentBooster from '../assets/icons/equipmentBooster.png';
 import { getConsumableById, getConsumableIconByTag, isConsumableTag } from '@/components/equipment/equipment';
 import { orderByTable } from './utils';
+import { STATIC_URL } from '@/utils/externalUrl';
 
-const containersImages = import.meta.glob<string>('../assets/containers/*.png', { eager: true, import: 'default' })
 const modernizationsImages = import.meta.glob<string>('../assets/modernizations/*.png', { eager: true, import: 'default' })
 const crewBoolsImages = import.meta.glob<string>('../assets/crewBooks/*.png', { eager: true, import: 'default' })
 const itemsImages = import.meta.glob<string>('../assets/items/*.png', { eager: true, import: 'default' })
 const boosterImages = import.meta.glob<string>('../assets/boosters/*.png', { eager: true, import: 'default' })
+const entitlementsImages = import.meta.glob<string>('../assets/entitlements/*.png', { eager: true, import: 'default' })
 
 const { t } = useI18nRef(i18n)
 
@@ -379,6 +386,22 @@ const battleBoosters = computed(() => {
   })
 })
 
+const entitlements = computed(() => {
+  const entitlements = props.data.entitlements
+
+  let targetClass = 'super-mini'
+  if (entitlements.length == 1) targetClass = 'large wide'
+  else if (entitlements.length == 2) targetClass = 'medium'
+  else if (entitlements.length == 3) targetClass = 'mini'
+
+  return entitlements.map(t => ({
+    tag: t.tag,
+    count: t.count,
+    class: targetClass,
+    icon: t.tag,
+  }))
+})
+
 const lootboxNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>(`select * from LootboxesLocalization`, t => new Map(t.map(t => [t.tag, t.nameRU])))
 const artefactsNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>(`select * from ArtefactsLocalization`, t => new Map(t.map(t => [t.tag, t.nameRU])))
 const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }, Map<string, string>>(`select * from VehiclesLocalization`, t => new Map(t.map(t => [t.tag, t.shortRU])))
@@ -490,6 +513,7 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
 
   }
 
+  .entitlements,
   .crewbooks {
     display: grid;
     grid-template-columns: 1fr 1fr;

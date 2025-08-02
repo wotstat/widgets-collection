@@ -43,6 +43,7 @@ type OnLootboxOpen = {
     lootboxesTokens: [tag: string, count: number][]
     bonusTokens: [tag: string, count: number][]
     extraTokens: [tag: string, count: number][]
+    entitlements?: [tag: string, count: number][]
 
     customizations: [type: string, tag: string, count: number][]
     blueprints: [type: 'VEHICLE' | 'NATION' | 'UNIVERSAL', specification: string, count: number][]
@@ -52,7 +53,8 @@ type OnLootboxOpen = {
     toys: [toyTag: string, count: number][]
     compensatedToys: [toyTag: string, compensationCurrency: string, count: number][]
 
-  }
+  },
+  raw: string
 }
 
 type OnShot = {
