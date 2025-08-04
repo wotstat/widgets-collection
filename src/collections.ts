@@ -2,6 +2,7 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
+      '/hangar/lootbox-universal',
       '/efficiency/comp7',
       '/nidin/equipments',
       '/counters/speedrun',
