@@ -166,6 +166,8 @@ const LEGENDARY_TANKS = [
   'ussr:R219_Waffentrager_E100_Gold',
   'uk:GB110_FV4201_Chieftain_Prototype_B',
   'germany:G171_E77_02',
+  'ussr:R227_Object_407_MZ',
+  'france:F130_AMX_Tracteur_D'
 ]
 
 const region = useReactiveState(sdk.data.game.region)
