@@ -127,7 +127,10 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
           })
         }
         parsed.entitlements = rawEntitlementsTags.map((tag, index) => [tag, rawEntitlementsCount[index]])
-      } catch (error) { }
+      } catch (error) {
+        console.error('Failed to parse entitlements from raw data:', error)
+        parsed.entitlements = []
+      }
     }
 
     for (const entitlement of parsed.entitlements || []) {
