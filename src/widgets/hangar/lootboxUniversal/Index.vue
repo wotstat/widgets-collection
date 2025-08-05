@@ -81,16 +81,22 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
         else data.value.modernizations.push({ tag, count })
       }
 
-      if (SUPPORTED_ITEMS.includes(tag as any)) {
-        const item = data.value.items.find(t => t.tag == tag)
-        if (item) item.count += count
-        else data.value.items.push({ tag, count })
-      }
-
       if (tag.endsWith('BattleBooster')) {
         const item = data.value.battleBoosters.find(t => t.tag == tag)
         if (item) item.count += count
         else data.value.battleBoosters.push({ tag, count })
+      }
+
+      if (tag.startsWith('ration')) {
+        const item = data.value.items.find(t => t.tag == 'ration')
+        if (item) item.count += count
+        else data.value.items.push({ tag: 'ration', count })
+      }
+
+      if (SUPPORTED_ITEMS.includes(tag as any)) {
+        const item = data.value.items.find(t => t.tag == tag)
+        if (item) item.count += count
+        else data.value.items.push({ tag, count })
       }
     }
 
