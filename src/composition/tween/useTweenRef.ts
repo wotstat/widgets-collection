@@ -1,4 +1,4 @@
-import { reactive, ref, Ref, watch } from "vue";
+import { ref, Ref, watch } from "vue";
 import { easing } from "./easing";
 
 export type TweenOptions = {
