@@ -10,8 +10,17 @@ if (!Array.prototype.toReversed) {
   };
 }
 
-// Uncomment for working clickhouse in not secure context (like by ip in local network)
-// @ts-ignore
-// crypto.randomUUID = function () {
-//   return Math.random().toString(36).slice(2);
-// }
+if (import.meta.env.MODE == 'development' && !window.crypto.randomUUID) {
+  console.warn('crypto.randomUUID is not supported in this browser, using fallback implementation')
+
+  // @ts-ignore
+  window.crypto.randomUUID = () => {
+    // Fallback implementation for browsers that do not support crypto.randomUUID
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = Math.random() * 16 | 0
+      const v = c === 'x' ? r : (r & 0x3 | 0x8)
+      return v.toString(16)
+    })
+  }
+
+}

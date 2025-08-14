@@ -57,6 +57,7 @@ const tankDelayTime = {
   'long': 35000,
 } as const
 
+const zeroDelayContainers = new Set(['wt_boss', 'wt_hunter'])
 
 const isMain = useWidgetMainTab()
 
@@ -64,7 +65,10 @@ const { sdk } = useWidgetSdk();
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   if (!isMain.value) return
   if (event.eventName != 'OnLootboxOpen') return
+  if (!event.isOpenSuccess || !event.claimed) return console.log('Lootbox open event is not successful or not claimed:', event)
+
   console.log('onEvent', event)
+
 
   const { containerTag, openCount, parsed } = event
 
@@ -155,7 +159,7 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
     data.value.currencies.mandarins += parsed.extraTokens.filter(t => t[0] == 'ny25_mandarin').reduce((acc, [, count]) => acc + count, 0)
     data.value.currencies.crystals += parsed.crystal
     data.value.currencies.equipCoins += (parsed as any).equipCoin
-  }, delayTime[delay])
+  }, zeroDelayContainers.has(event.containerTag) ? 0 : delayTime[delay])
 
   if (parsed.addedVehicles.length) {
     setTimeout(() => {
@@ -209,7 +213,7 @@ watch(playerName, async player => {
         data as (
             select *
             from Event_OnLootboxOpen
-            where playerName = '${playerName.value}' and dateTime > ${syncDate.getTime() / 1000}
+            where playerName = '${playerName.value}' and dateTime > ${syncDate.getTime() / 1000} and isOpenSuccess = 1 and claimed = 1
         ),
         containers as (
             select containerTag, toUInt32(count()) as count
