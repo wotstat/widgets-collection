@@ -61,6 +61,27 @@ const isSolo = computed(() => props.lines.every(line => line.values.length == 1)
     font-size: 4em;
   }
 
+  &.isSolo:not(.large) {
+    .line {
+      &::before {
+        z-index: 0;
+        content: '';
+        width: 50%;
+        height: 180%;
+        transform: translateY(20%);
+        background-image: radial-gradient(rgba(0, 0, 0, 0.3) 0%, transparent 60%);
+        filter: drop-shadow(0 0 0.7em #000);
+        position: absolute;
+        bottom: 0;
+        opacity: 0.7;
+      }
+
+      &::after {
+        opacity: 0.3;
+      }
+    }
+  }
+
   &.isSolo {
     align-items: flex-start;
 
