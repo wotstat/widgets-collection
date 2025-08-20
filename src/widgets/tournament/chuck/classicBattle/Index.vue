@@ -176,8 +176,11 @@ useBattleResult((parsed, result) => {
     .reduce((a, b) => a + b, 0) + teamScore(parsed.result == 'win')
 
   totalScore.value += score
-  if (lastArenaId == parsed.arenaUniqueID)
+  if (lastArenaId == parsed.arenaUniqueID) {
     resultedBattleScore.value = score
+    battleDamage.value = parsed.personal?.stats.damageDealt ?? 0
+    battleFrags.value = parsed.personal?.stats.kills ?? 0
+  }
 
   for (const person of parsed.platoon) {
     if (!person || person.player == 'bot') continue;
