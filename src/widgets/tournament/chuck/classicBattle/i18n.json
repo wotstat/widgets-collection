@@ -1,0 +1,26 @@
+{
+  "ru": {
+    "battle": "Бой",
+    "score": "Очки",
+    "hp": "ХП",
+    "settings:style:dot": "Точка",
+    "settings:style:gradient": "Градиент",
+    "settings:style:border": "Рамка",
+    "settings:style:total-score": "Отображать сумму очков",
+    "options:hangar:never": "Не отображать",
+    "options:hangar:hangar": "В ангаре",
+    "options:hangar:both": "В ангаре и бою"
+  },
+  "en": {
+    "battle": "Battle",
+    "score": "Score",
+    "hp": "HP",
+    "settings:style:dot": "Dot",
+    "settings:style:gradient": "Gradient",
+    "settings:style:border": "Border",
+    "settings:style:total-score": "Total Score",
+    "options:hangar:never": "Never",
+    "options:hangar:hangar": "In Hangar",
+    "options:hangar:both": "In Hangar and Battle"
+  }
+}

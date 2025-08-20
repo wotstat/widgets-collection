@@ -1,6 +1,6 @@
 <template>
   <template v-if="currentOptions">
-    <div class="main">
+    <div class="preview-popup">
       <div class="info markdown nice-scrollbar">
         <RMC />
       </div>
@@ -358,7 +358,7 @@ onUnmounted(() => document.body.style.minHeight = '')
 
 
 <style lang="scss" scoped>
-.main {
+.preview-popup {
   position: absolute;
   top: 0;
   left: 0;
