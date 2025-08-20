@@ -1,6 +1,6 @@
 <template>
   <WidgetWrapper auto-height auto-scale>
-    <Content :lines="lines" :soloAlign="params.soloAlign" :anim="params.anim" large />
+    <Content :lines="(lines as any)" :soloAlign="params.soloAlign" :anim="params.anim" large />
   </WidgetWrapper>
 </template>
 
@@ -21,7 +21,7 @@ const params = useQueryParams({
   startFrom: NumberDefault(),
   anim: Boolean,
   soloAlign: oneOf(['left', 'right'] as const),
-  slots: arrayOfOneOf(inBattleEfficiency),
+  slots: arrayOfOneOf([...inBattleEfficiency, 'tank', 'player'] as const),
 })
 
 const stats = useInBattleCollector()
@@ -29,8 +29,13 @@ const gunMark = useGunMarkCalculator()
 const { sdk } = useWidgetSdk()
 
 const health = useReactiveState(sdk.data.battle.health)
+const player = useReactiveState(sdk.data.player.name)
+const hangarTank = useReactiveState(sdk.data.hangar.vehicle.info)
+const battleTank = useReactiveState(sdk.data.battle.vehicle)
 
 const valuesMap = {
+  'player': () => player.value ?? '?',
+  'tank': () => battleTank.value?.localizedShortName ?? hangarTank.value?.localizedShortName ?? '?',
   'dmg': () => stats.value.damage,
   'shot-dmg-avg': () => stats.value.damagedShotsCount == 0 ? 0 : stats.value.shotDamage / stats.value.damagedShotsCount,
   'shot-dmg-max': () => stats.value.shotDamageMax,

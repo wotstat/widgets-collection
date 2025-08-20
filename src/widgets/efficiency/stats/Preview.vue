@@ -21,6 +21,8 @@ const props = defineProps<{
 
 
 const defaultValues = {
+  'tank': 'T-34-85',
+  'player': 'PlayerName',
   'dmg': 4587,
   'kill': 3,
   'block': 5723,
@@ -51,10 +53,10 @@ const defaultValues = {
   'hp': 1000,
 } as const satisfies { [key in SlotValue]: any }
 
-const lines = computed(() => (props.isMiniPreview || !props.slots ?
+const lines = computed<any>(() => (props.isMiniPreview || !props.slots ?
   ['dmg', 'block', 'assist-radio', 'assist-track', 'fire-dmg'] as const : props.slots)
   .filter(t => t != undefined)
-  .map(t => ({ icon: t, values: ([defaultValues[t] ?? '']) as any })
+  .map(t => ({ icon: t, values: ([defaultValues[t] ?? ['']]) as any })
   ))
 
 const aspect = computed(() => Math.min(3.3 / lines.value.length, 0.8))

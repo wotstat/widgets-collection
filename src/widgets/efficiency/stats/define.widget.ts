@@ -53,7 +53,7 @@ export const inBattleEfficiencyWithMods = ([
   }
 }) satisfies MultiSlotParamSlot[]
 
-export type SlotValue = InBattleIconType
+export type SlotValue = InBattleIconType | 'tank' | 'player'
 
 export default defineWidget({
   name: "Расширенная эффективность",
