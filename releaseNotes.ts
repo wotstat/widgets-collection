@@ -129,6 +129,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2025-08-01-lootbox-hb',
     ru: `• Виджет ${Utils.addWidget('https://ru.widgets.wotstat.info/hangar/lootbox-universal?sync=true&sync-date=2025-08-01&delay=short', 'Статистика коробок')} обновлён для коробок Дня Рождения Мира Танков.`
   },
+  {
+    id: '2025-08-21-chuck',
+    ru: `• Новый взводный виджет ${Utils.openUrl('https://ru.widgets.wotstat.info/preview/tournament/chuck/classic-battle', 'Очки и ХП')} в стилистике Турнира Чака 2025.`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {

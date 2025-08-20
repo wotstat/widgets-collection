@@ -2,12 +2,11 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
+      '/tournament/chuck/classic-battle',
       '/tournament/chuck/classic',
-      // '/tournament/chuck/classic-battle',
       '/hangar/lootbox-universal',
       // '/efficiency/comp7',
       '/nidin/equipments',
-      // '/counters/speedrun',
     ]
   },
   {
