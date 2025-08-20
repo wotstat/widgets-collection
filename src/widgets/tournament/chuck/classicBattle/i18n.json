@@ -2,6 +2,7 @@
   "ru": {
     "battle": "Бой",
     "score": "Очки",
+    "total-score": "Всего очков",
     "hp": "ХП",
     "settings:style:dot": "Точка",
     "settings:style:gradient": "Градиент",
@@ -14,6 +15,7 @@
   "en": {
     "battle": "Battle",
     "score": "Score",
+    "total-score": "Total Score",
     "hp": "HP",
     "settings:style:dot": "Dot",
     "settings:style:gradient": "Gradient",

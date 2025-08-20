@@ -13,12 +13,12 @@
         <div class="header">
           <div class="line battle">
             <p class="title">{{ t('battle') }}</p>
-            <p class="value">{{ spaceProcessor(startedBattlesCount) }}</p>
+            <p class="value mono-num">{{ spaceProcessor(startedBattlesCount) }}</p>
           </div>
 
           <div class="line score">
             <p class="title">{{ t('score') }}</p>
-            <p class="value">{{ spaceProcessor(score) }}</p>
+            <p class="value mono-num">{{ spaceProcessor(score) }}</p>
           </div>
         </div>
 
@@ -26,8 +26,8 @@
         <div class="footer"
           v-if="totalScoreDisplay == 'both' || totalScoreDisplay == 'hangar' && (!isInBattle || isPreview)">
           <div class="line">
-            <p class="title">Всего очков</p>
-            <p class="value">{{ spaceProcessor(totalScore) }}</p>
+            <p class="title">{{ t('total-score') }}</p>
+            <p class="value mono-num">{{ spaceProcessor(totalScore) }}</p>
           </div>
         </div>
 
@@ -40,7 +40,7 @@
               <VehicleImage :tag="player.tankTag" :size="'preview'" />
             </div>
             <div class="name">{{ player.name }}</div>
-            <div class="score" v-if="player.connected">{{ spaceProcessor(player.score) }}</div>
+            <div class="score mono-num" v-if="player.connected">{{ spaceProcessor(player.score) }}</div>
             <div class="disconnected-icon" v-else>
               <DisconnectedIcon />
             </div>
@@ -53,11 +53,11 @@
               </div>
               <div class="info">
                 <p class="title">{{ t('hp') }}</p>
-                <p class="value">{{ spaceProcessor(player.hp) }}</p>
+                <p class="value mono-num">{{ spaceProcessor(player.hp) }}</p>
               </div>
             </div>
 
-            <div class="score total-score">
+            <div class="score total-score mono-num">
               <LeftArrowIcon />
               {{ spaceProcessor(battlesCount == 0 ? 0 : Math.round(player.totalScore / battlesCount)) }}
               <RightArrowIcon />
@@ -120,6 +120,10 @@ function hpColor(hp: number, maxHp: number) {
   line-height: 1.2;
 
   --secondary-color: rgba(227, 227, 227, 1);
+
+  .mono-num {
+    font-variant-numeric: tabular-nums;
+  }
 
   .main-card {
     padding: 0.8em;
