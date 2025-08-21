@@ -22,7 +22,6 @@
           </div>
         </div>
 
-
         <div class="footer"
           v-if="totalScoreDisplay == 'both' || totalScoreDisplay == 'hangar' && (!isInBattle || isPreview)">
           <div class="line">
@@ -39,7 +38,7 @@
             <div class="vehicle">
               <VehicleImage :tag="player.tankTag" :size="'preview'" />
             </div>
-            <div class="name">{{ player.name }}</div>
+            <div class="name">{{ playerNameProcessor(player.name) }}</div>
             <div class="score mono-num" v-if="player.connected">{{ spaceProcessor(player.score) }}</div>
             <div class="disconnected-icon" v-else>
               <DisconnectedIcon />
@@ -87,6 +86,7 @@ import RightArrowIcon from './assets/right.svg'
 import DisconnectedIcon from "./assets/disconnect.svg";
 import { inject } from 'vue';
 import { isInPreview } from '@/utils/provides';
+import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor';
 
 const { t } = useI18nRef(i18n);
 

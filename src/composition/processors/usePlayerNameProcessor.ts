@@ -1,18 +1,6 @@
 import { computed, toValue, WatchSource } from "vue";
 
-const nicknamesMap: { [key: string]: string } = {
-  "justunick": "Unick",
-  "pbody_iwnl_ ": "Pbody",
-  "mrpunisher_": "Punisher",
-  "kolibria_live": "Kolibria",
-  "9l_y_mambl_balerina": "Balerina",
-  "phantomic__gtua": "PHANTOMIC",
-  "mirash_av_press": "Mirash",
-  "keterwind": "KETER",
-  "shamanskytv_ vkplay": "Shamansky",
-  "pykobodutejib": "PYKAB",
-  "romany05_pres": "Romany05"
-} as const
+const nicknamesMap: { [key: string]: string } = {} as const
 
 export function playerNameProcessor(name: string | undefined) {
   if (!name) return undefined
@@ -21,7 +9,9 @@ export function playerNameProcessor(name: string | undefined) {
 
   const removeParts = [
     '_Press',
-    'Press'
+    'Press',
+    '_CHUCK',
+    '_Chuck'
   ]
 
   let result = name

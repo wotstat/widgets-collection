@@ -1,16 +1,22 @@
 <template>
-  <InsetsWrapper :insets="props.skin == 'transparent' ? 12 : 0" class="edge-mask"
-    :class="{ ...classes, [`style-${props.skin ?? 'default'}`]: true }">
+  <InsetsWrapper :insets="props.skin !== 'default' ? 10 : 0" class="edge-mask" :class="{
+    ...classes, [`style-${props.skin ?? 'default'}`]: true,
+    'bordered': props.border,
+  }">
     <div class="main center">
+      <div class="background" v-if="props.skin == 'dot'">
+        <div class="pattern"></div>
+      </div>
+
       <WidgetCard class="main-card">
         <div class="line header">
           <p class="name"></p>
-          <p class="avg">{{ t('avg-title') }} ({{ battlesCount }})</p>
+          <p class="avg">{{ t('avg-title') }} (<span class="number">{{ battlesCount }}</span>)</p>
           <p class="last">{{ t('last-battle') }}</p>
         </div>
         <div class="players">
           <div class="line" v-for="player in players">
-            <p class="name">{{ player.name }}</p>
+            <p class="name">{{ playerNameProcessor(player.name) }}</p>
             <p class="accent number">
               <TweenValue :value="player.avg" space :options="{ duration: 500 }" />
             </p>
@@ -46,6 +52,7 @@ import { useStateClass } from '@/composition/utils/useStateClass';
 import { useI18nRef } from '@/composition/useI18n';
 import i18n from './i18n.json';
 import { Props } from './define.widget';
+import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor';
 
 const { t } = useI18nRef(i18n);
 
@@ -66,11 +73,13 @@ const props = defineProps<Props>()
     display: flex;
     flex-direction: column;
     gap: 0.3em;
+    border: none;
   }
 
   .total-card {
     margin-top: 0.3em;
     padding: 0.2em 0.8em;
+    border: none;
 
     .name {
       font-weight: bold;
@@ -141,10 +150,6 @@ const props = defineProps<Props>()
     mask-composite: intersect;
   }
 
-  &.is-in-mini-preview>.main>.card::after {
-    border: max(0.5px, 0.03em) solid rgba(255, 255, 255, 0.25);
-  }
-
   .main {
     position: relative;
 
@@ -161,6 +166,93 @@ const props = defineProps<Props>()
 
     .card {
       background: transparent;
+    }
+  }
+}
+
+.style-dot {
+
+  .main-card,
+  .total-card {
+    background-color: transparent;
+  }
+
+  &.edge-mask {
+    mask-image:
+      linear-gradient(to right, transparent, black 2em, black calc(100% - 2em), transparent),
+      linear-gradient(to bottom, transparent, black 2em, black calc(100% - 2em), transparent);
+    mask-composite: intersect;
+  }
+
+  .main {
+    position: relative;
+
+    .number {
+      font-family: "Warhelios", sans-serif;
+    }
+
+    .background {
+      .pattern {
+        position: absolute;
+        inset: -0.5em -1em;
+        z-index: -1;
+
+        background: radial-gradient(ellipse, black 40%, transparent 100%);
+        border-radius: 1em;
+        opacity: 0.4;
+        filter: blur(1.5em);
+      }
+
+      &::before {
+        content: '';
+
+        position: absolute;
+        inset: -3em;
+        z-index: -1;
+
+        background: radial-gradient(ellipse, black 20%, rgba(0, 0, 0, 0.1) 80%);
+        opacity: 0.1;
+
+        mask-repeat: repeat;
+        mask-size: 4px;
+        mask-image: url(./assets/dot.svg);
+      }
+
+    }
+  }
+
+  &:not(.bordered) {
+    .total-card {
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.7);
+        height: 0.06em;
+        top: -0.3em;
+        left: 0.5em;
+        right: 1.8em;
+      }
+    }
+  }
+}
+
+.style-transparent,
+.style-dot {
+  &.bordered {
+
+    .card.total-card {
+      &::after {
+        inset: 0;
+      }
+    }
+
+    &.is-in-mini-preview>.main>.card::after {
+      border: max(0.5px, 0.03em) solid rgba(255, 255, 255, 0.25);
+    }
+
+    .card {
       border: none;
       box-shadow: none;
       position: relative;
@@ -189,11 +281,6 @@ const props = defineProps<Props>()
       }
     }
 
-    .card.total-card {
-      &::after {
-        inset: 0;
-      }
-    }
   }
 }
 </style>

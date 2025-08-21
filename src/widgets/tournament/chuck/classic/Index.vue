@@ -1,6 +1,6 @@
 <template>
   <WidgetWrapper autoScale autoHeight>
-    <Content :skin="skin" :battlesCount="battles" :totalAvg :totalLast="lastBattleTotalScore || 0" :players />
+    <Content :skin="skin" :border :battlesCount="battles" :totalAvg :totalLast="lastBattleTotalScore || 0" :players />
   </WidgetWrapper>
 </template>
 
@@ -23,8 +23,9 @@ function teamScore(isWin: boolean) {
   return isWin ? 3000 : 0;
 }
 
-const { skin } = useQueryParams({
-  skin: oneOf(['transparent', 'default'] as const, 'transparent'),
+const { skin, border } = useQueryParams({
+  skin: oneOf(['transparent', 'default', 'dot'] as const, 'transparent'),
+  border: Boolean,
 })
 
 const { sdk } = useWidgetSdk();

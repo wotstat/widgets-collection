@@ -2,11 +2,15 @@
   "ru": {
     "avg-title": "Очки в ср.",
     "last-battle": "Посл. бой",
-    "total": "Итог"
+    "total": "Всего",
+    "settings:style:dot": "Точка",
+    "settings:style:border": "Рамка"
   },
   "en": {
     "avg-title": "Avg. score",
     "last-battle": "Last battle",
-    "total": "Total"
+    "total": "Total",
+    "settings:style:dot": "Dot",
+    "settings:style:border": "Border"
   }
 }

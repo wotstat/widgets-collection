@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 4 4">
+  <g class="dot" clip-path="url(#a)">
+    <path fill="#fff" fill-rule="evenodd" d="M4 0H1v1H0v1h1v1H0v1h2V3h1v1h1V0ZM2 1h1v1H2V1Z" class="Vector" clip-rule="evenodd"/>
+  </g>
+  <defs>
+    <clipPath id="a" class="a">
+      <path fill="#fff" d="M0 0h4v4H0z"/>
+    </clipPath>
+  </defs>
+</svg>

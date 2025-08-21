@@ -1,6 +1,7 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2.5">
-    <Content :players :battles-count="57" :total-avg="15304" :total-last="17209" :skin="skin ?? 'transparent'" />
+    <Content :players :battles-count="57" :total-avg="15304" :total-last="17209" :skin="skin ?? 'dot'"
+      :border="border ?? false" />
   </WidgetPreviewRoot>
 </template>
 
@@ -14,7 +15,8 @@ import Content from './Content.vue';
 
 const props = defineProps<{
   isMiniPreview: boolean
-  skin?: 'transparent' | 'default'
+  skin?: 'transparent' | 'default' | 'dot'
+  border?: boolean
 }>();
 
 const players = computed(() => {

@@ -7,6 +7,7 @@ export const i18n = {
     'shared:total': 'Всего',
     'shared:style:title': 'Стиль',
     'shared:style:default': 'Классический',
+    'shared:style:gradient': 'Градиент',
     'shared:style:transparent': 'Прозрачный',
     'shared:color-palette:title': 'Цветовая палитра',
     'shared:remote-control:key': 'Ключ управления',
