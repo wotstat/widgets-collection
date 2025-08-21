@@ -4045,7 +4045,7 @@
     "damage": {
       "type": "valueProgress",
       "config": {
-        "goal": 1500,
+        "goal": 15000,
         "isMain": true,
         "isAward": true,
         "isCumulative": true,
@@ -4083,7 +4083,7 @@
     "damageAdv": {
       "type": "valueProgress",
       "config": {
-        "goal": 2250,
+        "goal": 22500,
         "isMain": false,
         "isAward": true,
         "isCumulative": true,

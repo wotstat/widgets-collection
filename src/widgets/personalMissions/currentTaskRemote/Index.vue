@@ -85,6 +85,18 @@ const translatedConfig = Object.fromEntries(
   Object.entries(PersonalMissionsConfig).map(([key, value]) => {
     return [key, {
       tasks: Object.fromEntries(Object.entries(value).map(([targetKey, targetValue]) => {
+
+        const counterGoalRecalculated = (() => {
+          if (targetValue.description.counterID) {
+            const goal = targetValue.config.goal
+            const counterId = targetValue.description.counterID
+            const counter = (PersonalMissionsConfig as any)[key][counterId]?.config.goal ?? 1
+            return { goal: goal / counter }
+          }
+          return {}
+        })()
+
+
         return [targetKey, {
           ...targetValue,
           description: {
@@ -92,12 +104,14 @@ const translatedConfig = Object.fromEntries(
             description: translate(`${key}_description_${targetKey}`, {
               goal: 1,
               ...targetValue.config,
-              ...targetValue.config.params
+              ...targetValue.config.params,
+              ...counterGoalRecalculated
             }),
             title: translate(`${key}_title_${targetKey}`, {
               goal: 1,
               ...targetValue.config,
               ...targetValue.config.params,
+              ...counterGoalRecalculated
             }, null),
           }
         }];
