@@ -6,7 +6,7 @@
 По умолчанию мод самостоятельно скачивает актуальную версию `CEF` при первом запуске, однако если у вас возникли проблемы с загрузкой, вы можете установить его вручную. **Это легко**.
 
 ## Инструкция по установке
-1. Скачайте актуальную версию `wotstat.widgets.cef.xxx.zip` – <storage-link src="wotstat.widgets.cef.e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25.zip"/>
+1. Скачайте актуальную версию `wotstat.widgets.cef.xxx.zip` – <storage-link src="wotstat.widgets.cef.6e2404dc8113bd77cd7b7302b025514676f16e9d6c3469cb9a2e078cafb36413.zip"/>
 2. Распакуйте `zip` архив в папку `mods` в конревой папке игры. *(Нужно рапаковать именно внутри `mods`, а **не** `mods/версия игры`)*
 3. Готово! Теперь мод будет использовать установленную версию `CEF`.
 
@@ -26,3 +26,4 @@
 |    1.3.0    | <storage-link src="wotstat.widgets.cef.d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca.zip"/>) | d7757156433e43b83f399ac9bdb6aa3b714b8fbe163f101b52b9bf7a40b4b6ca |
 |    1.4.0    | <storage-link src="wotstat.widgets.cef.f85d404db45185ddb02d012038b63b37889b316b3b0c1fd2526a6c7ea8a2aad6.zip"/>) | f85d404db45185ddb02d012038b63b37889b316b3b0c1fd2526a6c7ea8a2aad6 |
 |    2.0.0    | <storage-link src="wotstat.widgets.cef.e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25.zip"/>) | e077c908e6b045c252e81de3b8a6a43aa1bbdb5ea29ad9eec6654a035fbe7f25 |
+|    2.0.4    | <storage-link src="wotstat.widgets.cef.6e2404dc8113bd77cd7b7302b025514676f16e9d6c3469cb9a2e078cafb36413.zip"/>) | 6e2404dc8113bd77cd7b7302b025514676f16e9d6c3469cb9a2e078cafb36413 |
