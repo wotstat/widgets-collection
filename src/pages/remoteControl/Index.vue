@@ -12,6 +12,11 @@
           <ReloadIcon />
         </button>
       </div>
+      <div class="line">
+        <label class="auto-sync">Auto sync
+          <input type="checkbox" v-model="autoSync">
+        </label>
+      </div>
       <button class="publish" :class="{ 'sending': sending }" @click="publish">
         <p class="loader" v-if="sending"></p>
         <p v-else>Send</p>
@@ -110,7 +115,7 @@
 
 
 <script setup lang="ts">
-import { computedAsync, useDebounce, useDebounceFn, useElementSize, useEventListener, useResizeObserver, watchOnce } from '@vueuse/core';
+import { computedAsync, useDebounce, useDebounceFn, useElementSize, useEventListener, useLocalStorage, useResizeObserver, watchOnce } from '@vueuse/core';
 import { computed, ref, watch, watchEffect } from 'vue';
 import { useWidgetRelayDebugConnection, useWidgetRemoteDebugConnection, useWidgetSdkDebugConnection } from "@/composition/widgetSdk";
 import { useRemoteInspector } from './useRegistredStates';
@@ -137,6 +142,7 @@ const containerHeight = useQueryStorage('height', 400);
 const scale = useQueryStorage('scale', 1);
 
 const currentInspector = ref<'remote' | 'sdk' | 'relay'>('remote');
+const autoSync = useLocalStorage('remote-auto-sync', true);
 
 
 const { debug: remoteDebug, isConnected: remoteIsConnected, bbox } = useWidgetRemoteDebugConnection(widgetIframe);
@@ -173,6 +179,13 @@ const iframeUrl = computed(() => {
 });
 
 const { overrides, inspector, patch, sending, publish, remoteStatus } = useRemoteInspector(remoteDebug, () => channelKey.value ?? '', () => privateKey.value ?? '');
+
+watch(() => [overrides.value, sending.value, autoSync.value], () => {
+  if (!autoSync.value) return;
+  if (overrides.value.size === 0) return;
+  if (sending.value) return;
+  publish();
+}, { deep: true });
 
 useEventListener(window, 'keypress', (event: KeyboardEvent) => {
   if (event.code === 'Enter' && event.ctrlKey && !sending.value) {
@@ -393,6 +406,18 @@ header {
         height: 15px;
         margin-bottom: -10%;
       }
+    }
+  }
+
+  .auto-sync {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    input {
+      margin: 0;
+      margin-top: 2px;
     }
   }
 
