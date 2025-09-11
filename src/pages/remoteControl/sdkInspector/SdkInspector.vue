@@ -49,6 +49,27 @@
 
     <br>
 
+    <Section title="Dossier">
+      <Number title="Battles Count" v-model="dossierBattlesCount" />
+      <Number title="Percent" v-model="dossierDamageRating" />
+      <Number title="Mov damage" v-model="dossierMovAvgDamage" />
+    </Section>
+
+    <br>
+
+    <Section title="Moe Info">
+      <Checkbox title="Available" m-key="moeInfo.isAvailable" :model-value="true" />
+      <Options title="Vehicle" v-model="moeVehicle" :variants="vehicles" />
+      <Number title="Battles count" v-model="moeBattlesCount" />
+
+      <Section title="Damage distribution">
+        <Number v-for="(v, i) in [0, 20, 40, 55, 65, 75, 85, 95, 100]" :title="`To ${v}%`"
+          v-model="moeDistribution[i]" />
+      </Section>
+    </Section>
+
+    <br>
+
     <Section title="Hangar">
       <Checkbox title="Is in hangar" m-key="hangar.isInHangar" :model-value="true" />
       <Options title="Vehicle" v-model="vehicle" :variants="vehicles" />
@@ -128,7 +149,7 @@
 
 <script setup lang="ts">
 import { SdkDebugConnection } from '@/composition/widgetSdk';
-import { computed, onMounted, provide, ref, watch } from 'vue';
+import { computed, provide, ref, toRaw, watch } from 'vue';
 import { useEventListener, useTimestamp } from '@vueuse/core';
 import { stateMapKey } from './drawer/useSetStateMap';
 import Section from './drawer/Section.vue';
@@ -365,6 +386,31 @@ async function onBattleResult(platoon: boolean) {
 
   debug.sendTrigger(`battle.onBattleResult`, result);
 }
+
+
+const dossierBattlesCount = ref(0);
+const dossierDamageRating = ref(0);
+const dossierMovAvgDamage = ref(0);
+
+watch(() => [dossierBattlesCount.value, dossierDamageRating.value, dossierMovAvgDamage.value], () => {
+  debug.sendChangeState('dossier.current', {
+    battlesCount: dossierBattlesCount.value,
+    damageRating: dossierDamageRating.value,
+    movingAvgDamage: dossierMovAvgDamage.value
+  });
+}, { immediate: true })
+
+
+const moeVehicle = ref<typeof vehicles[number]>('60TP');
+const moeBattlesCount = ref(0);
+const moeDistribution = ref<number[]>([0, 20, 40, 55, 65, 75, 85, 95, 100].map(v => v * 100));
+watch(() => [moeVehicle.value, moeBattlesCount.value, moeDistribution.value], () => {
+  debug.sendChangeState('moeInfo.current', {
+    vehicleTag: moeVehicle.value,
+    battleCount: moeBattlesCount.value,
+    damageBetterThanNPercent: toRaw(moeDistribution.value)
+  });
+}, { immediate: true, deep: true })
 
 </script>
 

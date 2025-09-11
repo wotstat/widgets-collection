@@ -31,10 +31,16 @@
       <Dossier v-bind="dossier" :collapse-keys="['dossier', ['KEY_H', 'KEY_6'], ['KEY_H', 'KEY_3']]" />
     </WidgetCard>
 
+    <div class="spacer"></div>
+    <WidgetCard>
+      <MoeInfo v-bind="moeInfo" :available="moeAvailable"
+        :collapse-keys="['moe-info', ['KEY_H', 'KEY_7'], ['KEY_H', 'KEY_4']]" />
+    </WidgetCard>
+
     <template v-if="isInHangar">
       <div class="spacer"></div>
       <WidgetCard>
-        <HangarTank v-bind="hangarTankProps" :collapse-keys="['hangar-tank', ['KEY_H', 'KEY_7'], null]" />
+        <HangarTank v-bind="hangarTankProps" :collapse-keys="['hangar-tank', ['KEY_H', 'KEY_8'], null]" />
       </WidgetCard>
     </template>
 
@@ -42,37 +48,37 @@
       <div class="spacer"></div>
 
       <WidgetCard>
-        <Battle v-bind="battleProps" :collapse-keys="['battle', null, ['KEY_H', 'KEY_4']]" />
+        <Battle v-bind="battleProps" :collapse-keys="['battle', null, ['KEY_H', 'KEY_5']]" />
       </WidgetCard>
 
       <div class="spacer"></div>
 
       <WidgetCard>
-        <Aiming v-bind="aimingProps" :collapse-keys="['aiming', null, ['KEY_H', 'KEY_5']]" />
+        <Aiming v-bind="aimingProps" :collapse-keys="['aiming', null, ['KEY_H', 'KEY_6']]" />
       </WidgetCard>
 
       <div class="spacer"></div>
 
       <WidgetCard>
-        <BattleTank v-bind="battleTankProps" :collapse-keys="['battle-tank', null, ['KEY_H', 'KEY_6']]" />
+        <BattleTank v-bind="battleTankProps" :collapse-keys="['battle-tank', null, ['KEY_H', 'KEY_7']]" />
       </WidgetCard>
 
       <div class="spacer"></div>
 
       <WidgetCard>
-        <Efficiency v-bind="efficiencyProps" :collapse-keys="['efficiency', null, ['KEY_H', 'KEY_7']]" />
+        <Efficiency v-bind="efficiencyProps" :collapse-keys="['efficiency', null, ['KEY_H', 'KEY_8']]" />
       </WidgetCard>
 
       <div class="spacer"></div>
 
       <WidgetCard>
-        <DamageLog v-bind="damageLogProps" :collapse-keys="['damage-log', null, ['KEY_H', 'KEY_8']]" />
+        <DamageLog v-bind="damageLogProps" :collapse-keys="['damage-log', null, ['KEY_H', 'KEY_9']]" />
       </WidgetCard>
 
       <div class="spacer"></div>
 
       <WidgetCard>
-        <FeedbackLog :feedbacks="feedbacks" :collapse-keys="['feedback-log', null, ['KEY_H', 'KEY_9']]" />
+        <FeedbackLog :feedbacks="feedbacks" :collapse-keys="['feedback-log', null, ['KEY_H', 'KEY_F']]" />
       </WidgetCard>
 
       <div class="spacer"></div>
@@ -103,6 +109,7 @@ import Player from './panels/Player.vue'
 import Account from './panels/Account.vue'
 import Hangar from './panels/Hangar.vue'
 import Dossier from './panels/Dossier.vue'
+import MoeInfo from './panels/MoeInfo.vue'
 import Platoon from './panels/Platoon.vue'
 import HangarTank from './panels/HangarTank.vue'
 import Battle from './panels/Battle.vue'
@@ -160,6 +167,9 @@ const hangarBattleMode = useReactiveState(sdk.data.hangar.battleMode)
 const isInQueue = useReactiveState(sdk.data.hangar.isInQueue)
 
 const dossier = useReactiveState(sdk.data.dossier.current)
+
+const moeInfo = useReactiveState(sdk.data.moeInfo.current)
+const moeAvailable = useReactiveState(sdk.data.moeInfo.isAvailable)
 
 const isInPlatoon = useReactiveState(sdk.data.platoon.isInPlatoon)
 const platoonCommander = useReactiveState(sdk.data.platoon.commander)

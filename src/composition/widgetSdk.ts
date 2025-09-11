@@ -1,7 +1,7 @@
 
 import { onUnmounted, provide, Ref, ref, ShallowRef, shallowRef, toValue, triggerRef, watch, WatchSource } from 'vue';
 // import {
-//   WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles, WidgetsRelay,
+//   WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles, injectStylesheet, WidgetsRelay,
 //   WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection
 // } from '../../../wotstat-widgets-sdk/lib/main';
 import {

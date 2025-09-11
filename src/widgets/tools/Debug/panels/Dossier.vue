@@ -1,6 +1,7 @@
 <template>
   <h3 class="secondary bold">DOSSIER <span class="float-right">{{ localizedKeys }}</span></h3>
   <template v-if="visible">
+    <Line name="Tag" :value="vehicleTag" />
     <div class="flex">
       <div class="flex flex-1 ver">
         <Line name="Mark percent" :value="damageRating" />
@@ -20,8 +21,9 @@ import Line from "../Line.vue";
 import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
 
 const props = defineProps<{
-  damageRating?: number
+  vehicleTag?: string
   movingAvgDamage?: number
+  damageRating?: number
   battlesCount?: number
   collapseKeys: KeyBindingSetting
 }>();
