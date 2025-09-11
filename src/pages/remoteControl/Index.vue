@@ -13,7 +13,7 @@
         </button>
       </div>
       <div class="line">
-        <label class="auto-sync">Auto sync
+        <label class="auto-sync">Auto send
           <input type="checkbox" v-model="autoSync">
         </label>
       </div>
@@ -155,12 +155,15 @@ const hoveredBbox = computed(() => {
   return bbox.value?.get(hoveredPath.value) ?? null;
 })
 
+const tabs = computed(() => [remoteIsConnected.value, relayIsConnected.value, sdkIsConnected.value])
+const debouncedTabsAvailability = useDebounce(tabs, 100);
+
 watchEffect(() => {
-  const tabs = [remoteIsConnected, relayIsConnected, sdkIsConnected]
+  const tabs = debouncedTabsAvailability.value
   const targets = ['remote', 'relay', 'sdk'] as const;
 
-  if (!tabs[targets.indexOf(currentInspector.value)].value) {
-    currentInspector.value = targets[tabs.findIndex(tab => tab.value)] ?? 'remote';
+  if (!tabs[targets.indexOf(currentInspector.value)]) {
+    currentInspector.value = targets[tabs.findIndex(tab => tab)] ?? 'remote';
   }
 })
 
@@ -180,11 +183,17 @@ const iframeUrl = computed(() => {
 
 const { overrides, inspector, patch, sending, publish, remoteStatus } = useRemoteInspector(remoteDebug, () => channelKey.value ?? '', () => privateKey.value ?? '');
 
+const debouncePublish = useDebounceFn(() => {
+  if (!autoSync.value) return;
+  if (overrides.value.size === 0) return;
+  publish()
+}, 200);
+
 watch(() => [overrides.value, sending.value, autoSync.value], () => {
   if (!autoSync.value) return;
   if (overrides.value.size === 0) return;
   if (sending.value) return;
-  publish();
+  debouncePublish();
 }, { deep: true });
 
 useEventListener(window, 'keypress', (event: KeyboardEvent) => {

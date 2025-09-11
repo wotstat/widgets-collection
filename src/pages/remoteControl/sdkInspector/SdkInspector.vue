@@ -150,7 +150,7 @@
 <script setup lang="ts">
 import { SdkDebugConnection } from '@/composition/widgetSdk';
 import { computed, provide, ref, toRaw, watch } from 'vue';
-import { useEventListener, useTimestamp } from '@vueuse/core';
+import { useEventListener, useLocalStorage, useTimestamp } from '@vueuse/core';
 import { stateMapKey } from './drawer/useSetStateMap';
 import Section from './drawer/Section.vue';
 import Options from './drawer/Options.vue';
@@ -169,7 +169,7 @@ const { debug } = defineProps<{
 const mapState = ref<Map<string, any>>(new Map());
 provide(stateMapKey, mapState);
 
-const enabled = ref(true);
+const enabled = useLocalStorage('emulate-data-provider', false);
 const passKeyboard = ref(true);
 const battleMode = ref('REGULAR');
 const vehicle = ref<typeof vehicles[number]>('60TP');
