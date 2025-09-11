@@ -7,7 +7,7 @@
     </div>
 
     <div class="task" v-for="task in tasks.filter(t => t.description.containerType === 'body')">
-      <div class="image-container" v-if="task.description.iconID" :o="task.description.iconID">
+      <div class="image-container" v-if="task.description.iconID" :iconID="task.description.iconID">
         <img :src="imageByKeys.get(task.description.iconID)">
       </div>
       <div class="content">
