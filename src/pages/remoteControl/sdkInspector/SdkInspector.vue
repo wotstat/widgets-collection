@@ -4,6 +4,12 @@
       <span>Emulate data-provider</span>
       <input type="checkbox" v-model="enabled">
     </label>
+
+
+    <label class="no-ident">
+      <span>Prevent game connection</span>
+      <input type="checkbox" v-model="preventGameConnection">
+    </label>
     <br>
 
     <Section title="Game">
@@ -170,6 +176,7 @@ const mapState = ref<Map<string, any>>(new Map());
 provide(stateMapKey, mapState);
 
 const enabled = useLocalStorage('emulate-data-provider', false);
+const preventGameConnection = useLocalStorage('rc:prevent-game-connection', true);
 const passKeyboard = ref(true);
 const battleMode = ref('REGULAR');
 const vehicle = ref<typeof vehicles[number]>('60TP');
@@ -276,17 +283,32 @@ watch(enabled, v => {
   }
 }, { immediate: true });
 
+function objectIsDeepEqual(a: unknown, b: unknown) {
+  if (a === b) return true;
+  if (typeof a !== 'object' || typeof b !== 'object' || a == null || b == null) return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!objectIsDeepEqual(a[i], b[i])) return false;
+    }
+    return true;
+  }
+  return JSON.stringify(a) === JSON.stringify(b)
+}
+
 watch(totalState, (newState: Record<string, any>, oldState: Record<string, any>) => {
   const diff = new Map<string, any>()
   for (const [key, value] of Object.entries(newState)) {
-    if (oldState[key] !== value) {
-      diff.set(key, value)
-    }
+    if (!objectIsDeepEqual(value, oldState[key])) diff.set(key, value)
   }
 
   for (const [key, value] of diff) debug.sendChangeState(key, value)
-
 })
+
+watch(preventGameConnection, v => {
+  debug.sendPreventGameConnection(v)
+}, { immediate: true })
 
 useEventListener(window, 'keypress', e => {
   if (!passKeyboard.value) return;
