@@ -180,7 +180,11 @@ const LEGENDARY_TANKS = [
   'uk:GB110_FV4201_Chieftain_Prototype_B',
   'germany:G171_E77_02',
   'ussr:R227_Object_407_MZ',
-  'france:F130_AMX_Tracteur_D'
+  'france:F130_AMX_Tracteur_D',
+  'france:F133_Projet_57',
+  'czech:Cz38_Projekt_SAT',
+  'uk:GB137_CVT_Spider',
+  'poland:Pl26_Czolg_P_Wz_46_Verbesserter'
 ]
 
 const region = useReactiveState(sdk.data.game.region)
