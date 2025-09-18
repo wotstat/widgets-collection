@@ -41,7 +41,7 @@ export default defineWidget({
   description: "Подводит итог выпавших ресурсов из коробок",
   params: [
     { type: 'checkbox', target: 'sync', label: 'Синхронизировать с сайтом', default: true },
-    { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2025-08-01', visible: ctx => ctx['sync'] },
+    { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2025-09-01', visible: ctx => ctx['sync'] },
     { type: 'separator' },
     {
       type: 'select', target: 'delay', label: 'Задержка', variants: [
