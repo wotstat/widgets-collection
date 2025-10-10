@@ -53,8 +53,9 @@ watch(isPressH, (value) => {
 })
 
 useReactiveTrigger(sdk.data.extensions.wotstat.onShotBallisticEvent, e => {
+  const gravity = e.gravity ?? -(e.acceleration?.y ?? 0)
   const shared = {
-    gravity: -e.gravity,
+    gravity: -gravity,
     gunPos: e.gunPoint,
     shellSpeed: e.shellSpeed * 0.8,
     tracerStart: e.tracerStart,

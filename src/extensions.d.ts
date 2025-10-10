@@ -69,7 +69,8 @@ declare global {
   interface WidgetsSdkExtensions {
     wotstat: {
       onShotBallisticEvent: Trigger<{
-        gravity: number,
+        gravity?: number,
+        acceleration?: Vector3,
         gunPoint: Vector3,
         shellSpeed: number,
         tracerStart: Vector3,
