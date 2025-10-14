@@ -64,7 +64,7 @@ const info = computed(() => {
   const tank = props.targetTank;
   if (tank === 'ARMT') return { title: 'США • VII • ЛТ', tag: 'usa-A161_ARMT.png' };
   if (tank === 'TF-2 Clark') return { title: 'США • IX • ТТ', tag: 'usa-A173_TF_2_CLARK.png' };
-  if (tank === 'Project Murat') return { title: 'Франция • X • СТ', tag: 'france-F119_Projet_Murat.png' };
+  if (tank === 'Projet Murat') return { title: 'Франция • X • СТ', tag: 'france-F119_Projet_Murat.png' };
   return { title: '', tag: '' };
 });
 

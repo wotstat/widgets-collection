@@ -46,10 +46,10 @@ const shouldDisplay = computed(() => {
 const color = computed(() => styleParams(query.colorScheme, query.accent))
 
 const remote = new WidgetsRemote()
-const currentTank = useReactiveRemoteValue<'ARMT' | 'TF-2 Clark' | 'Project Murat'>(remote, 'Этап', 'ARMT', {
+const currentTank = useReactiveRemoteValue<'ARMT' | 'TF-2 Clark' | 'Projet Murat'>(remote, 'Этап', 'ARMT', {
   type: {
     type: 'select',
-    variants: ['ARMT', 'TF-2 Clark', 'Project Murat']
+    variants: ['ARMT', 'TF-2 Clark', 'Projet Murat']
   },
   elementHelper: '.header'
 })

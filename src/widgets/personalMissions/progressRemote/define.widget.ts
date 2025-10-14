@@ -3,7 +3,7 @@ import { accentColors } from "../currentTaskRemote/define.widget";
 import i18n from './i18n.json'
 
 export type Props = {
-  targetTank: 'ARMT' | 'TF-2 Clark' | 'Project Murat'
+  targetTank: 'ARMT' | 'TF-2 Clark' | 'Projet Murat'
   section1: number
   section2: number
   section3: number
