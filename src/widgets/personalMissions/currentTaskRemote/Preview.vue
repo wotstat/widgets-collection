@@ -17,6 +17,7 @@ import { BackgroundScheme, ColorScheme, styleParams } from './define.widget';
 const props = defineProps<{
   isMiniPreview: boolean
   accent?: string
+  accentShadow?: string
   badge?: string
   badgeText?: string
   colorScheme?: ColorScheme
@@ -133,7 +134,7 @@ const tasks = [
 ] as any
 
 const styleParam = computed(() => ({
-  ...styleParams(props.colorScheme ?? 'orange', props.accent, props.badge, props.badgeText),
+  ...styleParams(props.colorScheme ?? 'orange', props.accent, props.accentShadow, props.badge, props.badgeText),
   backgroundScheme: props.backgroundScheme ?? 'default',
   backColorFrom: props.backColorFrom ?? '1c1c1c',
   backColorTo: props.backColorTo ?? '1a1a1a69',

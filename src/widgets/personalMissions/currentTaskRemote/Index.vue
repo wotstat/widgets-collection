@@ -28,6 +28,7 @@ import WidgetWrapper from '@/components/WidgetWrapper.vue';
 
 const query = useQueryParams({
   accent: Color(),
+  accentShadow: Color('00000000'),
   badge: Color(),
   badgeText: Color(),
   colorizeIcon: Boolean,
@@ -39,8 +40,10 @@ const query = useQueryParams({
   headerMode: oneOf(['full', 'compact', 'hide'] as const, 'full'),
 })
 
+console.log(query);
+
 const styleParam = computed(() => ({
-  ...styleParams(query.colorScheme ?? 'dark', query.accent, query.badge, query.badgeText),
+  ...styleParams(query.colorScheme ?? 'dark', query.accent, query.accentShadow, query.badge, query.badgeText),
   backgroundScheme: query.backgroundScheme ?? 'default',
   backColorFrom: query.backColorFrom ?? '1c1c1c',
   backColorTo: query.backColorTo ?? '1a1a1a69',

@@ -23,6 +23,7 @@ export type Props = {
   }[][]
   styleParams: {
     accent: string
+    accentShadow: string
     badge: string
     badgeText: string
     backgroundScheme: BackgroundScheme
@@ -55,18 +56,19 @@ export const accentColors = {
 } as const;
 
 export type BackgroundScheme = 'default' | 'color' | 'gradient';
-export function styleParams(colorScheme: ColorScheme, accent?: string, badge?: string, badgeText?: string) {
+export function styleParams(colorScheme: ColorScheme, accent?: string, accentShadow?: string, badge?: string, badgeText?: string) {
   switch (colorScheme) {
-    case 'dark': return { accent: 'fff', badge: '000', badgeText: 'fff' }
-    case 'red': return { accent: accentColors.red, badge: '4d0001', badgeText: 'ffdbdb' }
-    case 'orange': return { accent: accentColors.orange, badge: '361b00', badgeText: 'fff1e6' }
-    case 'green': return { accent: accentColors.green, badge: '003d0f', badgeText: 'f4fff2' }
-    case 'cyan': return { accent: accentColors.cyan, badge: '00393d', badgeText: 'e1fcfc' }
-    case 'blue': return { accent: accentColors.blue, badge: '00233d', badgeText: 'e1e7fc' }
-    case 'purple': return { accent: accentColors.purple, badge: '2d004d', badgeText: 'f5e1fc' }
+    case 'dark': return { accent: 'fff', accentShadow: '00000030', badge: '000', badgeText: 'fff' }
+    case 'red': return { accent: 'fff', accentShadow: 'f00', badge: '4d0001', badgeText: 'ffdbdb' }
+    case 'orange': return { accent: 'fff', accentShadow: 'ff7f00', badge: '361b00', badgeText: 'fff1e6' }
+    case 'green': return { accent: accentColors.green, accentShadow: 'fff0', badge: '003d0f', badgeText: 'f4fff2' }
+    case 'cyan': return { accent: accentColors.cyan, accentShadow: 'fff0', badge: '00393d', badgeText: 'e1fcfc' }
+    case 'blue': return { accent: 'fff', accentShadow: '074ed2', badge: '00233d', badgeText: 'e1e7fc' }
+    case 'purple': return { accent: 'fff', accentShadow: '9500ff', badge: '2d004d', badgeText: 'f5e1fc' }
     default:
       return {
         accent: accent || 'fff',
+        accentShadow: accentShadow || 'fff0',
         badge: badge || '000',
         badgeText: badgeText || 'fff',
       }
@@ -91,6 +93,7 @@ export default defineWidget({
       ], default: 'orange'
     },
     { type: 'color', target: 'accent', label: 'Акцент', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' },
+    { type: 'color', target: 'accent-shadow', label: 'Тень акцента', default: '000', visible: (params) => params['color-scheme'] === 'custom' },
     { type: 'color', target: 'badge', label: 'Фон бейджей', default: '1b1b1b', visible: (params) => params['color-scheme'] === 'custom' },
     { type: 'color', target: 'badge-text', label: 'Текст бейджей', default: 'ffffff', visible: (params) => params['color-scheme'] === 'custom' }, {
       type: 'select', target: 'background-scheme', label: 'Вариант фона', variants: [
@@ -103,7 +106,6 @@ export default defineWidget({
     { type: 'color', target: 'back-color-from', label: 'Цвет От', default: '1c1c1c', visible: (params) => params['background-scheme'] === 'gradient' },
     { type: 'color', target: 'back-color-to', label: 'Цвет До', default: '1a1a1a69', visible: (params) => params['background-scheme'] === 'gradient' },
     { type: 'separator' },
-    { type: 'checkbox', target: 'colorize-icon', label: 'Цветные иконки', default: false },
     {
       type: 'select', target: 'header-mode', label: 'Заголовок', variants: [
         { value: 'full', label: 'Полный' },

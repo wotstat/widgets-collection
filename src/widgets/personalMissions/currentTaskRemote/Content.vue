@@ -12,10 +12,10 @@
       </div>
       <div class="content">
         <div class="flex">
-          <h3 v-html="task.description.title"></h3>
+          <h3 class="title" v-html="task.description.title"></h3>
           <h3 class="badge" v-if="task.description.description.match(perBattle)">За бой</h3>
         </div>
-        <p v-html="task.description.description.replaceAll(perBattle, '')"></p>
+        <p class="description" v-html="task.description.description.replaceAll(perBattle, '')"></p>
       </div>
     </div>
   </DefineGroup>
@@ -26,6 +26,7 @@
     [`header-mode-${props.styleParams.headerMode}`]: true
   }" :style="{
     '--accent': '#' + props.styleParams.accent,
+    '--accent-shadow': '#' + props.styleParams.accentShadow,
     '--badge': '#' + props.styleParams.badge,
     '--badge-text': '#' + props.styleParams.badgeText,
     '--color-from': `#${props.styleParams.backColorFrom}`,
@@ -253,6 +254,10 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
           margin-bottom: 0.2em;
           font-size: 0.75em;
           color: var(--accent, #fff);
+
+          &.title {
+            text-shadow: 0 0 0.4em var(--accent-shadow, #fff0);
+          }
         }
 
         p {
@@ -290,6 +295,12 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
     line-height: 0;
     color: var(--accent, #fff);
   }
+
+
+  :deep(.description) b {
+    text-shadow: 0 0 0.4em var(--accent-shadow, #fff0);
+  }
+
 
   &.colorize-icon {
     .image-container {
