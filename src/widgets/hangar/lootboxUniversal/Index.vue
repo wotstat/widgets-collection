@@ -156,7 +156,7 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
     data.value.currencies.credits += parsed.credits
     data.value.currencies.freeXP += parsed.freeXP
     data.value.currencies.premium += parsed.premium_plus
-    data.value.currencies.mandarins += parsed.extraTokens.filter(t => t[0] == 'ny25_mandarin').reduce((acc, [, count]) => acc + count, 0)
+    data.value.currencies.mandarins += parsed.extraTokens.filter(t => t[0].match(/ny\d*_mandarin/)).reduce((acc, [, count]) => acc + count, 0)
     data.value.currencies.crystals += parsed.crystal
     data.value.currencies.equipCoins += (parsed as any).equipCoin
   }, zeroDelayContainers.has(event.containerTag) ? 0 : delayTime[delay])
@@ -203,14 +203,14 @@ watch(playerName, async player => {
     crewBooks: [string, number][];
     boosters: [string, number][];
     entitlements: [string, number][];
+    extras: [string, number][];
+    compensatedToys: [string, number][];
     prem: number;
     gold: number;
     credits: number;
     freeXP: number;
     crystal: number;
     equipCoin: number;
-    mandarin25: number;
-    compensatedMandarin25: number;
   }>(`
     with
         (${LEGENDARY_TANKS.map(t => `'${t}'`).join(',')}) as LEGENDARY_TANKS,
@@ -296,9 +296,29 @@ watch(playerName, async player => {
         entitlementsGroup as (
           select arrayZip(groupArray(tag), groupArray(count)) as entitlements
           from entitlements
+        ),
+        extras as (
+          select tag, toUInt32(sum(count)) as count
+          from data
+          array join extra.tag as tag, extra.count as count
+          group by tag
+        ),
+        extrasGroup as (
+            select arrayZip(groupArray(tag), groupArray(count)) as extras
+            from extras
+        ),
+        compensatedToys as (
+            select currency, toUInt32(sum(count)) as count
+            from data
+            array join compensatedToys.currency as currency, compensatedToys.count as count
+            group by currency
+        ),
+        compensatedToysGroup as (
+            select arrayZip(groupArray(currency), groupArray(count)) as compensatedToys
+            from compensatedToys
         )
     select *
-    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup, boostersGroup, entitlementsGroup;
+    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup, boostersGroup, entitlementsGroup, extrasGroup, compensatedToysGroup;
     `)
 
 
@@ -323,14 +343,25 @@ watch(playerName, async player => {
 
   data.value.boosters = first.boosters.map(t => ({ tag: t[0], count: t[1] }))
 
+  const mandarins = first.extras.reduce((acc: number, t: [string, number]) => {
+    const [tag, count] = t
+    if (tag.match(/ny\d*_mandarin/)) return acc + count
+    return acc
+  }, 0)
+
+  const compensatedMandarins = first.compensatedToys.reduce((acc: number, t: [string, number]) => {
+    const [currency, count] = t
+    if (currency.match(/ny\d*_mandarin/)) return acc + count
+    return acc
+  }, 0)
+
   data.value.currencies = {
     gold: first.gold,
     credits: first.credits,
     freeXP: first.freeXP,
     premium: first.prem,
     crystals: first.crystal,
-    mandarins: 0,
-    // mandarins: first.mandarin25 + first.compensatedMandarin25,
+    mandarins: mandarins + compensatedMandarins,
     equipCoins: first.equipCoin,
   }
 }, { immediate: true })
