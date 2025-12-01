@@ -19,6 +19,7 @@ title: Текущая ЛБЗ (удалённое управление)
   ```
   
 *Разработчик мода @inf_caliber*
+
 ---
 
 *Виджет разработан по заказу [@Sh0tnik](https://www.youtube.com/channel/UCWyKpCMEyF22WziHeQ-2qJA){target=_blank}*
