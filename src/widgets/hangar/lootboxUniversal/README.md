@@ -5,7 +5,7 @@ title: Статистика коробок
 Автоматически адаптируется под открытые коробки (не показывает нулевые данные).
 
 > [!NOTE]
-> Для работы виджета нужены моды: [`wotstat`](https://github.com/wotstat/wotstat-analytics/releases/download/1.5.1.0/mod.wotStat_1.5.1.0.wotmod) и [`wotstat-widgets`](https://github.com/wotstat/wotstat-widgets/releases/download/2.0.1/wotstat.widgets_2.0.1.wotmod).
+> Для работы виджета нужены моды: [`wotstat`](https://github.com/wotstat/wotstat-analytics/releases/download/1.5.4.1/mod.wotStat_1.5.4.1.mtmod) и [`wotstat-widgets`](https://github.com/wotstat/wotstat-widgets/releases/download/2.0.9/wotstat.widgets_2.0.9.mtmod).
 
 
 ### Синхронизировать с сайтом
