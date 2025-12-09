@@ -50,7 +50,7 @@ function getArenaName(id: number) {
   if (!fullName) return `...`
 
   return fullName
-    .replace('(новогодняя)', '(нг)')
+    .replace('(новогодняя)', 'НГ')
 }
 
 const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, history: [], game: 'lesta' } : {
