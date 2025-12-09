@@ -46,7 +46,11 @@ const comp7History = computed(() => history.value.filter(h => h?.arena != null &
 const arenas = queryAsync<{ id: number, name: string }>(`select id, argMax(name, datetime) as name from Arenas where region = 'RU' group by id;`)
 
 function getArenaName(id: number) {
-  return arenas.value.data.find(a => a.id == id)?.name ?? '...'
+  const fullName = arenas.value.data.find(a => a.id == id)?.name
+  if (!fullName) return `...`
+
+  return fullName
+    .replace('(новогодняя)', '(нг)')
 }
 
 const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, history: [], game: 'lesta' } : {
