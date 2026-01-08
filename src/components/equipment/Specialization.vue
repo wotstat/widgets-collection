@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { EquipmentTag, getEquipmentById, getEquipmentIconByTag, SpecializationTag } from './equipment';
+import { getDeviceByTag, SpecializationTag } from './equipment';
 
 import firepowerOff from './assets/equipment/specialization/firepower_off.png'
 import firepowerOn from './assets/equipment/specialization/firepower_on.png'
@@ -21,13 +21,19 @@ import survivabilityOn from './assets/equipment/specialization/survivability_on.
 
 const props = defineProps<{
   tag: SpecializationTag | null
-  slotEquipmentTag?: EquipmentTag | null
+  slotEquipmentTag?: string | null
   isOn?: boolean
 }>()
 
 
-const equipment = computed(() => props.slotEquipmentTag ? getEquipmentById(props.slotEquipmentTag) : null)
-const isOn = computed(() => props.isOn || props.tag && equipment.value?.categories?.includes(props.tag))
+const device = computed(() => props.slotEquipmentTag ? getDeviceByTag(props.slotEquipmentTag).value : null)
+const isOn = computed(() => props.isOn ||
+  props.tag &&
+  device.value?.tags?.includes(props.tag) &&
+  !device.value.tags.includes('deluxe') &&
+  !device.value.tags.includes('trophyBasic') &&
+  !device.value.tags.includes('trophyUpgraded')
+)
 
 const targetImg = computed(() => {
   if (props.tag === 'firepower') {

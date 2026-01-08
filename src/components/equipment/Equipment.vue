@@ -1,15 +1,17 @@
 <template>
   <div class="equipment-slot-container">
     <div class="equipment-slot">
-      <img class="modernized" v-if="is('modernized_1')" :src="modernized1">
-      <img class="modernized" v-if="is('modernized_2')" :src="modernized2">
-      <img class="modernized" v-if="is('modernized_3')" :src="modernized3">
-      <img class="modernized" v-if="is('trophyBasic')" :src="trophyBasic">
-      <img class="modernized" v-if="is('trophyUpgraded')" :src="trophyUpgraded">
-      <img class="modernized" v-if="is('deluxe')" :src="plus">
+      <img class="modernized" v-if="is('modernized_1').value" :src="modernized1">
+      <img class="modernized" v-if="is('modernized_2').value" :src="modernized2">
+      <img class="modernized" v-if="is('modernized_3').value" :src="modernized3">
+      <img class="modernized" v-if="is('trophyBasic').value" :src="trophyBasic">
+      <img class="modernized" v-if="is('trophyUpgraded').value" :src="trophyUpgraded">
+      <img class="modernized" v-if="is('deluxe').value" :src="plus">
       <img class="booster-background" v-if="isBattleBooster" :src="boosterBackground">
       <img class="battleBooster" v-if="isBattleBooster" :src="isSkillBooster ? skillBooster : equipmentBooster">
-      <img class="equipment" :class="{ 'hd': hd, 'booster': isBattleBooster }" v-if="tag" :key="tag + hd" :src="icon">
+
+      <img class="equipment" :class="{ 'hd': hd, 'booster': isBattleBooster }" v-if="tag && icon" :key="tag + hd"
+        :src="icon" :style="{ transform: getTransformString(elementTransform) }" />
       <PlusImg class="empty" v-else />
     </div>
   </div>
@@ -18,7 +20,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ConsumableTag, EquipmentTag, getConsumableById, getEquipmentById, getEquipmentIconByTag, getConsumableIconByTag, isConsumableTag } from './equipment';
+import { getEquipmentByTag, getDeviceByTag, getDeviceIconByTag, getEquipmentIconByTag, isEquipmentTag, getTransformByDeviceTag, getTransformString } from './equipment';
 
 import modernized1 from './assets/equipment/overlay/modernized_1.png'
 import modernized2 from './assets/equipment/overlay/modernized_2.png'
@@ -33,35 +35,34 @@ import equipmentBooster from './assets/equipment/overlay/equipmentBooster.png'
 import skillBooster from './assets/equipment/overlay/skillBooster.png'
 
 const props = defineProps<{
-  tag: EquipmentTag | ConsumableTag | null
+  tag: string | null
   hd?: boolean
 }>()
 
-const isBattleBooster = computed(() => props.tag && isConsumableTag(props.tag))
+const isBattleBooster = computed(() => props.tag && isEquipmentTag(props.tag).value)
 const element = computed(() => {
   if (!props.tag) return null
 
-  if (isConsumableTag(props.tag)) {
-    return getConsumableById(props.tag)
+  if (isBattleBooster.value) {
+    return getEquipmentByTag(props.tag).value
   } else {
-    return getEquipmentById(props.tag)
+    return getDeviceByTag(props.tag).value
   }
 })
+
+const elementTransform = computed(() => getTransformByDeviceTag(icon.value ?? '', props.hd))
 
 const isSkillBooster = computed(() => element.value?.tags?.includes('crewSkillBattleBooster'))
 
 const icon = computed(() => {
   if (!element.value || !props.tag) return null
 
-  if (isConsumableTag(props.tag)) {
-    return getConsumableIconByTag(props.tag, props.hd)
-  } else {
-    return getEquipmentIconByTag(props.tag, props.hd)
-  }
+  if (isBattleBooster.value) return getEquipmentIconByTag(props.tag, props.hd).value
+  else return getDeviceIconByTag(props.tag, props.hd).value
 })
 
 function is(target: 'modernized_1' | 'modernized_2' | 'modernized_3' | 'trophyBasic' | 'trophyUpgraded' | 'deluxe') {
-  return element.value?.tags?.includes(target)
+  return computed(() => element.value?.tags?.includes(target))
 }
 
 </script>

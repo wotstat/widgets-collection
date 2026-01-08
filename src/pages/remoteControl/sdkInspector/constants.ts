@@ -24,6 +24,14 @@ export const vehicleInfo = {
     'class': 'lightTank',
     'role': 'role_LT_universal',
   },
+  'T-100 LT': {
+    'tag': 'ussr:R132_VNII_100LT',
+    'localizedName': 'Т-100 ЛТ',
+    'localizedShortName': 'Т-100 ЛТ',
+    'level': 10,
+    'class': 'lightTank',
+    'role': 'role_LT_universal',
+  },
   'IS-7': {
     'tag': 'ussr:R45_IS-7',
     'localizedName': 'ИС-7',

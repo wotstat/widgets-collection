@@ -2,8 +2,7 @@
   <WidgetPreviewRoot auto-scale :predictedAspectRatio>
     <Content :hd="hd ?? true" :variant :showTankName="isMiniPreview || showTankName"
       :postProgression="isMiniPreview || postProgression" :sets :tank-name="'Т-100 ЛТ'" :postProgressionSetup
-      :postProgressionCurrent="isMiniPreview || postProgressionCurrent" :author="'__NIDIN__'"
-      :display-author="author" />
+      :postProgressionCurrent="isMiniPreview || postProgressionCurrent" :author="'Sh0tnik'" :displayAuthor="author" />
   </WidgetPreviewRoot>
 </template>
 
@@ -11,8 +10,8 @@
 <script setup lang="ts">
 
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { Props } from './define.widget';
+import Content from '../../nidin/equipments/Content.vue';
+import { Props } from '../../nidin/equipments/define.widget';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -21,7 +20,7 @@ const props = defineProps<{
   showTankName?: boolean
   postProgression?: boolean
   postProgressionCurrent?: boolean
-  variant?: 'default' | 'compact',
+  variant?: 'default' | 'compact'
   author?: boolean
 }>();
 
@@ -46,15 +45,15 @@ const sets: Props['sets'] = [
       { equipment: 'trophyUpgradedAdditionalInvisibilityDevice', specialization: 'firepower' },
       { equipment: 'deluxCoatedOptics', specialization: null }
     ],
-    booster: 'coatedOpticsBattleBooster'
+    booster: 'additInvisibilityDeviceBattleBooster'
   },
   {
     slots: [
-      { equipment: 'deluxImprovedVentilation', specialization: 'stealth' },
-      { equipment: 'deluxRammer', specialization: 'firepower' },
-      { equipment: 'deluxAimingStabilizer', specialization: null }
+      { equipment: 'modernizedTankRammerSights1', specialization: 'stealth' },
+      { equipment: 'deluxImprovedVentilation', specialization: 'firepower' },
+      { equipment: 'deluxCoatedOptics', specialization: null }
     ],
-    booster: 'rammerBattleBooster'
+    booster: 'improvedVentilationBattleBooster'
   }
 ]
 
@@ -69,15 +68,15 @@ const postProgressionSetup: Props['postProgressionSetup'] = {
   recommended: [
     'role_lightTank_pair_1_2',
     'role_lightTank_pair_2_1',
-    'role_lightTank_pair_3_1',
-    null,
+    'role_lightTank_pair_3_2',
+    'role_LT_universal_pair_4_1',
     'role_LT_universal_pair_5_2'
   ],
   current: [
     'role_lightTank_pair_1_2',
     'role_lightTank_pair_2_1',
     'role_lightTank_pair_3_2',
-    'role_LT_universal_pair_4_1',
+    'role_LT_universal_pair_4_2',
     'role_LT_universal_pair_5_2'
   ]
 }

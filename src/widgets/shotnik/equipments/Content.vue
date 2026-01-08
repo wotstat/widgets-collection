@@ -1,7 +1,5 @@
 <template>
-  <InsetsWrapper
-    :insets="{ bottom: (props.variant == 'compact' && displayAuthor) ? 6.45 : 0, top: 0, left: 0, right: 0 }"
-    class="edge-mask">
+  <InsetsWrapper :insets="{ bottom: props.variant == 'compact' ? 7 : 0, top: 0, left: 0, right: 0 }" class="edge-mask">
     <div class="main preview-card"
       :class="{ 'compact': variant == 'compact', 'has-post-progression': postProgression && props.postProgressionSetup }">
       <p class="name" v-if="showTankName">{{ tankName }}</p>
@@ -59,7 +57,7 @@
           </div>
         </div>
       </div>
-      <p class="source" v-if="displayAuthor">by {{ author }}</p>
+      <p class="source">by Sh0tnik</p>
     </div>
   </InsetsWrapper>
 </template>
@@ -73,7 +71,7 @@ import EquipmentNum2 from '@/components/equipment/assets/equipment/utils/equipme
 import IconX from '@/assets/icons/x-bold.svg'
 import IconCheckmark from '@/assets/icons/checkmark-bold.svg'
 import Specialization from '@/components/equipment/Specialization.vue';
-import { Props } from './define.widget';
+import { Props } from '../../nidin/equipments/define.widget';
 import { computed } from 'vue';
 
 import { getIconUrlByTag } from '@/components/postProgression/index'

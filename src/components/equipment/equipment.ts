@@ -1,84 +1,187 @@
-import { equipment, consumables } from './equipmentData'
+import { STATIC_URL } from '@/utils/externalUrl'
+import { LONG_CACHE_SETTINGS, queryComputed } from '@/utils/db'
+import { computed } from 'vue'
 
-export type EquipmentTag = typeof equipment[number]['id']
-export type ConsumableTag = typeof consumables[number]['id']
 export type SpecializationTag = 'firepower' | 'mobility' | 'stealth' | 'survivability'
 
+export type OptionalDevice = {
+  tag: string,
+  id: number,
+  tags: string[],
+  icon: string,
+  archetype: string,
+}
+
 export type Equipment = {
-  id: EquipmentTag,
-  index: number,
-  name: string,
-  desc: string,
-  tags: string,
+  tag: string,
+  id: number,
+  tags: string[],
   icon: string,
-  categories: string,
-  factor: { type: string, desc: string, value: number }[],
 }
 
-export type Consumable = {
-  id: ConsumableTag,
+type Game = 'mt' | 'wot'
+
+const data = queryComputed<{
+  region: string,
+  tag: string,
+  id: number,
+  tags: string[],
+  archetype: string,
   icon: string,
-  index: number,
-  tags: string,
+  type: 'device' | 'equipment'
+}>(
+  () => `
+    select region, tag, id, tags, icon, archetype, 'device' as type from OptionalDevicesLatest where region in ('RU', 'EU')
+    union all
+    select region, tag, id, tags, icon, '', 'equipment' as type from EquipmentsLatest where region in ('RU', 'EU')
+  `,
+  { settings: LONG_CACHE_SETTINGS }
+)
+
+function getDataTagBy<T>(type: 'device' | 'equipment', game: Game) {
+  return new Map<string, T>(
+    data.value?.data
+      .filter(t => t.type == type && (game == 'mt' && t.region == 'RU' || game == 'wot' && t.region == 'EU'))
+      .map(e => [e.tag, e as any as T]) ?? []
+  )
 }
 
-const equipmentById = new Map<EquipmentTag, Equipment>(equipment.map(e => [e.id, e as any as Equipment]))
-const equipmentByIndex = new Map<number, Equipment>(equipment.map(e => [e.index, e as any as Equipment]))
-
-const consumableById = new Map<ConsumableTag, Consumable>(consumables.map(e => [e.id, e as any as Consumable]))
-const consumableByIndex = new Map<number, Consumable>(consumables.map(e => [e.index, e as any as Consumable]))
-
-type Glob = { default: string }
-const pngMap = ([k, v]: [string, { default: any }]) => [k.match(/([^\/]+)\.png$/)![1], v.default] as const
-
-const equipmentsSd = new Map(Object.entries(import.meta.glob<Glob>('./assets/equipment/normal/*.png', { eager: true })).map(pngMap))
-const equipmentsHd = new Map(Object.entries(import.meta.glob<Glob>('./assets/equipment/hd/*.png', { eager: true })).map(pngMap))
-
-const skillsSd = new Map(Object.entries(import.meta.glob<Glob>('./assets/skills/normal/*.png', { eager: true })).map(pngMap))
-const skillsHd = new Map(Object.entries(import.meta.glob<Glob>('./assets/skills/hd/*.png', { eager: true })).map(pngMap))
-
-export function isEquipmentTag(tag: string): tag is EquipmentTag {
-  return equipmentById.has(tag as EquipmentTag)
+function getDataIdBy<T>(type: 'device' | 'equipment', game: Game) {
+  return new Map<number, T>(
+    data.value?.data
+      .filter(t => t.type == type && (game == 'mt' && t.region == 'RU' || game == 'wot' && t.region == 'EU'))
+      .map(e => [e.id, e as any as T]) ?? []
+  )
 }
 
-export function isConsumableTag(tag: string): tag is ConsumableTag {
-  return consumableById.has(tag as ConsumableTag)
+const deviceByTag = computed(() => ({ 'wot': getDataTagBy<OptionalDevice>('device', 'wot'), 'mt': getDataTagBy<OptionalDevice>('device', 'mt') }))
+const deviceById = computed(() => ({ 'wot': getDataIdBy<OptionalDevice>('device', 'wot'), 'mt': getDataIdBy<OptionalDevice>('device', 'mt') }))
+
+const equipmentByTag = computed(() => ({ 'wot': getDataTagBy<Equipment>('equipment', 'wot'), 'mt': getDataTagBy<Equipment>('equipment', 'mt') }))
+const equipmentById = computed(() => ({ 'wot': getDataIdBy<Equipment>('equipment', 'wot'), 'mt': getDataIdBy<Equipment>('equipment', 'mt') }))
+
+export function isDeviceTag(tag: string, game: Game = 'mt') {
+  return computed(() => deviceByTag.value[game].has(tag))
 }
 
-export function getEquipmentIconByTag(tag: EquipmentTag, hd?: boolean) {
-  const iconName = equipmentById.get(tag)?.icon ?? 'unknown'
-  return hd ? equipmentsHd.get(iconName) : equipmentsSd.get(iconName)
+export function isEquipmentTag(tag: string, game: Game = 'mt') {
+  return computed(() => equipmentByTag.value[game].has(tag))
 }
 
-export function isSkillTag(tag: ConsumableTag) {
-  return consumableById.get(tag)?.tags.includes('crewSkillBattleBooster') ?? false
+function deviceUrl(icon: string, hd?: boolean, game: Game = 'mt') {
+  return hd ?
+    `${STATIC_URL}/${game}/latest/optionalDevices/medium/${icon}.webp` :
+    `${STATIC_URL}/${game}/latest/optionalDevices/small/${icon}.webp`
 }
 
-export function getConsumableIconByTag(tag: ConsumableTag, hd?: boolean) {
-  const consumable = consumableById.get(tag)
-  if (!consumable) return null
+function skillUrl(icon: string, hd?: boolean, game: Game = 'mt') {
+  return hd ?
+    `${STATIC_URL}/${game}/latest/crewSkills/medium/${icon}.webp` :
+    `${STATIC_URL}/${game}/latest/crewSkills/small/${icon}.webp`
+}
 
-  const iconName = consumable.icon
+export function getDeviceIconByTag(tag: string, hd?: boolean, game: Game = 'mt') {
+  return computed(() => {
+    const iconName = deviceByTag.value[game].get(tag)?.icon ?? 'unknown'
+    return deviceUrl(iconName, hd, game)
+  })
+}
 
-  if (consumable.tags.includes('crewSkillBattleBooster')) {
-    return hd ? skillsHd.get(iconName) : skillsSd.get(iconName)
+export function isSkillTag(tag: string) {
+  return computed(() => getEquipmentByTag(tag).value?.tags.includes('crewSkillBattleBooster') ?? false)
+}
+
+export function getEquipmentIconByTag(tag: string, hd?: boolean, game: Game = 'mt') {
+  return computed(() => {
+    const equipment = getEquipmentByTag(tag, game).value
+    if (!equipment) return null
+
+    const iconName = equipment.icon
+
+    if (equipment.tags.includes('crewSkillBattleBooster')) return skillUrl(iconName, hd, game)
+    return deviceUrl(iconName, hd, game)
+  })
+}
+
+export function getEquipmentByTag(tag: string, game: Game = 'mt') {
+  return computed(() => equipmentByTag.value[game].get(tag))
+}
+
+export function getEquipmentById(id: number, game: Game = 'mt') {
+  return computed(() => equipmentById.value[game].get(id))
+}
+
+export function getDeviceByTag(tag: string, game: Game = 'mt') {
+  return computed(() => deviceByTag.value[game].get(tag))
+}
+
+export function getDeviceById(id: number, game: Game = 'mt') {
+  return computed(() => deviceById.value[game].get(id))
+}
+
+export function getBestAvailableDeviceUpgrade(tag: string, game: Game = 'mt') {
+  return computed(() => {
+    const device = getDeviceByTag(tag, game).value
+    if (!device) return null
+
+    const archetype = device.archetype
+    if (!archetype) return device
+
+    const devices = Array.from(deviceByTag.value[game].values())
+      .filter(d => d.archetype === archetype)
+
+    const deluxe = devices.find(d => d.tags.includes('deluxe'))
+    if (deluxe) return deluxe
+
+    const trophyUpgraded = devices.find(d => d.tags.includes('trophyUpgraded'))
+    if (trophyUpgraded) return trophyUpgraded
+
+    const trophyBasic = devices.find(d => d.tags.includes('trophyBasic'))
+    if (trophyBasic) return trophyBasic
+
+    if (devices.length > 0) return devices[0]
+  })
+}
+
+type Transform = {
+  scale?: number | { x: number, y: number }
+  translate?: { x?: string, y?: string }
+}
+
+const scaleFixer: Record<string, Transform> = {
+  'improvedVentilation': { scale: 1.25, translate: { y: '6%' } },
+  'enhancedAimDrives': { scale: 0.8, translate: { y: '10%' } },
+  'rammer': { scale: 1.1, translate: { y: '0%' } },
+  'aimingStabilizer': { scale: 0.95, translate: { y: '2%', x: '-2%' } },
+  'coatedOptics': { scale: 0.95, translate: { y: '5%' } },
+  'additionalInvisibilityDevice': { scale: 0.95, },
+  'modernizedDamageVentilation': { scale: 1.1, },
+  'modernizedTankRammerSights': { scale: 1.1, },
+  'improvedSights': { scale: 1, translate: { x: '3%' } },
+  'camouflageNet': { scale: 1.15, translate: { y: '5%' } },
+  'antifragmentationLining': { scale: 1.1 },
+  'turbocharger': { scale: 1.15 },
+}
+
+const scaleFixerMap = new Map<string, Transform>(Object.entries(scaleFixer))
+
+export function getTransformByDeviceTag(icon: string, hd?: boolean): Transform {
+  if (!hd) return {}
+  const withoutExtension = icon.split('/').pop()?.split('.').shift() ?? ''
+  return scaleFixerMap.get(withoutExtension) ?? {}
+}
+
+export function getTransformString(transform: Transform): string {
+  let result = ''
+  if (transform.scale) {
+    if (typeof transform.scale === 'number') {
+      result += ` scale(${transform.scale})`
+    } else {
+      result += ` scale(${transform.scale.x}, ${transform.scale.y})`
+    }
   }
-
-  return hd ? equipmentsHd.get(iconName) : equipmentsSd.get(iconName)
-}
-
-export function getConsumableById(id: ConsumableTag) {
-  return consumableById.get(id)
-}
-
-export function getConsumableByIndex(index: number) {
-  return consumableByIndex.get(index)
-}
-
-export function getEquipmentById(id: EquipmentTag) {
-  return equipmentById.get(id)
-}
-
-export function getEquipmentByIndex(index: number) {
-  return equipmentByIndex.get(index)
+  if (transform.translate) {
+    result += ` translate(${transform.translate.x ?? 0}, ${transform.translate.y ?? 0})`
+  }
+  return result.trim()
 }

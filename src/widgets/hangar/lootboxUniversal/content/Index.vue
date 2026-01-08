@@ -78,7 +78,7 @@
       </div>
 
       <div class="battle-boosters">
-        <Element v-for="booster in battleBoosters" :class="booster.class" :icon="booster.icon"
+        <Element v-for="booster in battleBoosters" :class="booster.class" :icon="booster.icon ?? ''"
           :overlay-icon="booster.overlay" :title="artefactsNames.data.get(booster.tag) ?? 'Инструкция'"
           :value="booster.count" :short-log-processor="battleBoosters.length > 3" />
       </div>
@@ -125,7 +125,7 @@ import SmallVehicle from './SmallVehicle.vue';
 import LargeVehicle from './LargeVehicle.vue';
 import SkillBooster from '../assets/icons/skillBooster.png';
 import EquipmentBooster from '../assets/icons/equipmentBooster.png';
-import { getConsumableById, getConsumableIconByTag, isConsumableTag } from '@/components/equipment/equipment';
+import { getEquipmentByTag, getEquipmentIconByTag, isEquipmentTag } from '@/components/equipment/equipment';
 import { containerTagToImageName, orderByTable } from './utils';
 import { STATIC_URL } from '@/utils/externalUrl';
 
@@ -339,12 +339,12 @@ const items = computed(() => {
 
 const crewSkillsCount = computed(() => {
   return props.data.battleBoosters
-    .filter(t => isConsumableTag(t.tag) && getConsumableById(t.tag)?.tags?.includes('crewSkillBattleBooster'))
+    .filter(t => isEquipmentTag(t.tag) && getEquipmentByTag(t.tag)?.value?.tags?.includes('crewSkillBattleBooster'))
     .reduce((acc, t) => acc + t.count, 0)
 })
 const equipmentCount = computed(() => {
   return props.data.battleBoosters
-    .filter(t => isConsumableTag(t.tag) && !getConsumableById(t.tag)?.tags?.includes('crewSkillBattleBooster'))
+    .filter(t => isEquipmentTag(t.tag) && !getEquipmentByTag(t.tag)?.value?.tags?.includes('crewSkillBattleBooster'))
     .reduce((acc, t) => acc + t.count, 0)
 })
 
@@ -371,16 +371,16 @@ const battleBoosters = computed(() => {
 
   return boosters.map(t => {
 
-    if (!isConsumableTag(t.tag)) return { tag: t.tag, icon: 'test', count: t.count, class: 'medium' }
+    if (!isEquipmentTag(t.tag)) return { tag: t.tag, icon: 'test', count: t.count, class: 'medium' }
 
-    const consumable = getConsumableById(t.tag)
+    const consumable = getEquipmentByTag(t.tag)
 
-    const isSkill = consumable?.tags?.includes('crewSkillBattleBooster')
+    const isSkill = consumable?.value?.tags?.includes('crewSkillBattleBooster')
 
     return {
       tag: t.tag,
       count: t.count,
-      icon: getConsumableIconByTag(t.tag, true),
+      icon: getEquipmentIconByTag(t.tag, true).value,
       overlay: isSkill ? SkillBooster : EquipmentBooster,
       class: targetClass
     }

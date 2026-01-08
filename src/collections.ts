@@ -5,6 +5,7 @@ export const collections = [
       '/hangar/lootbox-universal',
       '/efficiency/comp7',
       '/nidin/equipments',
+      '/shotnik/equipments',
     ]
   },
   {
@@ -27,6 +28,7 @@ export const collections = [
     name: 'Ангарные',
     widgets: [
       '/nidin/equipments',
+      '/shotnik/equipments',
       '/hangar/lootbox-universal'
     ]
   },
