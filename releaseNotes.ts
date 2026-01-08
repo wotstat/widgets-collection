@@ -133,6 +133,10 @@ export const releaseNotes: ReleaseNote[] = [
     id: '2025-08-21-chuck',
     ru: `• Новый взводный виджет ${Utils.openUrl('https://ru.widgets.wotstat.info/preview/tournament/chuck/classic-battle', 'Очки и ХП')} в стилистике Турнира Чака 2025.`
   },
+  {
+    id: '2026-01-06-shotnik',
+    ru: `• Добавлен виджет ${Utils.addWidget('https://ru.widgets.wotstat.info/shotnik/equipments?variant=compact&hd=true&post-progression=true&post-progression-current=true&author=true', 'Оборудование и модернизация от Sh0tnik')}.`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {
