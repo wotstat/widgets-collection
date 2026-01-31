@@ -17,6 +17,6 @@ export function vehicleFallbackUrl(size: 'small' | 'preview' | 'shop' = 'preview
   switch (size) {
     case 'small': return `${STATIC_URL}/mt/latest/vehicles/small/no-image.${format}`
     case 'preview': return `${STATIC_URL}/mt/latest/vehicles/preview/no-image.${format}`
-    case 'shop': return `${STATIC_URL}/mt/latest/vehicles/shop/no-image.${format}`
+    case 'shop': return `${STATIC_URL}/mt/latest/vehicles/preview/no-image.${format}`
   }
 }

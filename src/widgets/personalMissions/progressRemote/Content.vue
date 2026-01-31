@@ -10,12 +10,10 @@
       <div class="header">
         <h1>{{ props.targetTank }}</h1>
         <h2>{{ info.title }}</h2>
-
-        <FallbackImg :src="`${STATIC_URL}/vehicles/shop/${info.tag}`" class="tank"
-          :fallback="`${STATIC_URL}/vehicles/preview/noImage.png`" :key="info.tag" />
+        <VehicleImage :tag="info.tag" :size="'shop'" class="tank" :class="info.tag" />
       </div>
 
-      <div class="content">
+      <div class="content" v-if="props.targetTank !== 'Mausekönig'">
         <div class="progress-sections">
           <div class="section" v-for="section in sections" :class="section.title.toLowerCase().replace(/ /g, '')">
             <h2>{{ section.title }}</h2>
@@ -48,9 +46,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Props } from './define.widget';
-import { STATIC_URL } from '@/utils/externalUrl';
-import FallbackImg from '@/components/shared/FallbackImg.vue';
 import InsetsWrapper from '@/components/InsetsWrapper.vue';
+import VehicleImage from '@/components/vehicle/VehicleImage.vue';
 
 const props = defineProps<Props>();
 
@@ -62,9 +59,10 @@ const sections = computed(() => [
 
 const info = computed(() => {
   const tank = props.targetTank;
-  if (tank === 'ARMT') return { title: 'США • VII • ЛТ', tag: 'usa-A161_ARMT.png' };
-  if (tank === 'TF-2 Clark') return { title: 'США • IX • ТТ', tag: 'usa-A173_TF_2_CLARK.png' };
-  if (tank === 'Projet Murat') return { title: 'Франция • X • СТ', tag: 'france-F119_Projet_Murat.png' };
+  if (tank === 'ARMT') return { title: 'США • VII • ЛТ', tag: 'usa:A161_ARMT' };
+  if (tank === 'TF-2 Clark') return { title: 'США • IX • ТТ', tag: 'usa:A173_TF_2_CLARK' };
+  if (tank === 'Projet Murat') return { title: 'Франция • X • СТ', tag: 'france:F119_Projet_Murat' };
+  if (tank === 'Mausekönig') return { title: 'Германия • XI • ТТ', tag: 'germany:G182_Mausekonig' };
   return { title: '', tag: '' };
 });
 
@@ -113,6 +111,11 @@ const info = computed(() => {
       bottom: -35%;
       right: 0.5em;
       filter: drop-shadow(0 0.1em 0.2em rgba(0, 0, 0, 0.5));
+
+      &.germany\:G182_Mausekonig {
+        scale: 1.1;
+        bottom: -38%;
+      }
     }
 
   }
