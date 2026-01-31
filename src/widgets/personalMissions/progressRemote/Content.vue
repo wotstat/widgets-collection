@@ -10,7 +10,7 @@
       <div class="header">
         <h1>{{ props.targetTank }}</h1>
         <h2>{{ info.title }}</h2>
-        <VehicleImage :tag="info.tag" :size="'shop'" class="tank" :class="info.tag" />
+        <VehicleImage :tag="info.tag" :game="'mt'" :size="'shop'" class="tank" :class="info.tag" />
       </div>
 
       <div class="content" v-if="props.targetTank !== 'Mausekönig'">
