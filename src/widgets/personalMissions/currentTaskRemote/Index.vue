@@ -3,8 +3,8 @@
     :hangarOnly="query.displayMode === 'hangar'">
     <Transition>
       <div v-if="currentConfig && shouldDisplay">
-        <Content :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels }" :tasks="taskGroups"
-          :styleParams="styleParam" :colorizeIcon="query.colorizeIcon" />
+        <Content :header="{ title: currentConfig.title ?? '', subtitle, levels: currentLevels, task: currentTask }"
+          :tasks="taskGroups" :styleParams="styleParam" :colorizeIcon="query.colorizeIcon" />
       </div>
     </Transition>
   </WidgetWrapper>

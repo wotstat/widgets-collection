@@ -37,8 +37,16 @@
     <div class="header">
       <h1>{{ header.title }}</h1>
       <h2>{{ header.subtitle }}</h2>
-      <div class="levels wg-font">
-        {{ roman(header.levels[0]) }} - {{ roman(header.levels[1]) }}
+
+
+      <div class="badges">
+        <div class="badge wg-font" v-if="tankName">
+          {{ tankName }}
+        </div>
+
+        <div class="badge wg-font">
+          {{ roman(header.levels[0]) }} - {{ roman(header.levels[1]) }}
+        </div>
       </div>
     </div>
 
@@ -89,6 +97,20 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
   return [imageKey, value];
 }));
 
+const tankName = computed(() => {
+  const task = props.header.task;
+  if (!task) return '';
+
+  const match = task.match(/pm3_(\d+)_\d+_\d+/)
+  if (!match) return '';
+  switch (match[1]) {
+    case '8': return 'ARMT';
+    case '9': return 'TF-2 Clark';
+    case '10': return 'Projet Murat';
+    default: return '';
+  }
+});
+
 </script>
 
 
@@ -137,14 +159,22 @@ const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, va
       font-size: 0.8em;
     }
 
-    .levels {
+    .badges {
       position: absolute;
       top: 1em;
       right: 1em;
-      border: 0.1em solid rgba(255, 255, 255, 0.3);
-      border-radius: 1em;
-      padding: 0.2em 0.5em;
+      display: flex;
+      gap: 0.5em;
       font-size: 0.7em;
+
+      .badge {
+        background: transparent;
+        color: white;
+        border: 0.1em solid rgba(255, 255, 255, 0.3);
+        border-radius: 1em;
+        padding: 0.2em 0.5em;
+        font-size: 1em;
+      }
     }
   }
 

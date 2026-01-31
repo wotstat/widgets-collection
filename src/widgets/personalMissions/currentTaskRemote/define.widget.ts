@@ -6,6 +6,7 @@ export type Props = {
     title: string;
     subtitle: TaskType | string;
     levels: [number, number]
+    task: string
   }
   tasks: {
     type: string

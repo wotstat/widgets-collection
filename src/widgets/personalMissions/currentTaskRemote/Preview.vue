@@ -1,6 +1,6 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.16">
-    <Content :header="{ title: 'Г-10', subtitle: 'Фланг разведки', levels: [5, 7] }" :tasks="tasks"
+    <Content :header="{ title: 'Г-10', subtitle: 'Фланг разведки', levels: [5, 7], task: 'pm3_8_1_1' }" :tasks="tasks"
       :styleParams="styleParam" :colorizeIcon="colorizeIcon ?? false" />
   </WidgetPreviewRoot>
 </template>
