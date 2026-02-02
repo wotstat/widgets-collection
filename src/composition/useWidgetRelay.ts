@@ -27,6 +27,7 @@ export function useReactiveWidgetRelay(postfix: MaybeRefOrGetter<string>) {
 
   function setupRelay(postfix: string) {
     return new WidgetsRelay({
+      url: RELAY_URL,
       channel: `${route.path}:${postfix}`,
       uuid
     })
