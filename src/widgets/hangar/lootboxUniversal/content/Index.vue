@@ -602,6 +602,11 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
     >div {
       flex: 1;
     }
+
+    &:has(> :nth-child(n+6)) {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
   }
 
   .small-vehicles {

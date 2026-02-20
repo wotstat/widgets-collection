@@ -74,10 +74,15 @@ function deviceUrl(icon: string, hd?: boolean, game: Game = 'mt') {
     `${STATIC_URL}/${game}/latest/optionalDevices/small/${icon}.webp`
 }
 
+const ICON_RENAME_MAP: Record<string, string> = {
+  'naturalCover': 'camouflage'
+}
 function skillUrl(icon: string, hd?: boolean, game: Game = 'mt') {
+  const renamedIcon = ICON_RENAME_MAP[icon] ?? icon
+
   return hd ?
-    `${STATIC_URL}/${game}/latest/skills/medium/${icon}.webp` :
-    `${STATIC_URL}/${game}/latest/skills/small/${icon}.webp`
+    `${STATIC_URL}/${game}/latest/skills/medium/${renamedIcon}.webp` :
+    `${STATIC_URL}/${game}/latest/skills/small/${renamedIcon}.webp`
 }
 
 export function getDeviceIconByTag(tag: string, hd?: boolean, game: Game = 'mt') {
