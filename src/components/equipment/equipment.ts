@@ -76,8 +76,8 @@ function deviceUrl(icon: string, hd?: boolean, game: Game = 'mt') {
 
 function skillUrl(icon: string, hd?: boolean, game: Game = 'mt') {
   return hd ?
-    `${STATIC_URL}/${game}/latest/crewSkills/medium/${icon}.webp` :
-    `${STATIC_URL}/${game}/latest/crewSkills/small/${icon}.webp`
+    `${STATIC_URL}/${game}/latest/skills/medium/${icon}.webp` :
+    `${STATIC_URL}/${game}/latest/skills/small/${icon}.webp`
 }
 
 export function getDeviceIconByTag(tag: string, hd?: boolean, game: Game = 'mt') {
