@@ -15,14 +15,14 @@
         <div class="info-line">
 
           <div class="badge" v-if="props.lastBattle">
-            За последний бой:
+            Последний бой:
             <span class="number">
               <TweenValue :value="props.lastBattleValue" space />
             </span>
           </div>
 
           <div class="badge" v-if="props.totalBattles">
-            Боёв всего:
+            Боёв:
             <span class="number">
               <TweenValue :value="props.totalBattlesValue" space />
             </span>
@@ -36,7 +36,7 @@
           </div>
 
           <div class="badge" v-if="props.averagePerBattle">
-            В среднем за бой:
+            За бой:
             <span class="number">
               <TweenValue :value="props.averagePerBattleValue" space />
             </span>
@@ -44,7 +44,7 @@
 
 
           <div class="badge" v-if="props.averagePerHour">
-            В среднем за час:
+            За час:
             <span class="number">
               <TweenValue :value="props.averagePerHourValue" space />
             </span>
@@ -124,10 +124,10 @@ function timeProcessor(value: number) {
   .info-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.3em 0.5em;
+    gap: 0.2em 0.3em;
     margin-top: 0.5em;
 
-    font-size: 0.45em;
+    font-size: 0.55em;
 
     &:not(:has(:nth-child(1))) {
       margin-top: 0;
