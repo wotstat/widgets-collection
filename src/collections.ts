@@ -2,8 +2,9 @@ export const collections = [
   {
     name: 'Актуальные',
     widgets: [
-      '/hangar/lootbox-universal',
-      '/efficiency/comp7',
+      '/counters/farm',
+      // '/hangar/lootbox-universal',
+      // '/efficiency/comp7',
       '/nidin/equipments',
       '/shotnik/equipments',
     ]
@@ -43,6 +44,7 @@ export const collections = [
   {
     name: 'Счётчики',
     widgets: [
+      '/counters/farm',
       '/counters/battle',
       '/counters/hand',
       '/counters/battle-win-lose',
