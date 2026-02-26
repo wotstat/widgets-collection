@@ -23,8 +23,6 @@ const props = defineProps<{
   averagePerHour?: boolean,
 }>()
 
-const data = computed(() => props.isMiniPreview ? { startFrom: 42 } : props)
-
 const settings = computed(() => ({
   skin: props.skin ?? 'transparent',
   hideTitle: props.hideTitle,
