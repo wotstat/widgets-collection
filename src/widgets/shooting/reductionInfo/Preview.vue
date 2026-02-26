@@ -10,11 +10,11 @@
 
 
 <script setup lang="ts">
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { skins } from './define.widget';
-import { computed } from 'vue';
-import PreviewContent from './PreviewContent.vue';
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { skins } from './define.widget'
+import { computed } from 'vue'
+import PreviewContent from './PreviewContent.vue'
 
 
 
@@ -24,7 +24,7 @@ const props = defineProps<{
   skin?: typeof skins[number],
   title?: boolean,
   value?: boolean,
-}>();
+}>()
 
 const aspects = {
   'protanki-old': 0.44,

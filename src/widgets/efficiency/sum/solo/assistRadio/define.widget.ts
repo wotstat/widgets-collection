@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Урон по засвету",
-  description: "Отображает сумму урона по вашим разведданным",
+  name: 'Урон по засвету',
+  description: 'Отображает сумму урона по вашим разведданным',
   params: [
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [

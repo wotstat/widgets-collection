@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export type Props = {
   opened: {
@@ -21,8 +21,8 @@ export type Props = {
 }
 
 export default defineWidget({
-  name: "Статистика коробок (новогодний)",
-  description: "Подводит итог выпавших ресурсов из новогодних коробок 2025 года от Лесты",
+  name: 'Статистика коробок (новогодний)',
+  description: 'Подводит итог выпавших ресурсов из новогодних коробок 2025 года от Лесты',
   params: [
     { type: 'checkbox', target: 'sync', label: 'Синхронизировать с сайтом', default: true },
     { type: 'checkbox', target: 'hide-l1', label: 'Скрыть коробки', default: false },

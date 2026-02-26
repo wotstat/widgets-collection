@@ -6,14 +6,14 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed, ref, watch } from 'vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { objectEntries, timestamp, useTimestamp } from '@vueuse/core';
-import { Events, Target, target as targets } from './define.widget';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed, ref, watch } from 'vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { objectEntries, timestamp, useTimestamp } from '@vueuse/core'
+import { Events, Target, target as targets } from './define.widget'
 
 const { showEvents, showPb, target } = useQueryParams({
   showEvents: Boolean,
@@ -21,7 +21,7 @@ const { showEvents, showPb, target } = useQueryParams({
   target: oneOf(targets),
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const startTime = ref(0)
 const personalBest = useWidgetStorage<number[]>('personalBest', [])
@@ -69,7 +69,7 @@ function startTimer() {
 function onEvent(type: Target) {
   if (target == type) reachTarget()
 
-  console.log(`Event: ${type} (${timer.value})`);
+  console.log(`Event: ${type} (${timer.value})`)
 
   if (type == 'end-battle') return
 
@@ -96,16 +96,16 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
       } else {
         onEvent('dmg')
       }
-      break;
+      break
     case 'kill':
       onEvent('kill')
       if (feedback.data.vehicle.class == 'SPG') onEvent('kill-spg')
-      break;
+      break
     case 'receivedDamage':
       onEvent('receive-dmg')
-      break;
+      break
     default:
-      break;
+      break
   }
 })
 

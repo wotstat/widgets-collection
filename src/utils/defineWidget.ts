@@ -1,6 +1,6 @@
-import { IconType } from "@/components/efficiencyIcon/utils";
-import { deepMerge } from ".";
-import { i18n } from "./i18nShared";
+import { IconType } from '@/components/efficiencyIcon/utils'
+import { deepMerge } from '.'
+import { i18n } from './i18nShared'
 
 
 interface BaseParam {
@@ -119,7 +119,7 @@ const defaultOptions: Options = {
   beta: false
 }
 
-const optionsSymbol = Symbol('options');
+const optionsSymbol = Symbol('options')
 
 export function defineWidget(options: Partial<Options>) {
 
@@ -133,7 +133,7 @@ export function defineWidget(options: Partial<Options>) {
 }
 
 export function isWidgetDefine(obj: unknown): obj is { optionsSymbol: symbol, options: Options } {
-  if (typeof obj !== 'object' || obj === null) return false;
-  if (!('optionsSymbol' in obj)) return false;
-  return obj.optionsSymbol === optionsSymbol;
+  if (typeof obj !== 'object' || obj === null) return false
+  if (!('optionsSymbol' in obj)) return false
+  return obj.optionsSymbol === optionsSymbol
 }

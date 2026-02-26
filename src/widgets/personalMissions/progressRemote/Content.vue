@@ -44,27 +44,27 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Props } from './define.widget';
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import VehicleImage from '@/components/vehicle/VehicleImage.vue';
+import { computed } from 'vue'
+import { Props } from './define.widget'
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import VehicleImage from '@/components/vehicle/VehicleImage.vue'
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
 const sections = computed(() => [
   { title: 'VI-VII', value: props.section1 },
   { title: 'VIII-IX', value: props.section2 },
   { title: 'X-XI', value: props.section3 },
-]);
+])
 
 const info = computed(() => {
-  const tank = props.targetTank;
-  if (tank === 'ARMT') return { title: 'США • VII • ЛТ', tag: 'usa:A161_ARMT' };
-  if (tank === 'TF-2 Clark') return { title: 'США • IX • ТТ', tag: 'usa:A173_TF_2_CLARK' };
-  if (tank === 'Projet Murat') return { title: 'Франция • X • СТ', tag: 'france:F119_Projet_Murat' };
-  if (tank === 'Mausekönig') return { title: 'Германия • XI • ТТ', tag: 'germany:G182_Mausekonig' };
-  return { title: '', tag: '' };
-});
+  const tank = props.targetTank
+  if (tank === 'ARMT') return { title: 'США • VII • ЛТ', tag: 'usa:A161_ARMT' }
+  if (tank === 'TF-2 Clark') return { title: 'США • IX • ТТ', tag: 'usa:A173_TF_2_CLARK' }
+  if (tank === 'Projet Murat') return { title: 'Франция • X • СТ', tag: 'france:F119_Projet_Murat' }
+  if (tank === 'Mausekönig') return { title: 'Германия • XI • ТТ', tag: 'germany:G182_Mausekonig' }
+  return { title: '', tag: '' }
+})
 
 </script>
 

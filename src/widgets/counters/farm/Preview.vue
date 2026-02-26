@@ -7,9 +7,9 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
 
 
 const props = defineProps<{
@@ -21,9 +21,9 @@ const props = defineProps<{
   timeInBattles?: boolean,
   averagePerBattle?: boolean,
   averagePerHour?: boolean,
-}>();
+}>()
 
-const data = computed(() => props.isMiniPreview ? { startFrom: 42 } : props);
+const data = computed(() => props.isMiniPreview ? { startFrom: 42 } : props)
 
 const settings = computed(() => ({
   skin: props.skin ?? 'transparent',

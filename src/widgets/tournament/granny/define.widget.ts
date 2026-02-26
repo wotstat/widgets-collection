@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export type Props = {
   hideL1: boolean,
@@ -21,8 +21,8 @@ export type Props = {
 }
 
 export default defineWidget({
-  name: "Турнир EviL_GrannY",
-  description: "Виджет отображает прогресс в турнире Gendarme VS FV4005 - Выбери Своего Бойца!",
+  name: 'Турнир EviL_GrannY',
+  description: 'Виджет отображает прогресс в турнире Gendarme VS FV4005 - Выбери Своего Бойца!',
   params: [
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [

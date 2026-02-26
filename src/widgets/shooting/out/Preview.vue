@@ -7,15 +7,15 @@
 
 
 <script setup lang="ts">
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
 
 const props = defineProps<{
   isMiniPreview: boolean
   percent?: boolean
   title?: boolean
   skin?: 'transparent' | 'default'
-}>();
+}>()
 
 
 </script>

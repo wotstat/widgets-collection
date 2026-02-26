@@ -19,8 +19,8 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { getEquipmentByTag, getDeviceByTag, getDeviceIconByTag, getEquipmentIconByTag, isEquipmentTag, getTransformByDeviceTag, getTransformString } from './equipment';
+import { computed } from 'vue'
+import { getEquipmentByTag, getDeviceByTag, getDeviceIconByTag, getEquipmentIconByTag, isEquipmentTag, getTransformByDeviceTag, getTransformString } from './equipment'
 
 import modernized1 from './assets/equipment/overlay/modernized_1.png'
 import modernized2 from './assets/equipment/overlay/modernized_2.png'

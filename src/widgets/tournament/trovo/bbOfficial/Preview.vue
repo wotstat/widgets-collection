@@ -7,15 +7,15 @@
 
 
 <script setup lang="ts">
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { ref } from 'vue';
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   isMiniPreview: boolean,
   transparentBackground?: boolean,
   showBest?: boolean,
-}>();
+}>()
 
 const data = ref({
   place: 156,

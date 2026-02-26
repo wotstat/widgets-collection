@@ -8,9 +8,9 @@
 
 <script setup lang="ts">
 
-import { computed, ref } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import { computed, ref } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
 
 
 const props = defineProps<{
@@ -19,7 +19,7 @@ const props = defineProps<{
   showCenter?: boolean
   maxHits?: number
   skin?: 'default' | 'transparent'
-}>();
+}>()
 
 const values = ref([
   { r: 0.3, theta: 0.3 },
@@ -31,9 +31,9 @@ const values = ref([
 setInterval(() => {
   values.value.push({ r: Math.random() * 1.2, theta: Math.random() * 2 * 3.14 })
   if (values.value.length > 10) values.value.shift()
-}, 4000);
+}, 4000)
 
-const data = computed(() => values.value.slice(-(props.maxHits ?? 0)));
+const data = computed(() => values.value.slice(-(props.maxHits ?? 0)))
 
 </script>
 

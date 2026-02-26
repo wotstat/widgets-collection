@@ -10,7 +10,7 @@
 
 
 <script setup lang="ts">
-import { VueComponent } from "./Content.md";
+import { VueComponent } from './Content.md'
 
 </script>
 

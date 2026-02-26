@@ -1,12 +1,12 @@
-import { useRoute } from "vue-router";
-import { v4 as uuidv4 } from 'uuid';
-import { computed, MaybeRefOrGetter, shallowRef, toValue } from "vue";
-import { watch } from "vue";
-import { useReactiveState, useWidgetSdk, WidgetsRelay } from "./widgetSdk";
-import { RELAY_URL } from "@/utils/externalUrl";
+import { useRoute } from 'vue-router'
+import { v4 as uuidv4 } from 'uuid'
+import { computed, MaybeRefOrGetter, shallowRef, toValue } from 'vue'
+import { watch } from 'vue'
+import { useReactiveState, useWidgetSdk, WidgetsRelay } from './widgetSdk'
+import { RELAY_URL } from '@/utils/externalUrl'
 
 export function useWidgetRelay(postfix: string) {
-  const route = useRoute();
+  const route = useRoute()
   const uuid = uuidv4()
 
   const relay = new WidgetsRelay({
@@ -22,7 +22,7 @@ export function useWidgetRelay(postfix: string) {
 }
 
 export function useReactiveWidgetRelay(postfix: MaybeRefOrGetter<string>) {
-  const route = useRoute();
+  const route = useRoute()
   const uuid = uuidv4()
 
   function setupRelay(postfix: string) {
@@ -47,7 +47,7 @@ export function useReactiveWidgetRelay(postfix: MaybeRefOrGetter<string>) {
 }
 
 export function usePlatoonWidgetRelay(postfix: MaybeRefOrGetter<string | undefined>) {
-  const { sdk } = useWidgetSdk();
+  const { sdk } = useWidgetSdk()
 
   const platoonSlots = useReactiveState(sdk.data.platoon.slots)
   const playerId = useReactiveState(sdk.data.player.id)

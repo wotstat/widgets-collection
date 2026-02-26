@@ -99,10 +99,10 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
-import { Props } from '../define.widget';
+import WidgetCard from '@/components/WidgetCard.vue'
+import { Props } from '../define.widget'
 import NoImageLB from '../assets/containers/noImageLB.png'
-import { queryAsyncMap } from '@/utils/db';
+import { queryAsyncMap } from '@/utils/db'
 
 
 import GoldWotIcon from '../assets/currencies/gold.png'
@@ -118,16 +118,16 @@ import ModernizedOverlay from '../assets/modernizations/equipmentModernized_1_ov
 
 import i18n from '../i18n.json'
 
-import Element from './Element.vue';
-import { computed } from 'vue';
-import { useI18nRef } from '@/composition/useI18n';
-import SmallVehicle from './SmallVehicle.vue';
-import LargeVehicle from './LargeVehicle.vue';
-import SkillBooster from '../assets/icons/skillBooster.png';
-import EquipmentBooster from '../assets/icons/equipmentBooster.png';
-import { getEquipmentByTag, getEquipmentIconByTag, isEquipmentTag } from '@/components/equipment/equipment';
-import { containerTagToImageName, orderByTable } from './utils';
-import { STATIC_URL } from '@/utils/externalUrl';
+import Element from './Element.vue'
+import { computed } from 'vue'
+import { useI18nRef } from '@/composition/useI18n'
+import SmallVehicle from './SmallVehicle.vue'
+import LargeVehicle from './LargeVehicle.vue'
+import SkillBooster from '../assets/icons/skillBooster.png'
+import EquipmentBooster from '../assets/icons/equipmentBooster.png'
+import { getEquipmentByTag, getEquipmentIconByTag, isEquipmentTag } from '@/components/equipment/equipment'
+import { containerTagToImageName, orderByTable } from './utils'
+import { STATIC_URL } from '@/utils/externalUrl'
 
 const modernizationsImages = import.meta.glob<string>('../assets/modernizations/*.png', { eager: true, import: 'default' })
 const crewBoolsImages = import.meta.glob<string>('../assets/crewBooks/*.png', { eager: true, import: 'default' })
@@ -403,9 +403,9 @@ const entitlements = computed(() => {
   }))
 })
 
-const lootboxNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>(`select * from LootboxesLocalization`, t => new Map(t.map(t => [t.tag, t.nameRU])))
-const artefactsNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>(`select * from ArtefactsLocalization`, t => new Map(t.map(t => [t.tag, t.nameRU])))
-const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }, Map<string, string>>(`select * from VehiclesLocalization`, t => new Map(t.map(t => [t.tag, t.shortRU])))
+const lootboxNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>('select * from LootboxesLocalization', t => new Map(t.map(t => [t.tag, t.nameRU])))
+const artefactsNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>('select * from ArtefactsLocalization', t => new Map(t.map(t => [t.tag, t.nameRU])))
+const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }, Map<string, string>>('select * from VehiclesLocalization', t => new Map(t.map(t => [t.tag, t.shortRU])))
 
 </script>
 

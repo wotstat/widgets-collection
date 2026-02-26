@@ -7,17 +7,17 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { SlotValue } from './define.widget';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { SlotValue } from './define.widget'
 
 const props = defineProps<{
   isMiniPreview: boolean
   soloAlign?: 'left' | 'right'
   anim?: boolean
   slots?: SlotValue[]
-}>();
+}>()
 
 
 const defaultValues = {

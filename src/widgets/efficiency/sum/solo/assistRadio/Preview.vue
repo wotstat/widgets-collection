@@ -8,9 +8,9 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import TitledCounter from '../TitledCounter.vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
+import { computed } from 'vue'
+import TitledCounter from '../TitledCounter.vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
 
 
 const props = defineProps<{
@@ -18,9 +18,9 @@ const props = defineProps<{
   title?: boolean
   startFrom?: number
   skin?: 'transparent' | 'default'
-}>();
+}>()
 
-const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 123457 } : props);
+const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 123457 } : props)
 
 </script>
 

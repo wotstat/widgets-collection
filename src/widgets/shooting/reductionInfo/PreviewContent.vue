@@ -13,11 +13,11 @@
 
 
 <script setup lang="ts">
-import Old from './skins/old/Index.vue';
-import New from './skins/new/Index.vue';
-import TimeLabel from './skins/timeLabel/Index.vue';
-import PercentLabel from './skins/percentLabel/Index.vue';
-import Chart from './skins/chart/Index.vue';
+import Old from './skins/old/Index.vue'
+import New from './skins/new/Index.vue'
+import TimeLabel from './skins/timeLabel/Index.vue'
+import PercentLabel from './skins/percentLabel/Index.vue'
+import Chart from './skins/chart/Index.vue'
 
 const props = defineProps<{
   historyTangent: number[]

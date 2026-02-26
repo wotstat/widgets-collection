@@ -8,11 +8,11 @@
 
 <script setup lang='ts'>
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { Props } from './define.widget';
-import { AggregatorResultPrefixKey, toIconType, totalAggregator } from '@/composition/shared/useBattleHistoryAggregator';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { Props } from './define.widget'
+import { AggregatorResultPrefixKey, toIconType, totalAggregator } from '@/composition/shared/useBattleHistoryAggregator'
 
 
 const props = defineProps<{
@@ -22,7 +22,7 @@ const props = defineProps<{
   total?: boolean,
   topInRow?: 'max' | 'avg' | 'min' | 'total',
   battles?: 'max' | 'avg' | 'min' | 'total',
-}>();
+}>()
 
 const sampleData = {
   'ammoBayDestroyed': 0.2,

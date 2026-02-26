@@ -10,18 +10,18 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
 
 
-import Content from './Content.vue';
-import { computed, onMounted, ref, watch } from 'vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import { watchOnce } from '@vueuse/core';
+import Content from './Content.vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import { watchOnce } from '@vueuse/core'
 
 import { createReusableTemplate } from '@vueuse/core'
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { Props } from './define.widget';
-import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory';
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { Props } from './define.widget'
+import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
 const TOURNAMENT_ID = 1015
@@ -35,14 +35,14 @@ const query = useQueryParams({
   skin: oneOf(['default', 'transparent', 'replay'] as const)
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
-const sdkId = useReactiveState(sdk.data.player.id);
-const isInBattle = useReactiveState(sdk.data.battle.isInBattle);
-const vehicle = useReactiveState(sdk.data.battle.vehicle);
-const nicknameId = ref<null | string>(null);
+const sdkId = useReactiveState(sdk.data.player.id)
+const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
+const vehicle = useReactiveState(sdk.data.battle.vehicle)
+const nicknameId = ref<null | string>(null)
 
-const id = computed(() => nicknameId.value || sdkId.value);
+const id = computed(() => nicknameId.value || sdkId.value)
 
 const battleHistory = useBattleResultHistory<{ score: number, tank: string, date: number }>((parsed) => ({ score: parsed.personal?.stats.damageDealt ?? 0 }))
 
@@ -69,7 +69,7 @@ const currentSessionStart = computed(() => {
 
   for (let i = battles.length - 1; i > 0; i--) {
     const last = battles[i - 1]
-    const current = battles[i];
+    const current = battles[i]
     const delta = current - last
     if (delta > 4 * HOUR_MS) return current
   }

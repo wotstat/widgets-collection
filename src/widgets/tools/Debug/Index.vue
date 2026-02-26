@@ -99,10 +99,10 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import WidgetCard from "@/components/WidgetCard.vue";
-import { useWidgetSdk, useReactiveState, useReactiveTrigger, I18n } from '@/composition/widgetSdk';
-import { computed, provide, ref } from "vue";
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import { useWidgetSdk, useReactiveState, useReactiveTrigger, I18n } from '@/composition/widgetSdk'
+import { computed, provide, ref } from 'vue'
 
 import Game from './panels/Game.vue'
 import Player from './panels/Player.vue'
@@ -114,14 +114,14 @@ import Platoon from './panels/Platoon.vue'
 import HangarTank from './panels/HangarTank.vue'
 import Battle from './panels/Battle.vue'
 import Aiming from './panels/Aiming.vue'
-import BattleTank from "./panels/BattleTank.vue";
-import Efficiency from "./panels/Efficiency.vue";
-import DamageLog from "./panels/DamageLog.vue";
-import Bases from "./panels/Bases.vue";
-import FeedbackLog from "./panels/FeedbackLog.vue";
-import Keyboard from "./panels/Keyboard.vue";
-import { onAnyKeyPressKey } from "./useToggleKeyBinding";
-import { parseBattleResult } from "@/utils/battleResultParser";
+import BattleTank from './panels/BattleTank.vue'
+import Efficiency from './panels/Efficiency.vue'
+import DamageLog from './panels/DamageLog.vue'
+import Bases from './panels/Bases.vue'
+import FeedbackLog from './panels/FeedbackLog.vue'
+import Keyboard from './panels/Keyboard.vue'
+import { onAnyKeyPressKey } from './useToggleKeyBinding'
+import { parseBattleResult } from '@/utils/battleResultParser'
 
 
 // @ts-ignore
@@ -129,7 +129,7 @@ import { parseBattleResult } from "@/utils/battleResultParser";
 
 
 const { sdk } = useWidgetSdk()
-console.log('sdk', sdk);
+console.log('sdk', sdk)
 
 const playerName = useReactiveState(sdk.data.player.name)
 const playerId = useReactiveState(sdk.data.player.id)
@@ -350,8 +350,8 @@ useReactiveTrigger(sdk.data.battle.isInBattle, t => {
 })
 
 useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
-  console.log('result', result);
-  console.log('parsed result', parseBattleResult(result));
+  console.log('result', result)
+  console.log('parsed result', parseBattleResult(result))
 })
 
 const pressedKeys = ref<Set<string>>(new Set())

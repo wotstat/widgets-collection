@@ -15,8 +15,8 @@
 
 <script setup lang="ts">
 import ArrowDown from '@/assets/icons/arrow-down.svg'
-import { useLocalStorage } from '@vueuse/core';
-import { computed, inject, provide, ref } from 'vue';
+import { useLocalStorage } from '@vueuse/core'
+import { computed, inject, provide, ref } from 'vue'
 
 const props = defineProps<{
   title: string

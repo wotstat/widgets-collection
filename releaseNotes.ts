@@ -1,5 +1,5 @@
 import { Plugin } from 'vite'
-import fs from 'fs/promises';
+import fs from 'fs/promises'
 
 namespace Utils {
 
@@ -8,15 +8,15 @@ namespace Utils {
   const OPEN_URL = 'WOTSTAT_WIDGETS_EVENT_NEWS_OPEN_URL:'
 
   export function redString(str: string) {
-    return colorString("#ff453a", str)
+    return colorString('#ff453a', str)
   }
 
   export function greenString(str: string) {
-    return colorString("#30d158", str)
+    return colorString('#30d158', str)
   }
 
   export function orangeString(str: string) {
-    return colorString("#ff9f0a", str)
+    return colorString('#ff9f0a', str)
   }
 
   export function colorString(color: string, str: string) {
@@ -155,5 +155,5 @@ export function releaseNotesPlugin(): Plugin {
         next()
       })
     }
-  };
+  }
 }

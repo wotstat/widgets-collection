@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { TreeNode } from './tree'
-import { drawerRegistry } from './drawerRegistry';
+import { drawerRegistry } from './drawerRegistry'
 
 import ArrowDown from '@/assets/icons/arrow-down.svg'
 

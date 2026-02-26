@@ -15,8 +15,8 @@
 
 
 <script setup lang="ts">
-import Line from "../Line.vue";
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import Line from '../Line.vue'
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   playerName?: string
@@ -24,7 +24,7 @@ const props = defineProps<{
   playerId?: number
   playerClanId?: number
   collapseKeys: KeyBindingSetting
-}>();
+}>()
 
 const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>

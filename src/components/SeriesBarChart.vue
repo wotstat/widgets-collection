@@ -8,7 +8,7 @@
 
 
 <script setup lang="ts">
-import { computed, StyleValue } from 'vue';
+import { computed, StyleValue } from 'vue'
 
 const props = defineProps<{
   values: {

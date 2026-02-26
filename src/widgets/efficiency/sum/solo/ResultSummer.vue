@@ -7,13 +7,13 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import TitledCounter from './TitledCounter.vue';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { computed, watch } from 'vue';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { useBattleResult } from '@/composition/useOnBattleResult';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import TitledCounter from './TitledCounter.vue'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { computed, watch } from 'vue'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { useBattleResult } from '@/composition/useOnBattleResult'
 
 const props = defineProps<{
   title: string
@@ -22,7 +22,7 @@ const props = defineProps<{
   stat: 'damageBlockedByArmor' | 'damageDealt' | 'damageAssistedRadio' | 'kills'
 }>()
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const { startFrom, title: titleEnabled, reverse, skin } = useQueryParams({
   startFrom: NumberDefault(),
@@ -39,7 +39,7 @@ const collected = useWidgetStorage('collected', 0)
 watch(() => props.value, (value, old) => {
   if (value == 0 || value == undefined || old == undefined) return
   const delta = value - old
-  collected.value += reverse ? -delta : delta;
+  collected.value += reverse ? -delta : delta
 
   if (arenaId.value) {
     const old = tempResults.value.get(arenaId.value) ?? 0
@@ -59,7 +59,7 @@ useBattleResult((parsed, res) => {
   tempResults.value.delete(arenaId)
 
   console.log(`Got battle result for arena ${arenaId}: ${resultValue} (temp: ${tempValue}) delta = ${delta}`)
-  collected.value += reverse ? -delta : delta;
+  collected.value += reverse ? -delta : delta
 })
 
 const targetCount = computed(() => startFrom + collected.value)

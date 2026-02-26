@@ -8,8 +8,8 @@
 
 <script setup lang="ts">
 
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
 
 
 const props = defineProps<{
@@ -17,7 +17,7 @@ const props = defineProps<{
   align?: 'left' | 'center' | 'right'
   showLosses?: boolean
   skin?: 'transparent' | 'default'
-}>();
+}>()
 
 </script>
 

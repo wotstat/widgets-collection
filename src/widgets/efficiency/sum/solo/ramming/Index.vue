@@ -7,12 +7,12 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import TitledCounter from '../TitledCounter.vue';
-import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { computed } from 'vue';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import TitledCounter from '../TitledCounter.vue'
+import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { computed } from 'vue'
 
 
 const { startFrom, title: titleEnabled, reverse, skin } = useQueryParams({
@@ -22,7 +22,7 @@ const { startFrom, title: titleEnabled, reverse, skin } = useQueryParams({
   skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 const value = useWidgetStorage('value', 0)
 
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {

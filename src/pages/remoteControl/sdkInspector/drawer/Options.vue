@@ -9,8 +9,8 @@
 
 
 <script setup lang="ts">
-import { inject, ref, Ref, watch } from 'vue';
-import { useSetStateMap } from './useSetStateMap';
+import { inject, ref, Ref, watch } from 'vue'
+import { useSetStateMap } from './useSetStateMap'
 
 const props = defineProps<{
   title: string
@@ -20,6 +20,6 @@ const props = defineProps<{
 
 const value = defineModel<string>({ default: '' })
 
-useSetStateMap(props.mKey, value, props.variants);
+useSetStateMap(props.mKey, value, props.variants)
 
 </script>

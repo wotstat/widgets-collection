@@ -7,7 +7,7 @@
 
 
 <script setup lang="ts">
-import Select from '@/components/Select.vue';
+import Select from '@/components/Select.vue'
 
 const props = defineProps<{
   label: string

@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import ColorPicker from "@/components/colorPicker/ColorPicker.vue";
+import ColorPicker from '@/components/colorPicker/ColorPicker.vue'
 
 type Meta = { drawer: string; }
 
@@ -18,7 +18,7 @@ const props = defineProps<{
 
 const value = defineModel<string>('value', {
   set(value) {
-    if (value.length == 8 && value.endsWith('ff')) return `#${value.slice(0, 6)}`;
+    if (value.length == 8 && value.endsWith('ff')) return `#${value.slice(0, 6)}`
     return `#${value}`
   }
 })

@@ -7,11 +7,11 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { Props } from './define.widget';
+import { computed } from 'vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { Props } from './define.widget'
 
 
 const props = defineProps<{
@@ -19,7 +19,7 @@ const props = defineProps<{
   hideL1?: boolean
   hideL2?: boolean
   hideL3?: boolean
-}>();
+}>()
 
 
 const targetProps = computed<Props>(() => ({
@@ -48,11 +48,11 @@ const targetProps = computed<Props>(() => ({
 }))
 
 const aspect = computed(() => {
-  if (props.hideL1) return props.hideL2 ? 3.5 : 0.78;
-  if (props.hideL2) return props.isMiniPreview || props.hideL3 ? 3.9 : 2.2;
-  if (props.isMiniPreview || props.hideL3) return 1;
+  if (props.hideL1) return props.hideL2 ? 3.5 : 0.78
+  if (props.hideL2) return props.isMiniPreview || props.hideL3 ? 3.9 : 2.2
+  if (props.isMiniPreview || props.hideL3) return 1
 
-  return 0.87;
+  return 0.87
 })
 
 </script>

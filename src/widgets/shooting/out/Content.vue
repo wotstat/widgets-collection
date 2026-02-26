@@ -23,11 +23,11 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import TweenValue from '@/components/TweenValue.vue';
-import { useStateClass } from '@/composition/utils/useStateClass';
-import { computed } from 'vue';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import TweenValue from '@/components/TweenValue.vue'
+import { useStateClass } from '@/composition/utils/useStateClass'
+import { computed } from 'vue'
 
 const classes = useStateClass()
 const props = defineProps<{
@@ -36,9 +36,9 @@ const props = defineProps<{
   total: number
   percent?: boolean
   skin: 'transparent' | 'default'
-}>();
+}>()
 
-const percentValue = computed(() => props.total > 0 ? props.miss / props.total * 100 : 0);
+const percentValue = computed(() => props.total > 0 ? props.miss / props.total * 100 : 0)
 
 </script>
 

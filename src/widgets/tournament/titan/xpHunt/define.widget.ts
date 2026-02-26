@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Охота за опытом. Titan Agency",
-  description: "Виджет индивидуальной прогрессии для турнира Охота за опытом от Titan Agency.",
+  name: 'Охота за опытом. Titan Agency',
+  description: 'Виджет индивидуальной прогрессии для турнира Охота за опытом от Titan Agency.',
   params: [
     { type: 'accentColorParam' },
     { type: 'backgroundColorParam' },

@@ -1,4 +1,4 @@
-import { SpecializationTag } from "@/components/equipment/equipment"
+import { SpecializationTag } from '@/components/equipment/equipment'
 
 
 export namespace NidinTankEquipment {

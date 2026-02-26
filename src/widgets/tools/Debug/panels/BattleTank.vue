@@ -73,12 +73,12 @@
 
 
 <script setup lang="ts">
-import Line from "../Line.vue";
+import Line from '../Line.vue'
 
 import RightTank from '@/components/tank/RightView.vue'
 import TopTank from '@/components/tank/TopView.vue'
 import FrontTank from '@/components/tank/FrontView.vue'
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 function radToRoundDec(rad: number) {
   return Math.round(radToDec(rad) * 10) / 10
@@ -105,7 +105,7 @@ const props = defineProps<{
   turretRotationSpeed?: number
   battleTankPosition?: number[]
   collapseKeys: KeyBindingSetting
-}>();
+}>()
 
 
 const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)

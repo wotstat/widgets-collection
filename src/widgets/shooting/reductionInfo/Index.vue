@@ -7,13 +7,13 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { computed, ref } from 'vue';
-import { useIntervalFn } from '@vueuse/core';
-import { skins } from './define.widget';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { computed, ref } from 'vue'
+import { useIntervalFn } from '@vueuse/core'
+import { skins } from './define.widget'
 
 
 const { skin, source, title, value } = useQueryParams({
@@ -23,7 +23,7 @@ const { skin, source, title, value } = useQueryParams({
   value: Boolean,
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const aimingTime = useReactiveState(sdk.data.battle.aiming.aimingTime)
 const idealDispersion = useReactiveState(sdk.data.battle.aiming.idealDispersion)
@@ -43,8 +43,8 @@ const display = computed(() => period.value?.tag == 'BATTLE' && isAlive.value)
 
 const time = computed(() => {
   if (!aimingTime.value || !idealDispersion.value || !currentDispersion.value) return 0
-  return aimingTime.value * Math.log(currentDispersion.value / idealDispersion.value);
-});
+  return aimingTime.value * Math.log(currentDispersion.value / idealDispersion.value)
+})
 
 const percent = computed(() => {
   if (!aimingTime.value || !idealDispersion.value || !currentDispersion.value) return 0

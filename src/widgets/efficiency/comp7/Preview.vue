@@ -7,10 +7,10 @@
 
 <script setup lang="ts">
 
-import { computed, ref } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { Props } from './define.widget';
+import { computed, ref } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { Props } from './define.widget'
 
 
 const props = defineProps<{
@@ -18,7 +18,7 @@ const props = defineProps<{
   hideIcon?: boolean
   historyLength?: number | string,
   skin?: 'transparent' | 'default'
-}>();
+}>()
 
 const targetProps = computed<Omit<Props, 'skin'>>(() => ({
   currentRank: 925,
@@ -36,12 +36,12 @@ const targetProps = computed<Omit<Props, 'skin'>>(() => ({
 
 
 const aspect = computed((() => {
-  let height = 50;
-  if (!targetProps.value.hideIcon) height += 150;
-  height += 22 * targetProps.value.history.length;
+  let height = 50
+  if (!targetProps.value.hideIcon) height += 150
+  height += 22 * targetProps.value.history.length
 
 
-  return 145 / height;
+  return 145 / height
 }))
 
 </script>

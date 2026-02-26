@@ -6,12 +6,12 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { BallisticCalculator } from '../ballisticCalc';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { BallisticCalculator } from '../ballisticCalc'
 
 const { title, percent, skin } = useQueryParams({
   title: Boolean,
@@ -22,7 +22,7 @@ const { title, percent, skin } = useQueryParams({
 const total = useWidgetStorage('total', 0)
 const miss = useWidgetStorage('miss', 0)
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const isServerAim = useReactiveState(sdk.data.battle.aiming.isServerAim)
 

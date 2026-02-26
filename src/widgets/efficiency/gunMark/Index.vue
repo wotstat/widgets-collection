@@ -6,15 +6,15 @@
 
 
 <script setup lang="ts">
-import Content from './Content.vue';
-import { computed, ref, watch } from 'vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { Props } from './define.widget';
-import { queryAsync } from '@/utils/db';
-import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
+import Content from './Content.vue'
+import { computed, ref, watch } from 'vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { Props } from './define.widget'
+import { queryAsync } from '@/utils/db'
+import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
 
 const { hideIcon, historyLength, skin } = useQueryParams({
   hideIcon: Boolean,
@@ -50,7 +50,7 @@ useReactiveState(sdk.data.battle.arenaId, arena => {
   awaitedDossiers.value.set(key, { arenaId: arena, damageRating: dossier.value.damageRating ?? 0 })
 })
 
-const arenas = queryAsync<{ id: number, name: string }>(`select id, argMax(name, datetime) as name from Arenas where region = 'RU' group by id;`)
+const arenas = queryAsync<{ id: number, name: string }>('select id, argMax(name, datetime) as name from Arenas where region = \'RU\' group by id;')
 
 function getArenaName(id: number) {
   return arenas.value.data.find(a => a.id == id)?.name ?? '...'

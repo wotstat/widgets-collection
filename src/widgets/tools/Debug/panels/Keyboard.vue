@@ -7,12 +7,12 @@
 
 
 <script setup lang="ts">
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   pressed: string[]
   collapseKeys: KeyBindingSetting
-}>();
+}>()
 
 const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>

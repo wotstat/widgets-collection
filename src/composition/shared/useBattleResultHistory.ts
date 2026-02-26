@@ -1,8 +1,8 @@
-import { useReactiveState, useWidgetSdk } from "@/composition/widgetSdk";
-import { useWidgetStorage } from "../useWidgetStorage";
-import { computed } from "vue";
-import { BattleResultWithArenaId, useBattleResult } from "../useOnBattleResult";
-import { DeepPartial } from "@/utils";
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { useWidgetStorage } from '../useWidgetStorage'
+import { computed } from 'vue'
+import { BattleResultWithArenaId, useBattleResult } from '../useOnBattleResult'
+import { DeepPartial } from '@/utils'
 
 export function useBattleResultHistory<T extends Object>(processResult?: (parsed: BattleResultWithArenaId, raw: unknown) => DeepPartial<T>,
   { order = 'start', groupByPlayerId = false }: {
@@ -10,7 +10,7 @@ export function useBattleResultHistory<T extends Object>(processResult?: (parsed
     groupByPlayerId?: boolean
   } = {}) {
 
-  const { sdk } = useWidgetSdk();
+  const { sdk } = useWidgetSdk()
 
   const battles = useWidgetStorage<Map<number, Partial<T>>>('battles', new Map(), { groupByPlayerId })
   const battlesTimings = useWidgetStorage<Map<number, { start: number, end: number | null, duration: number | null }>>('battlesTimings', new Map(), { groupByPlayerId })

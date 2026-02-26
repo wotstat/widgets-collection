@@ -8,7 +8,7 @@
 
 
 <script setup lang="ts">
-import ForceMono from '@/components/ForceMono.vue';
+import ForceMono from '@/components/ForceMono.vue'
 
 
 

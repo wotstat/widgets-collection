@@ -6,9 +6,9 @@
 
 
 <script setup lang="ts">
-import { WidgetMetaTags } from '@/composition/widgetSdk';
-import { isInPreview } from '@/utils/provides';
-import { computed, inject, onUnmounted, watch } from 'vue';
+import { WidgetMetaTags } from '@/composition/widgetSdk'
+import { isInPreview } from '@/utils/provides'
+import { computed, inject, onUnmounted, watch } from 'vue'
 
 const props = defineProps<{
   insets: number | { top: number, right: number, bottom: number, left: number }

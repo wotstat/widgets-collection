@@ -1,6 +1,6 @@
-import { type KeyCodes } from "@/composition/widgetSdk";
-import { useLocalStorage } from "@vueuse/core";
-import { computed, inject, provide, Ref, ref, ShallowRef, watch, watchEffect } from "vue";
+import { type KeyCodes } from '@/composition/widgetSdk'
+import { useLocalStorage } from '@vueuse/core'
+import { computed, inject, provide, Ref, ref, ShallowRef, watch, watchEffect } from 'vue'
 
 export const onAnyKeyPressKey = Symbol('pressedKeys')
 

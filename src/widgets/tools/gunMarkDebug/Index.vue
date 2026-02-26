@@ -6,10 +6,10 @@
 
 
 <script setup lang="ts">
-import Content from './Content.vue';
-import { computed } from 'vue';
-import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
+import Content from './Content.vue'
+import { computed } from 'vue'
+import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
 
 const gunMark = useGunMarkCalculator()
 

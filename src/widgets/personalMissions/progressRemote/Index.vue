@@ -13,13 +13,13 @@
 
 
 <script setup lang="ts">
-import { useReactiveRemoteValue, useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed } from 'vue';
-import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams';
+import { useReactiveRemoteValue, useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed } from 'vue'
+import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams'
 
-import { styleParams } from './define.widget';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
+import { styleParams } from './define.widget'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
 
 
 

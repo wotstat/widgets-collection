@@ -1,5 +1,5 @@
-import { WidgetsRelay } from "./widgetSdk";
-import { computed, MaybeRefOrGetter, ref, shallowRef, toValue, triggerRef, watch } from "vue";
+import { WidgetsRelay } from './widgetSdk'
+import { computed, MaybeRefOrGetter, ref, shallowRef, toValue, triggerRef, watch } from 'vue'
 
 export const passive = 'passive-reactive-relay-state' as const
 type Passive = typeof passive

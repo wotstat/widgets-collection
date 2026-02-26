@@ -1,27 +1,27 @@
-import { isWidgetDefine } from "./defineWidget";
+import { isWidgetDefine } from './defineWidget'
 
 export function pascalCaseToKebabCase(str: string) {
-  return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 }
 
 export function pathResolve(...path: string[]) {
-  const res: string[] = [];
+  const res: string[] = []
 
   for (const p of path) {
     if (p.startsWith('/')) {
-      res.length = 0;
+      res.length = 0
     }
 
     for (const part of p.split('/')) {
       if (part === '..') {
-        res.pop();
+        res.pop()
       } else if (part !== '.' && part !== '') {
-        res.push(part);
+        res.push(part)
       }
     }
   }
 
-  return res.join('/');
+  return res.join('/')
 }
 
 
@@ -36,13 +36,13 @@ export type Prettify<T> = {
 export function deepMerge<T extends Object>(target: T, source: Partial<T>): T {
   for (const key in source) {
     if (source[key] && typeof source[key] === 'object') {
-      if (!target[key]) Object.assign(target, { [key]: {} });
-      deepMerge(target[key] as any, source[key]);
+      if (!target[key]) Object.assign(target, { [key]: {} })
+      deepMerge(target[key] as any, source[key])
     } else {
-      Object.assign(target, { [key]: source[key] });
+      Object.assign(target, { [key]: source[key] })
     }
   }
-  return target;
+  return target
 }
 
 
@@ -76,26 +76,26 @@ export function arrayExclude<
   array: T,
   exclude: U
 ) {
-  return array.filter((item) => !exclude.includes(item)) as (Exclude<T[number], U[number]>)[];
+  return array.filter((item) => !exclude.includes(item)) as (Exclude<T[number], U[number]>)[]
 }
 
 export function minByComparator<T>(array: T[], comparator: (a: T, b: T) => number) {
-  return array.reduce((min, current) => comparator(min, current) < 0 ? min : current);
+  return array.reduce((min, current) => comparator(min, current) < 0 ? min : current)
 }
 
 export function maxByComparator<T>(array: T[], comparator: (a: T, b: T) => number) {
-  return array.reduce((max, current) => comparator(max, current) > 0 ? max : current);
+  return array.reduce((max, current) => comparator(max, current) > 0 ? max : current)
 }
 
 export function uniqBy<T>(values: T[], key: (value: T) => unknown) {
-  const keys = new Set<unknown>();
+  const keys = new Set<unknown>()
 
   return values.filter(value => {
-    const k = key(value);
+    const k = key(value)
 
-    if (keys.has(k)) return false;
-    keys.add(k);
-    return true;
-  });
+    if (keys.has(k)) return false
+    keys.add(k)
+    return true
+  })
 
 }

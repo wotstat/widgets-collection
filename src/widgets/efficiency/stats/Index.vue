@@ -6,15 +6,15 @@
 
 
 <script setup lang="ts">
-import Content from './Content.vue';
-import { computed, watch } from 'vue';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { SlotValue } from './define.widget';
-import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
-import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { inBattleEfficiency } from '@/components/efficiencyIcon/utils';
+import Content from './Content.vue'
+import { computed, watch } from 'vue'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { SlotValue } from './define.widget'
+import { useInBattleCollector } from '@/composition/shared/useInBattleCollector'
+import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { inBattleEfficiency } from '@/components/efficiencyIcon/utils'
 
 
 const params = useQueryParams({

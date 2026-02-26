@@ -12,10 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import { useElementSize } from '@vueuse/core';
-import { computed, inject, ref } from 'vue';
-import { accent, background } from "@/composition/wotstatColors";
-import { isInMiniPreview as isInMiniPreviewKey } from '@/utils/provides';
+import { useElementSize } from '@vueuse/core'
+import { computed, inject, ref } from 'vue'
+import { accent, background } from '@/composition/wotstatColors'
+import { isInMiniPreview as isInMiniPreviewKey } from '@/utils/provides'
 
 const containerElement = ref<HTMLElement | null>(null)
 
@@ -33,8 +33,8 @@ const targetStyle = computed(() => {
   if (isInMiniPreview) return { fontSize: fontSize.value }
 
   return {
-    '--wotstat-accent': `#` + accent.value,
-    '--wotstat-background': `#` + background.value,
+    '--wotstat-accent': '#' + accent.value,
+    '--wotstat-background': '#' + background.value,
     fontSize: fontSize.value
   }
 })

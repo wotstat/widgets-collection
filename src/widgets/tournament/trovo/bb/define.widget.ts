@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Битва Блогеров. TROVO",
-  description: "Виджет отображает серию в 30 боёв на ТТ10",
+  name: 'Битва Блогеров. TROVO',
+  description: 'Виджет отображает серию в 30 боёв на ТТ10',
   params: [
     { type: 'accentColorParam' },
     { type: 'backgroundColorParam' },

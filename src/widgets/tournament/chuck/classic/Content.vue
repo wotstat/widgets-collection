@@ -45,16 +45,16 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import TweenValue from '@/components/TweenValue.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import { useStateClass } from '@/composition/utils/useStateClass';
-import { useI18nRef } from '@/composition/useI18n';
-import i18n from './i18n.json';
-import { Props } from './define.widget';
-import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import TweenValue from '@/components/TweenValue.vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import { useStateClass } from '@/composition/utils/useStateClass'
+import { useI18nRef } from '@/composition/useI18n'
+import i18n from './i18n.json'
+import { Props } from './define.widget'
+import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor'
 
-const { t } = useI18nRef(i18n);
+const { t } = useI18nRef(i18n)
 
 const classes = useStateClass()
 const props = defineProps<Props>()

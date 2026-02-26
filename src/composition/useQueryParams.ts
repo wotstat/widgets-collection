@@ -1,7 +1,7 @@
-import { useRoute } from "vue-router";
+import { useRoute } from 'vue-router'
 
 function snakeCaseToCamelCase(str: string) {
-  return str.replace(/([-_]\w)/g, g => g[1].toUpperCase());
+  return str.replace(/([-_]\w)/g, g => g[1].toUpperCase())
 }
 
 type TypeObjectConstructor<T> = { new(...args: any[]): T & {} }
@@ -23,8 +23,8 @@ type InferPropType<T> = T extends BooleanProp ? boolean :
   T extends Prop<infer V, infer D> ? T extends { default: D } ? V : T extends TypeObjectConstructor<any> ? (V | undefined) : V : never
 
 export function useQueryParams<T extends PropsOptions>(values: T): ExtractPropTypes<T> {
-  const route = useRoute();
-  const query = route.query;
+  const route = useRoute()
+  const query = route.query
   const queryParams = Object.entries(query)
     .map(([key, value]) => ([snakeCaseToCamelCase(key), Array.isArray(value) ? value.join(',') : value?.toString()] as const))
   const queryParamsMap = new Map(queryParams)
@@ -32,10 +32,10 @@ export function useQueryParams<T extends PropsOptions>(values: T): ExtractPropTy
 
   function isConstructor(value: unknown): value is ObjectConstructor {
     try {
-      new new Proxy(value as any, { construct: () => ({}) });
-      return true;
+      new new Proxy(value as any, { construct: () => ({}) })
+      return true
     } catch (err) {
-      return false;
+      return false
     }
   }
 
@@ -56,9 +56,9 @@ export function useQueryParams<T extends PropsOptions>(values: T): ExtractPropTy
       return [key, undefined]
     })
     .map(([key, value]) => {
-      if (value instanceof Date) return [key, value];
+      if (value instanceof Date) return [key, value]
 
-      return [key, typeof value == 'object' && 'valueOf' in value && typeof value.valueOf === 'function' ? value.valueOf() : value];
+      return [key, typeof value == 'object' && 'valueOf' in value && typeof value.valueOf === 'function' ? value.valueOf() : value]
     })
   ) as ExtractPropTypes<T>
 }
@@ -69,10 +69,10 @@ export function oneOf<T extends string, D extends T | undefined>(
 ): (value: string | undefined) => D extends T ? T : T | undefined {
   return value => {
     if (value === undefined || !values.includes(value as T)) {
-      return defaultValue as any;
+      return defaultValue as any
     }
-    return value as T;
-  };
+    return value as T
+  }
 }
 
 export function arrayOfOneOf<T extends string>(
@@ -80,10 +80,10 @@ export function arrayOfOneOf<T extends string>(
 ): (value: string | undefined) => T[] {
   return value => {
     if (value === undefined) {
-      return [];
+      return []
     }
-    return value.split(',').filter(v => values.includes(v as T)) as T[];
-  };
+    return value.split(',').filter(v => values.includes(v as T)) as T[]
+  }
 }
 
 export function NumberDefault(defaultValue: number = 0) {
@@ -102,25 +102,25 @@ export function StringDefault(defaultValue: string = '') {
 
 export function Color(defaultValue: string = '000000'): (value: string | undefined) => string {
   return value => {
-    if (value === undefined) return defaultValue;
+    if (value === undefined) return defaultValue
 
     if (typeof value === 'string') {
 
-      if (value.match(/^#?[0-9a-fA-F]{6}$/)) return value.startsWith('#') ? value.slice(1) : value;
-      if (value.match(/^#?[0-9a-fA-F]{8}$/)) return value.startsWith('#') ? value.slice(1) : value;
+      if (value.match(/^#?[0-9a-fA-F]{6}$/)) return value.startsWith('#') ? value.slice(1) : value
+      if (value.match(/^#?[0-9a-fA-F]{8}$/)) return value.startsWith('#') ? value.slice(1) : value
 
-      if (value.match(/^[0-9a-fA-F]{6}$/)) return value;
-      if (value.match(/^[0-9a-fA-F]{8}$/)) return value;
+      if (value.match(/^[0-9a-fA-F]{6}$/)) return value
+      if (value.match(/^[0-9a-fA-F]{8}$/)) return value
 
       if (value.match(/^#[0-9a-fA-F]{3}$/)) return value.slice(1).split('').map(c => c + c).join('')
       if (value.match(/^#[0-9a-fA-F]{4}$/)) return value.slice(1).split('').map(c => c + c).join('')
 
-      if (value.match(/^[0-9a-fA-F]{3}$/)) return value.split('').map(c => c + c).join('');
-      if (value.match(/^[0-9a-fA-F]{4}$/)) return value.split('').map(c => c + c).join('');
+      if (value.match(/^[0-9a-fA-F]{3}$/)) return value.split('').map(c => c + c).join('')
+      if (value.match(/^[0-9a-fA-F]{4}$/)) return value.split('').map(c => c + c).join('')
     }
 
-    return defaultValue;
-  };
+    return defaultValue
+  }
 }
 
 
@@ -128,24 +128,24 @@ export function DateTimeDefault(defaultValue: Date = new Date()):
   (value: string | undefined) => Date {
   return value => {
     if (value === undefined) {
-      return defaultValue;
+      return defaultValue
     }
 
     try {
-      const numValue = Number(value);
+      const numValue = Number(value)
       if (!isNaN(numValue)) {
-        return new Date(numValue);
+        return new Date(numValue)
       }
 
       if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        const [year, month, day] = value.split('-').map(Number);
-        return new Date(year, month - 1, day);
+        const [year, month, day] = value.split('-').map(Number)
+        return new Date(year, month - 1, day)
       }
 
-      const date = new Date(value);
-      return isNaN(date.getTime()) ? defaultValue : date;
+      const date = new Date(value)
+      return isNaN(date.getTime()) ? defaultValue : date
     } catch (err) {
-      return defaultValue;
+      return defaultValue
     }
-  };
+  }
 }

@@ -1,5 +1,5 @@
-import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
-import { getAllWidgetsRoutes, pathResolve } from "./utils";
+import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router'
+import { getAllWidgetsRoutes, pathResolve } from './utils'
 
 import CollectionList from './pages/collectionList/Index.vue'
 import PreviewPopup from './pages/previewPopup/Index.vue'
@@ -22,7 +22,7 @@ const widgetModules = import.meta.glob('./widgets/**/*.vue')
 
 const widgets = widgetsOptions.map(w => {
   const modulePath = './' + pathResolve(w.path, w.options.widget)
-  if (!(modulePath in widgetModules)) return null;
+  if (!(modulePath in widgetModules)) return null
 
   const module = widgetModules[modulePath]
 

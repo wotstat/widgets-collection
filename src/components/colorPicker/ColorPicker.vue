@@ -12,11 +12,11 @@
 
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import ColorPickerPopup from './ColorPickerPopup.vue';
-import PopoverStyled from '../popover/PopoverStyled.vue';
-import { ColorHSVA, HSLA, RGBA } from './ColorHSVA';
-import { PlacementParam } from '../popover/utils';
+import { ref, watch } from 'vue'
+import ColorPickerPopup from './ColorPickerPopup.vue'
+import PopoverStyled from '../popover/PopoverStyled.vue'
+import { ColorHSVA, HSLA, RGBA } from './ColorHSVA'
+import { PlacementParam } from '../popover/utils'
 
 const { allowAlpha = true, savedColors = true, format = 'hex', placement = ['left-float', 'right-float', 'bottom-float'] } = defineProps<{
   allowAlpha?: boolean
@@ -25,17 +25,17 @@ const { allowAlpha = true, savedColors = true, format = 'hex', placement = ['lef
   placement?: PlacementParam
 }>()
 
-const colorPreview = ref<HTMLElement | null>(null);
-const showPopup = ref(false);
+const colorPreview = ref<HTMLElement | null>(null)
+const showPopup = ref(false)
 
 const color = defineModel<string | RGBA | HSLA>({
   required: false,
 })
 
-let colorProc = ref(new ColorHSVA(0, 0, 0, 1));
+let colorProc = ref(new ColorHSVA(0, 0, 0, 1))
 watch(color, (newColor) => {
-  if (newColor) colorProc.value.parseFormat(format, newColor);
-}, { immediate: true, deep: true });
+  if (newColor) colorProc.value.parseFormat(format, newColor)
+}, { immediate: true, deep: true })
 
 </script>
 

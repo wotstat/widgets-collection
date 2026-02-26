@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 
 export const slotValues = ['empty', 'dmg-max', 'dmg-avg', 'frags-max', 'frags-avg', 'xp-max', 'xp-avg', 'position-max', 'position-avg', 'score-max', 'score-avg', 'score-in-row-10', 'score-in-row-10-max', 'top-in-row', 'top-sum', 'battles'] as const
@@ -57,8 +57,8 @@ const slotVariants = [
 ] satisfies { value: SlotValue, label: string }[]
 
 export default defineWidget({
-  name: "Лучшие в Стальном Охотнике",
-  description: "Позволяет соревноваться по максимальным показателям в Стальном Охотнике",
+  name: 'Лучшие в Стальном Охотнике',
+  description: 'Позволяет соревноваться по максимальным показателям в Стальном Охотнике',
   params: [
     { type: 'accentColorParam' },
     { type: 'backgroundColorParam' },

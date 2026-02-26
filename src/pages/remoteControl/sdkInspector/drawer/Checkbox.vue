@@ -7,7 +7,7 @@
 
 
 <script setup lang="ts">
-import { useSetStateMap } from './useSetStateMap';
+import { useSetStateMap } from './useSetStateMap'
 
 const props = defineProps<{
   title: string
@@ -16,6 +16,6 @@ const props = defineProps<{
 
 const value = defineModel<boolean>({ default: false })
 
-useSetStateMap(props.mKey, value);
+useSetStateMap(props.mKey, value)
 
 </script>

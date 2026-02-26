@@ -6,17 +6,17 @@
 
 
 <script setup lang="ts">
-import Content from './Content.vue';
-import { computed } from 'vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { Props } from './define.widget';
-import { queryAsync } from '@/utils/db';
-import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
+import Content from './Content.vue'
+import { computed } from 'vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { Props } from './define.widget'
+import { queryAsync } from '@/utils/db'
+import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
 
 
-const COMP_7_BONUS_TYPE = 43;
+const COMP_7_BONUS_TYPE = 43
 
 const { hideIcon, historyLength, skin } = useQueryParams({
   hideIcon: Boolean,
@@ -43,11 +43,11 @@ const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
 
 const comp7History = computed(() => history.value.filter(h => h?.arena != null && h.bonusType == COMP_7_BONUS_TYPE))
 
-const arenas = queryAsync<{ id: number, name: string }>(`select id, argMax(name, datetime) as name from Arenas where region = 'RU' group by id;`)
+const arenas = queryAsync<{ id: number, name: string }>('select id, argMax(name, datetime) as name from Arenas where region = \'RU\' group by id;')
 
 function getArenaName(id: number) {
   const fullName = arenas.value.data.find(a => a.id == id)?.name
-  if (!fullName) return `...`
+  if (!fullName) return '...'
 
   return fullName
     .replace('(новогодняя)', 'НГ')

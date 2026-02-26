@@ -115,186 +115,186 @@
 
 
 <script setup lang="ts">
-import { computedAsync, useDebounce, useDebounceFn, useElementSize, useEventListener, useLocalStorage, useResizeObserver, watchOnce } from '@vueuse/core';
-import { computed, ref, watch, watchEffect } from 'vue';
-import { useWidgetRelayDebugConnection, useWidgetRemoteDebugConnection, useWidgetSdkDebugConnection } from "@/composition/widgetSdk";
-import { useRemoteInspector } from './useRegistredStates';
-import { useQueryStorage } from './useQueryStorage';
+import { computedAsync, useDebounce, useDebounceFn, useElementSize, useEventListener, useLocalStorage, useResizeObserver, watchOnce } from '@vueuse/core'
+import { computed, ref, watch, watchEffect } from 'vue'
+import { useWidgetRelayDebugConnection, useWidgetRemoteDebugConnection, useWidgetSdkDebugConnection } from '@/composition/widgetSdk'
+import { useRemoteInspector } from './useRegistredStates'
+import { useQueryStorage } from './useQueryStorage'
 import ReloadIcon from '@/assets/icons/reload.svg'
 import CopyIcon from '@/assets/icons/copy.svg'
-import SdkInspector from './sdkInspector/SdkInspector.vue';
-import RemoteInspector from './RemoteInspector.vue';
-import RelayInspector from './RelayInspector.vue';
-import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue';
-import Select from '@/components/Select.vue';
-import { channelKey as generatePublicKey } from './channelKey';
+import SdkInspector from './sdkInspector/SdkInspector.vue'
+import RemoteInspector from './RemoteInspector.vue'
+import RelayInspector from './RelayInspector.vue'
+import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue'
+import Select from '@/components/Select.vue'
+import { channelKey as generatePublicKey } from './channelKey'
 
 
 
-const widgetIframe = ref<HTMLIFrameElement | null>(null);
-const resizeContainer = ref<HTMLDivElement | null>(null);
-const passwordInput = ref<HTMLInputElement | null>(null);
+const widgetIframe = ref<HTMLIFrameElement | null>(null)
+const resizeContainer = ref<HTMLDivElement | null>(null)
+const passwordInput = ref<HTMLInputElement | null>(null)
 
 const widgetUrl = useQueryStorage('widget-url', '', { base64: true, history: 'push', debounceMs: 500 })
-const privateKey = useQueryStorage('private-key', '');
-const containerWidth = useQueryStorage('width', 400);
-const containerHeight = useQueryStorage('height', 400);
-const scale = useQueryStorage('scale', 1);
+const privateKey = useQueryStorage('private-key', '')
+const containerWidth = useQueryStorage('width', 400)
+const containerHeight = useQueryStorage('height', 400)
+const scale = useQueryStorage('scale', 1)
 
-const currentInspector = ref<'remote' | 'sdk' | 'relay'>('remote');
-const autoSync = useLocalStorage('remote-auto-sync', true);
+const currentInspector = ref<'remote' | 'sdk' | 'relay'>('remote')
+const autoSync = useLocalStorage('remote-auto-sync', true)
 
 
-const { debug: remoteDebug, isConnected: remoteIsConnected, bbox } = useWidgetRemoteDebugConnection(widgetIframe);
+const { debug: remoteDebug, isConnected: remoteIsConnected, bbox } = useWidgetRemoteDebugConnection(widgetIframe)
 const { debug: sdkDebug, isConnected: sdkIsConnected } = useWidgetSdkDebugConnection(widgetIframe)
 const { debug: relayDebug, isConnected: relayIsConnected } = useWidgetRelayDebugConnection(widgetIframe)
 
-const hoveredPath = ref<string | null>(null);
+const hoveredPath = ref<string | null>(null)
 const hoveredBbox = computed(() => {
-  if (!hoveredPath.value || !remoteDebug.value) return null;
-  return bbox.value?.get(hoveredPath.value) ?? null;
+  if (!hoveredPath.value || !remoteDebug.value) return null
+  return bbox.value?.get(hoveredPath.value) ?? null
 })
 
 const tabs = computed(() => [remoteIsConnected.value, relayIsConnected.value, sdkIsConnected.value])
-const debouncedTabsAvailability = useDebounce(tabs, 100);
+const debouncedTabsAvailability = useDebounce(tabs, 100)
 
 watchEffect(() => {
   const tabs = debouncedTabsAvailability.value
-  const targets = ['remote', 'relay', 'sdk'] as const;
+  const targets = ['remote', 'relay', 'sdk'] as const
 
   if (!tabs[targets.indexOf(currentInspector.value)]) {
-    currentInspector.value = targets[tabs.findIndex(tab => tab)] ?? 'remote';
+    currentInspector.value = targets[tabs.findIndex(tab => tab)] ?? 'remote'
   }
 })
 
 
 const channelKey = computedAsync(async () => await generatePublicKey(privateKey.value))
-const debounceChannelKey = useDebounce(channelKey, 500);
+const debounceChannelKey = useDebounce(channelKey, 500)
 
 const iframeUrl = computed(() => {
-  if (!widgetUrl.value) return '';
+  if (!widgetUrl.value) return ''
   if (widgetUrl.value.includes('remote-key=')) {
-    const url = new URL(widgetUrl.value, window.location.href);
-    url.searchParams.delete('remote-key');
-    return url.toString();
+    const url = new URL(widgetUrl.value, window.location.href)
+    url.searchParams.delete('remote-key')
+    return url.toString()
   }
-  return widgetUrl.value;
-});
+  return widgetUrl.value
+})
 
-const { overrides, inspector, patch, sending, publish, remoteStatus } = useRemoteInspector(remoteDebug, () => channelKey.value ?? '', () => privateKey.value ?? '');
+const { overrides, inspector, patch, sending, publish, remoteStatus } = useRemoteInspector(remoteDebug, () => channelKey.value ?? '', () => privateKey.value ?? '')
 
 const debouncePublish = useDebounceFn(() => {
-  if (!autoSync.value) return;
-  if (overrides.value.size === 0) return;
+  if (!autoSync.value) return
+  if (overrides.value.size === 0) return
   publish()
-}, 200);
+}, 200)
 
 watch(() => [overrides.value, sending.value, autoSync.value], () => {
-  if (!autoSync.value) return;
-  if (overrides.value.size === 0) return;
-  if (sending.value) return;
-  debouncePublish();
-}, { deep: true });
+  if (!autoSync.value) return
+  if (overrides.value.size === 0) return
+  if (sending.value) return
+  debouncePublish()
+}, { deep: true })
 
 useEventListener(window, 'keypress', (event: KeyboardEvent) => {
   if (event.code === 'Enter' && event.ctrlKey && !sending.value) {
-    event.preventDefault();
-    event.stopPropagation();
-    publish();
+    event.preventDefault()
+    event.stopPropagation()
+    publish()
   }
-});
+})
 
 
-if (privateKey.value == '') generateNewKey();
+if (privateKey.value == '') generateNewKey()
 function generateNewKey() {
-  privateKey.value = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 6);
+  privateKey.value = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 6)
 }
 
 watchEffect(() => {
-  if (!widgetUrl.value || !debounceChannelKey.value) return;
+  if (!widgetUrl.value || !debounceChannelKey.value) return
 
-  const url = new URL(widgetUrl.value, window.location.href);
-  url.searchParams.set('remote-key', debounceChannelKey.value);
-  widgetUrl.value = url.toString();
+  const url = new URL(widgetUrl.value, window.location.href)
+  url.searchParams.set('remote-key', debounceChannelKey.value)
+  widgetUrl.value = url.toString()
 })
 
-const copyHighlight = ref(false);
+const copyHighlight = ref(false)
 function copyUrl() {
   navigator.clipboard.writeText(widgetUrl.value)
-  copyHighlight.value = true;
-  setTimeout(() => copyHighlight.value = false, 300);
+  copyHighlight.value = true
+  setTimeout(() => copyHighlight.value = false, 300)
 }
 
 const setContainerSize = useDebounceFn((width: number, height: number) => {
-  containerHeight.value = height;
+  containerHeight.value = height
   setTimeout(() => containerWidth.value = width, 0)
 }, 100)
 
-const targetWidth = ref(containerWidth.value);
-const targetHeight = ref(containerHeight.value);
+const targetWidth = ref(containerWidth.value)
+const targetHeight = ref(containerHeight.value)
 
 useEventListener(window, 'popstate', () => {
-  targetWidth.value = containerWidth.value;
-  targetHeight.value = containerHeight.value;
-});
+  targetWidth.value = containerWidth.value
+  targetHeight.value = containerHeight.value
+})
 
-const isDragging = ref(false);
-useEventListener(window, 'pointermove', onHandlerMove);
-useEventListener(window, 'pointerup', () => isDragging.value = false);
+const isDragging = ref(false)
+useEventListener(window, 'pointermove', onHandlerMove)
+useEventListener(window, 'pointerup', () => isDragging.value = false)
 function onPointerHandlerDown(event: PointerEvent) {
-  isDragging.value = true;
+  isDragging.value = true
 }
 
 function onHandlerMove(event: PointerEvent) {
-  if (!resizeContainer.value) return;
-  if (!isDragging.value) return;
+  if (!resizeContainer.value) return
+  if (!isDragging.value) return
 
-  event.stopPropagation();
-  event.preventDefault();
+  event.stopPropagation()
+  event.preventDefault()
 
-  const rect = resizeContainer.value.getBoundingClientRect();
-  const newWidth = Math.max(100, event.clientX - rect.left);
-  const newHeight = Math.max(100, event.clientY - rect.top);
-  targetWidth.value = Math.round(newWidth) / scale.value;
-  targetHeight.value = Math.round(newHeight) / scale.value;
+  const rect = resizeContainer.value.getBoundingClientRect()
+  const newWidth = Math.max(100, event.clientX - rect.left)
+  const newHeight = Math.max(100, event.clientY - rect.top)
+  targetWidth.value = Math.round(newWidth) / scale.value
+  targetHeight.value = Math.round(newHeight) / scale.value
 }
 
 function setPreset(preset: '720p' | '1080p' | '1440p' | '2160p') {
   switch (preset) {
     case '720p':
-      targetWidth.value = 1280;
-      targetHeight.value = 720;
-      break;
+      targetWidth.value = 1280
+      targetHeight.value = 720
+      break
     case '1080p':
-      targetWidth.value = 1920;
-      targetHeight.value = 1080;
-      break;
+      targetWidth.value = 1920
+      targetHeight.value = 1080
+      break
     case '1440p':
-      targetWidth.value = 2560;
-      targetHeight.value = 1440;
-      break;
+      targetWidth.value = 2560
+      targetHeight.value = 1440
+      break
     case '2160p':
-      targetWidth.value = 3840;
-      targetHeight.value = 2160;
-      break;
+      targetWidth.value = 3840
+      targetHeight.value = 2160
+      break
   }
 
-  const w = targetWidth.value;
-  const h = targetHeight.value;
-  const maxWidth = window.innerWidth - 300;
-  const maxHeight = window.innerHeight - 100;
+  const w = targetWidth.value
+  const h = targetHeight.value
+  const maxWidth = window.innerWidth - 300
+  const maxHeight = window.innerHeight - 100
 
-  let targetMaxScale = 1;
+  let targetMaxScale = 1
 
   if (w > maxWidth || h > maxHeight) {
-    targetMaxScale = Math.min(maxWidth / w, maxHeight / h);
+    targetMaxScale = Math.min(maxWidth / w, maxHeight / h)
   }
 
-  const nearestLessScale = [1, 0.75, 0.5, 0.25].find(s => s <= targetMaxScale) ?? 1;
-  scale.value = nearestLessScale;
+  const nearestLessScale = [1, 0.75, 0.5, 0.25].find(s => s <= targetMaxScale) ?? 1
+  scale.value = nearestLessScale
 }
 
-watch(() => [targetWidth.value, targetHeight.value], ([width, height]) => setContainerSize(width, height));
+watch(() => [targetWidth.value, targetHeight.value], ([width, height]) => setContainerSize(width, height))
 
 </script>
 

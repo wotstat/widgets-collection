@@ -9,10 +9,10 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { BackgroundScheme, ColorScheme, styleParams } from './define.widget';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { BackgroundScheme, ColorScheme, styleParams } from './define.widget'
 
 
 const props = defineProps<{
@@ -23,7 +23,7 @@ const props = defineProps<{
   backColorTo?: string,
   backgroundScheme?: BackgroundScheme
   headerMode?: 'full' | 'compact' | 'hide'
-}>();
+}>()
 
 
 const color = computed(() => styleParams(props.colorScheme ?? 'orange', props.accent))

@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 
 export type Status = 'connected' | 'connecting' | 'disconnected'
@@ -12,8 +12,8 @@ export type Props = {
 }
 
 export default defineWidget({
-  name: "Проверка соединения",
-  description: "Этот виджет проверяет все виды соединения с сервером",
+  name: 'Проверка соединения',
+  description: 'Этот виджет проверяет все виды соединения с сервером',
   params: [
     { type: 'backgroundColorParam' },
   ]

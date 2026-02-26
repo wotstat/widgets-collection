@@ -10,8 +10,8 @@
 
 
 <script setup lang="ts">
-import { VueComponentWith } from "./Content.md";
-import Link from "./Link.vue";
+import { VueComponentWith } from './Content.md'
+import Link from './Link.vue'
 
 
 const VueComponent = VueComponentWith({ 'storage-link': Link })

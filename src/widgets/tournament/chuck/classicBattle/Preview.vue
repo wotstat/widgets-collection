@@ -9,9 +9,9 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
 
 
 const props = defineProps<{
@@ -19,7 +19,7 @@ const props = defineProps<{
   border?: boolean
   totalScore?: 'never' | 'hangar' | 'both'
   skin?: 'transparent' | 'default'
-}>();
+}>()
 
 const players = computed(() => {
   return [
@@ -53,8 +53,8 @@ const players = computed(() => {
       maxHp: 3000,
       connected: true
     },
-  ];
-});
+  ]
+})
 
 </script>
 

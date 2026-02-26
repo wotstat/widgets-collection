@@ -1,8 +1,8 @@
-import { useElementBounding } from "@vueuse/core";
-import { toRef, watch, watchEffect } from "vue";
+import { useElementBounding } from '@vueuse/core'
+import { toRef, watch, watchEffect } from 'vue'
 
 export function useProvideDocumentBounding() {
-  const size = useElementBounding(document.body);
+  const size = useElementBounding(document.body)
 
   watchEffect(() => {
     parent.postMessage({
@@ -10,6 +10,6 @@ export function useProvideDocumentBounding() {
         width: size.width.value,
         height: size.height.value,
       }
-    }, '*');
+    }, '*')
   })
 }

@@ -7,24 +7,24 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed, ref, watch, watchEffect } from 'vue';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { useBattleResult } from '@/composition/useOnBattleResult';
-import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
-import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
-import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay';
-import { syncRefs } from '@vueuse/core';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed, ref, watch, watchEffect } from 'vue'
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { useBattleResult } from '@/composition/useOnBattleResult'
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
+import { useReactiveRelayState } from '@/composition/useReactiveRelayState'
+import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay'
+import { syncRefs } from '@vueuse/core'
 
 function personalScore(damage: number, frags: number): number {
-  return damage + frags * 300;
+  return damage + frags * 300
 }
 
 function teamScore(isWin: boolean) {
-  return isWin ? 3000 : 0;
+  return isWin ? 3000 : 0
 }
 
 const { skin, border, channelKey, totalScore: totalScoreDisplay } = useQueryParams({
@@ -34,12 +34,12 @@ const { skin, border, channelKey, totalScore: totalScoreDisplay } = useQueryPara
   totalScore: oneOf(['never', 'hangar', 'both'] as const, 'both')
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const platoon = useReactiveState(sdk.data.platoon.slots)
 const playerName = useReactiveState(sdk.data.player.name)
 const playerId = useReactiveState(sdk.data.player.id)
-const isInBattle = useReactiveState(sdk.data.battle.isInBattle);
+const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
 
 const maxHp = useReactiveState(sdk.data.battle.maxHealth)
@@ -116,7 +116,7 @@ const target = computed(() => {
 syncRefs(target, relayState.state)
 
 const relayValuesByPlayerId = computed(() => {
-  const values = relayState.all.value.entries();
+  const values = relayState.all.value.entries()
   const resMap = new Map([...values].map(([uuid, value]) => [value.id, value]))
   resMap.set(target.value.id, target.value)
   return resMap
@@ -166,7 +166,7 @@ watch(() => players.value, (p) => battleScore.value = p.reduce((acc, player) => 
 const isMain = useWidgetMainTab()
 
 useBattleResult((parsed, result) => {
-  if (!isMain.value) return;
+  if (!isMain.value) return
 
   battles.value += 1
 
@@ -183,7 +183,7 @@ useBattleResult((parsed, result) => {
   }
 
   for (const person of parsed.platoon) {
-    if (!person || person.player == 'bot') continue;
+    if (!person || person.player == 'bot') continue
     const current = scoreByPlayer.value.get(person.player.bdid) ?? { frags: 0, damage: 0 }
     scoreByPlayer.value.set(person.player.bdid, {
       frags: current.frags + person.stats.kills,

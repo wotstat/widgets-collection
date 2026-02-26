@@ -12,12 +12,12 @@
 
 
 <script setup lang="ts">
-import ForceMono from '@/components/ForceMono.vue';
-import { computed } from 'vue';
-import { useI18nRef } from "@/composition/useI18n";
-import i18n from '../../i18n.json';
+import ForceMono from '@/components/ForceMono.vue'
+import { computed } from 'vue'
+import { useI18nRef } from '@/composition/useI18n'
+import i18n from '../../i18n.json'
 
-const { t } = useI18nRef(i18n);
+const { t } = useI18nRef(i18n)
 
 const props = defineProps<{
   time: number,

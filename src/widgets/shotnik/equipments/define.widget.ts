@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Оборудование и модернизация от Sh0tnik",
-  description: "Рекомендуемое оборудование и полевая модернизация для каждого танка",
+  name: 'Оборудование и модернизация от Sh0tnik',
+  description: 'Рекомендуемое оборудование и полевая модернизация для каждого танка',
   params: [
     { type: 'checkbox', target: 'show-tank-name', label: 'Название танка', default: false },
     { type: 'select', target: 'variant', label: 'shared:style:title', variants: [{ value: 'default', label: 'Стандартный' }, { value: 'compact', label: 'Компактный' }], default: 'compact' },

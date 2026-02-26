@@ -34,7 +34,7 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
+import WidgetCard from '@/components/WidgetCard.vue'
 
 import { Props } from './define.widget'
 

@@ -19,8 +19,8 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import { computed } from 'vue';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import { computed } from 'vue'
 
 
 const props = defineProps<{
@@ -32,7 +32,7 @@ const props = defineProps<{
   displayValue?: boolean,
 }>()
 
-const height = 100;
+const height = 100
 const targetWidth = computed(() => props.history.length > 200 ? 200 : 100)
 const maxValue = computed(() => 0.1 + Math.max(...props.history, props.defaultMax))
 const minValue = computed(() => -0.3)
@@ -44,22 +44,22 @@ const insets = computed(() => {
 })
 
 const path = computed(() => {
-  const data = props.history;
-  const width = targetWidth.value;
+  const data = props.history
+  const width = targetWidth.value
 
-  if (data.length === 0) return "";
-  const step = width / (data.length - 1);
+  if (data.length === 0) return ''
+  const step = width / (data.length - 1)
 
-  let path = "";
+  let path = ''
   data.forEach((value, index) => {
-    const normalized = (value - minValue.value) / (maxValue.value - minValue.value);
-    const x = index * step;
-    const y = height - normalized * height;
-    path += index === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`;
+    const normalized = (value - minValue.value) / (maxValue.value - minValue.value)
+    const x = index * step
+    const y = height - normalized * height
+    path += index === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`
 
-  });
+  })
 
-  return path;
+  return path
 })
 
 // const timeLabel = computed(() => {

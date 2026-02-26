@@ -19,15 +19,15 @@
 
 
 <script setup lang="ts">
-import { computed } from "vue";
-import Bar from './reduction-info-new-bar.svg';
-import BarGreen from './reduction-info-new-bar-green.svg';
-import BarOrange from './reduction-info-new-bar-orange.svg';
-import BarRed from './reduction-info-new-bar-red.svg';
-import { useI18nRef } from "@/composition/useI18n";
-import i18n from '../../i18n.json';
+import { computed } from 'vue'
+import Bar from './reduction-info-new-bar.svg'
+import BarGreen from './reduction-info-new-bar-green.svg'
+import BarOrange from './reduction-info-new-bar-orange.svg'
+import BarRed from './reduction-info-new-bar-red.svg'
+import { useI18nRef } from '@/composition/useI18n'
+import i18n from '../../i18n.json'
 
-const { t } = useI18nRef(i18n);
+const { t } = useI18nRef(i18n)
 
 const props = defineProps<{
   percent: number,
@@ -35,7 +35,7 @@ const props = defineProps<{
 }>()
 
 const timeLabel = computed(() => {
-  if (props.time < 0.01) return t("reduction:full").value
+  if (props.time < 0.01) return t('reduction:full').value
   return (Math.round(props.time * 10) / 10).toFixed(1) + ' ' + t('seconds').value
 })
 

@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 
-import WidgetCard from '@/components/WidgetCard.vue';
+import WidgetCard from '@/components/WidgetCard.vue'
 
 import DmgMax from '@/assets/actions/dmg-max.svg'
 import DmgAvg from '@/assets/actions/dmg-avg.svg'
@@ -47,7 +47,7 @@ import Top1 from '@/assets/actions/top1.svg'
 import Top1InRow from '@/assets/actions/top1-in-row.svg'
 import Battles from '@/assets/actions/battles.svg'
 
-import TweenValue from '@/components/TweenValue.vue';
+import TweenValue from '@/components/TweenValue.vue'
 import { computed } from 'vue'
 import { Line, SlotValue } from './define.widget'
 

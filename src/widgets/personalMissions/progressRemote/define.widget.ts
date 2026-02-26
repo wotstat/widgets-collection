@@ -1,5 +1,5 @@
-import { defineWidget } from "@/utils/defineWidget";
-import { accentColors } from "../currentTaskRemote/define.widget";
+import { defineWidget } from '@/utils/defineWidget'
+import { accentColors } from '../currentTaskRemote/define.widget'
 import i18n from './i18n.json'
 
 export type Props = {
@@ -24,8 +24,8 @@ export function styleParams(colorScheme: ColorScheme, accent?: string) {
 }
 
 export default defineWidget({
-  name: "Прогресс ЛБЗ (удалённое управление)",
-  description: "Позволяет вывести на экран прогресс выполнения ЛБЗ",
+  name: 'Прогресс ЛБЗ (удалённое управление)',
+  description: 'Позволяет вывести на экран прогресс выполнения ЛБЗ',
   i18n,
   params: [{
     type: 'select', target: 'color-scheme', label: 'shared:color-palette:title', variants: [

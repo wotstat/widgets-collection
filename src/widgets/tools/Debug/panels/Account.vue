@@ -26,8 +26,8 @@
 
 
 <script setup lang="ts">
-import Line from "../Line.vue";
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import Line from '../Line.vue'
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   accountCredits?: number
@@ -36,7 +36,7 @@ const props = defineProps<{
   accountFreeXp?: number
   accountPremium?: Record<string, { active: boolean; expiration: number }>
   collapseKeys: KeyBindingSetting
-}>();
+}>()
 
 const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>

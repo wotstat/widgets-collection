@@ -78,12 +78,12 @@
 
 
 <script setup lang="ts">
-import SeriesBarChart from '@/components/SeriesBarChart.vue';
-import { useRoundProcessor } from '@/composition/processors/useRoundProcessor';
-import { useTweenComputed } from '@/composition/tween/useTweenRef';
-import { computed } from 'vue';
-import { Props } from './define.widget';
-import { queryAsync } from '@/utils/db';
+import SeriesBarChart from '@/components/SeriesBarChart.vue'
+import { useRoundProcessor } from '@/composition/processors/useRoundProcessor'
+import { useTweenComputed } from '@/composition/tween/useTweenRef'
+import { computed } from 'vue'
+import { Props } from './define.widget'
+import { queryAsync } from '@/utils/db'
 
 const LINE_COUNT = 5
 const BAR_COUNT = 9
@@ -116,7 +116,7 @@ const chart = computed(() => {
   })
 })
 
-const tankTagsData = queryAsync<{ tag: string, name: string }>(`select tag, argMax(shortName, datetime) as name from Vehicles where region = 'RU' group by tag`)
+const tankTagsData = queryAsync<{ tag: string, name: string }>('select tag, argMax(shortName, datetime) as name from Vehicles where region = \'RU\' group by tag')
 
 const tankTags = computed(() => new Map(tankTagsData.value.data.map((row) => [row.name, row.tag])))
 

@@ -14,10 +14,10 @@
 
 
 <script setup lang="ts">
-import ReloadIcon from '@/assets/icons/reload.svg';
-import { channelKey as generatePublicKey } from '@/pages/remoteControl/channelKey';
-import { computedAsync } from '@vueuse/core';
-import { computed, onMounted, ref, watch } from 'vue';
+import ReloadIcon from '@/assets/icons/reload.svg'
+import { channelKey as generatePublicKey } from '@/pages/remoteControl/channelKey'
+import { computedAsync } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const inputLine = ref<HTMLElement | null>(null)
 const mouseOverPassword = ref(false)

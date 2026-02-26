@@ -1,8 +1,8 @@
-import { defineWidget, MultiSlotParamSlot } from "@/utils/defineWidget";
+import { defineWidget, MultiSlotParamSlot } from '@/utils/defineWidget'
 
-import { i18n } from "@/components/efficiencyIcon/i18n";
-import { Line } from "@/widgets/efficiency/stats/define.widget";
-import { InBattleIconType, modificationLabel } from "@/components/efficiencyIcon/utils";
+import { i18n } from '@/components/efficiencyIcon/i18n'
+import { Line } from '@/widgets/efficiency/stats/define.widget'
+import { InBattleIconType, modificationLabel } from '@/components/efficiencyIcon/utils'
 
 export type Props = {
   lines: Line[]
@@ -51,8 +51,8 @@ export type SlotValue = InBattleIconType | 'player' | 'tank'
 
 
 export default defineWidget({
-  name: "Взводная эффективность",
-  description: "Отображает эффективность ваших совзводных в бою",
+  name: 'Взводная эффективность',
+  description: 'Отображает эффективность ваших совзводных в бою',
   i18n,
   params: [
     { type: 'accentColorParam' },

@@ -23,9 +23,9 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
-import { Props } from './define.widget';
-import { useI18nRef } from '@/composition/useI18n';
+import WidgetCard from '@/components/WidgetCard.vue'
+import { Props } from './define.widget'
+import { useI18nRef } from '@/composition/useI18n'
 
 import i18n from './i18n.json'
 const { t } = useI18nRef(i18n)
@@ -33,17 +33,17 @@ const { t } = useI18nRef(i18n)
 const props = defineProps<Props>()
 
 function timeProcessor(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const secondsLeft = Math.floor(seconds % 60);
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const secondsLeft = Math.floor(seconds % 60)
 
   const parts = [
     hours > 0 ? `${hours.toString().padStart(2, '0')}:` : '',
     minutes > 0 ? `${minutes.toString().padStart(hours > 0 ? 2 : 0, '0')}:` : '',
     secondsLeft.toString().padStart(minutes > 0 ? 2 : 0, '0'),
-  ];
+  ]
 
-  return parts.join('');
+  return parts.join('')
 }
 
 function msProcessor(seconds: number) {

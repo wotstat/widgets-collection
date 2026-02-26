@@ -32,20 +32,20 @@
 
 
 <script setup lang="ts">
-import TweenValue from '@/components/TweenValue.vue';
-import { computed, inject, watch } from 'vue';
-import { type Props } from "./define.widget";
-import InsetsWrapper from "@/components/InsetsWrapper.vue";
+import TweenValue from '@/components/TweenValue.vue'
+import { computed, inject, watch } from 'vue'
+import { type Props } from './define.widget'
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
 
-import RankTabHighlight from "./assets/rankTabHighlight.png";
-import Battles from "./assets/battles.svg";
-import { preloadImage } from '@/utils/preload';
-import { isInPreview as isInPreviewKey } from '@/utils/provides';
+import RankTabHighlight from './assets/rankTabHighlight.png'
+import Battles from './assets/battles.svg'
+import { preloadImage } from '@/utils/preload'
+import { isInPreview as isInPreviewKey } from '@/utils/provides'
 
 
-const ranksLesta = import.meta.glob<{ default: string }>('./assets/rank-lesta/*.png', { eager: true });
-const ranksWg = import.meta.glob<{ default: string }>('./assets/rank-wg/*.png', { eager: true });
-const isInPreview = inject(isInPreviewKey, false);
+const ranksLesta = import.meta.glob<{ default: string }>('./assets/rank-lesta/*.png', { eager: true })
+const ranksWg = import.meta.glob<{ default: string }>('./assets/rank-wg/*.png', { eager: true })
+const isInPreview = inject(isInPreviewKey, false)
 
 const ranksLestaMap = {
   1: 'first_E',
@@ -98,22 +98,22 @@ const rankWgMap = {
 const props = defineProps<Props>()
 
 function imageForRank(rank: number) {
-  const isLesta = props.game == 'lesta';
+  const isLesta = props.game == 'lesta'
 
-  const rankImage = isLesta ? ranksLesta : ranksWg;
-  const rankImagePrefix = isLesta ? './assets/rank-lesta' : './assets/rank-wg';
+  const rankImage = isLesta ? ranksLesta : ranksWg
+  const rankImagePrefix = isLesta ? './assets/rank-lesta' : './assets/rank-wg'
 
-  const key = Object.keys(isLesta ? ranksLestaMap : rankWgMap).reverse().find(key => rank >= parseInt(key));
+  const key = Object.keys(isLesta ? ranksLestaMap : rankWgMap).reverse().find(key => rank >= parseInt(key))
   if (!key) return rankImage[`${rankImagePrefix}/qualification.png`].default
 
-  const value = isLesta ? ranksLestaMap[key as unknown as keyof typeof ranksLestaMap] : rankWgMap[key as unknown as keyof typeof rankWgMap];
-  return rankImage[`${rankImagePrefix}/${value}.png`].default;
+  const value = isLesta ? ranksLestaMap[key as unknown as keyof typeof ranksLestaMap] : rankWgMap[key as unknown as keyof typeof rankWgMap]
+  return rankImage[`${rankImagePrefix}/${value}.png`].default
 }
 
-const currentImage = computed(() => imageForRank(props.currentRank));
+const currentImage = computed(() => imageForRank(props.currentRank))
 
 watch(currentImage, () => {
-  preloadImage(imageForRank(props.currentRank + (props.game == 'lesta' ? 80 : 100)));
+  preloadImage(imageForRank(props.currentRank + (props.game == 'lesta' ? 80 : 100)))
 })
 
 const insets = computed(() => {

@@ -7,10 +7,10 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from '../../../efficiency/stats/Content.vue';
-import { Props, SlotValue } from './define.widget';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from '../../../efficiency/stats/Content.vue'
+import { Props, SlotValue } from './define.widget'
 
 const props = defineProps<{
   isMiniPreview: boolean
@@ -24,7 +24,7 @@ const props = defineProps<{
   slot7?: SlotValue
   slot8?: SlotValue
   slots?: SlotValue[]
-}>();
+}>()
 
 
 const defaultValues = {

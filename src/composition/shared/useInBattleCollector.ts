@@ -1,7 +1,7 @@
-import { readonly, ref, watch, watchEffect } from "vue";
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from "../widgetSdk";
-import { isAmmoBayDestroyed } from "@/utils/wotUtils";
-import { useWidgetStorage } from "../useWidgetStorage";
+import { readonly, ref, watch, watchEffect } from 'vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '../widgetSdk'
+import { isAmmoBayDestroyed } from '@/utils/wotUtils'
+import { useWidgetStorage } from '../useWidgetStorage'
 
 export const defaultStats = {
   damage: 0,

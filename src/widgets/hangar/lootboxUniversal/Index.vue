@@ -6,15 +6,15 @@
 
 
 <script setup lang="ts">
-import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
-import Content from './content/Index.vue';
-import { computed, watch } from 'vue';
-import { DateTimeDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { ContainersData, SUPPORTED_ENTITLEMENTS, SUPPORTED_ITEMS } from './define.widget';
-import { query } from '@/utils/db';
-import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
+import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk'
+import Content from './content/Index.vue'
+import { computed, watch } from 'vue'
+import { DateTimeDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { ContainersData, SUPPORTED_ENTITLEMENTS, SUPPORTED_ITEMS } from './define.widget'
+import { query } from '@/utils/db'
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
 
 
 const { delay, sync, syncDate } = useQueryParams({
@@ -61,7 +61,7 @@ const zeroDelayContainers = new Set(['wt_boss', 'wt_hunter'])
 
 const isMain = useWidgetMainTab()
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   if (!isMain.value) return
   if (event.eventName != 'OnLootboxOpen') return
@@ -328,7 +328,7 @@ watch(playerName, async player => {
   const first = result.data[0]
 
 
-  console.log(first);
+  console.log(first)
   if (player != playerName.value) return
 
   data.value.containers = first.containersCount.map(t => ({ tag: t[0], count: t[1] }))

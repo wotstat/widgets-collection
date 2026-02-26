@@ -30,12 +30,12 @@
 
 
 <script setup lang="ts">
-import TweenValue from '@/components/TweenValue.vue';
+import TweenValue from '@/components/TweenValue.vue'
 import EfficiencyIcon from '@/components/efficiencyIcon/Icon.vue'
-import { Props } from './define.widget';
-import { computed } from 'vue';
-import { processor } from '@/components/efficiencyIcon/utils';
-import { createReusableTemplate } from '@vueuse/core';
+import { Props } from './define.widget'
+import { computed } from 'vue'
+import { processor } from '@/components/efficiencyIcon/utils'
+import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineLine, Line] = createReusableTemplate<{ value: number | string, icon: Props['lines'][number]['icon'] }>()
 

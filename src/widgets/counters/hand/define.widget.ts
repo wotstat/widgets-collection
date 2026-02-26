@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Ручной счётчик",
-  description: "Изменяйте значение счётчика вручную с помощью кнопок на клавиатуре",
+  name: 'Ручной счётчик',
+  description: 'Изменяйте значение счётчика вручную с помощью кнопок на клавиатуре',
   params: [{
     type: 'select', target: 'skin', label: 'shared:style:title', variants: [
       { value: 'transparent', label: 'shared:style:transparent' },

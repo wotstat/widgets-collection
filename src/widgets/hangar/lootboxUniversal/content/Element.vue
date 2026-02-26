@@ -23,9 +23,9 @@
 
 
 <script setup lang="ts">
-import TweenValue from '@/components/TweenValue.vue';
-import { logProcessor, shortLogProcessor } from './utils';
-import FallbackImg from '@/components/shared/FallbackImg.vue';
+import TweenValue from '@/components/TweenValue.vue'
+import { logProcessor, shortLogProcessor } from './utils'
+import FallbackImg from '@/components/shared/FallbackImg.vue'
 
 
 const props = defineProps<{

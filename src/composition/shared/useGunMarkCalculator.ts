@@ -1,5 +1,5 @@
-import { computed, ref, watch, watchEffect } from "vue";
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from "../widgetSdk";
+import { computed, ref, watch, watchEffect } from 'vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '../widgetSdk'
 
 function getStats(tag: string, key: 'last' | 'pre-last') {
   const value = localStorage.getItem(`wotstat-gun-mark-${key}-${tag}`)
@@ -15,7 +15,7 @@ function setStats(tag: string, key: 'last' | 'pre-last', value: { movingAvgDamag
 }
 
 function useBattleGunSum() {
-  const { sdk } = useWidgetSdk();
+  const { sdk } = useWidgetSdk()
   const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
   const battleDamage = useReactiveState(sdk.data.battle.efficiency.damage)
   const radioAssist = ref(0)
@@ -38,7 +38,7 @@ function useBattleGunSum() {
 }
 
 export function useGunMarkCalculator() {
-  const { sdk } = useWidgetSdk();
+  const { sdk } = useWidgetSdk()
 
   const dossier = useReactiveState(sdk.data.dossier.current)
   const hangarVehicle = useReactiveState(sdk.data.hangar.vehicle.info)

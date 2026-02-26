@@ -10,8 +10,8 @@
 
 
 <script setup lang="ts">
-import ReloadIcon from '@/assets/icons/reload.svg';
-import { onMounted, ref } from 'vue';
+import ReloadIcon from '@/assets/icons/reload.svg'
+import { onMounted, ref } from 'vue'
 const props = defineProps<{
   label: string
   length: number

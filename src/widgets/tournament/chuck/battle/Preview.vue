@@ -7,34 +7,34 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
 
 
 import { merfiGradient, Props } from './define.widget'
-import { accent } from '@/composition/wotstatColors';
+import { accent } from '@/composition/wotstatColors'
 
 const props = defineProps<Partial<Props> & {
   isMiniPreview: boolean
-}>();
+}>()
 
 
 const targetGradient = computed(() => {
 
-  let from = merfiGradient.from;
-  let to = merfiGradient.to;
+  let from = merfiGradient.from
+  let to = merfiGradient.to
 
   if (props.widgetStyle === 'simple') {
-    from = accent.value;
-    to = accent.value;
+    from = accent.value
+    to = accent.value
   } else if (props.widgetStyle === 'custom') {
-    from = props.colorFrom ?? merfiGradient.from;
-    to = props.colorTo ?? merfiGradient.to;
+    from = props.colorFrom ?? merfiGradient.from
+    to = props.colorTo ?? merfiGradient.to
   }
 
-  return { from, to };
-});
+  return { from, to }
+})
 
 const targetProps = computed(() => {
   return {
@@ -88,8 +88,8 @@ const targetProps = computed(() => {
         connected: true
       },
     ]
-  } satisfies Props;
-});
+  } satisfies Props
+})
 
 </script>
 

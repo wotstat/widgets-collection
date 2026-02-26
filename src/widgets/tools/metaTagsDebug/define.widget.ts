@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 
 export type Props = {
@@ -23,8 +23,8 @@ export type Props = {
 }
 
 export default defineWidget({
-  name: "Debug мета-тегов",
-  description: "Этот виджет позволяет проверить взаимодействие виджета с модом",
+  name: 'Debug мета-тегов',
+  description: 'Этот виджет позволяет проверить взаимодействие виджета с модом',
   params: [
     { type: 'backgroundColorParam' },
   ]

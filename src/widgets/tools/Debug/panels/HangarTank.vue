@@ -107,8 +107,8 @@
 
 
 <script setup lang="ts">
-import Line from '../Line.vue';
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import Line from '../Line.vue'
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   collapseKeys: KeyBindingSetting
@@ -159,7 +159,7 @@ function last<T>(t: T[]) {
 }
 
 function getModificationIcon(mod: string | null, i: number) {
-  if (mod) return mod.endsWith('_1') ? `←` : '→'
+  if (mod) return mod.endsWith('_1') ? '←' : '→'
   if (props.postProgression?.unlockedModifications.find(t => t && t.endsWith(`_${i + 1}`))) return '–'
   return '⨯'
 }

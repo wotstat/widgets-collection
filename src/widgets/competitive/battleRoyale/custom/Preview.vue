@@ -7,10 +7,10 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { Line, SlotValue } from './define.widget';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { Line, SlotValue } from './define.widget'
 
 
 const props = defineProps<{
@@ -20,7 +20,7 @@ const props = defineProps<{
   slot3?: SlotValue
   slot4?: SlotValue
   slot5?: SlotValue
-}>();
+}>()
 
 const lines = [
   {

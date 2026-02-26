@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 import i18n from './i18n.json'
 
 export type Props = {
@@ -54,7 +54,7 @@ export const accentColors = {
   cyan: '29f1ff',
   blue: '50b3ff',
   purple: 'be63ff',
-} as const;
+} as const
 
 export type BackgroundScheme = 'default' | 'color' | 'gradient';
 export function styleParams(colorScheme: ColorScheme, accent?: string, accentShadow?: string, badge?: string, badgeText?: string) {
@@ -77,8 +77,8 @@ export function styleParams(colorScheme: ColorScheme, accent?: string, accentSha
 }
 
 export default defineWidget({
-  name: "Текущая ЛБЗ (удалённое управление)",
-  description: "Позволяет вывести на экран текущую выполняемую ЛБЗ",
+  name: 'Текущая ЛБЗ (удалённое управление)',
+  description: 'Позволяет вывести на экран текущую выполняемую ЛБЗ',
   i18n,
   params: [
     {

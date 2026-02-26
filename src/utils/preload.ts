@@ -1,12 +1,12 @@
 
 
 export function preloadImage(href: string) {
-  const img = new Image();
-  img.src = href;
+  const img = new Image()
+  img.src = href
 
   img.onload = () => {
-    img.onload = null;
+    img.onload = null
   }
 
-  return img;
+  return img
 }

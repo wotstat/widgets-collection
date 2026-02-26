@@ -8,11 +8,11 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import { useStateClass } from '@/composition/utils/useStateClass';
-import { Background, Eye, Mouth, UnderLeg } from './define.widget';
-import BongoCat from "./bongo-cat.svg";
-import { computed } from 'vue';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import { useStateClass } from '@/composition/utils/useStateClass'
+import { Background, Eye, Mouth, UnderLeg } from './define.widget'
+import BongoCat from './bongo-cat.svg'
+import { computed } from 'vue'
 
 const stateClasses = useStateClass()
 const props = defineProps<{

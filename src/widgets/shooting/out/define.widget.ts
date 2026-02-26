@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "За пределы круга",
-  description: "Считает количество выстрелов за пределы круга сведения",
+  name: 'За пределы круга',
+  description: 'Считает количество выстрелов за пределы круга сведения',
   params: [
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [

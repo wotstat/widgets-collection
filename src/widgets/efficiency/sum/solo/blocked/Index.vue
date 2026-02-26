@@ -5,10 +5,10 @@
 
 
 <script setup lang="ts">
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import ResultSummer from "../ResultSummer.vue";
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import ResultSummer from '../ResultSummer.vue'
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 const battleBlocked = useReactiveState(sdk.data.battle.efficiency.blocked)
 
 </script>

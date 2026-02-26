@@ -12,10 +12,10 @@
 
 
 <script setup lang="ts" generic="T">
-import { spaceProcessor } from '@/composition/processors/useSpaceProcessor';
-import { TweenOptions, useTweenRef } from '@/composition/tween/useTweenRef';
-import { isInPreview } from '@/utils/provides';
-import { computed, inject, ref, useSlots, watch } from 'vue';
+import { spaceProcessor } from '@/composition/processors/useSpaceProcessor'
+import { TweenOptions, useTweenRef } from '@/composition/tween/useTweenRef'
+import { isInPreview } from '@/utils/provides'
+import { computed, inject, ref, useSlots, watch } from 'vue'
 import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()

@@ -20,9 +20,9 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { OffsetValue, PlacementParam } from './utils';
-import PopoverAnimated from './PopoverAnimated.vue';
+import { computed } from 'vue'
+import { OffsetValue, PlacementParam } from './utils'
+import PopoverAnimated from './PopoverAnimated.vue'
 
 const { target,
   display,
@@ -46,10 +46,10 @@ const emit = defineEmits<{
 }>()
 
 const targetOffset = computed<OffsetValue>(() => {
-  if (offset !== undefined) return offset;
-  if (arrowSize) return arrowSize + 3;
-  return viewportOffset;
-});
+  if (offset !== undefined) return offset
+  if (arrowSize) return arrowSize + 3
+  return viewportOffset
+})
 
 </script>
 

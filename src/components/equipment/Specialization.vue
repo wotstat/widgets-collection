@@ -6,8 +6,8 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { getDeviceByTag, SpecializationTag } from './equipment';
+import { computed } from 'vue'
+import { getDeviceByTag, SpecializationTag } from './equipment'
 
 import firepowerOff from './assets/equipment/specialization/firepower_off.png'
 import firepowerOn from './assets/equipment/specialization/firepower_on.png'

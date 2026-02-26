@@ -29,11 +29,11 @@
 
 
 <script setup lang="ts">
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { useElementBounding } from '@vueuse/core';
-import { computed, inject, ref, watchEffect } from 'vue';
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { useElementBounding } from '@vueuse/core'
+import { computed, inject, ref, watchEffect } from 'vue'
 import ArrowUp from '@/assets/icons/arrow-up.svg'
-import { isInWidgetMod as isInWidgetModKey } from '@/utils/provides';
+import { isInWidgetMod as isInWidgetModKey } from '@/utils/provides'
 
 const warningOverlay = ref<HTMLElement | null>(null)
 const { height } = useElementBounding(warningOverlay)
@@ -53,7 +53,7 @@ const props = defineProps<{
   allowWithoutSdk?: boolean
 }>()
 
-const ctx = useWidgetSdk();
+const ctx = useWidgetSdk()
 
 const extensions = useReactiveState(ctx.sdk.data.registeredExtensions)
 const missingExtensions = computed(() => {

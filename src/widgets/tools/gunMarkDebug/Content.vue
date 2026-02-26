@@ -23,7 +23,7 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
+import WidgetCard from '@/components/WidgetCard.vue'
 
 const props = defineProps<{
   lastVisibleStats: {

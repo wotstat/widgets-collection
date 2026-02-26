@@ -4,11 +4,11 @@
 
 
 <script setup lang="ts">
-import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import ResultSummer from "../ResultSummer.vue";
-import { ref } from 'vue';
+import { useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import ResultSummer from '../ResultSummer.vue'
+import { ref } from 'vue'
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 const value = ref(0)
 
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {

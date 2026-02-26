@@ -15,24 +15,24 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
+import WidgetCard from '@/components/WidgetCard.vue'
+import WidgetRoot from '@/components/WidgetRoot.vue'
+import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue'
 
-import Content from './Content.vue';
-import { LocationQueryValue, useRoute } from 'vue-router';
-import { computed, onMounted, ref } from 'vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import { watchOnce } from '@vueuse/core';
+import Content from './Content.vue'
+import { LocationQueryValue, useRoute } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import { watchOnce } from '@vueuse/core'
 
 import { createReusableTemplate } from '@vueuse/core'
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
-const route = useRoute();
-const hideL1 = computed(() => route.query.hideL1 === 'true');
-const hideL2 = computed(() => route.query.hideL2 === 'true');
-const hideL3 = computed(() => route.query.hideL3 === 'true');
-const nickname = computed(() => route.query.nickname as LocationQueryValue);
+const route = useRoute()
+const hideL1 = computed(() => route.query.hideL1 === 'true')
+const hideL2 = computed(() => route.query.hideL2 === 'true')
+const hideL3 = computed(() => route.query.hideL3 === 'true')
+const nickname = computed(() => route.query.nickname as LocationQueryValue)
 
 const compactDescriptorToTankName = {
   13057: 'Варяг',
@@ -45,12 +45,12 @@ const compactDescriptorToTankName = {
   5761: 'Beowulf'
 }
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
-const sdkId = useReactiveState(sdk.data.player.id);
-const nicknameId = ref<null | string>(null);
+const sdkId = useReactiveState(sdk.data.player.id)
+const nicknameId = ref<null | string>(null)
 
-const id = computed(() => nicknameId.value || sdkId.value);
+const id = computed(() => nicknameId.value || sdkId.value)
 
 function hashForResult(res: { score: number, place: number, timestamp: number }) {
   return `${res.place}-${res.score}-${res.timestamp}`
@@ -102,7 +102,7 @@ async function load() {
     score: t.score,
     top: t.position === 1
   }))
-  console.log(results);
+  console.log(results)
 
 }
 

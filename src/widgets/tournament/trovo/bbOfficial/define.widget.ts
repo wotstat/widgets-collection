@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Битва Блогеров. TROVO",
-  description: "Виджет индивидуальной прогрессии для турнира Битва Блогеров на платформе TROVO",
+  name: 'Битва Блогеров. TROVO',
+  description: 'Виджет индивидуальной прогрессии для турнира Битва Блогеров на платформе TROVO',
   params: [
     { type: 'accentColorParam' },
     { type: 'backgroundColorParam' },

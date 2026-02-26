@@ -30,8 +30,8 @@
 
 
 <script setup lang="ts">
-import Line from "../Line.vue";
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import Line from '../Line.vue'
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   vehicleTag?: string;
@@ -39,7 +39,7 @@ const props = defineProps<{
   battleCount?: number;
   damageBetterThanNPercent?: number[];
   collapseKeys: KeyBindingSetting
-}>();
+}>()
 
 const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>

@@ -29,9 +29,9 @@
 
 <script setup lang="ts">
 import MultiColumn from '@/components/MultiColumn.vue'
-import { useRoundProcessor } from '@/composition/processors/useRoundProcessor';
-import { useTweenComputed } from '@/composition/tween/useTweenRef';
-import { computed } from 'vue';
+import { useRoundProcessor } from '@/composition/processors/useRoundProcessor'
+import { useTweenComputed } from '@/composition/tween/useTweenRef'
+import { computed } from 'vue'
 
 const props = defineProps<{
   battleCount: number,

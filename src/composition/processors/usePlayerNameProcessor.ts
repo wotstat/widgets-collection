@@ -1,4 +1,4 @@
-import { computed, toValue, WatchSource } from "vue";
+import { computed, toValue, WatchSource } from 'vue'
 
 const nicknamesMap: { [key: string]: string } = {} as const
 

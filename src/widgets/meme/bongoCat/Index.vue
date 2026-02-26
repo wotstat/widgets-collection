@@ -7,15 +7,15 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { Background, Eye, Mouth, UnderLeg } from './define.widget';
-import { refThrottled, useIntervalFn } from '@vueuse/core';
-import { useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { Background, Eye, Mouth, UnderLeg } from './define.widget'
+import { refThrottled, useIntervalFn } from '@vueuse/core'
+import { useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
 
 const battleBackgrounds = ref<Set<Background>>(new Set())
 const afterBattleBackgrounds = ref<Set<Background>>(new Set())
@@ -56,7 +56,7 @@ const rightEye = computed<Eye>(() => {
   return 'normal'
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const { flipX, flipY } = useQueryParams({
   flipX: Boolean,
@@ -116,7 +116,7 @@ useReactiveState(sdk.data.keyboard.KEY_RIGHTMOUSE, e => {
 useReactiveTrigger(sdk.data.battle.onPlayerFeedback, (feedback) => {
   if (feedback.type == 'damage' && feedback.data.damage > 1000) {
     wow.value = true
-    setTimeout(() => wow.value = false, 3000);
+    setTimeout(() => wow.value = false, 3000)
   }
 })
 
@@ -126,7 +126,7 @@ const isKilled = computed(() => !isInBattle.value || health.value == undefined |
 watch(isKilled, (killed) => {
   if (!killed) return
   isRip.value = true
-  setTimeout(() => isRip.value = false, 5000);
+  setTimeout(() => isRip.value = false, 5000)
 })
 
 let blinkTimer: ReturnType<typeof setTimeout> | null = null
@@ -137,7 +137,7 @@ async function blink() {
   leftBlink.value = false
   rightBlink.value = false
 
-  blinkTimer = setTimeout(blink, 15000 + ((Math.random() - 0.5) * 5000));
+  blinkTimer = setTimeout(blink, 15000 + ((Math.random() - 0.5) * 5000))
 }
 
 onMounted(() => {

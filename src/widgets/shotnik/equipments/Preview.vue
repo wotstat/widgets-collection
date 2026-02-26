@@ -9,10 +9,10 @@
 
 <script setup lang="ts">
 
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from '../../nidin/equipments/Content.vue';
-import { Props } from '../../nidin/equipments/define.widget';
-import { computed } from 'vue';
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from '../../nidin/equipments/Content.vue'
+import { Props } from '../../nidin/equipments/define.widget'
+import { computed } from 'vue'
 
 const props = defineProps<{
   isMiniPreview: boolean
@@ -22,7 +22,7 @@ const props = defineProps<{
   postProgressionCurrent?: boolean
   variant?: 'default' | 'compact'
   author?: boolean
-}>();
+}>()
 
 const variant = computed(() => props.isMiniPreview || !props.variant ? 'compact' : props.variant)
 

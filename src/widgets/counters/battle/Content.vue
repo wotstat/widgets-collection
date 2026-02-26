@@ -23,10 +23,10 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import TweenValue from '@/components/TweenValue.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import { useStateClass } from '@/composition/utils/useStateClass';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import TweenValue from '@/components/TweenValue.vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import { useStateClass } from '@/composition/utils/useStateClass'
 import { createReusableTemplate } from '@vueuse/core'
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()

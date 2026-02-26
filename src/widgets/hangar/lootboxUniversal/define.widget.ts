@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 
 export const SUPPORTED_ITEMS = [
@@ -37,8 +37,8 @@ export type Props = {
 }
 
 export default defineWidget({
-  name: "Статистика коробок",
-  description: "Подводит итог выпавших ресурсов из коробок",
+  name: 'Статистика коробок',
+  description: 'Подводит итог выпавших ресурсов из коробок',
   params: [
     { type: 'checkbox', target: 'sync', label: 'Синхронизировать с сайтом', default: true },
     { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2025-12-01', visible: ctx => ctx['sync'] },

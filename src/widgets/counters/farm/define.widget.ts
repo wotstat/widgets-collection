@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export type SettingsProps = {
   skin: 'transparent' | 'semi-transparent' | 'default',
@@ -11,8 +11,8 @@ export type SettingsProps = {
 }
 
 export default defineWidget({
-  name: "Счётчик фарма",
-  description: "Изменяйте значение счётчика вручную с помощью кнопок на клавиатуре",
+  name: 'Счётчик фарма',
+  description: 'Изменяйте значение счётчика вручную с помощью кнопок на клавиатуре',
   params: [
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [

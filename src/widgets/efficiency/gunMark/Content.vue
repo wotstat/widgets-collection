@@ -26,15 +26,15 @@
 
 
 <script setup lang="ts">
-import TweenValue from '@/components/TweenValue.vue';
-import { computed, inject, watch } from 'vue';
-import { type Props } from "./define.widget";
-import InsetsWrapper from "@/components/InsetsWrapper.vue";
+import TweenValue from '@/components/TweenValue.vue'
+import { computed, inject, watch } from 'vue'
+import { type Props } from './define.widget'
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
 
-import { isInPreview as isInPreviewKey } from '@/utils/provides';
+import { isInPreview as isInPreviewKey } from '@/utils/provides'
 
 
-const isInPreview = inject(isInPreviewKey, false);
+const isInPreview = inject(isInPreviewKey, false)
 
 
 const props = defineProps<Props>()

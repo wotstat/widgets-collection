@@ -1,11 +1,11 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 import i18n from './i18n.json'
 
-export const skins = ['protanki-old', 'protanki-new', 'time', 'tangent', 'percent', 'chart-time', 'chart-tangent'] as const;
+export const skins = ['protanki-old', 'protanki-new', 'time', 'tangent', 'percent', 'chart-time', 'chart-tangent'] as const
 
 export default defineWidget({
-  name: "Индикатор сведения",
-  description: "Отображает текущий прогресс сведения. Есть несколько стилей. График за последние 30 секунд.",
+  name: 'Индикатор сведения',
+  description: 'Отображает текущий прогресс сведения. Есть несколько стилей. График за последние 30 секунд.',
   i18n,
   params: [
     {

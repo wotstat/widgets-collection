@@ -9,14 +9,14 @@
 
 
 <script setup lang="ts">
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { ref, watch } from 'vue';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { BallisticCalculator } from '../ballisticCalc';
+import WidgetRoot from '@/components/WidgetRoot.vue'
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { ref, watch } from 'vue'
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { BallisticCalculator } from '../ballisticCalc'
 
 const query = useQueryParams({
   resetEachBattle: Boolean,
@@ -28,7 +28,7 @@ const query = useQueryParams({
 
 const values = useWidgetStorage<{ r: number; theta: number }[]>('ballistics', [])
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const isServerAim = useReactiveState(sdk.data.battle.aiming.isServerAim)
@@ -43,7 +43,7 @@ watch(isInBattle, (isInBattle, old) => {
 const toggleCircleDisplay = ref(true)
 let lastTimeUpH = 0
 watch(isPressH, (value) => {
-  if (value) return;
+  if (value) return
   if (performance.now() - lastTimeUpH < 400) {
     toggleCircleDisplay.value = !toggleCircleDisplay.value
     lastTimeUpH = 0

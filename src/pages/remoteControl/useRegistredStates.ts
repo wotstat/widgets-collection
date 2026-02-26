@@ -1,7 +1,7 @@
-import { RemoteDebugConnection, WidgetsRemote } from "@/composition/widgetSdk";
-import { computed, MaybeRefOrGetter, onUnmounted, ref, shallowRef, toValue, watch, WatchSource } from "vue";
-import { Entry } from "./inspector/tree";
-import { REMOTE_URL, REMOTE_URL_WS } from "@/utils/externalUrl";
+import { RemoteDebugConnection, WidgetsRemote } from '@/composition/widgetSdk'
+import { computed, MaybeRefOrGetter, onUnmounted, ref, shallowRef, toValue, watch, WatchSource } from 'vue'
+import { Entry } from './inspector/tree'
+import { REMOTE_URL, REMOTE_URL_WS } from '@/utils/externalUrl'
 
 
 export type PossibleValues = NonNullable<ReturnType<WidgetsRemote['fullState']['value']['get']>>
@@ -120,11 +120,11 @@ export function useRemoteInspector(rdc: WatchSource<RemoteDebugConnection | null
           drawer: drawer.drawer,
           meta: drawer.meta
         },
-      };
+      }
 
-      return acc;
-    }, {} as Record<string, Entry>);
-  });
+      return acc
+    }, {} as Record<string, Entry>)
+  })
 
 
   function patch(key: string, value: any) {
@@ -155,10 +155,10 @@ export function useRemoteInspector(rdc: WatchSource<RemoteDebugConnection | null
     })
   })
 
-  const sending = ref(false);
+  const sending = ref(false)
   async function publish() {
-    if (sending.value) return;
-    sending.value = true;
+    if (sending.value) return
+    sending.value = true
 
     try {
       const response = await fetch(`${REMOTE_URL}/state?private-key=${toValue(privateKey)}`, {
@@ -166,14 +166,14 @@ export function useRemoteInspector(rdc: WatchSource<RemoteDebugConnection | null
         body: JSON.stringify(Object.fromEntries(overrides.value.entries()))
       })
 
-      const data = await response.json();
+      const data = await response.json()
     }
     catch (error) {
-      alert('Error sending data: ' + error);
-      console.error('Error sending data:', error);
+      alert('Error sending data: ' + error)
+      console.error('Error sending data:', error)
     }
 
-    sending.value = false;
+    sending.value = false
   }
 
   return { state: registered, remote, overrides, inspector, patch, remoteStatus, sending, publish }

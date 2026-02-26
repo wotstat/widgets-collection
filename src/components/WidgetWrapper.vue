@@ -8,8 +8,8 @@
 
 
 <script setup lang="ts">
-import WidgetRoot from "@/components/WidgetRoot.vue";
-import WidgetStatusWrapper from "@/components/WidgetStatusWrapper.vue";
+import WidgetRoot from '@/components/WidgetRoot.vue'
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue'
 
 const props = defineProps<{
   autoScale?: boolean,

@@ -1,5 +1,5 @@
-import { defineWidget } from "@/utils/defineWidget";
-import i18n from "./i18n.json";
+import { defineWidget } from '@/utils/defineWidget'
+import i18n from './i18n.json'
 
 export type Props = {
   skin: 'transparent' | 'default' | 'dot'
@@ -12,8 +12,8 @@ export type Props = {
 
 
 export default defineWidget({
-  name: "Чак классический",
-  description: "Подсчитывает очки каждого игрока во взводе по правилам турнира Чака",
+  name: 'Чак классический',
+  description: 'Подсчитывает очки каждого игрока во взводе по правилам турнира Чака',
   i18n,
   params: [
     {

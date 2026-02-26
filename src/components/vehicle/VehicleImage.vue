@@ -5,9 +5,9 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue'
 import { vehicleFallbackUrl, vehicleUrl } from './utils'
-import FallbackImg from '../shared/FallbackImg.vue';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { isInPreview } from '@/utils/provides';
+import FallbackImg from '../shared/FallbackImg.vue'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { isInPreview } from '@/utils/provides'
 
 const props = defineProps<{
   tag: string,
@@ -16,10 +16,10 @@ const props = defineProps<{
   game?: 'wot' | 'mt'
 }>()
 
-const preview = inject(isInPreview, false);
+const preview = inject(isInPreview, false)
 const game = computed(() => {
-  if (props.game) return props.game;
-  if (preview) return 'mt';
+  if (props.game) return props.game
+  if (preview) return 'mt'
 
   const { sdk } = useWidgetSdk()
   const region = useReactiveState(sdk.data.game.region)

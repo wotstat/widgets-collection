@@ -64,18 +64,18 @@
 
 
 <script setup lang="ts">
-import Equipment from '@/components/equipment/Equipment.vue';
+import Equipment from '@/components/equipment/Equipment.vue'
 
 import EquipmentNum1 from '@/components/equipment/assets/equipment/utils/equipment-num-1.svg'
 import EquipmentNum2 from '@/components/equipment/assets/equipment/utils/equipment-num-2.svg'
 import IconX from '@/assets/icons/x-bold.svg'
 import IconCheckmark from '@/assets/icons/checkmark-bold.svg'
-import Specialization from '@/components/equipment/Specialization.vue';
-import { Props } from '../../nidin/equipments/define.widget';
-import { computed } from 'vue';
+import Specialization from '@/components/equipment/Specialization.vue'
+import { Props } from '../../nidin/equipments/define.widget'
+import { computed } from 'vue'
 
 import { getIconUrlByTag } from '@/components/postProgression/index'
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
 
 const props = defineProps<Props>()
 

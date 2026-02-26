@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Куда полетел снаряд",
-  description: "Показывает куда полетел снаряд на круге сведения",
+  name: 'Куда полетел снаряд',
+  description: 'Показывает куда полетел снаряд на круге сведения',
   params: [
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [

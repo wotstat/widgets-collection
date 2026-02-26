@@ -7,7 +7,7 @@
 
 
 <script setup lang="ts">
-import { useSetStateMap } from './useSetStateMap';
+import { useSetStateMap } from './useSetStateMap'
 
 const props = defineProps<{
   title: string

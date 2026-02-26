@@ -7,9 +7,9 @@
 
 <script setup lang="ts">
 
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { Props } from './define.widget';
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { Props } from './define.widget'
 
 const data = {
   web: 'connected',

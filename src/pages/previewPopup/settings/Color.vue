@@ -7,7 +7,7 @@
 
 
 <script setup lang="ts">
-import ColorPicker from "@/components/colorPicker/ColorPicker.vue";
+import ColorPicker from '@/components/colorPicker/ColorPicker.vue'
 
 const props = defineProps<{
   label: string
@@ -16,7 +16,7 @@ const props = defineProps<{
 const value = defineModel<string>({
   required: true,
   set(value) {
-    if (value.length == 8 && value.endsWith('ff')) return value.slice(0, 6);
+    if (value.length == 8 && value.endsWith('ff')) return value.slice(0, 6)
     return value
   }
 })

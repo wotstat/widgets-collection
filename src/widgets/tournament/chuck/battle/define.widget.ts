@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 import i18n from './i18n.json'
 
 
@@ -61,8 +61,8 @@ export const photoVariants = [
 export type WidgetStyle = 'merfi' | 'simple' | 'custom'
 
 export default defineWidget({
-  name: "Чак для боя",
-  description: "Отображает счётчик очков Чака. Гибко конфигурируется.",
+  name: 'Чак для боя',
+  description: 'Отображает счётчик очков Чака. Гибко конфигурируется.',
   i18n,
   params: [
     { type: 'string', target: 'title', label: 'options:name', default: 'ТУРНИР ЧАКА', visible: ctx => ctx['show-title'] != 'never' },

@@ -13,14 +13,14 @@
 
 
 <script setup lang="ts">
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue';
+import WidgetRoot from '@/components/WidgetRoot.vue'
+import WidgetStatusWrapper from '@/components/WidgetStatusWrapper.vue'
 
-import Content from './Content.vue';
-import { computed, ref } from 'vue';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { useQueryParams } from '@/composition/useQueryParams';
-import { watchOnce } from '@vueuse/core';
+import Content from './Content.vue'
+import { computed, ref } from 'vue'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { useQueryParams } from '@/composition/useQueryParams'
+import { watchOnce } from '@vueuse/core'
 
 import { createReusableTemplate } from '@vueuse/core'
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
@@ -31,10 +31,10 @@ const { transparentBackground, showBest, playerId: queryPlayerId } = useQueryPar
   playerId: String,
 })
 
-const { sdk } = useWidgetSdk();
-const playerId = useReactiveState(sdk.data.player.id);
+const { sdk } = useWidgetSdk()
+const playerId = useReactiveState(sdk.data.player.id)
 
-const targetId = computed(() => playerId.value || queryPlayerId);
+const targetId = computed(() => playerId.value || queryPlayerId)
 
 const data = ref({
   place: 0,
@@ -46,7 +46,7 @@ const data = ref({
 
 async function load() {
 
-  console.log(targetId.value);
+  console.log(targetId.value)
 
   try {
     const result = await fetch(`https://api.tanks.live/api/wot/tournaments/3c715b20-c871-4d0b-9a4b-acc650be8aab/accounts/public?wotId=${targetId.value}`)
@@ -77,11 +77,11 @@ async function load() {
     data.value.places = battles.map(t => t.scores).sort((a, b) => b - a).slice(0, 3)
 
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 
 
-  setTimeout(load, 60000);
+  setTimeout(load, 60000)
 }
 
 if (targetId.value) load()

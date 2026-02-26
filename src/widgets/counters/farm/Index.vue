@@ -6,14 +6,14 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { watch } from 'vue';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { SettingsProps } from './define.widget';
-import { useBattleResult } from '@/composition/useOnBattleResult';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { watch } from 'vue'
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { SettingsProps } from './define.widget'
+import { useBattleResult } from '@/composition/useOnBattleResult'
 
 const { skin, hideTitle, lastBattle, totalBattles, timeInBattles, averagePerBattle, averagePerHour } = useQueryParams({
   skin: oneOf(['transparent', 'semi-transparent', 'default'] as const, 'transparent'),

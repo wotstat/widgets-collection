@@ -26,12 +26,12 @@
 
 
 <script setup lang="ts">
-import { RELAY_HTTP_URL, RELAY_URL } from '@/utils/externalUrl';
-import { useFetch, useLocalStorage, useVirtualList, useWebSocket } from '@vueuse/core';
-import { computed, ref, watchEffect } from 'vue';
+import { RELAY_HTTP_URL, RELAY_URL } from '@/utils/externalUrl'
+import { useFetch, useLocalStorage, useVirtualList, useWebSocket } from '@vueuse/core'
+import { computed, ref, watchEffect } from 'vue'
 
-const password = useLocalStorage<string>('admin_password', '');
-const listSearchText = ref<string>('');
+const password = useLocalStorage<string>('admin_password', '')
+const listSearchText = ref<string>('')
 
 const channelList = useFetch(`${RELAY_HTTP_URL}/channel-list`, {
   beforeFetch: ({ url, options, cancel }) => {
@@ -39,26 +39,26 @@ const channelList = useFetch(`${RELAY_HTTP_URL}/channel-list`, {
       ...options.headers,
       'Authorization': `Bearer ${password.value}`,
     }
-    return { url, options, cancel };
+    return { url, options, cancel }
   },
 })
 
-const { data } = channelList.json<{ channels: { channel: string, clients: string[] }[] }>();
+const { data } = channelList.json<{ channels: { channel: string, clients: string[] }[] }>()
 
-const dataList = computed(() => (data.value?.channels || []).filter(channel => channel.channel.includes(listSearchText.value)));
+const dataList = computed(() => (data.value?.channels || []).filter(channel => channel.channel.includes(listSearchText.value)))
 
-const { list, containerProps, wrapperProps } = useVirtualList(dataList, { itemHeight: 70 });
+const { list, containerProps, wrapperProps } = useVirtualList(dataList, { itemHeight: 70 })
 
 
-const selectedChannel = ref<string>('');
+const selectedChannel = ref<string>('')
 function selectChannel(channel: string) {
-  selectedChannel.value = channel;
+  selectedChannel.value = channel
 }
 
-const wsUrl = computed(() => `${RELAY_URL}/silent?channel=${selectedChannel.value}`);
+const wsUrl = computed(() => `${RELAY_URL}/silent?channel=${selectedChannel.value}`)
 const { status } = useWebSocket(wsUrl, {
   onMessage: (ws, e) => {
-    console.log(JSON.parse(e.data));
+    console.log(JSON.parse(e.data))
   },
 })
 

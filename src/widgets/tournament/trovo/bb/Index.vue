@@ -6,25 +6,25 @@
 
 
 <script setup lang="ts">
-import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue';
+import WidgetCardWrapper from '@/components/WidgetCardWrapper.vue'
 
-import Content from './Content.vue';
-import { useRoute } from 'vue-router';
-import { computed, watch } from 'vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import { parseBattleResult } from '@/utils/battleResultParser';
-import { useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
+import Content from './Content.vue'
+import { useRoute } from 'vue-router'
+import { computed, watch } from 'vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import { parseBattleResult } from '@/utils/battleResultParser'
+import { useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
 
-const route = useRoute();
-const hideL1 = computed(() => route.query.hideL1 === 'true');
-const hideL2 = computed(() => route.query.hideL2 === 'true');
+const route = useRoute()
+const hideL1 = computed(() => route.query.hideL1 === 'true')
+const hideL2 = computed(() => route.query.hideL2 === 'true')
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
-const isInBattle = useReactiveState(sdk.data.battle.isInBattle);
-const vehicle = useReactiveState(sdk.data.battle.vehicle);
-const arenaId = useReactiveState(sdk.data.battle.arenaId);
+const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
+const vehicle = useReactiveState(sdk.data.battle.vehicle)
+const arenaId = useReactiveState(sdk.data.battle.arenaId)
 
 const battleCount = useWidgetStorage('battleCount', 0)
 const battleScores = useWidgetStorage<number[]>('battleScores', [])
@@ -32,7 +32,7 @@ const battleScores = useWidgetStorage<number[]>('battleScores', [])
 const supportedBattles = useWidgetStorage('started', new Set<number>())
 
 watch(() => [isInBattle.value, vehicle.value, arenaId.value] as const, ([isInBattle, vehicle, arenaId]) => {
-  if (!isInBattle || !vehicle || !arenaId) return;
+  if (!isInBattle || !vehicle || !arenaId) return
 
   if (vehicle.level == 10 && vehicle.class == 'heavyTank') {
     supportedBattles.value.add(arenaId)
@@ -40,12 +40,12 @@ watch(() => [isInBattle.value, vehicle.value, arenaId.value] as const, ([isInBat
 })
 
 useReactiveTrigger(sdk.data.battle.onBattleResult, result => {
-  const parsed = parseBattleResult(result);
-  if (!parsed || !parsed.arenaUniqueID || !parsed.personal) return;
-  if (!supportedBattles.value.has(parsed.arenaUniqueID)) return;
+  const parsed = parseBattleResult(result)
+  if (!parsed || !parsed.arenaUniqueID || !parsed.personal) return
+  if (!supportedBattles.value.has(parsed.arenaUniqueID)) return
   supportedBattles.value.delete(parsed.arenaUniqueID)
 
-  battleScores.value.push(parsed.personal.stats.damageDealt);
+  battleScores.value.push(parsed.personal.stats.damageDealt)
   battleCount.value++
 })
 

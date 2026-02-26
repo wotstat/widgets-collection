@@ -6,14 +6,14 @@
 
 
 <script setup lang="ts">
-import Content from './Content.vue';
-import { onMounted, ref, watchEffect } from 'vue';
-import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
-import { Status } from './define.widget';
-import WidgetRoot from '@/components/WidgetRoot.vue';
-import { useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk';
-import { useWidgetRelay } from '@/composition/useWidgetRelay';
-import { CLICKHOUSE_URL, REMOTE_URL_WS, WIDGETS_URL } from '@/utils/externalUrl';
+import Content from './Content.vue'
+import { onMounted, ref, watchEffect } from 'vue'
+import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator'
+import { Status } from './define.widget'
+import WidgetRoot from '@/components/WidgetRoot.vue'
+import { useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk'
+import { useWidgetRelay } from '@/composition/useWidgetRelay'
+import { CLICKHOUSE_URL, REMOTE_URL_WS, WIDGETS_URL } from '@/utils/externalUrl'
 
 
 const widget = ref<Status>('connecting')
@@ -49,7 +49,7 @@ async function checkWeb() {
     }
 
   } catch (error) {
-    console.log('Web check failed:', error);
+    console.log('Web check failed:', error)
     widget.value = 'disconnected'
   }
 }
@@ -70,7 +70,7 @@ async function checkDb() {
     }
 
   } catch (error) {
-    console.log('Database check failed:', error);
+    console.log('Database check failed:', error)
     database.value = 'disconnected'
   }
 }

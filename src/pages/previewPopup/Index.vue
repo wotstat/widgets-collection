@@ -54,34 +54,34 @@
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
 import { computed, defineAsyncComponent, defineComponent, h, onMounted, onUnmounted, provide, Ref, ref, shallowRef, VNode, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { accent, background, defaultAccent, defaultBackground } from "@/composition/wotstatColors";
-import { injectStylesheet } from "@/composition/widgetSdk"
-import { computedWithControl, useElementBounding } from '@vueuse/core';
-import CopyIcon from '@/assets/icons/copy.svg';
+import { accent, background, defaultAccent, defaultBackground } from '@/composition/wotstatColors'
+import { injectStylesheet } from '@/composition/widgetSdk'
+import { computedWithControl, useElementBounding } from '@vueuse/core'
+import CopyIcon from '@/assets/icons/copy.svg'
 import IconReset from '@/assets/icons/reset.svg'
-import { isInPreview, language } from '@/utils/provides';
-import { usePredictWebSocketInterface } from './usePredictWebSocketInterface';
-import { useWidgetPreviewStorage } from './useWidgetPreviewStorage';
-import { WidgetParam } from '@/utils/defineWidget';
-import { useElementScrollSize } from '@/composition/utils/useElementScrollSize';
-import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue';
+import { isInPreview, language } from '@/utils/provides'
+import { usePredictWebSocketInterface } from './usePredictWebSocketInterface'
+import { useWidgetPreviewStorage } from './useWidgetPreviewStorage'
+import { WidgetParam } from '@/utils/defineWidget'
+import { useElementScrollSize } from '@/composition/utils/useElementScrollSize'
+import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue'
 
-import Checkbox from './settings/Checkbox.vue';
-import Select from './settings/Select.vue';
-import Int from './settings/Int.vue';
-import String from './settings/String.vue';
-import MultiSlot from './settings/MultiSlot.vue';
-import RandomString from './settings/RandomString.vue';
-import DatePicker from './settings/DatePicker.vue';
-import RemoteControl from './settings/RemoteControl.vue';
-import Unsupported from './settings/Unsupported.vue';
-import Color from './settings/Color.vue';
+import Checkbox from './settings/Checkbox.vue'
+import Select from './settings/Select.vue'
+import Int from './settings/Int.vue'
+import String from './settings/String.vue'
+import MultiSlot from './settings/MultiSlot.vue'
+import RandomString from './settings/RandomString.vue'
+import DatePicker from './settings/DatePicker.vue'
+import RemoteControl from './settings/RemoteControl.vue'
+import Unsupported from './settings/Unsupported.vue'
+import Color from './settings/Color.vue'
 
 
 injectStylesheet()
 
 const BASE_URL = location.origin
-const route = useRoute();
+const route = useRoute()
 const urlContent = ref<HTMLElement | null>(null)
 const { width: urlBoxWidth } = useElementBounding(urlContent)
 const { scrollWidth: urlBoxScrollWidth } = useElementScrollSize(urlContent)
@@ -99,12 +99,12 @@ provide(isInPreview, true)
 
 const widgetPath = computed(() => {
   if (Array.isArray(route.params.widget)) {
-    return route.params.widget.join('/');
+    return route.params.widget.join('/')
   }
-  return route.params.widget;
-});
+  return route.params.widget
+})
 
-const currentOptions = computed(() => widgetsOptions.find((widget) => widget.route === `/${widgetPath.value}`));
+const currentOptions = computed(() => widgetsOptions.find((widget) => widget.route === `/${widgetPath.value}`))
 const currentPreview = computed(() => {
   if (!currentOptions.value || !currentOptions.value.options.preview) return null
 
@@ -112,14 +112,14 @@ const currentPreview = computed(() => {
   if (!(previewPath in widgetPreviews) || !widgetPreviews[previewPath]) return null
 
   return widgetPreviews[previewPath]
-});
+})
 
 const canReset = computed(() => {
   if (!settingsValues.value) return
   if (!currentOptions.value) return
 
   for (let i = 0; i < currentOptions.value.options.params.length; i++) {
-    const element = currentOptions.value.options.params[i];
+    const element = currentOptions.value.options.params[i]
     const settings = settingsValues.value[i]
 
     if (element.type == 'accentColorParam' && accent.value != defaultAccent) return true
@@ -272,7 +272,7 @@ const settingsValues = computedWithControl(currentOptions, () => {
         target: 'remote-key', value,
         component: defineComponent(() => () => renderIfVisible(param, h(RemoteControl, {
           label: t('shared:remote-control:key'), buttonLabel: t('shared:remote-control:button-label'),
-          ...vModel(value), "onOpen-remote": openRemote
+          ...vModel(value), 'onOpen-remote': openRemote
         })))
       }
     }

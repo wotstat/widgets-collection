@@ -72,18 +72,18 @@
 
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { Props } from './define.widget';
-import { createReusableTemplate, useElementBounding } from '@vueuse/core';
-import { roman } from '@/utils/romanNumbers';
+import { computed, ref } from 'vue'
+import { Props } from './define.widget'
+import { createReusableTemplate, useElementBounding } from '@vueuse/core'
+import { roman } from '@/utils/romanNumbers'
 
 
-const leaveHeight = ref(0);
-const enterHeight = ref(-1);
+const leaveHeight = ref(0)
+const enterHeight = ref(-1)
 const animated = ref(false)
 
-const tasksElement = ref<HTMLElement | null>(null);
-const { height: tasksHeight } = useElementBounding(tasksElement);
+const tasksElement = ref<HTMLElement | null>(null)
+const { height: tasksHeight } = useElementBounding(tasksElement)
 
 const perBattle = /,?\s?за бой/g
 
@@ -91,25 +91,25 @@ const props = defineProps<Props>()
 
 const [DefineGroup, Group] = createReusableTemplate<{ tasks: Props['tasks'][number] }>()
 
-const images = import.meta.glob<string>('../assets/battleConditions/*.png', { eager: true, import: 'default' });
+const images = import.meta.glob<string>('../assets/battleConditions/*.png', { eager: true, import: 'default' })
 const imageByKeys = new Map<string, string>(Object.entries(images).map(([key, value]) => {
-  const imageKey = key.split('/').pop()?.replace('.png', '') ?? '';
-  return [imageKey, value];
-}));
+  const imageKey = key.split('/').pop()?.replace('.png', '') ?? ''
+  return [imageKey, value]
+}))
 
 const tankName = computed(() => {
-  const task = props.header.task;
-  if (!task) return '';
+  const task = props.header.task
+  if (!task) return ''
 
   const match = task.match(/pm3_(\d+)_\d+_\d+/)
-  if (!match) return '';
+  if (!match) return ''
   switch (match[1]) {
-    case '8': return 'ARMT';
-    case '9': return 'TF-2 Clark';
-    case '10': return 'Projet Murat';
-    default: return '';
+    case '8': return 'ARMT'
+    case '9': return 'TF-2 Clark'
+    case '10': return 'Projet Murat'
+    default: return ''
   }
-});
+})
 
 </script>
 

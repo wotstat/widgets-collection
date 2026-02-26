@@ -6,19 +6,19 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { watch } from 'vue';
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { watch } from 'vue'
+import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
 
 const { startFrom, skin } = useQueryParams({
   startFrom: NumberDefault(),
   skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 const count = useWidgetStorage('count', 0)
 
 const keyP = useReactiveState(sdk.data.keyboard.KEY_P)

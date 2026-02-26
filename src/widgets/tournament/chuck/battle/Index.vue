@@ -8,25 +8,25 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed, ref, watch } from 'vue';
-import { Color, oneOf, StringDefault, useQueryParams, } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { merfiGradient } from './define.widget';
-import { useBattleResult } from '@/composition/useOnBattleResult';
-import { syncRefs } from '@vueuse/core';
-import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay';
-import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
-import { useWidgetMainTab } from '@/composition/useWidgetMainTab';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed, ref, watch } from 'vue'
+import { Color, oneOf, StringDefault, useQueryParams, } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { merfiGradient } from './define.widget'
+import { useBattleResult } from '@/composition/useOnBattleResult'
+import { syncRefs } from '@vueuse/core'
+import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay'
+import { useReactiveRelayState } from '@/composition/useReactiveRelayState'
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
 
 function personalScore(damage: number, frags: number): number {
-  return damage + frags * 300;
+  return damage + frags * 300
 }
 
 function teamScore(isWin: boolean) {
-  return isWin ? 3000 : 0;
+  return isWin ? 3000 : 0
 }
 
 const { colorFrom, colorTo, title, period, showTitle, periodLine,
@@ -49,24 +49,24 @@ const { colorFrom, colorTo, title, period, showTitle, periodLine,
   })
 
 const targetGradient = computed(() => {
-  let from = merfiGradient.from;
-  let to = merfiGradient.to;
+  let from = merfiGradient.from
+  let to = merfiGradient.to
 
   if (widgetStyle === 'simple') {
-    from = accent;
-    to = accent;
+    from = accent
+    to = accent
   } else if (widgetStyle === 'custom') {
-    from = colorFrom ?? merfiGradient.from;
-    to = colorTo ?? merfiGradient.to;
+    from = colorFrom ?? merfiGradient.from
+    to = colorTo ?? merfiGradient.to
   }
 
-  return { from, to };
-});
+  return { from, to }
+})
 
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
-const isInBattle = useReactiveState(sdk.data.battle.isInBattle);
+const isInBattle = useReactiveState(sdk.data.battle.isInBattle)
 const platoon = useReactiveState(sdk.data.platoon.slots)
 const playerName = useReactiveState(sdk.data.player.name)
 const playerId = useReactiveState(sdk.data.player.id)
@@ -100,8 +100,8 @@ const relayState = useReactiveRelayState(relay, 'stats', {
 })
 
 const currentBattleScore = computed(() => {
-  if (!isInBattle.value) return 0;
-  return personalScore(damage.value ?? 0, fragsCount.value);
+  if (!isInBattle.value) return 0
+  return personalScore(damage.value ?? 0, fragsCount.value)
 })
 
 const target = computed(() => {
@@ -124,7 +124,7 @@ const target = computed(() => {
 syncRefs(target, relayState.state)
 
 const relayValuesByPlayerId = computed(() => {
-  const values = relayState.all.value.entries();
+  const values = relayState.all.value.entries()
   const resMap = new Map([...values].map(([uuid, value]) => [value.id, value]))
   resMap.set(target.value.id, target.value)
   return resMap
@@ -177,7 +177,7 @@ useReactiveTrigger(sdk.data.battle.onPlayerFeedback, feedback => {
 const lastBattleTotalScore = useWidgetStorage<number>('lastBattleTotalScore', -1, { groupByPlatoon: true })
 
 useBattleResult((parsed, result) => {
-  if (!isMain.value) return;
+  if (!isMain.value) return
 
   battles.value += 1
 
@@ -190,7 +190,7 @@ useBattleResult((parsed, result) => {
   lastBattleTotalScore.value = battleScore
 
   for (const person of parsed.platoon) {
-    if (!person || person.player == 'bot') continue;
+    if (!person || person.player == 'bot') continue
     const current = scoreByPlayer.value.get(person.player.bdid) ?? { frags: 0, damage: 0 }
     scoreByPlayer.value.set(person.player.bdid, {
       frags: current.frags + person.stats.kills,

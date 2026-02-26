@@ -1,4 +1,4 @@
-import { useLocalStorage } from "@vueuse/core";
+import { useLocalStorage } from '@vueuse/core'
 
 export const defaultAccent = '36ff50'
 export const defaultBackground = '292929'

@@ -41,17 +41,17 @@
 
 <script setup lang="ts">
 
-import EfficiencyIcon from "@/components/efficiencyIcon/Icon.vue";
+import EfficiencyIcon from '@/components/efficiencyIcon/Icon.vue'
 
-import WidgetCard from '@/components/WidgetCard.vue';
+import WidgetCard from '@/components/WidgetCard.vue'
 
-import { comparator, processor } from '@/components/efficiencyIcon/utils';
-import TweenValue from '@/components/TweenValue.vue';
+import { comparator, processor } from '@/components/efficiencyIcon/utils'
+import TweenValue from '@/components/TweenValue.vue'
 import { computed } from 'vue'
-import { Props } from "./define.widget";
-import { maxByComparator } from "@/utils";
-import InsetsWrapper from "@/components/InsetsWrapper.vue";
-import { useStateClass } from "@/composition/utils/useStateClass";
+import { Props } from './define.widget'
+import { maxByComparator } from '@/utils'
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import { useStateClass } from '@/composition/utils/useStateClass'
 
 const props = defineProps<Props>()
 const classes = useStateClass()

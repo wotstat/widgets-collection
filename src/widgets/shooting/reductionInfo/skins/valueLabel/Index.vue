@@ -10,8 +10,8 @@
 
 
 <script setup lang="ts">
-import ForceMono from '@/components/ForceMono.vue';
-import { computed } from 'vue';
+import ForceMono from '@/components/ForceMono.vue'
+import { computed } from 'vue'
 
 
 

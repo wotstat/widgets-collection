@@ -1,9 +1,9 @@
-import { pausableWatch, RemovableRef, useLocalStorage } from "@vueuse/core";
-import { useRoute } from "vue-router";
-import { useQueryParams } from "./useQueryParams";
-import { useReactiveState, useWidgetSdk } from "./widgetSdk";
-import { computed, onUnmounted, ref, Ref, shallowRef, watch, watchEffect } from "vue";
-import { deepApplyDefaults } from "@/utils/deepApplyDefaults";
+import { pausableWatch, RemovableRef, useLocalStorage } from '@vueuse/core'
+import { useRoute } from 'vue-router'
+import { useQueryParams } from './useQueryParams'
+import { useReactiveState, useWidgetSdk } from './widgetSdk'
+import { computed, onUnmounted, ref, Ref, shallowRef, watch, watchEffect } from 'vue'
+import { deepApplyDefaults } from '@/utils/deepApplyDefaults'
 
 function syncRef(a: Ref<any>, b: Ref<any>) {
   const rtl = pausableWatch(b, v => {
@@ -73,11 +73,11 @@ export function useWidgetStorage<T>(postfix: string, defaultValue: T, options?: 
   groupByPlayerId?: boolean
   groupByPlatoon?: boolean
 }) {
-  const route = useRoute();
+  const route = useRoute()
   const { saveKey } = useQueryParams({ saveKey: { type: String, default: '' } })
-  const { sdk } = useWidgetSdk();
+  const { sdk } = useWidgetSdk()
 
-  const defaultValueCopy = () => structuredClone(defaultValue);
+  const defaultValueCopy = () => structuredClone(defaultValue)
 
   const playerId = useReactiveState(sdk.data.player.id)
   const platoon = useReactiveState(sdk.data.platoon.slots)
@@ -86,7 +86,7 @@ export function useWidgetStorage<T>(postfix: string, defaultValue: T, options?: 
   let lastHandle: ReturnType<typeof syncRef> | null = null
 
   const groupById = options?.groupByPlayerId === true
-  const groupByPlatoon = options?.groupByPlatoon === true;
+  const groupByPlatoon = options?.groupByPlatoon === true
 
 
   if (groupByPlatoon) {

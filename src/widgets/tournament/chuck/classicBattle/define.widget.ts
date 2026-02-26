@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 import i18n from './i18n.json'
 
 export type Props = {
@@ -23,8 +23,8 @@ export type Props = {
 }
 
 export default defineWidget({
-  name: "Очки и ХП по правилам Чака",
-  description: "В стилистике Турнира Чака 2025",
+  name: 'Очки и ХП по правилам Чака',
+  description: 'В стилистике Турнира Чака 2025',
   i18n,
   params: [
     {

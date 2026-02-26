@@ -71,43 +71,43 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import { useStateClass } from '@/composition/utils/useStateClass';
-import { useI18nRef } from '@/composition/useI18n';
-import i18n from './i18n.json';
-import { Props } from './define.widget';
-import VehicleImage from '@/components/vehicle/VehicleImage.vue';
-import { spaceProcessor } from '@/composition/processors/useSpaceProcessor';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import { useStateClass } from '@/composition/utils/useStateClass'
+import { useI18nRef } from '@/composition/useI18n'
+import i18n from './i18n.json'
+import { Props } from './define.widget'
+import VehicleImage from '@/components/vehicle/VehicleImage.vue'
+import { spaceProcessor } from '@/composition/processors/useSpaceProcessor'
 
 import LeftArrowIcon from './assets/left.svg'
 import RightArrowIcon from './assets/right.svg'
 
-import DisconnectedIcon from "./assets/disconnect.svg";
-import { inject } from 'vue';
-import { isInPreview } from '@/utils/provides';
-import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor';
+import DisconnectedIcon from './assets/disconnect.svg'
+import { inject } from 'vue'
+import { isInPreview } from '@/utils/provides'
+import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor'
 
-const { t } = useI18nRef(i18n);
+const { t } = useI18nRef(i18n)
 
 const classes = useStateClass()
 const props = defineProps<Props>()
 
 
-const isPreview = inject(isInPreview, false);
+const isPreview = inject(isInPreview, false)
 
 function hpPercent(hp: number, maxHp: number) {
-  return Math.max(0, Math.min(1, Math.max(0, hp) / maxHp));
+  return Math.max(0, Math.min(1, Math.max(0, hp) / maxHp))
 }
 
 function hpColor(hp: number, maxHp: number) {
-  const percent = hpPercent(hp, maxHp);
-  if (hp <= 0) return '#74e115';
-  if (percent >= 0.8) return '#62ff34';
-  if (percent >= 0.6) return '#dfff3d';
-  if (percent >= 0.4) return '#ffdd2c';
-  if (percent >= 0.2) return '#f9982b';
-  if (percent > 0) return '#f52e21';
+  const percent = hpPercent(hp, maxHp)
+  if (hp <= 0) return '#74e115'
+  if (percent >= 0.8) return '#62ff34'
+  if (percent >= 0.6) return '#dfff3d'
+  if (percent >= 0.4) return '#ffdd2c'
+  if (percent >= 0.2) return '#f9982b'
+  if (percent > 0) return '#f52e21'
 }
 
 

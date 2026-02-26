@@ -13,14 +13,14 @@
 
 
 <script setup lang="ts">
-import Line from "../Line.vue";
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import Line from '../Line.vue'
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   hangarBattleMode?: string
   isInQueue?: boolean
   collapseKeys: KeyBindingSetting
-}>();
+}>()
 
 const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>

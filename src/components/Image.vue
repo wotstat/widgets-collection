@@ -57,7 +57,7 @@ function onLoad() {
 onMounted(() => {
   setTimeout(() => {
     firstShow.value = false
-  }, 10);
+  }, 10)
 })
 </script>
 

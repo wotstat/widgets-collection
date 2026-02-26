@@ -8,11 +8,11 @@
 
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onUnmounted, ref, shallowRef, triggerRef, watch } from 'vue';
-import { calculatePopoverPosition, generateOffset, getArrowPosition, getParams, isParamsEqual, OffsetValue, Params, PlacementParam, PlacementWithModifiers } from './utils';
-import { useEventListener } from '@vueuse/core';
+import { computed, onBeforeMount, onUnmounted, ref, shallowRef, triggerRef, watch } from 'vue'
+import { calculatePopoverPosition, generateOffset, getArrowPosition, getParams, isParamsEqual, OffsetValue, Params, PlacementParam, PlacementWithModifiers } from './utils'
+import { useEventListener } from '@vueuse/core'
 
-const targetParams = shallowRef<Params | null>(null);
+const targetParams = shallowRef<Params | null>(null)
 
 const props = defineProps<{
   target: HTMLElement | null
@@ -28,61 +28,61 @@ const emit = defineEmits<{
   (e: 'readyToVisible'): void
 }>()
 
-const popupContainer = ref<HTMLElement | null>(null);
-let animationHandle: number | null = null;
+const popupContainer = ref<HTMLElement | null>(null)
+let animationHandle: number | null = null
 
 useEventListener(window, 'pointerdown', (event: PointerEvent) => {
-  if (!props.display) return;
+  if (!props.display) return
 
-  if (!popupContainer.value) return;
+  if (!popupContainer.value) return
 
-  if (!popupContainer.value.contains(event.target as Node)) emit('clickOutside');
-});
+  if (!popupContainer.value.contains(event.target as Node)) emit('clickOutside')
+})
 
 
-let lastHtmlSize = { width: 0, height: 0 };
+let lastHtmlSize = { width: 0, height: 0 }
 function onAnimationFrame() {
-  animationHandle = null;
+  animationHandle = null
 
-  if (!props.display) return;
+  if (!props.display) return
 
   animationHandle = requestAnimationFrame(onAnimationFrame)
 
-  if (!props.target) return;
-  const targetNewParams = getParams(props.target, popupContainer.value);
-  if (!targetNewParams) return;
+  if (!props.target) return
+  const targetNewParams = getParams(props.target, popupContainer.value)
+  if (!targetNewParams) return
 
   if (!targetParams.value || !isParamsEqual(targetParams.value, targetNewParams)) {
-    targetParams.value = targetNewParams;
+    targetParams.value = targetNewParams
   }
 
-  const htmlSize = { width: document.documentElement.clientWidth, height: document.documentElement.clientHeight };
+  const htmlSize = { width: document.documentElement.clientWidth, height: document.documentElement.clientHeight }
   if (lastHtmlSize.width !== htmlSize.width || lastHtmlSize.height !== htmlSize.height) {
-    lastHtmlSize = htmlSize;
-    triggerRef(targetParams);
+    lastHtmlSize = htmlSize
+    triggerRef(targetParams)
   }
 
 }
 
-let lastPlacement: PlacementWithModifiers | undefined = undefined;
+let lastPlacement: PlacementWithModifiers | undefined = undefined
 watch(() => props.display, display => {
   if (display && animationHandle === null) {
-    lastPlacement = undefined;
-    targetParams.value = null;
-    onAnimationFrame();
+    lastPlacement = undefined
+    targetParams.value = null
+    onAnimationFrame()
   } else if (!display && animationHandle !== null) {
-    cancelAnimationFrame(animationHandle);
-    animationHandle = null;
+    cancelAnimationFrame(animationHandle)
+    animationHandle = null
   }
-}, { immediate: true });
+}, { immediate: true })
 
 onBeforeMount(() => {
   if (props.display && animationHandle === null) onAnimationFrame()
 })
 
 onUnmounted(() => {
-  if (animationHandle != null) cancelAnimationFrame(animationHandle);
-});
+  if (animationHandle != null) cancelAnimationFrame(animationHandle)
+})
 
 const offset = computed(() => generateOffset(props.offset ?? 0))
 const viewportOffset = computed(() => generateOffset(props.viewportOffset ?? props.offset ?? 0))
@@ -102,11 +102,11 @@ const positions = computed(() => {
     bbox: 'window',
     lastPlacement,
     preserveLastPlacement: props.preserveLastPlacement ?? true
-  });
+  })
 
-  lastPlacement = position.placement;
+  lastPlacement = position.placement
 
-  const arrowPosition = getArrowPosition(position, params);
+  const arrowPosition = getArrowPosition(position, params)
 
   return {
     x: position.x,
@@ -119,8 +119,8 @@ const positions = computed(() => {
 })
 
 watch(() => positions.value?.arrowDirection, (direction, old) => {
-  if (direction && old === undefined) emit('readyToVisible');
-}, { immediate: true });
+  if (direction && old === undefined) emit('readyToVisible')
+}, { immediate: true })
 
 const targetStyle = computed(() => {
   if (!positions.value) return {}

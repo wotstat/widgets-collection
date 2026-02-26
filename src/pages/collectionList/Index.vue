@@ -32,22 +32,22 @@
 
 
 <script setup lang="ts">
-import { getAllWidgetsRoutes, pathResolve } from '@/utils';
-import Item from './Item.vue';
-import { type Component, computed, defineAsyncComponent, onMounted, provide, watchEffect } from 'vue';
-import { collections } from '@/collections';
-import { injectStylesheet } from "@/composition/widgetSdk";
-import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding';
-import { Options } from '@/utils/defineWidget';
-import { isInMiniPreview, isInPreview, language } from '@/utils/provides';
-import LoadingWidgetPreview from './LoadingWidgetPreview.vue';
-import { accent, background } from '@/composition/wotstatColors';
-import { useDebounce } from '@vueuse/core';
+import { getAllWidgetsRoutes, pathResolve } from '@/utils'
+import Item from './Item.vue'
+import { type Component, computed, defineAsyncComponent, onMounted, provide, watchEffect } from 'vue'
+import { collections } from '@/collections'
+import { injectStylesheet } from '@/composition/widgetSdk'
+import { useProvideDocumentBounding } from '@/composition/useProvideDocumentBounding'
+import { Options } from '@/utils/defineWidget'
+import { isInMiniPreview, isInPreview, language } from '@/utils/provides'
+import LoadingWidgetPreview from './LoadingWidgetPreview.vue'
+import { accent, background } from '@/composition/wotstatColors'
+import { useDebounce } from '@vueuse/core'
 
 const accentColor = useDebounce(accent, 100)
 const backgroundColor = useDebounce(background, 100)
 
-injectStylesheet();
+injectStylesheet()
 useProvideDocumentBounding()
 
 const emit = defineEmits<{

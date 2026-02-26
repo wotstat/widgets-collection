@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Счётчик результатов",
-  description: "Считает количество проведённых боёв, побед и поражений",
+  name: 'Счётчик результатов',
+  description: 'Считает количество проведённых боёв, побед и поражений',
   params: [{
     type: 'select', target: 'skin', label: 'shared:style:title', variants: [
       { value: 'transparent', label: 'shared:style:transparent' },

@@ -40,10 +40,10 @@
 
 
 <script setup lang="ts">
-import SeriesBarChart from '@/components/SeriesBarChart.vue';
-import { useRoundProcessor } from '@/composition/processors/useRoundProcessor';
-import { useTweenComputed } from '@/composition/tween/useTweenRef';
-import { computed } from 'vue';
+import SeriesBarChart from '@/components/SeriesBarChart.vue'
+import { useRoundProcessor } from '@/composition/processors/useRoundProcessor'
+import { useTweenComputed } from '@/composition/tween/useTweenRef'
+import { computed } from 'vue'
 
 const props = defineProps<{
   place: number

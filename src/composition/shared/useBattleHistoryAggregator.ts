@@ -1,11 +1,11 @@
-import { computed, watch } from "vue";
-import { BattleResultWithArenaId, useBattleResult } from "../useOnBattleResult";
-import { useWidgetStorage } from "../useWidgetStorage";
-import { useReactiveState, useWidgetSdk } from "../widgetSdk";
-import { defaultStats, useInBattleCollector } from "./useInBattleCollector";
-import { objectEntries } from "@vueuse/core";
-import { IconType } from "@/components/efficiencyIcon/utils";
-import { Prettify } from "@/utils";
+import { computed, watch } from 'vue'
+import { BattleResultWithArenaId, useBattleResult } from '../useOnBattleResult'
+import { useWidgetStorage } from '../useWidgetStorage'
+import { useReactiveState, useWidgetSdk } from '../widgetSdk'
+import { defaultStats, useInBattleCollector } from './useInBattleCollector'
+import { objectEntries } from '@vueuse/core'
+import { IconType } from '@/components/efficiencyIcon/utils'
+import { Prettify } from '@/utils'
 
 
 type Battle = typeof defaultBattle
@@ -86,7 +86,7 @@ export function useBattleHistoryAggregator() {
 
     const battle = battles.value.get(result.arenaUniqueID)!
     battle.hasResult = true
-    console.log('Battle result:', result, raw);
+    console.log('Battle result:', result, raw)
 
     if (!result.personal) return
 

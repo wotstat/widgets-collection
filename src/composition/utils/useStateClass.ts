@@ -3,8 +3,8 @@ import {
   isInMiniPreview as isInMiniPreviewKey,
   obsStudioVersion as obsStudioVersionKey,
   isInWidgetMod as isInWidgetModKey
-} from "@/utils/provides";
-import { computed, inject, ref } from "vue";
+} from '@/utils/provides'
+import { computed, inject, ref } from 'vue'
 
 export function useStateClass() {
 

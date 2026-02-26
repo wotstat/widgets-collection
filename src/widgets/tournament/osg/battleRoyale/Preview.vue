@@ -9,10 +9,10 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { computed, ref } from 'vue';
+import WidgetCard from '@/components/WidgetCard.vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   isMiniPreview: boolean,
@@ -20,7 +20,7 @@ const props = defineProps<{
   hideL2?: boolean,
   hideL3?: boolean,
   hideL4?: boolean,
-}>();
+}>()
 
 const data = ref({
   place: 98,

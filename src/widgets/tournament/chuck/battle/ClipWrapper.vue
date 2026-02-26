@@ -9,35 +9,35 @@
 
 
 <script setup lang="ts">
-import { computed, provide, ref, Ref, shallowRef, ShallowRef, triggerRef, watchEffect } from 'vue';
-import { clipWrapper } from './clipUtils';
-import { useElementBounding } from '@vueuse/core';
+import { computed, provide, ref, Ref, shallowRef, ShallowRef, triggerRef, watchEffect } from 'vue'
+import { clipWrapper } from './clipUtils'
+import { useElementBounding } from '@vueuse/core'
 
-const wrapper = ref<HTMLElement | null>(null);
-const { top } = useElementBounding(wrapper);
+const wrapper = ref<HTMLElement | null>(null)
+const { top } = useElementBounding(wrapper)
 
-const clips = shallowRef(new Map<string, { top: ShallowRef<number>, svg: string }>());
+const clips = shallowRef(new Map<string, { top: ShallowRef<number>, svg: string }>())
 
 function register(path: string, info: { top: ShallowRef<number>, svg: string }) {
-  clips.value.set(path, info);
-  triggerRef(clips);
+  clips.value.set(path, info)
+  triggerRef(clips)
 }
 
 function unregister(path: string) {
-  clips.value.delete(path);
-  triggerRef(clips);
+  clips.value.delete(path)
+  triggerRef(clips)
 }
 
 const clip = computed(() => {
   return Array.from(clips.value.entries())
     .map(([id, info]) => `url(data:image/svg+xml;utf8,${encodeURIComponent(info.svg)}) 0 ${info.top.value - top.value}px/100% no-repeat`)
-    .join(', ');
+    .join(', ')
 })
 
 provide(clipWrapper, {
   register,
   unregister
-});
+})
 
 </script>
 

@@ -1,5 +1,5 @@
-import { playerNameProcessor } from "@/composition/processors/usePlayerNameProcessor"
-import { MultiSlotParamSlot } from "@/utils/defineWidget"
+import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor'
+import { MultiSlotParamSlot } from '@/utils/defineWidget'
 
 export const shared = [
   'battles',

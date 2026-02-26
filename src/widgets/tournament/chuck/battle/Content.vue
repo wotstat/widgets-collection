@@ -163,82 +163,82 @@
 
 
 <script setup lang="ts">
-import TweenValue from '@/components/TweenValue.vue';
-import { HangerBattleVariant, Props } from './define.widget';
+import TweenValue from '@/components/TweenValue.vue'
+import { HangerBattleVariant, Props } from './define.widget'
 import Disconnect from './assets/disconnect.svg'
-import ForceMono from '@/components/ForceMono.vue';
+import ForceMono from '@/components/ForceMono.vue'
 
-import LargePhotoBack from './assets/background/large-photo.svg?raw';
-import MediumPhotoBack from './assets/background/medium-photo.svg?raw';
-import MediumBack from './assets/background/medium.svg?raw';
-import SmallBottomBack from './assets/background/small-bottom.svg?raw';
-import SmallPhotoBack from './assets/background/small-photo.svg?raw';
-import SmallTopBack from './assets/background/small-top.svg?raw';
-import SmallBottomAltBack from './assets/background/small-bottom-alt.svg?raw';
+import LargePhotoBack from './assets/background/large-photo.svg?raw'
+import MediumPhotoBack from './assets/background/medium-photo.svg?raw'
+import MediumBack from './assets/background/medium.svg?raw'
+import SmallBottomBack from './assets/background/small-bottom.svg?raw'
+import SmallPhotoBack from './assets/background/small-photo.svg?raw'
+import SmallTopBack from './assets/background/small-top.svg?raw'
+import SmallBottomAltBack from './assets/background/small-bottom-alt.svg?raw'
 
-import LargePhotoLine from './assets/lines/large-photo.svg';
+import LargePhotoLine from './assets/lines/large-photo.svg'
 import MediumPhotoLine from './assets/lines/medium-photo.svg'
-import MediumBackLine from './assets/lines/medium.svg';
-import SmallBottomLine from './assets/lines/small-bottom.svg';
-import SmallPhotoLine from './assets/lines/small-photo.svg';
-import SmallTopLine from './assets/lines/small-top.svg';
-import SmallBottomAltLine from './assets/lines/small-bottom-alt.svg';
+import MediumBackLine from './assets/lines/medium.svg'
+import SmallBottomLine from './assets/lines/small-bottom.svg'
+import SmallPhotoLine from './assets/lines/small-photo.svg'
+import SmallTopLine from './assets/lines/small-top.svg'
+import SmallBottomAltLine from './assets/lines/small-bottom-alt.svg'
 
 
-import { useI18nRef } from '@/composition/useI18n';
-import i18n from './i18n.json';
-import ClipContent from './ClipContent.vue';
-import ClipWrapper from './ClipWrapper.vue';
-import { computed, ref } from 'vue';
+import { useI18nRef } from '@/composition/useI18n'
+import i18n from './i18n.json'
+import ClipContent from './ClipContent.vue'
+import ClipWrapper from './ClipWrapper.vue'
+import { computed, ref } from 'vue'
 
 import PhotoMerfi from './assets/photos/Merfi.png'
-import Image from '@/components/Image.vue';
-import { spaceProcessor } from '@/composition/processors/useSpaceProcessor';
-import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor';
-import { STATIC_URL } from '@/utils/externalUrl';
+import Image from '@/components/Image.vue'
+import { spaceProcessor } from '@/composition/processors/useSpaceProcessor'
+import { playerNameProcessor } from '@/composition/processors/usePlayerNameProcessor'
+import { STATIC_URL } from '@/utils/externalUrl'
 
 
 
-const gradientId = Math.random().toString(36).substring(2, 15);
-const gradientUrl = computed(() => `url(#${gradientId})`);
+const gradientId = Math.random().toString(36).substring(2, 15)
+const gradientUrl = computed(() => `url(#${gradientId})`)
 
-const { t } = useI18nRef(i18n);
+const { t } = useI18nRef(i18n)
 
 const props = defineProps<Props>()
-const lines = ref<HTMLElement | null>(null);
+const lines = ref<HTMLElement | null>(null)
 
 function shouldShow(show: HangerBattleVariant) {
-  if (show === 'both') return true;
-  if (show === 'never') return false;
-  if (show == 'battle') return props.isInBattle;
-  if (show == 'hangar') return !props.isInBattle;
-  return false;
+  if (show === 'both') return true
+  if (show === 'never') return false
+  if (show == 'battle') return props.isInBattle
+  if (show == 'hangar') return !props.isInBattle
+  return false
 }
 
 function hpPercent(hp: number, maxHp: number) {
-  return Math.max(0, Math.min(1, Math.max(0, hp) / maxHp));
+  return Math.max(0, Math.min(1, Math.max(0, hp) / maxHp))
 }
 
 function hpColor(hp: number, maxHp: number) {
-  const percent = hpPercent(hp, maxHp);
-  if (hp <= 0) return '#7a7a7a'; // Grey
-  if (percent >= 0.75) return '#00ffb7'; // Green
-  if (percent >= 0.5) return '#fffd00'; // Yellow
-  if (percent >= 0.25) return '#ffbc00'; // Red
-  if (percent > 0) return '#ff5b00'; // Red
+  const percent = hpPercent(hp, maxHp)
+  if (hp <= 0) return '#7a7a7a' // Grey
+  if (percent >= 0.75) return '#00ffb7' // Green
+  if (percent >= 0.5) return '#fffd00' // Yellow
+  if (percent >= 0.25) return '#ffbc00' // Red
+  if (percent > 0) return '#ff5b00' // Red
 }
 
-const photoUrls = import.meta.glob<{ default: string }>('./assets/photos/*.png', { eager: true });
+const photoUrls = import.meta.glob<{ default: string }>('./assets/photos/*.png', { eager: true })
 
 function getPhotoByNickname(name: string) {
-  const photo = photoUrls[`./assets/photos/${name}.png`];
-  if (photo) return photo.default;
-  return PhotoMerfi;
+  const photo = photoUrls[`./assets/photos/${name}.png`]
+  if (photo) return photo.default
+  return PhotoMerfi
 }
 
 const battleSum = computed(() => {
-  return props.players.reduce((sum, player) => sum + player.score, 0);
-});
+  return props.players.reduce((sum, player) => sum + player.score, 0)
+})
 </script>
 
 

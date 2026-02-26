@@ -74,13 +74,13 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
-import { createReusableTemplate, useElementBounding, useTimestamp, useWindowSize } from '@vueuse/core';
-import { Props } from './define.widget';
-import { ref } from 'vue';
+import WidgetCard from '@/components/WidgetCard.vue'
+import { createReusableTemplate, useElementBounding, useTimestamp, useWindowSize } from '@vueuse/core'
+import { Props } from './define.widget'
+import { ref } from 'vue'
 
-const [DefineLine, ReuseLine] = createReusableTemplate<{ num: number, isOn: boolean, name: string }>();
-const [DefineOnOff, OnOff] = createReusableTemplate<{ isOn: boolean }>();
+const [DefineLine, ReuseLine] = createReusableTemplate<{ num: number, isOn: boolean, name: string }>()
+const [DefineOnOff, OnOff] = createReusableTemplate<{ isOn: boolean }>()
 
 const props = defineProps<Props>()
 

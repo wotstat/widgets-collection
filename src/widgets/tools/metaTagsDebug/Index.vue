@@ -6,12 +6,12 @@
 
 
 <script setup lang="ts">
-import Content from './Content.vue';
-import { computed, ref, watchEffect } from 'vue';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { Props } from './define.widget';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
+import Content from './Content.vue'
+import { computed, ref, watchEffect } from 'vue'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { Props } from './define.widget'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk'
 
 const selectedLine = ref(0)
 

@@ -1,4 +1,4 @@
-import { objectEntries } from "@vueuse/core"
+import { objectEntries } from '@vueuse/core'
 
 
 
@@ -77,7 +77,7 @@ type PersonalDamageDetails = {
 }
 
 function get<T>(obj: object | null, key: string) {
-  return obj && key in obj ? obj[key as keyof typeof obj] as T : null;
+  return obj && key in obj ? obj[key as keyof typeof obj] as T : null
 }
 
 function sum(key: string) {
@@ -210,7 +210,7 @@ export function parseBattleResult(result: unknown) {
 
   let prebattleID = 0
   if (personalVehicle && personalVehicle?.player !== 'bot' && 'prebattleID' in personalVehicle.player) {
-    prebattleID = personalVehicle.player.prebattleID;
+    prebattleID = personalVehicle.player.prebattleID
   }
 
   const platoon = prebattleID == 0 ? [personalVehicle] :

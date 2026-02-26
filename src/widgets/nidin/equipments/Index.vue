@@ -7,15 +7,15 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed } from 'vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { NidinTankEquipment, NidinTankModifications } from '../api';
-import { useFetch } from '@vueuse/core';
-import { getEquipmentById, getDeviceById, SpecializationTag } from '@/components/equipment/equipment';
-import { Props } from './define.widget';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed } from 'vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { NidinTankEquipment, NidinTankModifications } from '../api'
+import { useFetch } from '@vueuse/core'
+import { getEquipmentById, getDeviceById, SpecializationTag } from '@/components/equipment/equipment'
+import { Props } from './define.widget'
 
 const { hd, showTankName, variant, postProgression, postProgressionCurrent, author } = useQueryParams({
   hd: Boolean,
@@ -38,7 +38,7 @@ const modificationsById = computed(() => {
   return new Map(modifications.value.tanks.map(i => [i.id, i]))
 })
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 
 const vehicle = useReactiveState(sdk.data.hangar.vehicle.info)
 const optDevices = useReactiveState(sdk.data.hangar.vehicle.optDevices)

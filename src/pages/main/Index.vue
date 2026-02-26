@@ -47,16 +47,16 @@
 
 
 <script setup lang="ts">
-import According from '@/components/According.vue';
+import According from '@/components/According.vue'
 import CollectionList from '../collectionList/Index.vue'
 import PreviewPopup from '../previewPopup/Index.vue'
-import { VueComponentWith as InstructionGameWith } from "./instructionGame/index.md";
-import { VueComponent as InstructionOBS } from "./instructionOBS/index.md";
-import { useRoute, useRouter } from 'vue-router';
-import PopupWindow from '@/components/PopupWindow.vue';
-import { ref, watchEffect } from 'vue';
-import CurrentLestaVersion from "./CurrentLestaVersion.vue";
-import CurrentWgVersion from "./CurrentWgVersion.vue";
+import { VueComponentWith as InstructionGameWith } from './instructionGame/index.md'
+import { VueComponent as InstructionOBS } from './instructionOBS/index.md'
+import { useRoute, useRouter } from 'vue-router'
+import PopupWindow from '@/components/PopupWindow.vue'
+import { ref, watchEffect } from 'vue'
+import CurrentLestaVersion from './CurrentLestaVersion.vue'
+import CurrentWgVersion from './CurrentWgVersion.vue'
 
 const router = useRouter()
 const title = ref('')

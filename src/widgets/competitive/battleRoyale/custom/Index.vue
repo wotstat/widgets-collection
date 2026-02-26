@@ -7,18 +7,18 @@
 
 
 <script setup lang="ts">
-import Content from './Content.vue';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { computed, watch } from 'vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import { useStorageRelayState } from '@/composition/useStorageRelayState';
-import { useWidgetRelay } from '@/composition/useWidgetRelay';
-import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
-import { v4 as uuidv4 } from "uuid";
-import { useBattleResult } from '@/composition/useOnBattleResult';
-import { Line, slotValues } from './define.widget';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
+import Content from './Content.vue'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { computed, watch } from 'vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import { useStorageRelayState } from '@/composition/useStorageRelayState'
+import { useWidgetRelay } from '@/composition/useWidgetRelay'
+import { useReactiveRelayState } from '@/composition/useReactiveRelayState'
+import { v4 as uuidv4 } from 'uuid'
+import { useBattleResult } from '@/composition/useOnBattleResult'
+import { Line, slotValues } from './define.widget'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
 
 
 const checkIsTop = (rank: number | null) => rank !== null && rank == 1
@@ -38,7 +38,7 @@ const query = useQueryParams({
 const allowBattles = new Set(['BATTLE_ROYALE_SOLO', 'BATTLE_ROYALE_SQUAD'])
 if (query.allowSquad) allowBattles.delete('BATTLE_ROYALE_SQUAD')
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 const { relay } = useWidgetRelay(query.channelKey ?? uuidv4())
 
 const playerNamesRelay = useReactiveRelayState<string>(relay, 'playerName', '')
@@ -102,7 +102,7 @@ watch(() => [arenaInfo.value, arenaId.value] as const, ([info, arenaId]) => {
 
   battlesHistoryTop.value.push({ id: arenaId, rank: null })
   battlesHistoryScore.value.push({ id: arenaId, score: null })
-  console.log('Started battle: ', arenaId);
+  console.log('Started battle: ', arenaId)
 })
 
 function calculateScore(rank: number, frags: number) {
@@ -174,9 +174,9 @@ useBattleResult((parsed) => {
   const arenaId = parsed.arenaUniqueID
   const battleHistoryIndex = battlesHistoryTop.value.findIndex(b => b.id == arenaId)
   const battleScoreIndex = battlesHistoryScore.value.findIndex(b => b.id == arenaId)
-  if (battleHistoryIndex == -1 || battleScoreIndex == -1) return console.error(`Battle result for unknown battle: ${arenaId}`);
+  if (battleHistoryIndex == -1 || battleScoreIndex == -1) return console.error(`Battle result for unknown battle: ${arenaId}`)
 
-  console.log('Battle result for: ', arenaId);
+  console.log('Battle result for: ', arenaId)
 
   const player = parsed.personal?.player
 
@@ -220,11 +220,11 @@ useBattleResult((parsed) => {
     maxScoreInRow: calculateMaxScoreInRow(),
   }
 
-  console.log('Stats updated: ', statsRelay.state.value);
+  console.log('Stats updated: ', statsRelay.state.value)
 
   smartStripResults()
 
-  console.log('Battles history updated: ', battlesHistoryTop.value);
+  console.log('Battles history updated: ', battlesHistoryTop.value)
 
   statsRelay.trigger()
 })

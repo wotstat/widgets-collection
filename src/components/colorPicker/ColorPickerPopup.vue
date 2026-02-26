@@ -119,15 +119,15 @@
 
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue';
-import { ColorHSVA, HSLA, RGBA } from './ColorHSVA';
-import { useLocalStorage, watchPausable } from '@vueuse/core';
-import { options, simpleContextMenu } from '../contextMenu/simpleContextMenu';
-import ArrowUpDown from './arrow-up-down.svg';
-import Add from './add.svg';
+import { computed, nextTick, ref, watch } from 'vue'
+import { ColorHSVA, HSLA, RGBA } from './ColorHSVA'
+import { useLocalStorage, watchPausable } from '@vueuse/core'
+import { options, simpleContextMenu } from '../contextMenu/simpleContextMenu'
+import ArrowUpDown from './arrow-up-down.svg'
+import Add from './add.svg'
 
-const PX_GAMMA = 1.25;
-const PY_GAMMA = 1;
+const PX_GAMMA = 1.25
+const PY_GAMMA = 1
 
 
 const { allowAlpha = true, savedColors: displaySavedColors = true, format } = defineProps<{
@@ -140,146 +140,146 @@ const value = defineModel<string | RGBA | HSLA>({
   required: false,
 })
 
-const hueSlider = ref<HTMLElement | null>(null);
-const opacitySlider = ref<HTMLElement | null>(null);
-const paletteElement = ref<HTMLElement | null>(null);
-const valueInputType = useLocalStorage<'hex' | 'rgba' | 'hsla'>('color-picker:color-input-variant', 'rgba');
-const savedColors = useLocalStorage<string[]>('color-picker:saved-colors-preset-main', []);
+const hueSlider = ref<HTMLElement | null>(null)
+const opacitySlider = ref<HTMLElement | null>(null)
+const paletteElement = ref<HTMLElement | null>(null)
+const valueInputType = useLocalStorage<'hex' | 'rgba' | 'hsla'>('color-picker:color-input-variant', 'rgba')
+const savedColors = useLocalStorage<string[]>('color-picker:saved-colors-preset-main', [])
 
-const rgbaInputValue = ref({ r: '0', g: '0', b: '0', a: '1' });
-const hslaInputValue = ref({ h: '0', s: '100', l: '50', a: '1' });
-const hexInputValue = ref('');
+const rgbaInputValue = ref({ r: '0', g: '0', b: '0', a: '1' })
+const hslaInputValue = ref({ h: '0', s: '100', l: '50', a: '1' })
+const hexInputValue = ref('')
 
-const color = ref(new ColorHSVA(0, 0, 0, 1));
+const color = ref(new ColorHSVA(0, 0, 0, 1))
 
-const hsla = computed(() => color.value.toHsla());
+const hsla = computed(() => color.value.toHsla())
 
 const { stop, pause, resume } = watchPausable(value, (newValue) => {
-  if (newValue) color.value.parseFormat(format, newValue);
-}, { immediate: true });
+  if (newValue) color.value.parseFormat(format, newValue)
+}, { immediate: true })
 
 watch(color, (newColor) => {
   pause()
-  value.value = newColor.toFormat(format);
-  nextTick(() => resume());
-}, { immediate: true, deep: true });
+  value.value = newColor.toFormat(format)
+  nextTick(() => resume())
+}, { immediate: true, deep: true })
 
 
 function updateOpacityValue(clientX: number) {
-  if (!opacitySlider.value) return;
-  const rect = opacitySlider.value.getBoundingClientRect();
-  let a = (clientX - rect.left) / rect.width;
+  if (!opacitySlider.value) return
+  const rect = opacitySlider.value.getBoundingClientRect()
+  let a = (clientX - rect.left) / rect.width
 
   if (clientX < rect.left) a = 0
-  else if (clientX > rect.right) a = 1;
+  else if (clientX > rect.right) a = 1
 
-  color.value.setHsva(color.value.h, color.value.s, color.value.v, a);
+  color.value.setHsva(color.value.h, color.value.s, color.value.v, a)
 }
 
 function updateHueValue(clientX: number) {
-  if (!hueSlider.value) return;
-  const rect = hueSlider.value.getBoundingClientRect();
-  let hue = (1 - (clientX - rect.left) / rect.width) * 360;
+  if (!hueSlider.value) return
+  const rect = hueSlider.value.getBoundingClientRect()
+  let hue = (1 - (clientX - rect.left) / rect.width) * 360
 
   if (clientX < rect.left) hue = 360
   if (clientX > rect.right) hue = 0
 
-  color.value.setHsva(hue, color.value.s, color.value.v, color.value.a);
+  color.value.setHsva(hue, color.value.s, color.value.v, color.value.a)
 }
 
 function updatePaletteColor(clientX: number, clientY: number) {
-  if (!paletteElement.value) return;
-  const rect = paletteElement.value.getBoundingClientRect();
-  const px = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-  const py = Math.max(0, Math.min(1, 1 - (clientY - rect.top) / rect.height));
+  if (!paletteElement.value) return
+  const rect = paletteElement.value.getBoundingClientRect()
+  const px = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
+  const py = Math.max(0, Math.min(1, 1 - (clientY - rect.top) / rect.height))
 
-  color.value.setHsva(color.value.h, Math.pow(px, PX_GAMMA), Math.pow(py, PY_GAMMA), color.value.a);
+  color.value.setHsva(color.value.h, Math.pow(px, PX_GAMMA), Math.pow(py, PY_GAMMA), color.value.a)
 }
 
 
-let isHuePointerDown = false;
+let isHuePointerDown = false
 function onHuePointerDown(event: PointerEvent) {
-  if (!hueSlider.value) return;
-  isHuePointerDown = true;
+  if (!hueSlider.value) return
+  isHuePointerDown = true
 
-  updateHueValue(event.clientX);
-  window.addEventListener('pointermove', onHuePointerMove);
-  window.addEventListener('pointerup', onHuePointerUp, { capture: true });
-  document.body.classList.add('color-picker-slider-move');
+  updateHueValue(event.clientX)
+  window.addEventListener('pointermove', onHuePointerMove)
+  window.addEventListener('pointerup', onHuePointerUp, { capture: true })
+  document.body.classList.add('color-picker-slider-move')
 }
 
 function onHuePointerMove(event: PointerEvent) {
-  updateHueValue(event.clientX);
+  updateHueValue(event.clientX)
 }
 
 function onHuePointerUp(event: PointerEvent) {
-  if (!isHuePointerDown) return;
-  isHuePointerDown = false;
+  if (!isHuePointerDown) return
+  isHuePointerDown = false
 
-  event.preventDefault();
-  event.stopPropagation();
-  updateHueValue(event.clientX);
-  window.removeEventListener('pointermove', onHuePointerMove);
-  window.removeEventListener('pointerup', onHuePointerUp, { capture: true });
-  document.body.classList.remove('color-picker-slider-move');
+  event.preventDefault()
+  event.stopPropagation()
+  updateHueValue(event.clientX)
+  window.removeEventListener('pointermove', onHuePointerMove)
+  window.removeEventListener('pointerup', onHuePointerUp, { capture: true })
+  document.body.classList.remove('color-picker-slider-move')
 }
 
-let isOpacityPointerDown = false;
+let isOpacityPointerDown = false
 function onOpacityPointerDown(event: PointerEvent) {
-  if (!opacitySlider.value) return;
-  isOpacityPointerDown = true;
+  if (!opacitySlider.value) return
+  isOpacityPointerDown = true
 
-  updateOpacityValue(event.clientX);
-  window.addEventListener('pointermove', onOpacityPointerMove);
-  window.addEventListener('pointerup', onOpacityPointerUp, { capture: true });
-  document.body.classList.add('color-picker-handle-move');
+  updateOpacityValue(event.clientX)
+  window.addEventListener('pointermove', onOpacityPointerMove)
+  window.addEventListener('pointerup', onOpacityPointerUp, { capture: true })
+  document.body.classList.add('color-picker-handle-move')
 }
 
 function onOpacityPointerMove(event: PointerEvent) {
-  updateOpacityValue(event.clientX);
+  updateOpacityValue(event.clientX)
 }
 
 function onOpacityPointerUp(event: PointerEvent) {
-  if (!isOpacityPointerDown) return;
-  isOpacityPointerDown = false;
+  if (!isOpacityPointerDown) return
+  isOpacityPointerDown = false
 
-  event.preventDefault();
-  event.stopPropagation();
-  updateOpacityValue(event.clientX);
-  window.removeEventListener('pointermove', onOpacityPointerMove);
-  window.removeEventListener('pointerup', onOpacityPointerUp, { capture: true });
-  document.body.classList.remove('color-picker-handle-move');
+  event.preventDefault()
+  event.stopPropagation()
+  updateOpacityValue(event.clientX)
+  window.removeEventListener('pointermove', onOpacityPointerMove)
+  window.removeEventListener('pointerup', onOpacityPointerUp, { capture: true })
+  document.body.classList.remove('color-picker-handle-move')
 }
 
-let isPalettePointerDown = false;
+let isPalettePointerDown = false
 function onPalettePointerDown(event: PointerEvent) {
-  if (!paletteElement.value) return;
-  isPalettePointerDown = true;
+  if (!paletteElement.value) return
+  isPalettePointerDown = true
 
-  updatePaletteColor(event.clientX, event.clientY);
-  window.addEventListener('pointermove', onPalettePointerMove);
-  window.addEventListener('pointerup', onPalettePointerUp, { capture: true });
-  document.body.classList.add('color-picker-slider-move');
-  event.preventDefault();
-  event.stopPropagation();
+  updatePaletteColor(event.clientX, event.clientY)
+  window.addEventListener('pointermove', onPalettePointerMove)
+  window.addEventListener('pointerup', onPalettePointerUp, { capture: true })
+  document.body.classList.add('color-picker-slider-move')
+  event.preventDefault()
+  event.stopPropagation()
 }
 
 function onPalettePointerMove(event: PointerEvent) {
-  if (!paletteElement.value) return;
-  updatePaletteColor(event.clientX, event.clientY);
+  if (!paletteElement.value) return
+  updatePaletteColor(event.clientX, event.clientY)
 }
 
 function onPalettePointerUp(event: PointerEvent) {
-  if (!isPalettePointerDown) return;
-  isPalettePointerDown = false;
+  if (!isPalettePointerDown) return
+  isPalettePointerDown = false
 
-  event.preventDefault();
-  event.stopPropagation();
-  if (!paletteElement.value) return;
-  updatePaletteColor(event.clientX, event.clientY);
-  document.body.classList.remove('color-picker-slider-move');
-  window.removeEventListener('pointermove', onPalettePointerMove);
-  window.removeEventListener('pointerup', onPalettePointerUp, { capture: true });
+  event.preventDefault()
+  event.stopPropagation()
+  if (!paletteElement.value) return
+  updatePaletteColor(event.clientX, event.clientY)
+  document.body.classList.remove('color-picker-slider-move')
+  window.removeEventListener('pointermove', onPalettePointerMove)
+  window.removeEventListener('pointerup', onPalettePointerUp, { capture: true })
 }
 
 function showContextMenu(event: MouseEvent) {
@@ -292,92 +292,92 @@ function showContextMenu(event: MouseEvent) {
 }
 
 function syncRgba() {
-  const rgba = color.value.toRgba();
-  rgbaInputValue.value.r = rgba.r.toString();
-  rgbaInputValue.value.g = rgba.g.toString();
-  rgbaInputValue.value.b = rgba.b.toString();
-  rgbaInputValue.value.a = rgba.a.toFixed(2);
+  const rgba = color.value.toRgba()
+  rgbaInputValue.value.r = rgba.r.toString()
+  rgbaInputValue.value.g = rgba.g.toString()
+  rgbaInputValue.value.b = rgba.b.toString()
+  rgbaInputValue.value.a = rgba.a.toFixed(2)
 }
 
 function syncHsla() {
-  const hsla = color.value.toHsla();
-  hslaInputValue.value.h = Math.round(hsla.h).toString();
-  hslaInputValue.value.s = Math.round(hsla.s * 100) + '%';
-  hslaInputValue.value.l = Math.round(hsla.l * 100) + '%';
-  hslaInputValue.value.a = hsla.a.toFixed(2);
+  const hsla = color.value.toHsla()
+  hslaInputValue.value.h = Math.round(hsla.h).toString()
+  hslaInputValue.value.s = Math.round(hsla.s * 100) + '%'
+  hslaInputValue.value.l = Math.round(hsla.l * 100) + '%'
+  hslaInputValue.value.a = hsla.a.toFixed(2)
 }
 
 function syncHex() {
-  let hex = color.value.toHex();
-  if (hex.endsWith('ff') || !allowAlpha) hex = hex.slice(0, -2);
-  hexInputValue.value = `#${hex}`;
+  let hex = color.value.toHex()
+  if (hex.endsWith('ff') || !allowAlpha) hex = hex.slice(0, -2)
+  hexInputValue.value = `#${hex}`
 }
 
 watch(valueInputType, (newValue) => {
   if (newValue == 'rgba') syncRgba()
   else if (newValue == 'hsla') syncHsla()
   else if (newValue == 'hex') syncHex()
-}, { immediate: true });
+}, { immediate: true })
 
 const { pause: pauseColor, resume: resumeColor } = watchPausable(color, (newValue) => {
   if (valueInputType.value == 'rgba') syncRgba()
-  else if (valueInputType.value == 'hsla') syncHsla();
+  else if (valueInputType.value == 'hsla') syncHsla()
   else if (valueInputType.value == 'hex') syncHex()
-}, { immediate: true, deep: true });
+}, { immediate: true, deep: true })
 
 
 function updateRgba(value: 'r' | 'g' | 'b' | 'a', event: Event) {
-  const target = event.target as HTMLInputElement;
-  if (value != 'a') rgbaInputValue.value[value] = target.value.replaceAll(/[^0-9]/g, '').slice(0, 4);
-  else rgbaInputValue.value[value] = target.value.replaceAll(/[^0-9|\.]/g, '').slice(0, 4);
+  const target = event.target as HTMLInputElement
+  if (value != 'a') rgbaInputValue.value[value] = target.value.replaceAll(/[^0-9]/g, '').slice(0, 4)
+  else rgbaInputValue.value[value] = target.value.replaceAll(/[^0-9|\.]/g, '').slice(0, 4)
 
-  target.value = rgbaInputValue.value[value];
-  pauseColor();
-  color.value.parseRgba(rgbaInputValue.value.r, rgbaInputValue.value.g, rgbaInputValue.value.b, rgbaInputValue.value.a);
+  target.value = rgbaInputValue.value[value]
+  pauseColor()
+  color.value.parseRgba(rgbaInputValue.value.r, rgbaInputValue.value.g, rgbaInputValue.value.b, rgbaInputValue.value.a)
   nextTick(() => resumeColor())
 }
 
 function updateHsla(value: 'h' | 's' | 'l' | 'a', event: Event) {
-  const target = event.target as HTMLInputElement;
+  const target = event.target as HTMLInputElement
 
-  if (value == 'a') hslaInputValue.value[value] = target.value.replaceAll(/[^0-9|\.]/g, '').slice(0, 4);
-  else if (value == 'h') hslaInputValue.value[value] = target.value.replaceAll(/[^0-9]/g, '').slice(0, 4);
-  else hslaInputValue.value[value] = target.value.replaceAll(/[^0-9|\%]/g, '').slice(0, 4);
+  if (value == 'a') hslaInputValue.value[value] = target.value.replaceAll(/[^0-9|\.]/g, '').slice(0, 4)
+  else if (value == 'h') hslaInputValue.value[value] = target.value.replaceAll(/[^0-9]/g, '').slice(0, 4)
+  else hslaInputValue.value[value] = target.value.replaceAll(/[^0-9|\%]/g, '').slice(0, 4)
 
-  target.value = hslaInputValue.value[value];
-  pauseColor();
-  color.value.parseHsla(hslaInputValue.value.h, hslaInputValue.value.s, hslaInputValue.value.l, hslaInputValue.value.a);
+  target.value = hslaInputValue.value[value]
+  pauseColor()
+  color.value.parseHsla(hslaInputValue.value.h, hslaInputValue.value.s, hslaInputValue.value.l, hslaInputValue.value.a)
   nextTick(() => resumeColor())
 }
 
 function updateHex(event: Event) {
-  const target = event.target as HTMLInputElement;
+  const target = event.target as HTMLInputElement
   const cleaned = target.value
     .replaceAll(/[^0-9a-fA-F#]/g, '')
     .replaceAll(/(?!^)#/g, '')
 
-  hexInputValue.value = cleaned.slice(0, cleaned.startsWith('#') ? 9 : 8);
-  target.value = hexInputValue.value;
+  hexInputValue.value = cleaned.slice(0, cleaned.startsWith('#') ? 9 : 8)
+  target.value = hexInputValue.value
 
-  pauseColor();
-  color.value.paseHex(hexInputValue.value);
+  pauseColor()
+  color.value.paseHex(hexInputValue.value)
   nextTick(() => resumeColor())
 }
 
 function addColor() {
-  const hex = color.value.toHex();
+  const hex = color.value.toHex()
 
-  savedColors.value.push(hex);
-  if (savedColors.value.length > 19) savedColors.value.shift(); // Limit to 10 colors
+  savedColors.value.push(hex)
+  if (savedColors.value.length > 19) savedColors.value.shift() // Limit to 10 colors
 }
 
 function applyColor(colorHex: string) {
-  color.value.setHex(colorHex);
+  color.value.setHex(colorHex)
 }
 
 function showColorContextMenu(event: MouseEvent, index: number) {
-  event.preventDefault();
-  event.stopPropagation();
+  event.preventDefault()
+  event.stopPropagation()
 
   simpleContextMenu({ position: { x: event.clientX, y: event.clientY }, closeOnAction: true, actionOnPointerUp: true }, [
     {
@@ -392,7 +392,7 @@ function showColorContextMenu(event: MouseEvent, index: number) {
       label: 'Clear all',
       action: () => savedColors.value.splice(0, savedColors.value.length)
     }
-  ]);
+  ])
 
 }
 

@@ -21,8 +21,8 @@
 
 
 <script setup lang="ts">
-import Line from '../Line.vue';
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import Line from '../Line.vue'
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   arenaId?: number;
@@ -40,7 +40,7 @@ const props = defineProps<{
   serverTime?: number;
   isAlive?: boolean;
   collapseKeys: KeyBindingSetting;
-}>();
+}>()
 
 const { visible, localizedKeys } = useToggleKeyBinding(props.collapseKeys)
 </script>

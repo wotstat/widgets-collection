@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import Select from '@/components/Select.vue';
+import Select from '@/components/Select.vue'
 
 type Meta = { drawer: string; meta: { variants: string[]; } }
 

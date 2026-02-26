@@ -1,18 +1,18 @@
-import { useLocalStorage } from "@vueuse/core";
-import { computed, onUnmounted, watch } from "vue";
-import { useReactiveRelayState } from "./useReactiveRelayState";
-import { useQueryParams } from "./useQueryParams";
-import { useWidgetSdk, WidgetsRelay } from "./widgetSdk";
-import { useRoute } from "vue-router";
+import { useLocalStorage } from '@vueuse/core'
+import { computed, onUnmounted, watch } from 'vue'
+import { useReactiveRelayState } from './useReactiveRelayState'
+import { useQueryParams } from './useQueryParams'
+import { useWidgetSdk, WidgetsRelay } from './widgetSdk'
+import { useRoute } from 'vue-router'
 
 
 export function useStorageRelayState<T>(relay: WidgetsRelay, stateKey: string, defaultValue: T, options?: {
   preventClearData?: boolean
   alwaysClearDataAvailable?: boolean
 }) {
-  const route = useRoute();
+  const route = useRoute()
   const { saveKey } = useQueryParams({ saveKey: { type: String, default: '' } })
-  const { sdk } = useWidgetSdk();
+  const { sdk } = useWidgetSdk()
 
   const value = useLocalStorage(`${route.path}_${saveKey}_${stateKey}`, defaultValue, { listenToStorageChanges: false, shallow: true })
   const reactiveState = useReactiveRelayState(relay, stateKey, value.value)

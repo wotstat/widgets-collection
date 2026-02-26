@@ -6,18 +6,18 @@
 
 
 <script setup lang="ts">
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import Content from '../../../efficiency/stats/Content.vue';
-import { computed } from 'vue';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { Props, SlotValue } from './define.widget';
-import { useInBattleCollector } from '@/composition/shared/useInBattleCollector';
-import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator';
-import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay';
-import { useReactiveRelayState } from '@/composition/useReactiveRelayState';
-import { syncRefs } from '@vueuse/core';
-import { inBattleEfficiency } from '@/components/efficiencyIcon/utils';
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import Content from '../../../efficiency/stats/Content.vue'
+import { computed } from 'vue'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { arrayOfOneOf, NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { Props, SlotValue } from './define.widget'
+import { useInBattleCollector } from '@/composition/shared/useInBattleCollector'
+import { useGunMarkCalculator } from '@/composition/shared/useGunMarkCalculator'
+import { usePlatoonWidgetRelay } from '@/composition/useWidgetRelay'
+import { useReactiveRelayState } from '@/composition/useReactiveRelayState'
+import { syncRefs } from '@vueuse/core'
+import { inBattleEfficiency } from '@/components/efficiencyIcon/utils'
 
 const params = useQueryParams({
   startFrom: NumberDefault(),
@@ -28,7 +28,7 @@ const params = useQueryParams({
 
 
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 const stats = useInBattleCollector()
 const health = useReactiveState(sdk.data.battle.health)
 
@@ -93,7 +93,7 @@ syncRefs(target, state.state)
 
 const lines = computed(() => {
   const all = [...state.all.value.entries()]
-  const allUnique = [...new Map(all.map(item => [item[1].playerId, item])).values()];
+  const allUnique = [...new Map(all.map(item => [item[1].playerId, item])).values()]
 
   const values = allUnique.length >= 3 ? allUnique.filter(t => t[0] != uuid) : allUnique
   const target = values.sort((a, b) => {

@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Убито противников",
-  description: "Отображает суммарное количество убитых противников",
+  name: 'Убито противников',
+  description: 'Отображает суммарное количество убитых противников',
   params: [
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [

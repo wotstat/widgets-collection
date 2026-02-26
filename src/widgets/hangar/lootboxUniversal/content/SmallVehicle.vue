@@ -9,10 +9,10 @@
 
 
 <script setup lang="ts">
-import FallbackImg from '@/components/shared/FallbackImg.vue';
+import FallbackImg from '@/components/shared/FallbackImg.vue'
 
 import Checkmark from '../assets/icons/checkmark.png'
-import { STATIC_URL } from '@/utils/externalUrl';
+import { STATIC_URL } from '@/utils/externalUrl'
 
 const props = defineProps<{
   tag: string,

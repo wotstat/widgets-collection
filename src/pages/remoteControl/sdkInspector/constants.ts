@@ -40,9 +40,9 @@ export const vehicleInfo = {
     'class': 'heavyTank',
     'role': 'role_HT_assault',
   }
-} as const;
+} as const
 
-export const vehicles = Object.keys(vehicleInfo) as (keyof typeof vehicleInfo)[];
+export const vehicles = Object.keys(vehicleInfo) as (keyof typeof vehicleInfo)[]
 
 export const aimingModes = [
   'arcade', 'strategic', 'arty', 'sniper', 'postmortem', 'debug', 'video', 'mapcase', 'arcadeMapcase', 'epicMapcase', 'respawn', 'deathfreecam', 'dualgun', 'arcadeEpicMinefieldMapcase', 'killcam', 'vehiclesSelection', 'twinGun', 'lookAtKiller'

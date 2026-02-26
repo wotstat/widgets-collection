@@ -6,10 +6,10 @@
 
 
 <script setup lang="ts">
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
-import { computed } from 'vue';
-import { Props } from './define.widget';
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
+import { computed } from 'vue'
+import { Props } from './define.widget'
 
 const props = defineProps<{
   isMiniPreview: boolean,
@@ -17,7 +17,7 @@ const props = defineProps<{
   hideL2?: boolean,
   hideL3?: boolean,
   skin?: 'default' | 'transparent' | 'replay',
-}>();
+}>()
 
 const target = computed<Props>(() => ({
   hideL1: props.hideL1,

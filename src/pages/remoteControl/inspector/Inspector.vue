@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed, watchEffect } from 'vue'
 import { buildTree, type Entry } from './tree'
-import InspectorNode from './InspectorNode.vue';
+import InspectorNode from './InspectorNode.vue'
 
 
 const props = defineProps<{ data: Record<string, Entry>, offset?: number }>()

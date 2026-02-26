@@ -16,7 +16,7 @@
 
 
 <script setup lang="ts">
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   damages?: {
@@ -28,7 +28,7 @@ const props = defineProps<{
   playerTeam?: number
   playerId?: number
   collapseKeys: KeyBindingSetting
-}>();
+}>()
 
 function classByTeam(team: number, id: number) {
   if (team == -1) return 'unknown'

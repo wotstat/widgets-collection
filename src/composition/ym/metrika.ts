@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref } from 'vue'
 
 function loadScript(callback: () => void, err?: OnErrorEventHandler) {
   const script = document.createElement('script')

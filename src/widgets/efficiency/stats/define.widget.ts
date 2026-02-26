@@ -1,7 +1,7 @@
-import { defineWidget, MultiSlotParamSlot } from "@/utils/defineWidget";
+import { defineWidget, MultiSlotParamSlot } from '@/utils/defineWidget'
 
 import { InBattleIconType, modificationLabel } from '@/components/efficiencyIcon/utils'
-import { i18n } from "@/components/efficiencyIcon/i18n";
+import { i18n } from '@/components/efficiencyIcon/i18n'
 
 export type Line = {
   icon: 'player'
@@ -56,8 +56,8 @@ export const inBattleEfficiencyWithMods = ([
 export type SlotValue = InBattleIconType | 'tank' | 'player'
 
 export default defineWidget({
-  name: "Расширенная эффективность",
-  description: "Отображает расширенную эффективность в бою. Настройте под себя до 8 параметров из 18 доступных",
+  name: 'Расширенная эффективность',
+  description: 'Отображает расширенную эффективность в бою. Настройте под себя до 8 параметров из 18 доступных',
   i18n,
   params: [
     { type: 'accentColorParam' },

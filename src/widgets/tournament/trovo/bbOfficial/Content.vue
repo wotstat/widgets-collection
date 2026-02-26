@@ -34,14 +34,14 @@
 
 
 <script setup lang="ts">
-import { useRoundTweenProcessor } from '@/composition/processors/useRoundTweenProcessor';
+import { useRoundTweenProcessor } from '@/composition/processors/useRoundTweenProcessor'
 
-import Logo from "./logo.svg";
+import Logo from './logo.svg'
 import i18n from './i18n.json'
-import { useI18nRef } from '@/composition/useI18n';
-import TweenValue from '@/components/TweenValue.vue';
+import { useI18nRef } from '@/composition/useI18n'
+import TweenValue from '@/components/TweenValue.vue'
 
-const { t } = useI18nRef(i18n);
+const { t } = useI18nRef(i18n)
 
 const props = defineProps<{
   place: number,
@@ -53,10 +53,10 @@ const props = defineProps<{
   showBest?: boolean,
 }>()
 
-const battles = useRoundTweenProcessor(() => props.battles, { duration: 1000 });
-const avgDamage = useRoundTweenProcessor(() => props.avgDamage, { duration: 1000 });
-const place = useRoundTweenProcessor(() => props.place, { duration: 1000 });
-const resets = useRoundTweenProcessor(() => props.resets, { duration: 1000 });
+const battles = useRoundTweenProcessor(() => props.battles, { duration: 1000 })
+const avgDamage = useRoundTweenProcessor(() => props.avgDamage, { duration: 1000 })
+const place = useRoundTweenProcessor(() => props.place, { duration: 1000 })
+const resets = useRoundTweenProcessor(() => props.resets, { duration: 1000 })
 
 </script>
 

@@ -58,13 +58,13 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import TweenValue from '@/components/TweenValue.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import { spaceProcessor } from '@/composition/processors/useSpaceProcessor';
-import { useTweenRef } from '@/composition/tween/useTweenRef';
-import { useStateClass } from '@/composition/utils/useStateClass';
-import { computed, toRef } from 'vue';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import TweenValue from '@/components/TweenValue.vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import { spaceProcessor } from '@/composition/processors/useSpaceProcessor'
+import { useTweenRef } from '@/composition/tween/useTweenRef'
+import { useStateClass } from '@/composition/utils/useStateClass'
+import { computed, toRef } from 'vue'
 import { type SettingsProps } from './define.widget'
 
 const classes = useStateClass()

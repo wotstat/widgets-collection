@@ -7,9 +7,9 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Content from './Content.vue';
+import { computed } from 'vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Content from './Content.vue'
 
 
 const props = defineProps<{
@@ -17,9 +17,9 @@ const props = defineProps<{
   title?: boolean
   startFrom?: number
   skin?: 'transparent' | 'default'
-}>();
+}>()
 
-const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 23 } : props);
+const data = computed(() => props.isMiniPreview ? { title: true, startFrom: 23 } : props)
 
 </script>
 

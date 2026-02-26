@@ -1,4 +1,4 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export type Props = {
   value: number,
@@ -14,11 +14,11 @@ export type Events = typeof events[number]
 export const target = [...events, 'end-battle'] as const
 export type Target = typeof target[number]
 
-import i18n from "./i18n.json";
+import i18n from './i18n.json'
 
 export default defineWidget({
-  name: "Спидран таймер",
-  description: "Точный счётчик времени с начала боя до разных событий",
+  name: 'Спидран таймер',
+  description: 'Точный счётчик времени с начала боя до разных событий',
   i18n,
   params: [
     { type: 'backgroundColorParam' },

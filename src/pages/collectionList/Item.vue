@@ -16,7 +16,7 @@ const props = defineProps<{
   name: string
   description: string
   hasSlot: boolean
-}>();
+}>()
 </script>
 
 

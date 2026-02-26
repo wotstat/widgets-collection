@@ -12,18 +12,18 @@
 
 
 <script setup lang="ts">
-import { useReactiveRemoteValue, useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed } from 'vue';
-import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams';
+import { useReactiveRemoteValue, useReactiveState, useWidgetSdk, WidgetsRemote } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed } from 'vue'
+import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams'
 import i18n from './i18n.json'
-import { useI18n } from '@/composition/useI18n';
+import { useI18n } from '@/composition/useI18n'
 
 import PersonalMissionsI18n from '../assets/data/localizaiton/personal_missions_details_short.json'
 import PersonalMissionsConfig from '../assets/data/pm3/config.json'
-import { gettext } from '@/utils/gettextJson';
-import { Props, styleParams, TaskType } from './define.widget';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
+import { gettext } from '@/utils/gettextJson'
+import { Props, styleParams, TaskType } from './define.widget'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
 
 
 const query = useQueryParams({
@@ -40,7 +40,7 @@ const query = useQueryParams({
   headerMode: oneOf(['full', 'compact', 'hide'] as const, 'full'),
 })
 
-console.log(query);
+console.log(query)
 
 const styleParam = computed(() => ({
   ...styleParams(query.colorScheme ?? 'dark', query.accent, query.accentShadow, query.badge, query.badgeText),
@@ -48,7 +48,7 @@ const styleParam = computed(() => ({
   backColorFrom: query.backColorFrom ?? '1c1c1c',
   backColorTo: query.backColorTo ?? '1a1a1a69',
   headerMode: query.headerMode ?? 'full',
-}));
+}))
 
 
 const { sdk, status } = useWidgetSdk()
@@ -64,15 +64,15 @@ const shouldDisplay = computed(() => {
 const { t } = useI18n(i18n)
 
 const nameToType = (name: string): TaskType => {
-  if (name.length === 0) return TaskType.UNKNOWN;
-  const letter = name[0].toUpperCase();
+  if (name.length === 0) return TaskType.UNKNOWN
+  const letter = name[0].toUpperCase()
   switch (letter) {
-    case 'А': return TaskType.HIT;
-    case 'Б': return TaskType.KILLS;
-    case 'В': return TaskType.ASSIST;
-    case 'Г': return TaskType.BATTLE;
-    case 'Д': return TaskType.MASTER;
-    default: return TaskType.UNKNOWN;
+    case 'А': return TaskType.HIT
+    case 'Б': return TaskType.KILLS
+    case 'В': return TaskType.ASSIST
+    case 'Г': return TaskType.BATTLE
+    case 'Д': return TaskType.MASTER
+    default: return TaskType.UNKNOWN
   }
 }
 
@@ -81,7 +81,7 @@ const translate = <T extends undefined | null | string>(
   key: string,
   params: Record<string, any> = {},
   defaultValue: T | ((key: string) => string) = k => k) => {
-  return gettext(PersonalMissionsI18n, key, params, defaultValue);
+  return gettext(PersonalMissionsI18n, key, params, defaultValue)
 }
 
 const translatedConfig = Object.fromEntries(
@@ -117,16 +117,16 @@ const translatedConfig = Object.fromEntries(
               ...counterGoalRecalculated
             }, null),
           }
-        }];
+        }]
       })),
       title: translate(key),
       type: nameToType(translate(key))
-    }];
+    }]
   })
 )
 
 function filterPM(searchString: string) {
-  const filteredKeys = Object.keys(translatedConfig).filter(k => k.startsWith(searchString));
+  const filteredKeys = Object.keys(translatedConfig).filter(k => k.startsWith(searchString))
   return new Map(filteredKeys.map(k => [k, translatedConfig[k]]))
 }
 
@@ -172,24 +172,24 @@ const taskTypeToLocale = {
   [TaskType.UNKNOWN]: '???',
 }
 
-const subtitle = computed(() => !currentConfig.value ? '' : taskTypeToLocale[currentConfig.value.type]);
+const subtitle = computed(() => !currentConfig.value ? '' : taskTypeToLocale[currentConfig.value.type])
 
 const taskGroups = computed(() => {
-  if (!currentConfig.value) return [];
+  if (!currentConfig.value) return []
 
   const tasks = Object.entries(currentConfig.value.tasks)
     .map(([key, task]) => ({ key, ...task }))
-    .sort((a, b) => a.description.containerType === 'header' ? -1 : 1);
+    .sort((a, b) => a.description.containerType === 'header' ? -1 : 1)
 
   const mainGroup = tasks.filter(task => task.config.isMain)
-  const additionalGroup = tasks.filter(task => !task.config.isMain);
+  const additionalGroup = tasks.filter(task => !task.config.isMain)
 
   const mainGroups = mainGroup
     .reduce((acc, task) => {
-      const gridID = task.config.groupID ?? 1;
-      if (!acc[gridID]) acc[gridID] = [];
-      acc[gridID].push(task);
-      return acc;
+      const gridID = task.config.groupID ?? 1
+      if (!acc[gridID]) acc[gridID] = []
+      acc[gridID].push(task)
+      return acc
     }, {}) as Record<number, Props['tasks']>
 
 
@@ -197,22 +197,22 @@ const taskGroups = computed(() => {
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([key, group]) => group)
 
-  if (displayTask.value === 'main') return Object.values(sortedMainGroups);
-  if (displayTask.value === 'additional') return [additionalGroup];
+  if (displayTask.value === 'main') return Object.values(sortedMainGroups)
+  if (displayTask.value === 'additional') return [additionalGroup]
 
   return [...sortedMainGroups, additionalGroup]
 })
 
 const currentLevels = computed<[number, number]>(() => {
-  if (!currentTask.value) return [0, 0];
-  const taskPeriod = currentTask.value.split('_')[2];
+  if (!currentTask.value) return [0, 0]
+  const taskPeriod = currentTask.value.split('_')[2]
 
-  if (taskPeriod === '1') return [6, 7];
-  if (taskPeriod === '2') return [8, 9];
-  if (taskPeriod === '3') return [10, 11];
+  if (taskPeriod === '1') return [6, 7]
+  if (taskPeriod === '2') return [8, 9]
+  if (taskPeriod === '3') return [10, 11]
 
-  return [0, 0];
-});
+  return [0, 0]
+})
 
 
 </script>

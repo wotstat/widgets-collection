@@ -1,7 +1,7 @@
-import { efficiency, multiSlotParamSlot, shared } from "@/components/efficiencyIcon/utils";
-import { defineWidget, SelectParam } from "@/utils/defineWidget";
-import { i18n } from "@/components/efficiencyIcon/i18n";
-import { arrayExclude } from "@/utils";
+import { efficiency, multiSlotParamSlot, shared } from '@/components/efficiencyIcon/utils'
+import { defineWidget, SelectParam } from '@/utils/defineWidget'
+import { i18n } from '@/components/efficiencyIcon/i18n'
+import { arrayExclude } from '@/utils'
 
 
 export const possibleSlots = arrayExclude([...efficiency, ...shared] as const, ['player', 'tank', 'gun-mark-percent', 'hp'] as const)
@@ -27,8 +27,8 @@ const totalOption = (target: string, label: string, defaultValue: string, visibl
 } as SelectParam)
 
 export default defineWidget({
-  name: "Универсальная прогрессия",
-  description: "Отслеживает 25 показателей. Играйте соло. Соревнуйтесь с друзьями. Устраивайте кооперативные челленджи.",
+  name: 'Универсальная прогрессия',
+  description: 'Отслеживает 25 показателей. Играйте соло. Соревнуйтесь с друзьями. Устраивайте кооперативные челленджи.',
   i18n,
   params: [
     {

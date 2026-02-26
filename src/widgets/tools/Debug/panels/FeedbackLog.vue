@@ -12,7 +12,7 @@
 
 
 <script setup lang="ts">
-import { KeyBindingSetting, useToggleKeyBinding } from "../useToggleKeyBinding";
+import { KeyBindingSetting, useToggleKeyBinding } from '../useToggleKeyBinding'
 
 const props = defineProps<{
   feedbacks: { eventType: string, text: string }[]

@@ -8,8 +8,8 @@
 
 
 <script setup lang="ts" generic="T extends PropertyKey">
-import { computed, ref } from 'vue';
-import { simpleContextMenu, childs, SimpleContextMenuItem, checkboxItem } from './contextMenu/simpleContextMenu';
+import { computed, ref } from 'vue'
+import { simpleContextMenu, childs, SimpleContextMenuItem, checkboxItem } from './contextMenu/simpleContextMenu'
 
 const element = ref<HTMLSelectElement | null>(null)
 
@@ -34,12 +34,12 @@ const variants = computed(() => {
 
 
 function pointerDown(event: PointerEvent) {
-  if (!element.value) return;
-  if (event.pointerType == 'touch') return;
+  if (!element.value) return
+  if (event.pointerType == 'touch') return
 
 
-  event.preventDefault();
-  event.stopPropagation();
+  event.preventDefault()
+  event.stopPropagation()
 
   const rect = element.value.getBoundingClientRect()
 

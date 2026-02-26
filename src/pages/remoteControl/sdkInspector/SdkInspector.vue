@@ -154,37 +154,37 @@
 
 
 <script setup lang="ts">
-import { SdkDebugConnection } from '@/composition/widgetSdk';
-import { computed, provide, ref, toRaw, watch } from 'vue';
-import { useEventListener, useLocalStorage, useTimestamp } from '@vueuse/core';
-import { stateMapKey } from './drawer/useSetStateMap';
-import Section from './drawer/Section.vue';
-import Options from './drawer/Options.vue';
-import Checkbox from './drawer/Checkbox.vue';
-import String from './drawer/String.vue';
-import Button from './drawer/Button.vue';
-import Number from './drawer/Number.vue';
-import { aimingModes, vehicleInfo, vehicles } from './constants';
-import { getOnBattleResult, getOnBattleStart, getOnShot, getFeedback, getOnDamage, getOnBattleResultRaw } from '../exampleData/exampleData';
+import { SdkDebugConnection } from '@/composition/widgetSdk'
+import { computed, provide, ref, toRaw, watch } from 'vue'
+import { useEventListener, useLocalStorage, useTimestamp } from '@vueuse/core'
+import { stateMapKey } from './drawer/useSetStateMap'
+import Section from './drawer/Section.vue'
+import Options from './drawer/Options.vue'
+import Checkbox from './drawer/Checkbox.vue'
+import String from './drawer/String.vue'
+import Button from './drawer/Button.vue'
+import Number from './drawer/Number.vue'
+import { aimingModes, vehicleInfo, vehicles } from './constants'
+import { getOnBattleResult, getOnBattleStart, getOnShot, getFeedback, getOnDamage, getOnBattleResultRaw } from '../exampleData/exampleData'
 
 
 const { debug } = defineProps<{
   debug: SdkDebugConnection
 }>()
 
-const mapState = ref<Map<string, any>>(new Map());
-provide(stateMapKey, mapState);
+const mapState = ref<Map<string, any>>(new Map())
+provide(stateMapKey, mapState)
 
-const enabled = useLocalStorage('emulate-data-provider', false);
-const preventGameConnection = useLocalStorage('rc:prevent-game-connection', true);
-const passKeyboard = ref(true);
-const battleMode = ref('REGULAR');
-const vehicle = ref<typeof vehicles[number]>('60TP');
-const battlePeriod = ref('BATTLE');
-const platoonSlotsCount = ref(3);
-const arenaId = ref(1);
-const wotstatAnalyticsEmulated = ref(true);
-const wotstatAnalyticsEmulatedPlatoon = ref(true);
+const enabled = useLocalStorage('emulate-data-provider', false)
+const preventGameConnection = useLocalStorage('rc:prevent-game-connection', true)
+const passKeyboard = ref(true)
+const battleMode = ref('REGULAR')
+const vehicle = ref<typeof vehicles[number]>('60TP')
+const battlePeriod = ref('BATTLE')
+const platoonSlotsCount = ref(3)
+const arenaId = ref(1)
+const wotstatAnalyticsEmulated = ref(true)
+const wotstatAnalyticsEmulatedPlatoon = ref(true)
 
 const platoonCrewmateInfo = ref<{
   name: string, joined: boolean,
@@ -198,7 +198,7 @@ const registeredExtensions = computed(() => {
   if (wotstatAnalyticsEmulated.value) result.push('wotstat')
 
   return result
-});
+})
 
 watch(platoonSlotsCount, c => {
   platoonCrewmateInfo.value = new Array(c).fill(0)
@@ -208,15 +208,15 @@ watch(platoonSlotsCount, c => {
       id: platoonCrewmateInfo.value[i]?.id ?? i + 1,
       vehicle: platoonCrewmateInfo.value[i]?.vehicle ?? vehicles[i % vehicles.length],
       isReady: platoonCrewmateInfo.value[i]?.isReady ?? false
-    }));
-}, { immediate: true });
+    }))
+}, { immediate: true })
 
-const time = useTimestamp({ interval: 1000 });
-const serverTime = computed(() => Math.round(time.value / 1000) - 1.74e9);
+const time = useTimestamp({ interval: 1000 })
+const serverTime = computed(() => Math.round(time.value / 1000) - 1.74e9)
 
 const platoonSlots = computed(() => {
   return platoonCrewmateInfo.value.map((info, i) => {
-    if (!info.joined) return null;
+    if (!info.joined) return null
     return {
       name: info.name,
       clanTag: '[TAG]',
@@ -281,18 +281,18 @@ watch(enabled, v => {
   } else {
     debug.disable()
   }
-}, { immediate: true });
+}, { immediate: true })
 
 function objectIsDeepEqual(a: unknown, b: unknown) {
-  if (a === b) return true;
-  if (typeof a !== 'object' || typeof b !== 'object' || a == null || b == null) return false;
-  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (a === b) return true
+  if (typeof a !== 'object' || typeof b !== 'object' || a == null || b == null) return false
+  if (Array.isArray(a) !== Array.isArray(b)) return false
   if (Array.isArray(a) && Array.isArray(b)) {
-    if (a.length !== b.length) return false;
+    if (a.length !== b.length) return false
     for (let i = 0; i < a.length; i++) {
-      if (!objectIsDeepEqual(a[i], b[i])) return false;
+      if (!objectIsDeepEqual(a[i], b[i])) return false
     }
-    return true;
+    return true
   }
   return JSON.stringify(a) === JSON.stringify(b)
 }
@@ -311,21 +311,21 @@ watch(preventGameConnection, v => {
 }, { immediate: true })
 
 useEventListener(window, 'keypress', e => {
-  if (!passKeyboard.value) return;
-  const key = `${e.code.replace('Key', 'KEY_').replace('Digit', 'KEY_')}`;
-  debug.sendChangeState(`keyboard.${key}`, true);
-  debug.sendTrigger('keyboard.onAnyKey', { 'key': key, 'isKeyDown': true });
-});
+  if (!passKeyboard.value) return
+  const key = `${e.code.replace('Key', 'KEY_').replace('Digit', 'KEY_')}`
+  debug.sendChangeState(`keyboard.${key}`, true)
+  debug.sendTrigger('keyboard.onAnyKey', { 'key': key, 'isKeyDown': true })
+})
 
 useEventListener(window, 'keyup', e => {
-  if (!passKeyboard.value) return;
-  const key = `${e.code.replace('Key', 'KEY_').replace('Digit', 'KEY_')}`;
-  debug.sendChangeState(`keyboard.KEY_${key}`, false);
-  debug.sendTrigger('keyboard.onAnyKey', { 'key': key, 'isKeyDown': false });
+  if (!passKeyboard.value) return
+  const key = `${e.code.replace('Key', 'KEY_').replace('Digit', 'KEY_')}`
+  debug.sendChangeState(`keyboard.KEY_${key}`, false)
+  debug.sendTrigger('keyboard.onAnyKey', { 'key': key, 'isKeyDown': false })
 })
 
 async function wotstatAnalyticsTrigger(event: 'onBattleStart' | 'onShot' | 'onBattleResult') {
-  if (!wotstatAnalyticsEmulated.value) return;
+  if (!wotstatAnalyticsEmulated.value) return
 
   const overrides = {
     playerName: mapState.value.get('player.name'),
@@ -337,7 +337,7 @@ async function wotstatAnalyticsTrigger(event: 'onBattleStart' | 'onShot' | 'onBa
     targetEvent = await getOnBattleStart(overrides)
   else if (event == 'onShot') {
     targetEvent = await getOnShot(overrides)
-    debug.sendTrigger(`extensions.wotstat.onShotBallisticEvent`, {
+    debug.sendTrigger('extensions.wotstat.onShotBallisticEvent', {
       gravity: targetEvent.gravity,
       gunPoint: targetEvent.gunPoint,
       shellSpeed: targetEvent.shellSpeed,
@@ -347,12 +347,12 @@ async function wotstatAnalyticsTrigger(event: 'onBattleStart' | 'onShot' | 'onBa
       clientShotDispersion: targetEvent.clientShotDispersion,
       serverMarkerPoint: targetEvent.serverMarkerPoint,
       serverShotDispersion: targetEvent.serverShotDispersion
-    });
+    })
   }
   else if (event == 'onBattleResult')
     targetEvent = await getOnBattleResult(overrides)
 
-  debug.sendTrigger(`extensions.wotstat.onEvent`, targetEvent);
+  debug.sendTrigger('extensions.wotstat.onEvent', targetEvent)
 
 }
 
@@ -360,27 +360,27 @@ async function feedbackTrigger(type: 'kill' | 'damage') {
   const feedback = await getFeedback(type, {
     playerName: mapState.value.get('player.name'),
     isPlatoon: wotstatAnalyticsEmulatedPlatoon.value,
-  });
+  })
 
-  debug.sendTrigger(`battle.onPlayerFeedback`, feedback);
+  debug.sendTrigger('battle.onPlayerFeedback', feedback)
 }
 
 async function onDamageTrigger(type: 'bySelf' | 'toSelf' | 'id10ToId11' | 'id11ToId10') {
 
   const attackerId = (() => {
-    if (type === 'bySelf') return mapState.value.get('player.id');
-    if (type === 'toSelf') return 404;
-    if (type === 'id10ToId11') return 10;
-    if (type === 'id11ToId10') return 11;
-    return 0;
+    if (type === 'bySelf') return mapState.value.get('player.id')
+    if (type === 'toSelf') return 404
+    if (type === 'id10ToId11') return 10
+    if (type === 'id11ToId10') return 11
+    return 0
   })()
 
   const targetId = (() => {
-    if (type === 'bySelf') return 404;
-    if (type === 'toSelf') return mapState.value.get('player.id');
-    if (type === 'id10ToId11') return 11;
-    if (type === 'id11ToId10') return 10;
-    return 0;
+    if (type === 'bySelf') return 404
+    if (type === 'toSelf') return mapState.value.get('player.id')
+    if (type === 'id10ToId11') return 11
+    if (type === 'id11ToId10') return 10
+    return 0
   })()
 
   const damage = await getOnDamage({
@@ -388,12 +388,12 @@ async function onDamageTrigger(type: 'bySelf' | 'toSelf' | 'id10ToId11' | 'id11T
     targetId
   })
 
-  debug.sendTrigger(`battle.onDamage`, damage);
+  debug.sendTrigger('battle.onDamage', damage)
 }
 
 async function onBattleResult(platoon: boolean) {
 
-  const playerId = mapState.value.get('player.id');
+  const playerId = mapState.value.get('player.id')
   arenaId.value++
 
   const result = await getOnBattleResultRaw({
@@ -406,32 +406,32 @@ async function onBattleResult(platoon: boolean) {
       null,
   })
 
-  debug.sendTrigger(`battle.onBattleResult`, result);
+  debug.sendTrigger('battle.onBattleResult', result)
 }
 
 
-const dossierBattlesCount = ref(0);
-const dossierDamageRating = ref(0);
-const dossierMovAvgDamage = ref(0);
+const dossierBattlesCount = ref(0)
+const dossierDamageRating = ref(0)
+const dossierMovAvgDamage = ref(0)
 
 watch(() => [dossierBattlesCount.value, dossierDamageRating.value, dossierMovAvgDamage.value], () => {
   debug.sendChangeState('dossier.current', {
     battlesCount: dossierBattlesCount.value,
     damageRating: dossierDamageRating.value,
     movingAvgDamage: dossierMovAvgDamage.value
-  });
+  })
 }, { immediate: true })
 
 
-const moeVehicle = ref<typeof vehicles[number]>('60TP');
-const moeBattlesCount = ref(0);
-const moeDistribution = ref<number[]>([0, 20, 40, 55, 65, 75, 85, 95, 100].map(v => v * 100));
+const moeVehicle = ref<typeof vehicles[number]>('60TP')
+const moeBattlesCount = ref(0)
+const moeDistribution = ref<number[]>([0, 20, 40, 55, 65, 75, 85, 95, 100].map(v => v * 100))
 watch(() => [moeVehicle.value, moeBattlesCount.value, moeDistribution.value], () => {
   debug.sendChangeState('moeInfo.current', {
     vehicleTag: moeVehicle.value,
     battleCount: moeBattlesCount.value,
     damageBetterThanNPercent: toRaw(moeDistribution.value)
-  });
+  })
 }, { immediate: true, deep: true })
 
 </script>

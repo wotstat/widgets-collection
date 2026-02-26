@@ -1,7 +1,7 @@
 
-import { ResponseJSON, createClient, type ClickHouseSettings } from "@clickhouse/client-web";
-import { computed, ref, shallowRef, watch } from "vue";
-import { CLICKHOUSE_URL } from "./externalUrl";
+import { ResponseJSON, createClient, type ClickHouseSettings } from '@clickhouse/client-web'
+import { computed, ref, shallowRef, watch } from 'vue'
+import { CLICKHOUSE_URL } from './externalUrl'
 
 export const clickhouse = createClient({
   url: CLICKHOUSE_URL,
@@ -11,74 +11,74 @@ export const clickhouse = createClient({
   clickhouse_settings: {
     max_temporary_columns: '1000'
   }
-});
+})
 
 export const CACHE_SETTINGS = { use_query_cache: 1, query_cache_ttl: 600 } as ClickHouseSettings
 export const SHORT_CACHE_SETTINGS = { use_query_cache: 1, query_cache_ttl: 10 } as ClickHouseSettings
 export const LONG_CACHE_SETTINGS = { use_query_cache: 1, query_cache_ttl: 600 } as ClickHouseSettings
 
-export const loading = Symbol('loading');
-export const success = Symbol('success');
-export const error = Symbol('error');
+export const loading = Symbol('loading')
+export const success = Symbol('success')
+export const error = Symbol('error')
 export type Status = typeof loading | typeof success | {
   status: typeof error,
   reason: string
 };
 
 export function mergeStatuses(...statuses: Status[]): Status {
-  if (statuses.some(s => isErrorStatus(s))) return statuses.find(s => isErrorStatus(s)) as { status: typeof error, reason: string };
-  if (statuses.some(s => s === loading)) return loading;
-  return success;
+  if (statuses.some(s => isErrorStatus(s))) return statuses.find(s => isErrorStatus(s)) as { status: typeof error, reason: string }
+  if (statuses.some(s => s === loading)) return loading
+  return success
 }
 
 export function isErrorStatus(status: Status): status is { status: typeof error, reason: string } {
-  return typeof status !== 'symbol' && status.status === error;
+  return typeof status !== 'symbol' && status.status === error
 }
 
-const activeQueries = new Map<string, Promise<unknown>>();
-const cachedResults = new Map<string, unknown>();
+const activeQueries = new Map<string, Promise<unknown>>()
+const cachedResults = new Map<string, unknown>()
 export async function query<T>(query: string, { allowCache = true, settings = {} as ClickHouseSettings } = {}) {
 
-  if (activeQueries.has(query)) return activeQueries.get(query) as Promise<ResponseJSON<T>>;
+  if (activeQueries.has(query)) return activeQueries.get(query) as Promise<ResponseJSON<T>>
 
   const current = new Promise<ResponseJSON<T>>(async (resolve, reject) => {
     try {
       // await new Promise(resolve => setTimeout(resolve, 100000));
       // await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const result = await clickhouse.query({ query, format: 'JSON', clickhouse_settings: settings });
+      const result = await clickhouse.query({ query, format: 'JSON', clickhouse_settings: settings })
       const response = await result.json<T>()
 
-      if (allowCache) cachedResults.set(query, response);
-      resolve(response);
+      if (allowCache) cachedResults.set(query, response)
+      resolve(response)
     } catch (error) {
-      return reject(error);
+      return reject(error)
     }
   })
 
-  if (allowCache) activeQueries.set(query, current);
+  if (allowCache) activeQueries.set(query, current)
 
-  return current;
+  return current
 }
 
 export function queryComputed<T>(queryString: () => string | null, { settings = {} as ClickHouseSettings, enabled = ref(true), allowCache = true } = {}) {
-  const result = shallowRef<{ status: Status, data: T[] }>({ status: loading, data: [] });
+  const result = shallowRef<{ status: Status, data: T[] }>({ status: loading, data: [] })
 
   watch(() => [queryString(), enabled.value] as const, async ([q, enabled]) => {
-    if (!q) return;
-    if (!enabled) return;
+    if (!q) return
+    if (!enabled) return
 
     try {
       if (cachedResults.has(q) && allowCache) {
-        result.value = { data: (cachedResults.get(q) as ResponseJSON<T>).data, status: success };
-        return;
+        result.value = { data: (cachedResults.get(q) as ResponseJSON<T>).data, status: success }
+        return
       }
-      result.value = { data: [], status: loading };
-      const { data } = await query<T>(q, { settings, allowCache });
-      result.value = { data, status: success };
+      result.value = { data: [], status: loading }
+      const { data } = await query<T>(q, { settings, allowCache })
+      result.value = { data, status: success }
     } catch (reason) {
-      console.error(reason);
-      result.value = { data: [], status: { status: error, reason: (reason as any).message as string } };
+      console.error(reason)
+      result.value = { data: [], status: { status: error, reason: (reason as any).message as string } }
     }
   }, { immediate: true })
 
@@ -86,7 +86,7 @@ export function queryComputed<T>(queryString: () => string | null, { settings = 
 }
 
 export function queryComputedFirst<T>(queryString: () => string | null, defaultValue: T) {
-  const result = queryComputed<T>(queryString);
+  const result = queryComputed<T>(queryString)
 
   return computed(() => ({
     status: result.value.status as Status,
@@ -96,19 +96,19 @@ export function queryComputedFirst<T>(queryString: () => string | null, defaultV
 }
 
 export function queryAsync<T>(queryString: string, { enabled = ref(true), settings = {} as ClickHouseSettings } = {}) {
-  const result = shallowRef<{ status: Status, data: T[] }>({ status: loading, data: [] });
+  const result = shallowRef<{ status: Status, data: T[] }>({ status: loading, data: [] })
 
   const stop = watch(enabled, async (value) => {
-    if (!value) return;
+    if (!value) return
 
-    setTimeout(() => stop(), 0);
+    setTimeout(() => stop(), 0)
 
     try {
-      const { data } = await query<T>(queryString, { settings });
-      result.value = { data, status: success };
+      const { data } = await query<T>(queryString, { settings })
+      result.value = { data, status: success }
     } catch (reason) {
-      console.error(reason);
-      result.value = { data: [], status: { status: error, reason: (reason as any).message as string } };
+      console.error(reason)
+      result.value = { data: [], status: { status: error, reason: (reason as any).message as string } }
     }
   }, { immediate: true })
 
@@ -116,7 +116,7 @@ export function queryAsync<T>(queryString: string, { enabled = ref(true), settin
 }
 
 export function queryAsyncMap<T, R>(queryString: string, mapFn: (data: T[]) => R, { enabled = ref(true), settings = {} as ClickHouseSettings } = {}) {
-  const result = queryAsync<T>(queryString, { enabled, settings });
+  const result = queryAsync<T>(queryString, { enabled, settings })
 
   return computed(() => ({
     status: result.value.status as Status,
@@ -125,7 +125,7 @@ export function queryAsyncMap<T, R>(queryString: string, mapFn: (data: T[]) => R
 }
 
 export function queryAsyncFirst<T>(queryString: string, defaultValue: T, { enabled = ref(true), settings = {} as ClickHouseSettings } = {}) {
-  const result = queryAsync<T>(queryString, { enabled, settings });
+  const result = queryAsync<T>(queryString, { enabled, settings })
 
   return computed(() => ({
     status: result.value.status as Status,

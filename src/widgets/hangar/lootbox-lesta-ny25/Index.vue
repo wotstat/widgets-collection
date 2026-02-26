@@ -6,14 +6,14 @@
 
 
 <script setup lang="ts">
-import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk';
-import Content from './Content.vue';
-import { computed, watch } from 'vue';
-import { oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { useWidgetStorage } from '@/composition/useWidgetStorage';
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import { Props } from './define.widget';
-import { query } from '@/utils/db';
+import { useReactiveState, useReactiveTrigger, useWidgetSdk, WidgetMetaTags } from '@/composition/widgetSdk'
+import Content from './Content.vue'
+import { computed, watch } from 'vue'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { useWidgetStorage } from '@/composition/useWidgetStorage'
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { Props } from './define.widget'
+import { query } from '@/utils/db'
 
 
 const { hideL1, hideL2, hideL3, sync, delay } = useQueryParams({
@@ -56,7 +56,7 @@ const tankDelayTime = {
   'long': 32000,
 } as const
 
-const { sdk } = useWidgetSdk();
+const { sdk } = useWidgetSdk()
 useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   if (event.eventName != 'OnLootboxOpen') return
   console.log('onEvent', event)

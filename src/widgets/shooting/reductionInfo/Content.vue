@@ -13,17 +13,17 @@
 
 
 <script setup lang="ts">
-import Old from './skins/old/Index.vue';
-import New from './skins/new/Index.vue';
-import TimeLabel from './skins/timeLabel/Index.vue';
-import PercentLabel from './skins/percentLabel/Index.vue';
-import ValueLabel from './skins/valueLabel/Index.vue';
-import Chart from './skins/chart/Index.vue';
-import { skins } from './define.widget';
-import { useI18nRef } from '@/composition/useI18n';
-import i18n from './i18n.json';
+import Old from './skins/old/Index.vue'
+import New from './skins/new/Index.vue'
+import TimeLabel from './skins/timeLabel/Index.vue'
+import PercentLabel from './skins/percentLabel/Index.vue'
+import ValueLabel from './skins/valueLabel/Index.vue'
+import Chart from './skins/chart/Index.vue'
+import { skins } from './define.widget'
+import { useI18nRef } from '@/composition/useI18n'
+import i18n from './i18n.json'
 
-const { t } = useI18nRef(i18n);
+const { t } = useI18nRef(i18n)
 
 const props = defineProps<{
   percent: number,
@@ -34,7 +34,7 @@ const props = defineProps<{
   skin: typeof skins[number],
   displayValue?: boolean,
   displayTitle?: boolean,
-}>();
+}>()
 
 </script>
 

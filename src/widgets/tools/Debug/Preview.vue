@@ -13,16 +13,16 @@
 
 
 <script setup lang="ts">
-import WidgetCard from '@/components/WidgetCard.vue';
-import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue';
-import Game from './panels/Game.vue';
-import Aiming from './panels/Aiming.vue';
-import { provideFakeKeyBinding } from './useToggleKeyBinding';
+import WidgetCard from '@/components/WidgetCard.vue'
+import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
+import Game from './panels/Game.vue'
+import Aiming from './panels/Aiming.vue'
+import { provideFakeKeyBinding } from './useToggleKeyBinding'
 
 
 const props = defineProps<{
   isMiniPreview: boolean
-}>();
+}>()
 
 const gameProps = {
   gameVersion: 'ru_1.28.0',

@@ -6,16 +6,16 @@
 
 
 <script setup lang="ts">
-import WidgetWrapper from '@/components/WidgetWrapper.vue';
-import Content from './Content.vue';
-import { arrayOfOneOf, oneOf, useQueryParams } from '@/composition/useQueryParams';
-import { possibleSlots, Props, variants } from './define.widget';
-import { AggregatorResult, toIconType, totalAggregator, useBattleHistoryAggregator } from '@/composition/shared/useBattleHistoryAggregator';
-import { computed, watch } from 'vue';
-import { useWidgetRelay } from '@/composition/useWidgetRelay';
-import { passive, useReactiveRelayState } from '@/composition/useReactiveRelayState';
-import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk';
-import { uniqBy } from '@/utils';
+import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import Content from './Content.vue'
+import { arrayOfOneOf, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { possibleSlots, Props, variants } from './define.widget'
+import { AggregatorResult, toIconType, totalAggregator, useBattleHistoryAggregator } from '@/composition/shared/useBattleHistoryAggregator'
+import { computed, watch } from 'vue'
+import { useWidgetRelay } from '@/composition/useWidgetRelay'
+import { passive, useReactiveRelayState } from '@/composition/useReactiveRelayState'
+import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
+import { uniqBy } from '@/utils'
 
 const query = useQueryParams({
   channelKey: String,

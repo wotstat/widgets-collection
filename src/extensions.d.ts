@@ -1,4 +1,4 @@
-import { State, Trigger } from "wotstat-widgets-sdk"
+import { State, Trigger } from 'wotstat-widgets-sdk'
 
 type Vector3 = { x: number, y: number, z: number, }
 

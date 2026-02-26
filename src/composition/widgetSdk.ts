@@ -1,5 +1,5 @@
 
-import { onUnmounted, provide, Ref, ref, ShallowRef, shallowRef, toValue, triggerRef, watch, WatchSource } from 'vue';
+import { onUnmounted, provide, Ref, ref, ShallowRef, shallowRef, toValue, triggerRef, watch, WatchSource } from 'vue'
 // import {
 //   WidgetSDK, type State, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles, injectStylesheet, WidgetsRelay,
 //   WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection
@@ -7,7 +7,7 @@ import { onUnmounted, provide, Ref, ref, ShallowRef, shallowRef, toValue, trigge
 import {
   type State, WidgetSDK, WidgetMetaTags, Trigger, I18n, KeyCodes, WidgetsSdkData, setupStyles, injectStylesheet,
   WidgetsRelay, WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection
-} from 'wotstat-widgets-sdk';
+} from 'wotstat-widgets-sdk'
 
 export { WidgetMetaTags, I18n, type KeyCodes, type Trigger, setupStyles, injectStylesheet, WidgetsRelay, WidgetsRemote, RemoteDebugConnection, SdkDebugConnection, RelayDebugConnection }
 
@@ -23,7 +23,7 @@ export function useWidgetSdk() {
   onUnmounted(() => {
     refCount--
     if (refCount == 0 && currentSdk != null) {
-      console.log('destroying sdk');
+      console.log('destroying sdk')
       currentSdk.dispose()
       currentSdk = null
     }
@@ -36,7 +36,7 @@ export function useWidgetSdk() {
   provide('sdk', res)
 
   refCount++
-  return res;
+  return res
 }
 
 

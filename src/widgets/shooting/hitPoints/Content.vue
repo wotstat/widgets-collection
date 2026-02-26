@@ -22,7 +22,7 @@
 
 
 <script setup lang="ts">
-import { useStateClass } from '@/composition/utils/useStateClass';
+import { useStateClass } from '@/composition/utils/useStateClass'
 
 const classes = useStateClass()
 const props = defineProps<{

@@ -26,79 +26,79 @@
 
 
 <script setup lang="ts">
-import { RelayDebugConnection } from '@/composition/widgetSdk';
-import Inspector from './inspector/Inspector.vue';
-import { ref, shallowRef, toRaw, watch, watchEffect } from 'vue';
-import Section from './sdkInspector/drawer/Section.vue';
-import { Entry } from './inspector/tree';
+import { RelayDebugConnection } from '@/composition/widgetSdk'
+import Inspector from './inspector/Inspector.vue'
+import { ref, shallowRef, toRaw, watch, watchEffect } from 'vue'
+import Section from './sdkInspector/drawer/Section.vue'
+import { Entry } from './inspector/tree'
 
 import DisconnectIcon from '@/assets/icons/x.svg'
 
-const enabled = ref(true);
+const enabled = ref(true)
 
 const { debug } = defineProps<{
   debug: RelayDebugConnection
 }>()
 
-const shallowDebug = shallowRef(debug);
-watchEffect(() => shallowDebug.value = debug);
+const shallowDebug = shallowRef(debug)
+watchEffect(() => shallowDebug.value = debug)
 
 
-const remoteConnections = ref(new Map<string, Map<string, any>>());
+const remoteConnections = ref(new Map<string, Map<string, any>>())
 
 watch(enabled, v => {
   if (v) {
     debug.enable()
 
     for (const [uuid, state] of remoteConnections.value)
-      for (const [key, value] of state) debug.sendState(uuid, key, toRaw(value));
+      for (const [key, value] of state) debug.sendState(uuid, key, toRaw(value))
   }
-  else debug.disable();
-}, { immediate: true });
+  else debug.disable()
+}, { immediate: true })
 
 function onChange({ path, value }: { path: string[]; value: unknown }) {
 
-  const uuid = path[0];
-  const state = remoteConnections.value.get(uuid);
+  const uuid = path[0]
+  const state = remoteConnections.value.get(uuid)
   if (!state) return
 
   let key = path[1]
-  let i = 2;
+  let i = 2
 
   for (i = 2; i < path.length; i++) {
     if (state.has(key)) break
-    key += `/${path[i]}`;
+    key += `/${path[i]}`
   }
 
-  const innerPath = path.slice(i);
+  const innerPath = path.slice(i)
 
   if (innerPath.length === 0) {
-    state.set(key, value);
-    debug.sendState(uuid, key, toRaw(value));
-    return;
+    state.set(key, value)
+    debug.sendState(uuid, key, toRaw(value))
+    return
   }
 
 
-  let targetState = state.get(key);
-  let innerKey = innerPath[0];
+  let targetState = state.get(key)
+  let innerKey = innerPath[0]
   for (i = 1; i < innerPath.length; i++) {
     if (innerKey in targetState) {
-      targetState = targetState[innerKey];
-      innerKey = innerPath[i];
+      targetState = targetState[innerKey]
+      innerKey = innerPath[i]
       continue
     }
-    innerKey += `/${innerPath[i]}`;
+    innerKey += `/${innerPath[i]}`
   }
 
 
-  targetState[innerKey] = value;
-  debug.sendState(uuid, key, toRaw(state.get(key)));
+  targetState[innerKey] = value
+  debug.sendState(uuid, key, toRaw(state.get(key)))
 }
 
-let uuid = 1;
+let uuid = 1
 function nextUUID() {
-  const result = uuid.toString().padStart(36, '0');
-  uuid++;
+  const result = uuid.toString().padStart(36, '0')
+  uuid++
 
   const parts = [
     result.slice(0, 8),
@@ -108,20 +108,20 @@ function nextUUID() {
     result.slice(20)
   ]
 
-  return parts.join('-');
+  return parts.join('-')
 }
 
 function add() {
-  const state = structuredClone(debug.registeredStates.value);
-  const targetUuid = nextUUID();
-  remoteConnections.value.set(targetUuid, state);
-  for (const [key, value] of state) debug.sendState(targetUuid, key, value);
+  const state = structuredClone(debug.registeredStates.value)
+  const targetUuid = nextUUID()
+  remoteConnections.value.set(targetUuid, state)
+  for (const [key, value] of state) debug.sendState(targetUuid, key, value)
 
 }
 
 function remove(uuid: string) {
   remoteConnections.value.delete(uuid)
-  debug.removeClient(uuid);
+  debug.removeClient(uuid)
 }
 
 function drawerForType(t: string | number | boolean) {
@@ -133,23 +133,23 @@ function drawerForType(t: string | number | boolean) {
 
 function inspectorForState(value: Map<string, any>) {
 
-  const unwrapped = new Map<string, string | number | boolean>();
+  const unwrapped = new Map<string, string | number | boolean>()
 
   function unwrap(obj: Record<string, any>, prefix: string = '') {
     for (const [key, val] of Object.entries(obj)) {
       if (typeof val === 'object' && val !== null) {
-        unwrap(val, prefix == '' ? key : `${prefix}/${key}`);
+        unwrap(val, prefix == '' ? key : `${prefix}/${key}`)
       } else {
-        unwrapped.set(prefix == '' ? key : `${prefix}/${key}`, val);
+        unwrapped.set(prefix == '' ? key : `${prefix}/${key}`, val)
       }
     }
   }
 
-  unwrap(Object.fromEntries(value));
+  unwrap(Object.fromEntries(value))
 
 
   return [...unwrapped.entries()].reduce((acc, [key, value]) => {
-    const drawer = drawerForType(value);
+    const drawer = drawerForType(value)
 
     acc[key] = {
       value: value,
@@ -157,10 +157,10 @@ function inspectorForState(value: Map<string, any>) {
         drawer: drawer.drawer,
         meta: drawer.meta
       },
-    };
+    }
 
-    return acc;
-  }, {} as Record<string, Entry>);
+    return acc
+  }, {} as Record<string, Entry>)
 }
 
 </script>

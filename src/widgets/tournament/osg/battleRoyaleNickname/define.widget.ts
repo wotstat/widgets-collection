@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Открытые киберспортивные игры",
-  description: "Виджет отображает прогресс в турнире Открытые киберспортивные игры в Стальном Охотнике",
+  name: 'Открытые киберспортивные игры',
+  description: 'Виджет отображает прогресс в турнире Открытые киберспортивные игры в Стальном Охотнике',
   widget: '../battleRoyale/Index.vue',
   preview: '../battleRoyale/Preview.vue',
   params: [

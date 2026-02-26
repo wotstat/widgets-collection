@@ -1,7 +1,7 @@
-import { computed, inject } from "vue"
-import { useRoute } from "vue-router"
-import { useReactiveState, useWidgetSdk } from "./widgetSdk"
-import { language as languageKey } from "@/utils/provides"
+import { computed, inject } from 'vue'
+import { useRoute } from 'vue-router'
+import { useReactiveState, useWidgetSdk } from './widgetSdk'
+import { language as languageKey } from '@/utils/provides'
 
 
 type Locale<K extends string> = Record<K, string>

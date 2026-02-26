@@ -1,8 +1,8 @@
-import { defineWidget } from "@/utils/defineWidget";
+import { defineWidget } from '@/utils/defineWidget'
 
 export default defineWidget({
-  name: "Заблокированный урон",
-  description: "Отображает сумму заблокированного урона",
+  name: 'Заблокированный урон',
+  description: 'Отображает сумму заблокированного урона',
   params: [
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [

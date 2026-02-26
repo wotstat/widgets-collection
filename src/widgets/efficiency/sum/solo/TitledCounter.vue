@@ -15,17 +15,17 @@
 
 
 <script setup lang="ts">
-import InsetsWrapper from '@/components/InsetsWrapper.vue';
-import TweenValue from '@/components/TweenValue.vue';
-import WidgetCard from '@/components/WidgetCard.vue';
-import { useStateClass } from '@/composition/utils/useStateClass';
-import { computed } from 'vue';
+import InsetsWrapper from '@/components/InsetsWrapper.vue'
+import TweenValue from '@/components/TweenValue.vue'
+import WidgetCard from '@/components/WidgetCard.vue'
+import { useStateClass } from '@/composition/utils/useStateClass'
+import { computed } from 'vue'
 
 const props = defineProps<{
   title?: boolean | string
   value: number
   skin?: 'transparent' | 'default'
-}>();
+}>()
 
 const classes = useStateClass()
 
