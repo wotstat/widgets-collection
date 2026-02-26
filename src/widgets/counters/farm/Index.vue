@@ -7,13 +7,12 @@
 
 <script setup lang="ts">
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
-import { useReactiveState, useReactiveTrigger, useWidgetSdk } from '@/composition/widgetSdk'
 import Content from './Content.vue'
-import { watch } from 'vue'
-import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
+import { oneOf, useQueryParams } from '@/composition/useQueryParams'
 import { useWidgetStorage } from '@/composition/useWidgetStorage'
 import { SettingsProps } from './define.widget'
 import { useBattleResult } from '@/composition/useOnBattleResult'
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
 
 const { skin, hideTitle, lastBattle, totalBattles, timeInBattles, averagePerBattle, averagePerHour } = useQueryParams({
   skin: oneOf(['transparent', 'semi-transparent', 'default'] as const, 'transparent'),
@@ -36,7 +35,11 @@ const data = useWidgetStorage('data', {
   averagePerHourValue: 0,
 }, { groupByPlayerId: true })
 
+const isMain = useWidgetMainTab()
+
 useBattleResult((parsed, result: any) => {
+  if (!isMain.value) return
+
   const personal = result.personal
   const results = Object.keys(personal).filter(t => t != 'avatar').map(t => personal[t])
 

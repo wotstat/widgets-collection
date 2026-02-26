@@ -2,7 +2,7 @@
   <InsetsWrapper :insets="props.skin == 'transparent' ? 12 : 0" class="edge-mask" :class="{
     ...classes,
     [`style-${props.skin ?? 'default'}`]: true,
-    'title-hidden': props.hideTitle
+    'title-hidden': props.hideTitle,
   }">
     <div class="main center">
       <WidgetCard class="main-card">
@@ -115,7 +115,6 @@ function timeProcessor(value: number) {
     flex-wrap: nowrap;
     justify-content: center;
     gap: 0.3em;
-    margin: 0em 0 0.1em 0;
 
     &.big {
       font-size: 1.95em;
@@ -125,9 +124,14 @@ function timeProcessor(value: number) {
   .info-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5em 1em;
+    gap: 0.3em 0.5em;
+    margin-top: 0.5em;
 
-    font-size: 0.4em;
+    font-size: 0.45em;
+
+    &:not(:has(:nth-child(1))) {
+      margin-top: 0;
+    }
 
     .badge {
       background-color: rgba(0, 0, 0, 0.4);
@@ -135,17 +139,9 @@ function timeProcessor(value: number) {
       padding: 0.2em 0.5em;
 
       span {
-        font-weight: 900;
+        font-weight: bold;
         color: rgb(227, 227, 227);
       }
-    }
-  }
-}
-
-.title-hidden {
-  .main {
-    .main-card {
-      padding-top: 0.3em;
     }
   }
 }
@@ -153,7 +149,6 @@ function timeProcessor(value: number) {
 .style-semi-transparent {
   .main {
     .main-card {
-      border-radius: 0.5em;
       padding: 0.5em;
       background-color: rgba(25, 25, 25, 0.615);
       border: max(1px, 0.03em) solid rgba(255, 255, 255, 0.1);
@@ -219,6 +214,16 @@ function timeProcessor(value: number) {
         inset: 0em;
         border: max(1px, 0.03em) solid rgba(255, 255, 255, 0.25);
         border-radius: 0.8em;
+      }
+    }
+  }
+}
+
+.title-hidden {
+  .main {
+    .main-card {
+      &:has(.info-line > *) {
+        padding-top: 0.3em;
       }
     }
   }
