@@ -1,5 +1,5 @@
 <template>
-  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="2">
+  <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="1.7">
     <Content v-bind="{ ...settings, ...values }" />
   </WidgetPreviewRoot>
 </template>
