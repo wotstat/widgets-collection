@@ -12,7 +12,7 @@ import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
 import Content from './Content.vue'
 import { computed } from 'vue'
 import { oneOf, useQueryParams } from '@/composition/useQueryParams'
-import { NidinTankEquipment, NidinTankModifications } from '../api'
+import { NidinEquipmentApi } from '../api'
 import { useFetch } from '@vueuse/core'
 import { getEquipmentById, getDeviceById, SpecializationTag } from '@/components/equipment/equipment'
 import { Props } from './define.widget'
@@ -24,18 +24,6 @@ const { hd, showTankName, variant, postProgression, postProgressionCurrent, auth
   author: Boolean,
   postProgression: Boolean,
   postProgressionCurrent: Boolean
-})
-
-const { data } = useFetch(NidinTankEquipment.URL).json<NidinTankEquipment.Data>()
-const dataById = computed(() => {
-  if (!data.value) return null
-  return new Map(data.value.tanks.map(i => [i.id, i]))
-})
-
-const { data: modifications } = useFetch(NidinTankModifications.URL).json<NidinTankModifications.Data>()
-const modificationsById = computed(() => {
-  if (!modifications.value) return null
-  return new Map(modifications.value.tanks.map(i => [i.id, i]))
 })
 
 const { sdk } = useWidgetSdk()
@@ -64,12 +52,16 @@ const tankTag = computed(() => {
   return tag.replace('_7x7', '')
 })
 
+const { data, isFinished } = useFetch(() => NidinEquipmentApi.getUrl(tankTag.value ?? ''), {
+  refetch: true,
+}).json<NidinEquipmentApi.Tank>()
+
 const postProgressionSetup = computed<Props['postProgressionSetup']>(() => {
   if (!vehicleMods.value) return undefined
 
-  if (!modificationsById.value || !tankTag.value || !vehicle.value) return undefined
+  if (!data.value || !tankTag.value || !vehicle.value) return undefined
 
-  const tank = modificationsById.value.get(tankTag.value)
+  const tank = data.value
   const level = vehicle.value.level
   if (!tank) return undefined
 
@@ -79,7 +71,7 @@ const postProgressionSetup = computed<Props['postProgressionSetup']>(() => {
   return {
     available,
     recommended: available.map((t, i) => {
-      const recommended = tank.pairM.at(i)
+      const recommended = tank.pair_m.at(i)
       if (recommended == '1') return t[0]
       if (recommended == '2') return t[1]
       return null
@@ -94,29 +86,28 @@ const emptySet: Props['sets'] = [
 ]
 
 const sets = computed<Props['sets']>(() => {
-  if (!dataById.value || !tankTag.value) return emptySet
+  if (!data.value || !tankTag.value) return emptySet
 
-  const tank = dataById.value.get(tankTag.value)
+  const tank = data.value
   if (!tank) return emptySet
 
-  const specialization = tank.roleslot_2 ? NidinTankEquipment.roleSlotToSpecialization(tank.roleslot_2) : null
+  const specialization = tank.role_slot_2 ? NidinEquipmentApi.roleSlotToSpecialization(tank.role_slot_2) : null
   const specifications = [tankSpecialization.value, specialization, null]
 
-  const sets = [tank.equipment.Set1, tank.equipment.Set2]
+  const sets = [tank.equipment.set_1, tank.equipment.set_2]
     .filter(i => i != undefined)
     .map(set => {
-      const equipmentSlots = (set.equipmentSlots ?? [])
-        .map(i => i.index)
+      const equipmentSlots = (set.slots ?? [])
         .map(i => i ? getDeviceById(i) : null)
         .map(i => i?.value?.tag)
 
-      const booster = set.instructionSlot?.map(i => i.index).map(i => i ? getEquipmentById(i)?.value?.tag : null).shift() ?? null
+      const booster = set.instruction ? getEquipmentById(set.instruction)?.value?.tag : null
       return {
         slots: equipmentSlots.map((equipment, i) => ({
           equipment: equipment ?? null,
           specialization: specifications[i] ?? null
         })),
-        booster
+        booster: booster ?? null
       }
     })
 

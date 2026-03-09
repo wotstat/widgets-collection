@@ -1,12 +1,8 @@
 import { SpecializationTag } from '@/components/equipment/equipment'
 
-
-export namespace NidinTankEquipment {
-  export const URL = 'https://nidin.ru/table/equipment/tankEquipment.json'
-
-  export type EquipmentSet = {
-    instructionSlot?: { index: number | null }[]
-    equipmentSlots?: { index: number | null }[]
+export namespace NidinEquipmentApi {
+  export function getUrl(tankId: string) {
+    return `https://nidin.ru/api/tanks/${tankId}/configuration`
   }
 
   export type RoleSlot = 'firepower' | 'mobility' | 'scouting' | 'survivability'
@@ -20,33 +16,18 @@ export namespace NidinTankEquipment {
     }
   }
 
+  export type EquipmentSet = {
+    instruction?: number
+    slots: number[]
+  }
+
   export type Tank = {
     id: string
-    roleslot_2?: 'firepower' | 'mobility' | 'scouting' | 'survivability'
+    pair_m: string
+    role_slot_2?: 'firepower' | 'mobility' | 'scouting' | 'survivability'
     equipment: {
-      Set1?: EquipmentSet
-      Set2?: EquipmentSet
+      set_1?: EquipmentSet
+      set_2?: EquipmentSet
     }
-  }
-
-  export type Data = {
-    tanks: Tank[]
-    version_ru: string
-  }
-}
-
-export namespace NidinTankModifications {
-  export const URL = 'https://nidin.ru/table/pairModifications/pairModifications.json'
-
-  export type Modification = string
-
-  export type Tank = {
-    id: string
-    pairM: Modification
-  }
-
-  export type Data = {
-    tanks: Tank[]
-    version_ru: string
   }
 }
