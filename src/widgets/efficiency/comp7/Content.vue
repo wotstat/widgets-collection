@@ -4,7 +4,6 @@
       <div class="flex">
         <img :src="RankTabHighlight" class="highlight-hide-icon" v-if="hideIcon">
         <img :src="RankTabHighlight" class="highlight" v-if="!hideIcon">
-        {{ rank }}
         <RankIcon class="rank" :game="props.game == 'lesta' ? 'mt' : 'wot'" :rank :size="'large'" v-if="!hideIcon" />
         <p class="current-rank wg-font">
           <TweenValue :value="props.currentRank" :options="{ duration: 500 }" />
