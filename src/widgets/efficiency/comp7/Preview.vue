@@ -22,6 +22,7 @@ const props = defineProps<{
 
 const targetProps = computed<Omit<Props, 'skin'>>(() => ({
   currentRank: 925,
+  eliteRating: null,
   history: [
     { delta: +19, key: '1', arena: 'Утёс' },
     { delta: +29, key: '2', arena: 'Химмльсдорф' },

@@ -7,11 +7,11 @@
 
 <script setup lang="ts">
 import Content from './Content.vue'
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, shallowRef } from 'vue'
 import { oneOf, useQueryParams } from '@/composition/useQueryParams'
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
 import { Props } from './define.widget'
-import { queryAsync } from '@/utils/db'
+import { LONG_CACHE_SETTINGS, query, queryAsync } from '@/utils/db'
 import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
 
@@ -24,6 +24,8 @@ const { hideIcon, historyLength, skin } = useQueryParams({
   skin: oneOf(['transparent', 'default'] as const, 'transparent'),
 })
 
+let eliteRatingInterval: ReturnType<typeof setInterval> | null = null
+const eliteRatingStats = shallowRef(new Map<string, number>())
 
 const { sdk } = useWidgetSdk()
 const region = useReactiveState(sdk.data.game.region)
@@ -45,6 +47,16 @@ const comp7History = computed(() => history.value.filter(h => h?.arena != null &
 
 const arenas = queryAsync<{ id: number, name: string }>('select id, argMax(name, datetime) as name from Arenas where region = \'RU\' group by id;')
 
+async function reloadEliteRating() {
+  const res = await query<{ region: string, lastElite: number }>(`
+    select region, argMax(eliteRating, dateTime) as lastElite
+    from Event_OnComp7Info
+    group by region
+  `, { settings: LONG_CACHE_SETTINGS, allowCache: false })
+
+  eliteRatingStats.value = new Map(res.data.map(r => [r.region, r.lastElite]))
+}
+
 function getArenaName(id: number) {
   const fullName = arenas.value.data.find(a => a.id == id)?.name
   if (!fullName) return '...'
@@ -53,8 +65,9 @@ function getArenaName(id: number) {
     .replace('(новогодняя)', 'НГ')
 }
 
-const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, history: [], game: 'lesta' } : {
+const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.length == 0 ? { currentRank: 0, eliteRating: null, history: [], game: 'lesta' } : {
   currentRank: (comp7History.value[comp7History.value.length - 1].rating ?? 0) + (comp7History.value[comp7History.value.length - 1].delta ?? 0),
+  eliteRating: eliteRatingStats.value.get(region.value ?? '') || null,
   history: comp7History.value.toReversed().slice(0, historyLength).map(t => ({
     arena: getArenaName(t?.arena ?? 0),
     delta: t.delta ?? 0,
@@ -64,6 +77,17 @@ const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.
   game: region.value == 'RU' ? 'lesta' : 'wg'
 }))
 
+onMounted(() => {
+  reloadEliteRating()
+  eliteRatingInterval = setInterval(() => reloadEliteRating(), 60_000)
+})
+
+onUnmounted(() => {
+  if (eliteRatingInterval) {
+    clearInterval(eliteRatingInterval)
+    eliteRatingInterval = null
+  }
+})
 
 </script>
 

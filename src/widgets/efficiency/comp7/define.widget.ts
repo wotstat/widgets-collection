@@ -2,6 +2,7 @@ import { defineWidget } from '@/utils/defineWidget'
 
 export type Props = {
   currentRank: number
+  eliteRating: number | null
   history: {
     delta: number
     arena: string
