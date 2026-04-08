@@ -186,7 +186,8 @@ const LEGENDARY_TANKS = [
   'uk:GB137_CVT_Spider',
   'poland:Pl26_Czolg_P_Wz_46_Verbesserter',
   'usa:A175_OTAC_MT_58_02',
-  'usa:A175_OTAC_MT_58'
+  'usa:A175_OTAC_MT_58',
+  'ussr:R239_ST_Molot_02'
 ]
 
 const region = useReactiveState(sdk.data.game.region)
