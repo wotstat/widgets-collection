@@ -3,7 +3,7 @@ export const collections = [
     name: 'Актуальные',
     widgets: [
       // '/counters/farm',
-      // '/hangar/lootbox-universal',
+      '/hangar/lootbox-universal',
       '/efficiency/comp7',
       '/nidin/equipments',
       '/shotnik/equipments',

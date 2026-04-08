@@ -20,19 +20,19 @@ const props = defineProps<{
 
 const targetProps = computed<ContainersData>(() => ({
   containers: [
-    { tag: 'ny_2026_big', count: 80 },
-    { tag: 'ny_2026_tanks', count: 95 },
+    { tag: 'cosmic_2026_standart', count: 80 },
+    { tag: 'cosmic_2026_silver', count: 95 },
   ],
   modernizations: [
-    // { tag: "modernizedTankRammerSights1", count: 89 },
-    // { tag: "modernizedDamageVentilation1", count: 91 }
+    { tag: 'modernizedTankRammerSights1', count: 89 },
+    { tag: 'modernizedDamageVentilation1', count: 91 }
   ],
   items: [],
   entitlements: [
     // { tag: 'birthday2025_golden_ticket', count: 324 }
   ],
   vehicles: [
-    { tag: 'germany:G196_E_75_Ausf_B_Doppel', isLegendary: false },
+    { tag: 'uk:GB110_FV4201_Chieftain_Prototype_B', isLegendary: false },
     { tag: 'ussr:R228_Duplet', isLegendary: false },
   ],
   crewBooks: [],
@@ -45,7 +45,7 @@ const targetProps = computed<ContainersData>(() => ({
     crystals: 0,
     equipCoins: 0,
     gold: 25400,
-    mandarins: 3064,
+    mandarins: 0,
   },
 }))
 

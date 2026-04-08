@@ -140,7 +140,11 @@ export const releaseNotes: ReleaseNote[] = [
   {
     id: '2026-02-26-farm',
     ru: `• Добавлен виджет ${Utils.addWidget('https://ru.widgets.wotstat.info/counters/farm?skin=semi-transparent&accent=ffae36&last-battle=true&total-battles=true&time-in-battles=true&average-per-hour=true', 'Счётчик фарма')}. Полезен для Линии Фронта`
-  }
+  },
+  {
+    id: '2026-04-01-lootbox',
+    ru: `• Виджет ${Utils.addWidget('https://ru.widgets.wotstat.info/hangar/lootbox-universal?sync=true&sync-date=2026-04-01&delay=short', 'статистика коробок')} обновлён для коробок Марсианского события Мира Танков.`
+  },
 ]
 
 export function releaseNotesPlugin(): Plugin {
