@@ -11,7 +11,7 @@ import { computed, onMounted, onUnmounted, shallowRef } from 'vue'
 import { oneOf, useQueryParams } from '@/composition/useQueryParams'
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
 import { Props } from './define.widget'
-import { LONG_CACHE_SETTINGS, query, queryAsync } from '@/utils/db'
+import { LONG_CACHE_SETTINGS, query, queryAsync, queryComputed } from '@/utils/db'
 import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
 
@@ -29,6 +29,7 @@ const eliteRatingStats = shallowRef(new Map<string, number>())
 
 const { sdk } = useWidgetSdk()
 const region = useReactiveState(sdk.data.game.region)
+const gameLanguage = useReactiveState(sdk.data.game.language)
 
 const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
   if (!parsed.personal || parsed.personal.player == 'bot') return { delta: 0, rating: 0 }
@@ -45,7 +46,16 @@ const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
 
 const comp7History = computed(() => history.value.filter(h => h?.arena != null && h.bonusType == COMP_7_BONUS_TYPE))
 
-const arenas = queryAsync<{ id: number, name: string }>('select id, argMax(name, datetime) as name from Arenas where region = \'RU\' group by id;')
+
+const LANGUAGE_TO_REGION: Record<string, string> = {
+  'en': 'EU',
+  'ru': 'RU',
+  'be': 'RU',
+}
+
+const arenas = queryComputed<{ id: number, name: string }>(() =>
+  `select id, argMax(name, datetime) as name from Arenas where region = '${LANGUAGE_TO_REGION[gameLanguage.value ?? 'en'] || 'EU'}' group by id;`
+)
 
 async function reloadEliteRating() {
   const res = await query<{ region: string, lastElite: number }>(`
