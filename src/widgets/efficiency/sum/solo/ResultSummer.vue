@@ -14,6 +14,7 @@ import { NumberDefault, oneOf, useQueryParams } from '@/composition/useQueryPara
 import { computed, watch } from 'vue'
 import { useWidgetStorage } from '@/composition/useWidgetStorage'
 import { useBattleResult } from '@/composition/useOnBattleResult'
+import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
 
 const props = defineProps<{
   title: string
@@ -35,8 +36,10 @@ const tempResults = useWidgetStorage('tempResults', new Map<number, number>())
 
 const arenaId = useReactiveState(sdk.data.battle.arenaId)
 const collected = useWidgetStorage('collected', 0)
+const isMain = useWidgetMainTab()
 
 watch(() => props.value, (value, old) => {
+  if (!isMain.value) return
   if (value == 0 || value == undefined || old == undefined) return
   const delta = value - old
   collected.value += reverse ? -delta : delta
@@ -48,6 +51,7 @@ watch(() => props.value, (value, old) => {
 })
 
 useBattleResult((parsed, res) => {
+  if (!isMain.value) return
   if (!parsed) return
   const arenaId = parsed.arenaUniqueID
   const resultValue = parsed.personal?.stats[props.stat]
