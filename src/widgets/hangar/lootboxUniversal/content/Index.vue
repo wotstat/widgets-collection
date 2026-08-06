@@ -366,7 +366,19 @@ const boosterPriority = [
   'coatedOpticsBattleBooster',
   'improvedConfigurationBattleBooster',
   'aimingStabilizerBattleBooster',
-  'enhancedAimDrivesBattleBooster'
+  'enhancedAimDrivesBattleBooster',
+
+  'creditsDirectivesBattleBooster3',
+  'comboXpDirectivesBattleBooster3',
+  'xpDirectivesBattleBooster3',
+
+  'creditsDirectivesBattleBooster2',
+  'comboXpDirectivesBattleBooster2',
+  'xpDirectivesBattleBooster2',
+
+  'creditsDirectivesBattleBooster1',
+  'comboXpDirectivesBattleBooster1',
+  'xpDirectivesBattleBooster1',
 ]
 
 const battleBoosters = computed(() => {

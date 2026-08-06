@@ -12,7 +12,7 @@ import { computed, watch } from 'vue'
 import { DateTimeDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
 import { useWidgetStorage } from '@/composition/useWidgetStorage'
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
-import { ContainersData, SUPPORTED_ENTITLEMENTS, SUPPORTED_EXTRA_CURRENCIES, SUPPORTED_ITEMS } from './define.widget'
+import { ContainersData, RATION_TAGS, SUPPORTED_ENTITLEMENTS, SUPPORTED_EXTRA_CURRENCIES, SUPPORTED_ITEMS } from './define.widget'
 import { query } from '@/utils/db'
 import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
 
@@ -86,13 +86,13 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
         else data.value.modernizations.push({ tag, count })
       }
 
-      if (tag.endsWith('BattleBooster')) {
+      if (tag.match(/BattleBooster\d*$/)) {
         const item = data.value.battleBoosters.find(t => t.tag == tag)
         if (item) item.count += count
         else data.value.battleBoosters.push({ tag, count })
       }
 
-      if (tag.startsWith('ration')) {
+      if (tag.startsWith('ration') || RATION_TAGS.includes(tag)) {
         const item = data.value.items.find(t => t.tag == 'ration')
         if (item) item.count += count
         else data.value.items.push({ tag: 'ration', count })
@@ -230,7 +230,7 @@ watch(playerName, async player => {
         ),
         items as (
             select 
-              multiIf(startsWith(tag, 'ration'), 'ration', tag) as tag,
+              multiIf(startsWith(tag, 'ration') or tag in (${RATION_TAGS.map(t => `'${t}'`).join(',')}), 'ration', tag) as tag,
               sum(count) as count
             from data
             array join items.tag as tag, items.count as count
@@ -238,7 +238,11 @@ watch(playerName, async player => {
               startsWith(tag, 'modernized')
               or startsWith(tag, 'ration')
               or endsWith(tag, 'BattleBooster')
+              or endsWith(tag, 'BattleBooster1')
+              or endsWith(tag, 'BattleBooster2')
+              or endsWith(tag, 'BattleBooster3')
               or tag in (${SUPPORTED_ITEMS.map(t => `'${t}'`).join(',')})
+              or tag in (${RATION_TAGS.map(t => `'${t}'`).join(',')})
             group by tag
         ),
         itemsCount as (
@@ -337,10 +341,10 @@ watch(playerName, async player => {
   data.value.entitlements = first.entitlements.map(t => ({ tag: t[0], count: t[1] }))
   data.value.extraCurrencies = first.extraCurrencies.map(t => ({ tag: t[0], count: t[1] }))
   data.value.battleBoosters = first.itemsCount.
-    filter(t => t[0].endsWith('BattleBooster'))
+    filter(t => t[0].match(/BattleBooster\d*$/))
     .map(t => ({ tag: t[0], count: t[1] }))
   data.value.items = first.itemsCount.
-    filter(t => !t[0].startsWith('modernized') && !t[0].endsWith('BattleBooster'))
+    filter(t => !t[0].startsWith('modernized') && !t[0].match(/BattleBooster\d*$/))
     .map(t => ({ tag: t[0], count: t[1] }))
 
   data.value.boosters = first.boosters.map(t => ({ tag: t[0], count: t[1] }))

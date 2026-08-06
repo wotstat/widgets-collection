@@ -1,6 +1,23 @@
 import { defineWidget } from '@/utils/defineWidget'
 
 
+
+
+export const RATION_TAGS = [
+  'chocolate',
+  'cocacola',
+  'hotCoffee',
+  'ration',
+  'ration_china',
+  'ration_czech',
+  'ration_intunion',
+  'ration_italy',
+  'ration_japan',
+  'ration_poland',
+  'ration_sweden',
+  'ration_uk',
+]
+
 export const SUPPORTED_ITEMS = [
   'autoExtinguishers',
   'largeMedkit',
