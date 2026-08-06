@@ -31,6 +31,9 @@ const targetProps = computed<ContainersData>(() => ({
   entitlements: [
     // { tag: 'birthday2025_golden_ticket', count: 324 }
   ],
+  extraCurrencies: [
+    // { tag: 'goldenticket', count: 324 }
+  ],
   vehicles: [
     { tag: 'uk:GB110_FV4201_Chieftain_Prototype_B', isLegendary: false },
     { tag: 'ussr:R228_Duplet', isLegendary: false },

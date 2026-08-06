@@ -12,7 +12,7 @@ import { computed, watch } from 'vue'
 import { DateTimeDefault, oneOf, useQueryParams } from '@/composition/useQueryParams'
 import { useWidgetStorage } from '@/composition/useWidgetStorage'
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
-import { ContainersData, SUPPORTED_ENTITLEMENTS, SUPPORTED_ITEMS } from './define.widget'
+import { ContainersData, SUPPORTED_ENTITLEMENTS, SUPPORTED_EXTRA_CURRENCIES, SUPPORTED_ITEMS } from './define.widget'
 import { query } from '@/utils/db'
 import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
 
@@ -32,6 +32,7 @@ const data = useWidgetStorage<ContainersData>('mainStats', {
   battleBoosters: [],
   boosters: [],
   entitlements: [],
+  extraCurrencies: [],
   currencies: {
     gold: 0,
     credits: 0,
@@ -120,35 +121,20 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
       else data.value.boosters.push({ tag: targetTag, count })
     }
 
-    // TODO: remove this after entitlements will be parsed correctly
-    if (parsed.entitlements === undefined) {
-      try {
-        let rawEntitlementsTags: string[] = []
-        let rawEntitlementsCount: number[] = []
-        const raw = JSON.parse(event.raw)
-        if ('entitlements' in raw && typeof raw.entitlements === 'object' && raw.entitlements !== null) {
-          const entitlements = raw.entitlements
-          const keys = Object.keys(entitlements)
-          rawEntitlementsTags = keys
-          rawEntitlementsCount = keys.map(k => {
-            const v = entitlements[k as keyof typeof entitlements] as unknown
-            if (typeof v === 'object' && v !== null && 'count' in v && typeof v.count === 'number') return v.count
-            return 0
-          })
-        }
-        parsed.entitlements = rawEntitlementsTags.map((tag, index) => [tag, rawEntitlementsCount[index]])
-      } catch (error) {
-        console.error('Failed to parse entitlements from raw data:', error)
-        parsed.entitlements = []
-      }
-    }
-
     for (const entitlement of parsed.entitlements || []) {
       const [tag, count] = entitlement
       if (SUPPORTED_ENTITLEMENTS.includes(tag as any)) {
         const item = data.value.entitlements.find(t => t.tag == tag)
         if (item) item.count += count
         else data.value.entitlements.push({ tag, count })
+      }
+    }
+
+    for (const [tag, count] of parsed.currencies) {
+      if (SUPPORTED_EXTRA_CURRENCIES.includes(tag as any)) {
+        const item = data.value.extraCurrencies.find(t => t.tag == tag)
+        if (item) item.count += count
+        else data.value.extraCurrencies.push({ tag, count })
       }
     }
 
@@ -208,6 +194,7 @@ watch(playerName, async player => {
     entitlements: [string, number][];
     extras: [string, number][];
     compensatedToys: [string, number][];
+    extraCurrencies: [string, number][];
     prem: number;
     gold: number;
     credits: number;
@@ -300,6 +287,17 @@ watch(playerName, async player => {
           select arrayZip(groupArray(tag), groupArray(count)) as entitlements
           from entitlements
         ),
+        extraCurrencies as (
+          select tag, toUInt32(sum(count)) as count
+          from data
+          array join currencies.tag as tag, currencies.amount as count
+          where tag in (${SUPPORTED_EXTRA_CURRENCIES.map(t => `'${t}'`).join(',')})
+          group by tag
+        ),
+        extraCurrenciesGroup as (
+          select arrayZip(groupArray(tag), groupArray(count)) as extraCurrencies
+          from extraCurrencies
+        ),
         extras as (
           select tag, toUInt32(sum(count)) as count
           from data
@@ -321,7 +319,7 @@ watch(playerName, async player => {
             from compensatedToys
         )
     select *
-    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup, boostersGroup, entitlementsGroup, extrasGroup, compensatedToysGroup;
+    from containersCount, currencies, itemsCount, vehiclesGroup, crewBooksGroup, boostersGroup, entitlementsGroup, extraCurrenciesGroup, extrasGroup, compensatedToysGroup;
     `)
 
 
@@ -337,6 +335,7 @@ watch(playerName, async player => {
   data.value.vehicles = first.addedVehicles.map(t => ({ tag: t[0], isLegendary: t[1] == 1 }))
   data.value.crewBooks = first.crewBooks.map(t => ({ tag: t[0], count: t[1] }))
   data.value.entitlements = first.entitlements.map(t => ({ tag: t[0], count: t[1] }))
+  data.value.extraCurrencies = first.extraCurrencies.map(t => ({ tag: t[0], count: t[1] }))
   data.value.battleBoosters = first.itemsCount.
     filter(t => t[0].endsWith('BattleBooster'))
     .map(t => ({ tag: t[0], count: t[1] }))

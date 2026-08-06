@@ -11,6 +11,10 @@ export const SUPPORTED_ENTITLEMENTS = [
   'birthday2025_golden_ticket',
 ] as const
 
+export const SUPPORTED_EXTRA_CURRENCIES = [
+  'goldenticket',
+] as const
+
 export type ContainersData = {
   containers: { tag: string, count: number }[],
   modernizations: { tag: string, count: number }[],
@@ -20,6 +24,7 @@ export type ContainersData = {
   battleBoosters: { tag: string, count: number }[],
   boosters: { tag: string, count: number }[],
   entitlements: { tag: string, count: number }[],
+  extraCurrencies: { tag: string, count: number }[],
   currencies: {
     gold: number
     credits: number
@@ -41,7 +46,7 @@ export default defineWidget({
   description: 'Подводит итог выпавших ресурсов из коробок',
   params: [
     { type: 'checkbox', target: 'sync', label: 'Синхронизировать с сайтом', default: true },
-    { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2026-04-01', visible: ctx => ctx['sync'] },
+    { type: 'date-picker', target: 'sync-date', label: 'Дата начала синхронизации', default: '2026-08-01', visible: ctx => ctx['sync'] },
     { type: 'separator' },
     {
       type: 'select', target: 'delay', label: 'Задержка', variants: [

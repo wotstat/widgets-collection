@@ -40,6 +40,13 @@
           :value="entitlement.count" :icon="entitlementsImages[`../assets/entitlements/${entitlement.tag}.png`]" />
       </div>
 
+      <div class="space" v-if="extraCurrencies.length"></div>
+      <div class="extra-currencies" v-if="extraCurrencies.length">
+        <Element v-for="extraCurrency in extraCurrencies" :class="extraCurrency.class"
+          :title="t(extraCurrency.tag as any).value" :value="extraCurrency.count"
+          :icon="extraCurrenciesImages[`../assets/extraCurrencies/${extraCurrency.tag}.png`]" />
+      </div>
+
       <div class="space" v-if="boosters.length"></div>
       <div class="boosters">
         <Element v-for="booster in boosters" :class="booster.class"
@@ -132,6 +139,7 @@ import { STATIC_URL } from '@/utils/externalUrl'
 const modernizationsImages = import.meta.glob<string>('../assets/modernizations/*.png', { eager: true, import: 'default' })
 const crewBoolsImages = import.meta.glob<string>('../assets/crewBooks/*.png', { eager: true, import: 'default' })
 const itemsImages = import.meta.glob<string>('../assets/items/*.png', { eager: true, import: 'default' })
+const extraCurrenciesImages = import.meta.glob<string>('../assets/extraCurrencies/*.png', { eager: true, import: 'default' })
 const boosterImages = import.meta.glob<string>('../assets/boosters/*.png', { eager: true, import: 'default' })
 const entitlementsImages = import.meta.glob<string>('../assets/entitlements/*.png', { eager: true, import: 'default' })
 
@@ -403,6 +411,22 @@ const entitlements = computed(() => {
   }))
 })
 
+const extraCurrencies = computed(() => {
+  const extraCurrencies = props.data.extraCurrencies
+
+  let targetClass = 'super-mini'
+  if (extraCurrencies.length == 1) targetClass = 'large wide'
+  else if (extraCurrencies.length == 2) targetClass = 'medium'
+  else if (extraCurrencies.length == 3) targetClass = 'mini'
+
+  return extraCurrencies.map(t => ({
+    tag: t.tag,
+    count: t.count,
+    class: targetClass,
+    icon: t.tag,
+  }))
+})
+
 const lootboxNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>('select * from LootboxesLocalization', t => new Map(t.map(t => [t.tag, t.nameRU])))
 const artefactsNames = queryAsyncMap<{ tag: string, nameRU: string }, Map<string, string>>('select * from ArtefactsLocalization', t => new Map(t.map(t => [t.tag, t.nameRU])))
 const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }, Map<string, string>>('select * from VehiclesLocalization', t => new Map(t.map(t => [t.tag, t.shortRU])))
@@ -515,7 +539,8 @@ const tankNames = queryAsyncMap<{ tag: string, nameRU: string, shortRU: string }
   }
 
   .entitlements,
-  .crewbooks {
+  .crewbooks,
+  .extra-currencies {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5em;
