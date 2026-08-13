@@ -68,6 +68,7 @@ import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue'
 
 import Checkbox from './settings/Checkbox.vue'
 import Select from './settings/Select.vue'
+import Tournament from './settings/Tournament.vue'
 import Int from './settings/Int.vue'
 import String from './settings/String.vue'
 import MultiSlot from './settings/MultiSlot.vue'
@@ -128,6 +129,7 @@ const canReset = computed(() => {
     if (element.type == 'accentColorParam') continue
     if (element.type == 'backgroundColorParam') continue
     if (element.type == 'separator') continue
+    if (element.type == 'tournament' && element.default === '') continue
 
     if (!settings) continue
     if (!('default' in element)) continue
@@ -216,6 +218,18 @@ const settingsValues = computedWithControl(currentOptions, () => {
         component: defineComponent(() => () => renderIfVisible(param, h(Select, {
           label: t(param.label),
           variants: param.variants.map(({ value, label }) => ({ value, label: t(label) })),
+          ...vModel(value)
+        })))
+      }
+    }
+
+    if (param.type == 'tournament') {
+      const value = useWidgetPreviewStorage(param.target, param.default)
+      return {
+        value, target: param.target,
+        component: defineComponent(() => () => renderIfVisible(param, h(Tournament, {
+          label: t(param.label),
+          isSupported: param.isSupported,
           ...vModel(value)
         })))
       }

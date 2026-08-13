@@ -6,71 +6,70 @@
         <p class="secondary">Место:<span class="accent number bold">&nbsp;{{ place }}</span></p>
       </div>
 
-      <div class="l2" v-if="!hideL2 && skin !== 'replay'">
-        <div class="column primary" v-for="(_, column) in new Array(2).fill(0)">
+      <p class="rule secondary" v-if="!hideL2">{{ ruleLabel }}</p>
+      <div class="l2" v-if="!hideL2">
+        <div class="column primary" v-for="(indexes, column) in columns" :key="column">
           <table>
-            <tr v-for="(_, index) in new Array(LINE_COUNT).fill(0)" :class="{
-              'is-last-battle': isLastBattleResultAt(column * LINE_COUNT + index)
+            <tr v-for="index in indexes" :key="index" :class="{
+              'is-last-battle': isLastBattleResultAt(index)
             }">
-              <td class="secondary number index">{{ column * LINE_COUNT + index + 1 }}.</td>
-              <td class="secondary tank-name" v-if="bestBattles[column * LINE_COUNT + index]">
-                {{ bestBattles[column * LINE_COUNT + index].tank ?? '?' }}
+              <td class="secondary number index">{{ index + 1 }}.</td>
+              <td class="secondary tank-name" v-if="bestBattles[index]">
+                {{ bestBattles[index].tank ?? '?' }}
               </td>
               <td class="secondary tank-name" v-else></td>
               <td class="number bold right score" :class="{
-                'accent': isTodayAt(column * LINE_COUNT + index),
+                'accent': isTodayAt(index),
               }">{{
-                bestBattles[column * LINE_COUNT + index]?.score }}</td>
+                bestBattles[index]?.score }}</td>
             </tr>
           </table>
         </div>
-        <div class="vr"></div>
+        <div class="vr" v-if="columns.length > 1"></div>
       </div>
 
 
-      <div class="l-rep" v-if="skin === 'replay'">
-        <table>
-          <tr v-for="(_, index) in new Array(bestBattles.length).fill(0)" :class="{
-            'is-last-battle': isLastBattleResultAt(index)
-          }">
-            <td class="secondary number index">{{ index + 1 }}.</td>
-            <td class="secondary tank-name" v-if="bestBattles[index]">
-              {{ getReplayName(bestBattles[index]) }}
-            </td>
-            <td class="secondary tank-name" v-else></td>
-            <td class="number bold right score" :class="{
-              'accent': isTodayAt(index),
-            }">
-              {{ bestBattles[index]?.score }}
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <div class="l3" v-if="!hideL3 && skin !== 'replay'">
+      <div class="l3" v-if="!hideL3">
         <div class=" flex">
           <div class="flex-1 text-lines nowrap">
-            <p class="secondary" v-if="bestBattles.at(-1)?.score">Худший •
-              <span :class="isLastBattleResult(bestBattles.at(-1)) ? 'accent' : 'secondary'">
-                {{ bestBattles.at(-1)?.tank ?? '?' }}
-              </span>
-              •
-              <span class="bold number" :class="bestBattles.at(-1)?.today ? 'accent' : 'primary'">
-                {{ bestBattles.at(-1)?.score }}
-              </span>
-            </p>
-            <p class="secondary nowrap" v-else>Худший • </p>
-            <p class="secondary nowrap" v-if="lastBattle">Прошлый • {{ lastBattle?.tank ?? '?' }} •
-              <span class="primary bold number">
-                {{ lastBattle?.score }}
-              </span>
-            </p>
-            <p class="secondary" v-else>Прошлый • </p>
+            <template v-if="isSeries">
+              <p class="secondary nowrap">Текущая серия •
+                <span class="primary bold number">{{ currentSeriesSum }}</span>
+              </p>
+              <p class="secondary nowrap">Лучшая серия •
+                <span class="primary bold number">{{ bestSeriesSum }}</span>
+              </p>
+            </template>
+            <template v-else>
+              <p class="secondary" v-if="bestBattles.at(-1)">Худший •
+                <span :class="isLastBattleResult(bestBattles.at(-1)) ? 'accent' : 'secondary'">
+                  {{ bestBattles.at(-1)?.tank ?? '?' }}
+                </span>
+                •
+                <span class="bold number" :class="bestBattles.at(-1)?.today ? 'accent' : 'primary'">
+                  {{ bestBattles.at(-1)?.score }}
+                </span>
+              </p>
+              <p class="secondary nowrap" v-else>Худший • </p>
+              <p class="secondary nowrap" v-if="lastBattle">Прошлый • {{ lastBattle?.tank ?? '?' }} •
+                <span class="primary bold number">
+                  {{ lastBattle?.score }}
+                </span>
+              </p>
+              <p class="secondary" v-else>Прошлый • </p>
+            </template>
           </div>
           <div class="chart-container">
             <SeriesBarChart :values="chart" :target-count="BAR_COUNT" :gap="3" />
           </div>
         </div>
+      </div>
+
+      <div class="l4" v-if="isSeries && !hideL4 && bestSeries.length">
+        <p v-for="(item, index) in bestSeries" :key="index" class="number"
+          :class="item.today ? 'accent' : 'primary'">
+          {{ item.score }}
+        </p>
       </div>
     </div>
   </div>
@@ -82,16 +81,28 @@ import SeriesBarChart from '@/components/SeriesBarChart.vue'
 import { useRoundProcessor } from '@/composition/processors/useRoundProcessor'
 import { useTweenComputed } from '@/composition/tween/useTweenRef'
 import { computed } from 'vue'
-import type { GrannyTournamentProps } from './define.widget'
-import { queryAsync } from '@/utils/db'
+import type { UniversalTournamentProps } from './define.widget'
 
-const LINE_COUNT = 5
 const BAR_COUNT = 9
 
-const props = defineProps<GrannyTournamentProps>()
+const props = defineProps<UniversalTournamentProps>()
 
 const battleCount = useRoundProcessor(useTweenComputed(() => props.battleCount, { duration: 500 }))
 const place = useRoundProcessor(useTweenComputed(() => props.place, { duration: 500 }))
+const currentSeriesSum = useRoundProcessor(useTweenComputed(() => props.currentSeriesSum, { duration: 500 }))
+const bestSeriesSum = useRoundProcessor(useTweenComputed(() => props.bestSeriesSum, { duration: 500 }))
+
+const columns = computed(() => {
+  const count = Math.max(props.targetBattleCount, props.bestBattles.length)
+  const tableCount = count > 5 && count % 2 === 1 && !props.isSeries && !props.hideL3 ? count - 1 : count
+  const columnCount = tableCount > 5 ? 2 : 1
+  const rows = Math.ceil(tableCount / columnCount)
+
+  return Array.from({ length: columnCount }, (_, column) => {
+    const start = column * rows
+    return Array.from({ length: Math.min(rows, tableCount - start) }, (_, row) => start + row)
+  })
+})
 
 function isLastBattleResult(battle: { tank: string | null, score: number } | undefined) {
   return battle &&
@@ -115,27 +126,6 @@ const chart = computed(() => {
     }
   })
 })
-
-const tankTagsData = queryAsync<{ tag: string, name: string }>('select tag, argMax(shortName, datetime) as name from Vehicles where region = \'RU\' group by tag')
-
-const tankTags = computed(() => new Map(tankTagsData.value.data.map((row) => [row.name, row.tag])))
-
-function getReplayName(line: GrannyTournamentProps['bestBattles'][number]) {
-  if (!line.date || !line.tank) return '???'
-
-  const date = new Date(line.date)
-  const YYYY = date.getFullYear()
-  const MM = (date.getMonth() + 1).toString().padStart(2, '0')
-  const DD = date.getDate().toString().padStart(2, '0')
-
-  const HH = date.getHours().toString().padStart(2, '0')
-  const mm = date.getMinutes().toString().padStart(2, '0')
-
-  const datePrefix = `${YYYY}${MM}${DD}_${HH}${mm}`
-
-  if (!tankTags.value.has(line.tank)) return `${datePrefix} (${line.tank})`
-  return `${datePrefix}_${tankTags.value.get(line.tank)?.replace(':', '-')}`
-}
 
 </script>
 
@@ -214,17 +204,11 @@ function getReplayName(line: GrannyTournamentProps['bestBattles'][number]) {
       }
     }
 
-    .l-rep {
-      display: flex;
-      font-size: 0.85em;
-
-      table {
-        width: 100%;
-
-        .tank-name {
-          width: 100%;
-        }
-      }
+    .rule {
+      margin-bottom: -0.55em;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .l3 {
@@ -243,6 +227,15 @@ function getReplayName(line: GrannyTournamentProps['bestBattles'][number]) {
         line-height: 1;
         margin-right: 0.8em;
       }
+    }
+
+    .l4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(1.8em, 1fr));
+      gap: 0.35em;
+      font-size: 1.05em;
+      font-weight: bold;
+      text-align: center;
     }
   }
 

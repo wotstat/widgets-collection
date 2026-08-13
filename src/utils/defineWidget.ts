@@ -34,6 +34,27 @@ export interface SelectParam extends BaseParam {
   default: string
 }
 
+export type TournamentOption = {
+  id: number
+  name: string
+  status: string
+  victory_type: string
+  stats_type: string
+  best_battles: number | null
+  series_size: number | null
+  battle_type: string
+  started_at: string
+  finished_at: string
+}
+
+export interface TournamentParam extends BaseParam {
+  type: 'tournament'
+  target: string
+  label: string
+  default: string
+  isSupported: (tournament: TournamentOption) => boolean
+}
+
 export interface ColorParam extends BaseParam {
   type: 'color'
   target: string
@@ -91,7 +112,7 @@ export interface MultiSlotParam extends BaseParam {
   default: string[]
 }
 
-export type WidgetParam = CheckboxParam | SelectParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam | DatePickerParam | RemoteControlParam
+export type WidgetParam = CheckboxParam | SelectParam | TournamentParam | ColorParam | IntParam | AccentColorParam | BackgroundColorParam | StringParam | RandomStringParam | MultiSlotParam | SeparatorParam | DatePickerParam | RemoteControlParam
 
 type Language = string
 

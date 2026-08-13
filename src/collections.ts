@@ -36,6 +36,7 @@ export const collections = [
   {
     name: 'Турниры',
     widgets: [
+      '/tournament/universal',
       '/tournament/chuck/classic-battle',
       '/tournament/chuck/classic',
       '/tournament/chuck/battle',

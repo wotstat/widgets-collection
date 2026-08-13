@@ -9,7 +9,7 @@
 import WidgetPreviewRoot from '@/components/WidgetPreviewRoot.vue'
 import Content from './Content.vue'
 import { computed } from 'vue'
-import { Props } from './define.widget'
+import type { GrannyTournamentProps } from './define.widget'
 
 const props = defineProps<{
   isMiniPreview: boolean,
@@ -19,7 +19,7 @@ const props = defineProps<{
   skin?: 'default' | 'transparent' | 'replay',
 }>()
 
-const target = computed<Props>(() => ({
+const target = computed<GrannyTournamentProps>(() => ({
   hideL1: props.hideL1,
   hideL2: props.hideL2,
   hideL3: props.isMiniPreview ? true : props.hideL3,

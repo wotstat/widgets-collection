@@ -14,6 +14,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/admin', component: () => import('./pages/admin/Index.vue') },
   { path: '/common-issues', component: () => import('./pages/commonIssues/Index.vue') },
   { path: '/remote-control', component: () => import('./pages/remoteControl/Index.vue') },
+  { path: '/tournament-grid', component: () => import('./pages/tournamentGrid/Index.vue') },
 ]
 
 

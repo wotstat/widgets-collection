@@ -20,7 +20,7 @@ import { watchOnce } from '@vueuse/core'
 
 import { createReusableTemplate } from '@vueuse/core'
 import { oneOf, useQueryParams } from '@/composition/useQueryParams'
-import { Props } from './define.widget'
+import type { GrannyTournamentProps } from './define.widget'
 import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
@@ -56,7 +56,7 @@ watch(() => [isInBattle.value, vehicle.value] as const, ([isInBattle, vehicle]) 
   })
 })
 
-const data = ref<Omit<Props, 'hideL1' | 'hideL2' | 'hideL3'>>({
+const data = ref<Omit<GrannyTournamentProps, 'hideL1' | 'hideL2' | 'hideL3'>>({
   place: 0,
   battleCount: 0,
   bestBattles: [],

@@ -1,6 +1,6 @@
 import { defineWidget } from '@/utils/defineWidget'
 
-export type Props = {
+export type GrannyTournamentProps = {
   hideL1: boolean,
   hideL2: boolean,
   hideL3: boolean,
