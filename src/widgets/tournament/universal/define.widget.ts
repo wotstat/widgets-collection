@@ -57,6 +57,7 @@ export default defineWidget({
   beta: true,
   params: [
     { type: 'tournament', target: 'tournament', label: 'Турнир', default: '', isSupported: isSupportedTournament },
+    { type: 'separator' },
     {
       type: 'select', target: 'skin', label: 'shared:style:title', variants: [
         { value: 'default', label: 'Стандартный' },

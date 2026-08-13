@@ -1,14 +1,17 @@
 <template>
   <div class="line">
     <p>{{ label }}</p>
-    <button class="selector" ref="selector" type="button" aria-haspopup="listbox" :aria-expanded="isOpen"
-      @click="isOpen = !isOpen">
-      <span>{{ selected?.name ?? (isLoading ? 'Загрузка…' : 'Выберите турнир') }}</span>
-      <ArrowUpDown class="chevron" />
-    </button>
+    <select class="loading" v-if="isLoading" disabled value="loading">
+      <option value="loading">Загрузка…</option>
+    </select>
+    <select v-else v-model="value" @pointerdown="pointerDown" ref="selector">
+      <option v-for="variant in tournaments" :key="variant.id" :value="variant.id">
+        {{ variant.name || variant.id }}
+      </option>
+    </select>
 
-    <PopoverStyled :target="selector" :display="isOpen" @click-outside="isOpen = false"
-      placement="bottom-end-float" :arrow-size="0" :offset="5">
+    <PopoverStyled :target="selector" :display="isOpen" @click-outside="isOpen = false" placement="bottom-end-float"
+      :arrow-size="0" :offset="5">
       <div class="tournaments nice-scrollbar">
         <p class="message" v-if="error">Не удалось загрузить турниры</p>
         <button v-for="tournament in tournaments" :key="tournament.id" class="tournament"
@@ -30,7 +33,6 @@
 
 <script setup lang="ts">
 import PopoverStyled from '@/components/popover/PopoverStyled.vue'
-import ArrowUpDown from '@/components/colorPicker/arrow-up-down.svg'
 import { TournamentOption } from '@/utils/defineWidget'
 import { computed, onMounted, ref, watch } from 'vue'
 
@@ -68,6 +70,12 @@ function statusLabel(tournament: TournamentOption) {
   return { active: 'Идёт', future: 'Скоро', past: 'Прошёл' }[status(tournament)]
 }
 
+function pointerDown(event: PointerEvent) {
+  event.preventDefault()
+  event.stopPropagation()
+  isOpen.value = !isOpen.value
+}
+
 function select(tournament: TournamentOption) {
   if (!isSupported(tournament)) return
   value.value = tournament.id.toString()
@@ -100,109 +108,127 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .line {
   position: relative;
-}
 
-.selector {
-  position: relative;
-  width: 140px;
-  height: 23px;
-  padding: 0.15em 1.5em 0.15em 0.3em;
-  color: #fff;
-  background: #3b3b3b;
-  border: 1px solid #858585;
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-
-  span {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .chevron {
-    position: absolute;
-    top: 50%;
-    right: 6px;
-    width: 7px;
-    height: 7px;
-    fill: #aaa;
-    transform: translateY(-50%);
-    pointer-events: none;
+  select {
+    cursor: pointer;
   }
 }
 
 .tournaments {
-  width: 390px;
+  width: 330px;
   max-width: calc(100vw - 30px);
-  max-height: min(430px, calc(100vh - 30px));
+  max-height: 275px;
   overflow-y: auto;
-  padding: 6px;
-}
-
-.tournament {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 9px;
-  color: #f2f2f2;
-  background: transparent;
-  border: 0;
-  border-radius: 6px;
-  text-align: left;
-  cursor: pointer;
+  padding: 5px;
 
-  &:hover:not(:disabled) {
-    background: #48484a;
+  gap: 0;
+
+  &::-webkit-scrollbar-track {
+    margin-block-end: 7px;
+    margin-block-start: 7px;
   }
 
-  &.selected {
-    background: #0a6bcc;
-  }
+  .tournament {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 4px;
+    min-height: 42px;
+    padding: 7px 10px;
+    color: #f2f2f2;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font-size: 14px;
+    position: relative;
+    border-radius: 5px;
 
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -0.5px;
+      height: 1px;
+      z-index: 1;
+      background-color: var(--separator-color, #4b4b4b);
+      display: none;
+    }
 
-  .name {
-    line-height: 1.25;
-  }
-}
+    &:not(:last-child)::after {
+      display: block;
+    }
 
-.badges {
-  display: flex;
-  gap: 5px;
-}
+    &.selected:has(+:not(.selected))::after {
+      display: none;
+    }
 
-.badge {
-  padding: 2px 6px;
-  border-radius: 999px;
-  font-size: 10px;
-  line-height: 1.2;
-  background: #444;
+    &:not(.selected):has(+.selected)::after {
+      display: none;
+    }
 
-  &.active,
-  &.supported {
-    color: #bce9c4;
-    background: #285333;
-  }
+    &:hover:not(:disabled):not(.selected) {
+      background: #353535;
+    }
 
-  &.future {
-    color: #c6dcff;
-    background: #29476f;
-  }
+    &.selected {
+      background: #0a6bcc;
+    }
 
-  &.past {
-    color: #ccc;
-  }
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
 
-  &.unsupported {
-    color: #efb8b8;
-    background: #5a3030;
+    &:last-of-type {
+      border-bottom: 0;
+    }
+
+    .name {
+      flex: 1;
+      min-width: 0;
+      line-height: 1.25;
+    }
+
+    .badges {
+      display: flex;
+      flex: none;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+
+      .badge {
+        padding: 1px 4px;
+        color: white;
+        border-radius: 20px;
+        font-size: 8px;
+        line-height: 1.35;
+        text-transform: uppercase;
+        font-weight: bold;
+
+        &.active,
+        &.supported {
+          background-color: #2ca062;
+        }
+
+        &.future {
+          background-color: #2d67a0;
+        }
+
+        &.past {
+          color: #999;
+        }
+
+        &.unsupported {
+          color: #d69b9b;
+          border-color: #704747;
+        }
+      }
+
+    }
+
   }
 }
 

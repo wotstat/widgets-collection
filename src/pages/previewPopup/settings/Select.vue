@@ -19,4 +19,8 @@ const value = defineModel<string>({ required: true })
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+select {
+  cursor: pointer;
+}
+</style>

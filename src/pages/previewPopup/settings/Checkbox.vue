@@ -15,4 +15,8 @@ const value = defineModel<boolean>({ required: true })
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+input {
+  cursor: pointer;
+}
+</style>
