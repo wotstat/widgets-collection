@@ -16,7 +16,7 @@
         <p class="message" v-if="error">Не удалось загрузить турниры</p>
         <button v-for="tournament in tournaments" :key="tournament.id" class="tournament"
           :class="{ selected: tournament.id.toString() === value }" :disabled="!isSupported(tournament)"
-          @click="select(tournament)">
+          @click="select(tournament)" @pointerup="pointerUp(tournament)">
           <span class="name">{{ tournament.name }}</span>
           <span class="badges">
             <span class="badge" :class="status(tournament)">{{ statusLabel(tournament) }}</span>
@@ -70,10 +70,25 @@ function statusLabel(tournament: TournamentOption) {
   return { active: 'Идёт', future: 'Скоро', past: 'Прошёл' }[status(tournament)]
 }
 
+let afterPointerDown = false
 function pointerDown(event: PointerEvent) {
   event.preventDefault()
   event.stopPropagation()
+  afterPointerDown = true
   isOpen.value = !isOpen.value
+
+  document.addEventListener('pointerup', () => {
+    afterPointerDown = false
+  }, { once: true })
+}
+
+function pointerUp(tournament: TournamentOption) {
+  if (!afterPointerDown) return
+
+  afterPointerDown = false
+
+  select(tournament)
+  isOpen.value = false
 }
 
 function select(tournament: TournamentOption) {
