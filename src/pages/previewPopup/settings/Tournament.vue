@@ -5,7 +5,7 @@
       <option value="loading">Загрузка…</option>
     </select>
     <select v-else v-model="value" @pointerdown="pointerDown" ref="selector">
-      <option v-for="variant in tournaments" :key="variant.id" :value="variant.id">
+      <option v-for="variant in allTournaments" :key="variant.id" :value="variant.id">
         {{ variant.name || variant.id }}
       </option>
     </select>
@@ -13,25 +13,35 @@
     <PopoverStyled :target="selector" :display="isOpen" @click-outside="isOpen = false" placement="bottom-end-float"
       :arrow-size="0" :offset="5">
       <div class="tournaments nice-scrollbar">
-        <p class="message" v-if="error">Не удалось загрузить турниры</p>
-        <button v-for="tournament in tournaments" :key="tournament.id" class="tournament"
-          :class="{ selected: tournament.id.toString() === value }" :disabled="!isSupported(tournament)"
-          @click="select(tournament)" @pointerup="pointerUp(tournament)">
-          <span class="name">{{ tournament.name }}</span>
-          <span class="badges">
-            <span class="badge" :class="status(tournament)">{{ statusLabel(tournament) }}</span>
-            <span class="badge" :class="isSupported(tournament) ? 'supported' : 'unsupported'">
-              {{ isSupported(tournament) ? 'Поддерживается' : 'Не поддерживается' }}
+        <div class="search">
+          <IconSearch class="icon" />
+          <input v-model="search" type="text" placeholder="Введите название или ID" aria-label="Поиск турнира"
+            @pointerdown.stop @keydown.esc="isOpen = false">
+        </div>
+        <div class="results">
+          <p class="message" v-if="error && !search">Не удалось загрузить турниры</p>
+          <button v-for="tournament in visibleTournaments" :key="tournament.id" class="tournament"
+            :class="{ selected: tournament.id.toString() === value }" :disabled="!isSupported(tournament)"
+            @click="select(tournament)" @pointerup="pointerUp(tournament)">
+            <span class="name">{{ tournament.name }}</span>
+            <span class="badges">
+              <span class="badge" :class="status(tournament)">{{ statusLabel(tournament) }}</span>
+              <span class="badge" :class="isSupported(tournament) ? 'supported' : 'unsupported'">
+                {{ isSupported(tournament) ? 'Поддерживается' : 'Не поддерживается' }}
+              </span>
             </span>
-          </span>
-        </button>
-        <p class="message" v-if="!isLoading && !error && tournaments.length === 0">Турниров пока нет</p>
+          </button>
+          <p class="message" v-if="isSearching">Ищу турнир…</p>
+          <p class="message" v-else-if="searchError">{{ searchError }}</p>
+          <p class="message" v-else-if="!isLoading && visibleTournaments.length === 0">Ничего не найдено</p>
+        </div>
       </div>
     </PopoverStyled>
   </div>
 </template>
 
 <script setup lang="ts">
+import IconSearch from '@/assets/icons/search.svg'
 import PopoverStyled from '@/components/popover/PopoverStyled.vue'
 import { TournamentOption } from '@/utils/defineWidget'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -47,11 +57,77 @@ const isOpen = ref(false)
 const isLoading = ref(true)
 const error = ref(false)
 const tournaments = ref<TournamentOption[]>([])
+const externalTournaments = ref<TournamentOption[]>([])
+const search = ref('')
+const isSearching = ref(false)
+const searchError = ref('')
 
-const selected = computed(() => tournaments.value.find(tournament => tournament.id.toString() === value.value))
+const allTournaments = computed(() => [
+  ...externalTournaments.value,
+  ...tournaments.value.filter(tournament => !externalTournaments.value.some(item => item.id === tournament.id)),
+])
 
-watch([value, tournaments], ([current, items]) => {
+const visibleTournaments = computed(() => {
+  const query = search.value.trim()
+  if (!query) return allTournaments.value
+  if (/^\d+$/.test(query)) return allTournaments.value.filter(tournament => tournament.id === Number(query))
+
+  const normalized = query.toLocaleLowerCase()
+  return allTournaments.value.filter(tournament => tournament.name.toLocaleLowerCase().includes(normalized))
+})
+
+watch([value, allTournaments], ([current, items]) => {
   if (!current) value.value = items.find(isSupported)?.id.toString() ?? ''
+})
+
+watch(search, (rawQuery, _, onCleanup) => {
+  const query = rawQuery.trim()
+  searchError.value = ''
+
+  if (!/^\d+$/.test(query) || allTournaments.value.some(tournament => tournament.id === Number(query))) {
+    isSearching.value = false
+    return
+  }
+
+  const id = Number(query)
+  if (!Number.isSafeInteger(id)) {
+    searchError.value = 'Некорректный ID турнира'
+    return
+  }
+
+  const controller = new AbortController()
+  const timeout = window.setTimeout(async () => {
+    isSearching.value = true
+
+    try {
+      const response = await fetch(`https://challenge.tanki.su/api/v1/tournaments/${id}`, {
+        signal: controller.signal,
+      })
+      if (!response.ok) throw new Error(response.status === 404 ? 'Турнир не найден' : 'Не удалось загрузить турнир')
+
+      const result = await response.json()
+      const tournament = result.data as TournamentOption | undefined
+      if (!tournament || tournament.id !== id || typeof tournament.name !== 'string') {
+        throw new Error('Некорректный ответ API')
+      }
+
+      externalTournaments.value = [
+        tournament,
+        ...externalTournaments.value.filter(item => item.id !== tournament.id),
+      ]
+    } catch (cause) {
+      if (!controller.signal.aborted) {
+        searchError.value = cause instanceof Error ? cause.message : 'Не удалось загрузить турнир'
+      }
+    } finally {
+      if (!controller.signal.aborted) isSearching.value = false
+    }
+  }, 300)
+
+  onCleanup(() => {
+    window.clearTimeout(timeout)
+    controller.abort()
+  })
 })
 
 type TournamentStatus = 'active' | 'future' | 'past'
@@ -94,6 +170,7 @@ function pointerUp(tournament: TournamentOption) {
 function select(tournament: TournamentOption) {
   if (!isSupported(tournament)) return
   value.value = tournament.id.toString()
+  search.value = ''
   isOpen.value = false
 }
 
@@ -136,13 +213,48 @@ onMounted(async () => {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 5px;
-
   gap: 0;
 
   &::-webkit-scrollbar-track {
     margin-block-end: 7px;
     margin-block-start: 7px;
+  }
+
+  .search {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: 2em;
+    max-height: 2em;
+    background: #2a2a2a;
+    border-bottom: 1px solid #424242;
+
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      padding: 0 5px 0 0;
+      font-size: .85em;
+      color: #fff;
+      background: transparent;
+      border: unset;
+      outline: none;
+    }
+
+    .icon {
+      padding: 5px;
+      padding-left: 10px;
+      height: 1.8em;
+    }
+  }
+
+  .results {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
   }
 
   .tournament {
