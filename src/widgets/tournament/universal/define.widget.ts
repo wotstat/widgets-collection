@@ -7,8 +7,12 @@ export type ChallengeTournament = TournamentOption & {
 }
 
 export function isSupportedTournament(tournament: TournamentOption) {
-  if (tournament.stats_type === 'total' && tournament.battle_type === 'random') {
-    return ['exp', 'damage', 'kills'].includes(tournament.victory_type) && (tournament.best_battles ?? 0) > 0
+  if (tournament.stats_type === 'total') {
+    const isKnownTotal = tournament.battle_type === 'random'
+      ? ['exp', 'damage', 'kills'].includes(tournament.victory_type)
+      : tournament.battle_type === 'battle_royale' && tournament.victory_type === 'exp'
+
+    return isKnownTotal && (tournament.best_battles ?? 0) > 0
   }
 
   const isKnownSeries = tournament.stats_type === 'best_series' && (
@@ -53,8 +57,7 @@ export type UniversalTournamentProps = {
 
 export default defineWidget({
   name: 'Универсальный турнирный',
-  description: 'Универсальный виджет прогресса в поддерживаемых турнирах challenge.tanki.su',
-  beta: true,
+  description: 'Универсальный виджет для турниров challenge.tanki.su',
   params: [
     { type: 'tournament', target: 'tournament', label: 'Турнир', default: '', isSupported: isSupportedTournament },
     { type: 'separator' },

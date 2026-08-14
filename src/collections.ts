@@ -7,6 +7,7 @@ export const collections = [
       '/efficiency/comp7',
       '/nidin/equipments',
       '/shotnik/equipments',
+      '/tournament/universal',
     ]
   },
   {

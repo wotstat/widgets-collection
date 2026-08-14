@@ -7,7 +7,7 @@
       </div>
 
       <p class="rule secondary" v-if="!hideL2">{{ ruleLabel }}</p>
-      <div class="l2" v-if="!hideL2">
+      <div class="l2" :class="{ 'single-column': columns.length === 1 }" v-if="!hideL2">
         <div class="column primary" v-for="(indexes, column) in columns" :key="column">
           <table>
             <tr v-for="index in indexes" :key="index" :class="{
@@ -157,6 +157,10 @@ const chart = computed(() => {
     .l2 {
       display: flex;
       font-size: 0.9em;
+
+      &.single-column {
+        font-size: 1.1em;
+      }
 
       .column {
         flex: 1;

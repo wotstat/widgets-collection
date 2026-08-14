@@ -227,8 +227,8 @@ onMounted(async () => {
     display: flex;
     flex: none;
     align-items: center;
-    height: 2em;
-    max-height: 2em;
+    height: 2.2em;
+    max-height: 2.2em;
     background: #2a2a2a;
     border-bottom: 1px solid #424242;
 
@@ -345,12 +345,11 @@ onMounted(async () => {
         }
 
         &.past {
-          color: #999;
+          background-color: #a07f2d;
         }
 
         &.unsupported {
-          color: #d69b9b;
-          border-color: #704747;
+          background-color: #a02d2d;
         }
       }
 

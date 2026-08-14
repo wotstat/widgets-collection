@@ -1,7 +1,7 @@
 
 # Частые проблемы и способы их решения
 
-Если столкнулись с проблемой, напишите в Discord [@WotStat](https://discord.gg/7K8W9JE6xU){target=_blank} или в на электронную почту [support@wotstat.info](mailto:support@wotstat.info){target=_blank}.
+Если столкнулись с проблемой, напишите в Discord [@WotStat](https://discord.gg/7K8W9JE6xU){target=_blank} или на электронную почту [support@wotstat.info](mailto:support@wotstat.info){target=_blank}.
 
 
 ## Основная проблема
