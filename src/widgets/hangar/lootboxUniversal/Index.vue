@@ -1,6 +1,6 @@
 <template>
   <WidgetWrapper auto-height auto-scale hangar-only :required-extensions="['wotstat']">
-    <Content :data="data" :game />
+    <Content :data="data" :game :locale />
   </WidgetWrapper>
 </template>
 
@@ -177,7 +177,9 @@ const LEGENDARY_TANKS = [
 ]
 
 const region = useReactiveState(sdk.data.game.region)
+const gameLanguage = useReactiveState(sdk.data.game.language)
 const game = computed(() => region.value == 'RU' ? 'mt' : 'wot')
+const locale = computed(() => gameLanguage.value || 'en')
 
 watch(playerName, async player => {
   await new Promise(resolve => setTimeout(resolve, 1))
