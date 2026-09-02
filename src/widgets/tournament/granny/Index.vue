@@ -44,7 +44,7 @@ const nicknameId = ref<null | string>(null)
 
 const id = computed(() => nicknameId.value || sdkId.value)
 
-const battleHistory = useBattleResultHistory<{ score: number, tank: string, date: number }>((parsed) => ({ score: parsed.personal?.stats.damageDealt ?? 0 }))
+const battleHistory = useBattleResultHistory<{ score: number, tank: string, tankTag: string, date: number }>((parsed) => ({ score: parsed.personal?.stats.damageDealt ?? 0 }))
 
 watch(() => [isInBattle.value, vehicle.value] as const, ([isInBattle, vehicle]) => {
   if (!isInBattle) return
@@ -52,6 +52,7 @@ watch(() => [isInBattle.value, vehicle.value] as const, ([isInBattle, vehicle]) 
 
   battleHistory.addDataToCurrentBattle({
     tank: vehicle.localizedShortName,
+    tankTag: vehicle.tag,
     date: new Date().getTime()
   })
 })
@@ -93,7 +94,7 @@ async function load() {
   data.value.place = userParticipant.position
   data.value.battleCount = results.battles
 
-  const valuesMap = new Map<number, ({ tank?: string, date?: number })[]>()
+  const valuesMap = new Map<number, ({ tank?: string, tankTag?: string, date?: number })[]>()
   for (const battle of battleHistory.battlesArray.value) {
     const score = battle.score
     if (!score) continue
@@ -107,6 +108,7 @@ async function load() {
 
     return {
       tank: battle?.tank ?? null,
+      tankTag: battle?.tankTag ?? null,
       date: battle?.date ?? null,
       score: value,
       today: currentSessionStart.value <= (battle?.date ?? 0)

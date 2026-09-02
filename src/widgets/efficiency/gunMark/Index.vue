@@ -7,11 +7,12 @@
 
 <script setup lang="ts">
 import Content from './Content.vue'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { oneOf, useQueryParams } from '@/composition/useQueryParams'
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
 import { Props } from './define.widget'
-import { queryAsync } from '@/utils/db'
+import { queryComputed } from '@/utils/db'
+import { isLestaRegion, LOCALIZATION_CACHE_SETTINGS, selectArenaNames } from '@/utils/gameLocalization'
 import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
 import { useWidgetStorage } from '@/composition/useWidgetStorage'
@@ -25,6 +26,7 @@ const { hideIcon, historyLength, skin } = useQueryParams({
 
 const { sdk } = useWidgetSdk()
 const region = useReactiveState(sdk.data.game.region)
+const gameLanguage = useReactiveState(sdk.data.game.language)
 const vehicle = useReactiveState(sdk.data.hangar.vehicle.info)
 const dossier = useReactiveState(sdk.data.dossier.current)
 
@@ -50,7 +52,10 @@ useReactiveState(sdk.data.battle.arenaId, arena => {
   awaitedDossiers.value.set(key, { arenaId: arena, damageRating: dossier.value.damageRating ?? 0 })
 })
 
-const arenas = queryAsync<{ id: number, name: string }>('select id, argMax(name, datetime) as name from Arenas where region = \'RU\' group by id;')
+const arenas = queryComputed<{ id: number, name: string }>(() =>
+  region.value ? selectArenaNames(region.value, gameLanguage.value) : null,
+  { settings: LOCALIZATION_CACHE_SETTINGS }
+)
 
 function getArenaName(id: number) {
   return arenas.value.data.find(a => a.id == id)?.name ?? '...'
@@ -90,7 +95,7 @@ const targetProps = computed<Props>(() => {
         result: t.battleResult,
       }
     }),
-    game: region.value == 'RU' ? 'lesta' : 'wg',
+    game: isLestaRegion(region.value) ? 'lesta' : 'wg',
   }
 })
 

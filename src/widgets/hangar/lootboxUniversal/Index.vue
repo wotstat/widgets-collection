@@ -1,6 +1,6 @@
 <template>
   <WidgetWrapper auto-height auto-scale hangar-only :required-extensions="['wotstat']">
-    <Content :data="data" :game :locale />
+    <Content :data="data" :game :region :locale />
   </WidgetWrapper>
 </template>
 
@@ -15,6 +15,7 @@ import WidgetWrapper from '@/components/WidgetWrapper.vue'
 import { ContainersData, RATION_TAGS, SUPPORTED_ENTITLEMENTS, SUPPORTED_EXTRA_CURRENCIES, SUPPORTED_ITEMS } from './define.widget'
 import { query } from '@/utils/db'
 import { useWidgetMainTab } from '@/composition/useWidgetMainTab'
+import { isLestaRegion } from '@/utils/gameLocalization'
 
 
 const { delay, sync, syncDate } = useQueryParams({
@@ -178,8 +179,8 @@ const LEGENDARY_TANKS = [
 
 const region = useReactiveState(sdk.data.game.region)
 const gameLanguage = useReactiveState(sdk.data.game.language)
-const game = computed(() => region.value == 'RU' ? 'mt' : 'wot')
-const locale = computed(() => gameLanguage.value || 'en')
+const game = computed(() => isLestaRegion(region.value) ? 'mt' : 'wot')
+const locale = computed(() => gameLanguage.value || '')
 
 watch(playerName, async player => {
   await new Promise(resolve => setTimeout(resolve, 1))

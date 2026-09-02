@@ -11,7 +11,8 @@ import { computed, onMounted, onUnmounted, shallowRef } from 'vue'
 import { oneOf, useQueryParams } from '@/composition/useQueryParams'
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
 import { Props } from './define.widget'
-import { LONG_CACHE_SETTINGS, query, queryAsync, queryComputed } from '@/utils/db'
+import { LONG_CACHE_SETTINGS, query, queryComputed } from '@/utils/db'
+import { isLestaRegion, LOCALIZATION_CACHE_SETTINGS, selectArenaNames } from '@/utils/gameLocalization'
 import { useBattleResultHistory } from '@/composition/shared/useBattleResultHistory'
 import { useReactiveState, useWidgetSdk } from '@/composition/widgetSdk'
 
@@ -47,14 +48,9 @@ const { battlesArray: history } = useBattleResultHistory((parsed, raw) => {
 const comp7History = computed(() => history.value.filter(h => h?.arena != null && h.bonusType == COMP_7_BONUS_TYPE))
 
 
-const LANGUAGE_TO_REGION: Record<string, string> = {
-  'en': 'EU',
-  'ru': 'RU',
-  'be': 'RU',
-}
-
 const arenas = queryComputed<{ id: number, name: string }>(() =>
-  `select id, argMax(name, datetime) as name from Arenas where region = '${LANGUAGE_TO_REGION[gameLanguage.value ?? 'en'] || 'EU'}' group by id;`
+  region.value ? selectArenaNames(region.value, gameLanguage.value) : null,
+  { settings: LOCALIZATION_CACHE_SETTINGS }
 )
 
 async function reloadEliteRating() {
@@ -84,7 +80,7 @@ const targetProps = computed<Omit<Props, 'hideIcon'>>(() => (comp7History.value.
     key: `${t.arena}_${t.delta}_${t.rating}_${t.arenaUniqueID}`,
     result: t.battleResult,
   })),
-  game: region.value == 'RU' ? 'lesta' : 'wg'
+  game: isLestaRegion(region.value) ? 'lesta' : 'wg'
 }))
 
 onMounted(() => {

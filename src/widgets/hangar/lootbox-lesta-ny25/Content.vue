@@ -81,6 +81,7 @@ import Premium from './assets/currencies/premium_plus_universal.png'
 import Mandarins from './assets/currencies/nyMandarins.png'
 import FallbackImg from '@/components/shared/FallbackImg.vue'
 import { loading, queryAsync } from '@/utils/db'
+import { LOCALIZATION_CACHE_SETTINGS, selectVehicleNamesWithLevels } from '@/utils/gameLocalization'
 import { computed } from 'vue'
 import { Props } from './define.widget'
 import { STATIC_URL } from '@/utils/externalUrl'
@@ -91,7 +92,7 @@ const [DefineTank, ReuseTank] = createReusableTemplate<{ tag: string }>()
 const props = defineProps<Props>()
 const options = { duration: 700 }
 
-const tankNames = queryAsync<{ tag: string, name: string, level: number }>('select tag, argMax(shortName, datetime) as name, argMax(level, datetime) as level from Vehicles where region = \'RU\' group by tag')
+const tankNames = queryAsync<{ tag: string, name: string, level: number }>(selectVehicleNamesWithLevels('RU', 'ru'), { settings: LOCALIZATION_CACHE_SETTINGS })
 const tankNamesMap = computed(() => new Map(tankNames.value.data.map(t => [t.tag, { name: t.name, level: t.level }])))
 
 function getTankName(tag: string) {

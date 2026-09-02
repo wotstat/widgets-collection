@@ -110,6 +110,7 @@ import WidgetCard from '@/components/WidgetCard.vue'
 import { Props } from '../define.widget'
 import NoImageLB from '../assets/containers/noImageLB.png'
 import { queryComputed } from '@/utils/db'
+import { LOCALIZATION_CACHE_SETTINGS, selectLocalizationNames, type LocalizationDictionary } from '@/utils/gameLocalization'
 
 
 import GoldWotIcon from '../assets/currencies/gold.png'
@@ -441,14 +442,11 @@ const extraCurrencies = computed(() => {
 
 type LocalizationRow = { tag: string, name: string }
 
-const localizationRegion = computed(() => props.game == 'mt' ? 'RU' : 'EU')
-
-function localizationMap(dictionary: string, nameColumn = 'name') {
-  const rows = queryComputed<LocalizationRow>(() => `
-    select tag, ${nameColumn} as name
-    from ${dictionary}
-    where region = '${localizationRegion.value}' and locale = '${props.locale.toUpperCase()}'
-  `)
+function localizationMap(dictionary: LocalizationDictionary, nameColumn: 'name' | 'shortName' = 'name') {
+  const rows = queryComputed<LocalizationRow>(() =>
+    props.region ? selectLocalizationNames(dictionary, props.region, props.locale, nameColumn) : null,
+    { settings: LOCALIZATION_CACHE_SETTINGS }
+  )
 
   return computed(() => ({
     status: rows.value.status,

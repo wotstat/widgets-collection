@@ -35,7 +35,7 @@
           }">
             <td class="secondary number index">{{ index + 1 }}.</td>
             <td class="secondary tank-name" v-if="bestBattles[index]">
-              {{ getReplayName(bestBattles[index]) }}
+              {{ getReplayName(bestBattles[index], tankTags) }}
             </td>
             <td class="secondary tank-name" v-else></td>
             <td class="number bold right score" :class="{
@@ -84,6 +84,8 @@ import { useTweenComputed } from '@/composition/tween/useTweenRef'
 import { computed } from 'vue'
 import type { GrannyTournamentProps } from './define.widget'
 import { queryAsync } from '@/utils/db'
+import { LOCALIZATION_CACHE_SETTINGS, selectLocalizationNames } from '@/utils/gameLocalization'
+import { getReplayName, uniqueTankTagsByName } from './replay'
 
 const LINE_COUNT = 5
 const BAR_COUNT = 9
@@ -116,26 +118,9 @@ const chart = computed(() => {
   })
 })
 
-const tankTagsData = queryAsync<{ tag: string, name: string }>('select tag, argMax(shortName, datetime) as name from Vehicles where region = \'RU\' group by tag')
+const tankTagsData = queryAsync<{ tag: string, name: string }>(selectLocalizationNames('VehiclesLocalizationDictionary', 'RU', 'ru', 'shortName'), { settings: LOCALIZATION_CACHE_SETTINGS })
 
-const tankTags = computed(() => new Map(tankTagsData.value.data.map((row) => [row.name, row.tag])))
-
-function getReplayName(line: GrannyTournamentProps['bestBattles'][number]) {
-  if (!line.date || !line.tank) return '???'
-
-  const date = new Date(line.date)
-  const YYYY = date.getFullYear()
-  const MM = (date.getMonth() + 1).toString().padStart(2, '0')
-  const DD = date.getDate().toString().padStart(2, '0')
-
-  const HH = date.getHours().toString().padStart(2, '0')
-  const mm = date.getMinutes().toString().padStart(2, '0')
-
-  const datePrefix = `${YYYY}${MM}${DD}_${HH}${mm}`
-
-  if (!tankTags.value.has(line.tank)) return `${datePrefix} (${line.tank})`
-  return `${datePrefix}_${tankTags.value.get(line.tank)?.replace(':', '-')}`
-}
+const tankTags = computed(() => uniqueTankTagsByName(tankTagsData.value.data))
 
 </script>
 

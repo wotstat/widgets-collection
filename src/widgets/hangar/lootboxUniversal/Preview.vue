@@ -1,6 +1,6 @@
 <template>
   <WidgetPreviewRoot auto-scale :predicted-aspect-ratio="0.74">
-    <Content :data="targetProps" :game="'mt'" locale="ru" />
+    <Content :data="targetProps" :game="'mt'" region="RU" locale="ru" />
   </WidgetPreviewRoot>
 </template>
 

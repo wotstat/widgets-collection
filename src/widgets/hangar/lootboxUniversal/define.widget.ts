@@ -56,6 +56,7 @@ export type ContainersData = {
 export type Props = {
   data: ContainersData,
   game: 'mt' | 'wot',
+  region: string | null | undefined,
   locale: string,
 }
 

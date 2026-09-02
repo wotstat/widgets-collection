@@ -9,6 +9,7 @@ export type GrannyTournamentProps = {
   battleCount: number,
   bestBattles: {
     tank: string | null,
+    tankTag?: string | null,
     date: number | null,
     score: number,
     today: boolean,

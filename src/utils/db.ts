@@ -64,7 +64,10 @@ export async function query<T>(query: string, { allowCache = true, settings = {}
 export function queryComputed<T>(queryString: () => string | null, { settings = {} as ClickHouseSettings, enabled = ref(true), allowCache = true } = {}) {
   const result = shallowRef<{ status: Status, data: T[] }>({ status: loading, data: [] })
 
-  watch(() => [queryString(), enabled.value] as const, async ([q, enabled]) => {
+  watch(() => [queryString(), enabled.value] as const, async ([q, enabled], _, onCleanup) => {
+    let active = true
+    onCleanup(() => active = false)
+
     if (!q) return
     if (!enabled) return
 
@@ -75,8 +78,10 @@ export function queryComputed<T>(queryString: () => string | null, { settings = 
       }
       result.value = { data: [], status: loading }
       const { data } = await query<T>(q, { settings, allowCache })
+      if (!active) return
       result.value = { data, status: success }
     } catch (reason) {
+      if (!active) return
       console.error(reason)
       result.value = { data: [], status: { status: error, reason: (reason as any).message as string } }
     }
