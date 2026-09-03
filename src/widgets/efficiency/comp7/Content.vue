@@ -162,7 +162,7 @@ const edgeMask = computed(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 103%;
+    width: 100%;
     font-size: 1.4em;
     font-weight: bold;
 
@@ -171,7 +171,6 @@ const edgeMask = computed(() => {
       align-items: center;
       justify-content: flex-start;
       white-space: nowrap;
-      flex: 1;
     }
 
     .stat-icon {
@@ -179,6 +178,12 @@ const edgeMask = computed(() => {
       height: 1.6em;
       margin: 0 -0.25em;
       flex-shrink: 0;
+    }
+
+    .battles {
+      .stat-icon {
+        margin-left: -0.4em;
+      }
     }
   }
 
