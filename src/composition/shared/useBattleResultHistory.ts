@@ -62,6 +62,7 @@ export function useBattleResultHistory<T extends Object>(processResult?: (parsed
   return {
     addDataToCurrentBattle,
     addDataToBattle,
-    battlesArray
+    battlesArray,
+    battlesTimings
   }
 }

@@ -8,6 +8,27 @@
         <p class="current-rank wg-font">
           <TweenValue :value="props.currentRank" :options="{ duration: 500 }" />
         </p>
+
+        <div class="statistics wg-font" v-if="statistics">
+          <div class="stat battles">
+            <Battles class="stat-icon" />
+            <span>{{ logProcessor(statistics.battles) }}</span>
+          </div>
+          <div class="stat rating-delta" :class="{
+            positive: (statistics.ratingDelta ?? 0) > 0,
+            negative: (statistics.ratingDelta ?? 0) < 0
+          }">
+            <Prestige class="stat-icon" />
+            <span>
+              {{ (statistics.ratingDelta ?? 0) > 0 ? '+' : '' }}{{ logProcessor(statistics.ratingDelta) }}
+            </span>
+          </div>
+          <div class="stat winrate">
+            <Winrate class="stat-icon" />
+            <span>{{ statistics.battles ? `${Math.round(statistics.winrate)}%` : '0' }}</span>
+          </div>
+        </div>
+
         <div class="history wg-font">
           <TransitionGroup :name="isInPreview ? 'list-preview' : 'list'">
             <div class="line flex" v-for="line in history" :key="line.key">
@@ -39,6 +60,8 @@ import InsetsWrapper from '@/components/InsetsWrapper.vue'
 
 import RankTabHighlight from './assets/rankTabHighlight.png'
 import Battles from './assets/battles.svg'
+import Prestige from './assets/prestige-points.svg'
+import Winrate from './assets/winrate.svg'
 import { preloadImage } from '@/utils/preload'
 import { isInPreview as isInPreviewKey } from '@/utils/provides'
 import RankIcon from '@/components/comp7/rank/RankIcon.vue'
@@ -47,6 +70,11 @@ import { rankImageUrl } from '@/components/comp7/utils'
 const isInPreview = inject(isInPreviewKey, false)
 
 const props = defineProps<Props>()
+
+function logProcessor(value: number) {
+  if (value <= 999) return value
+  return (value / 1000).toFixed(1) + 'k'
+}
 
 const rank = computed(() => {
   if (props.eliteRating) return { value: props.currentRank, eliteRating: props.eliteRating }
@@ -130,6 +158,43 @@ const edgeMask = computed(() => {
     z-index: 10;
   }
 
+  .statistics {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 103%;
+    font-size: 1.4em;
+    font-weight: bold;
+
+    .stat {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .stat-icon {
+      width: 1.6em;
+      height: 1.6em;
+      margin: 0 -0.25em;
+      flex-shrink: 0;
+    }
+  }
+
+  .rating-delta,
+  .history .delta:not(.contrast) {
+    &.positive {
+      color: #f2ffed;
+      filter: drop-shadow(0 0 0.3em #6ab528);
+    }
+
+    &.negative {
+      color: #fff0f0;
+      filter: drop-shadow(0 0 0.3em #e11818);
+    }
+  }
+
   .history {
     width: 100%;
     position: relative;
@@ -191,22 +256,13 @@ const edgeMask = computed(() => {
         }
       }
 
-      &:not(.contrast) {
-        &.positive {
-          color: #f2ffed;
-          filter: drop-shadow(0 0 0.3em #6ab528);
-        }
-
-        &.negative {
-          color: #fff0f0;
-          filter: drop-shadow(0 0 0.3em #e11818);
-        }
-      }
     }
   }
 
   &.skin-transparent {
-    .history {
+
+    .history,
+    .statistics {
       &::before {
         content: '';
         position: absolute;
