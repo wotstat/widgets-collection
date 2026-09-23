@@ -75,8 +75,11 @@ useReactiveTrigger(sdk.data.extensions.wotstat.onEvent, (event) => {
   const { containerTag, openCount, parsed } = event
 
   const container = data.value.containers.find(t => t.tag == containerTag)
-  if (container) container.count += 1
-  else data.value.containers.push({ tag: containerTag, count: 1, })
+  const count = ('recordBoxCount' in event && typeof event.recordBoxCount === 'number') ?
+    event.recordBoxCount as number :
+    1
+  if (container) container.count += count
+  else data.value.containers.push({ tag: containerTag, count })
 
   setTimeout(() => {
     for (const element of parsed.items) {
@@ -213,7 +216,7 @@ watch(playerName, async player => {
             where playerName = '${playerName.value}' and dateTime > ${syncDate.getTime() / 1000} and isOpenSuccess = 1 and claimed = 1
         ),
         containers as (
-            select containerTag, toUInt32(count()) as count
+            select containerTag, toUInt32(sum(recordBoxCount)) as count
             from data
             group by containerTag
         ),
