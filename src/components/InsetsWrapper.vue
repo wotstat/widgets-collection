@@ -1,5 +1,5 @@
 <template>
-  <div class="insets-container" :style="targetStyle">
+  <div class="insets-container" data-widget-preview-effects :style="targetStyle">
     <slot></slot>
   </div>
 </template>

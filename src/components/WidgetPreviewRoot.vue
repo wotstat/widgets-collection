@@ -1,5 +1,5 @@
 <template>
-  <div class="widgets-sdk-styles" :style="targetStyle">
+  <div class="widgets-sdk-styles" :class="{ 'show-bounds': !isInMetaPreview }" :style="targetStyle">
     <div class="autoscale" ref="containerElement" :style="{ aspectRatio: predictedAspectRatio }">
     </div>
     <div class="auto-scale-container" v-if="autoScale">
@@ -15,7 +15,7 @@
 import { useElementSize } from '@vueuse/core'
 import { computed, inject, ref } from 'vue'
 import { accent, background } from '@/composition/wotstatColors'
-import { isInMiniPreview as isInMiniPreviewKey } from '@/utils/provides'
+import { isInMetaPreview as isInMetaPreviewKey, isInMiniPreview as isInMiniPreviewKey } from '@/utils/provides'
 
 const containerElement = ref<HTMLElement | null>(null)
 
@@ -28,6 +28,7 @@ const { width } = useElementSize(containerElement)
 const fontSize = computed(() => width.value / 100 * 4 + 'px')
 
 const isInMiniPreview = inject(isInMiniPreviewKey, false)
+const isInMetaPreview = inject(isInMetaPreviewKey, false)
 const targetStyle = computed(() => {
 
   if (isInMiniPreview) return { fontSize: fontSize.value }
@@ -48,10 +49,11 @@ const targetStyle = computed(() => {
   height: 100%;
   position: relative;
 
-  :deep(.card),
-  :deep(.preview-card) {
-    border: 1px dashed rgba(255, 255, 255, 0.1);
-    // margin: -1px;
+  &.show-bounds {
+    :deep(.card),
+    :deep(.preview-card) {
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
   }
 
   :deep(img) {

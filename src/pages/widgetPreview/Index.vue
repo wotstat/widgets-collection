@@ -2,6 +2,10 @@
   <div ref="root" class="widget-only-preview" :style="{
     '--wotstat-accent': '#' + defaultAccent,
     '--wotstat-background': '#' + defaultBackground,
+    top: `${insets.top}px`,
+    right: `${insets.right}px`,
+    bottom: `${insets.bottom}px`,
+    left: `${insets.left}px`,
   }">
     <component v-if="preview" :is="preview" :is-mini-preview="true" />
   </div>
@@ -14,13 +18,15 @@ import { useEventListener } from '@vueuse/core'
 import { injectStylesheet } from '@/composition/widgetSdk'
 import { defaultAccent, defaultBackground } from '@/composition/wotstatColors'
 import { getAllWidgetsRoutes, pathResolve } from '@/utils'
-import { isInMiniPreview, isInPreview, language } from '@/utils/provides'
+import { isInMetaPreview, isInMiniPreview, isInPreview, language } from '@/utils/provides'
 import { waitForQueries } from '@/utils/db'
+import { measureWidgetPreview } from './measureWidgetPreview'
 
 injectStylesheet()
 provide(language, 'ru')
 provide(isInPreview, true)
 provide(isInMiniPreview, true)
+provide(isInMetaPreview, true)
 
 const route = useRoute()
 const widgetPath = '/' + (Array.isArray(route.params.widget) ? route.params.widget.join('/') : route.params.widget)
@@ -28,6 +34,7 @@ const widget = getAllWidgetsRoutes().find(widget => widget.route === widgetPath)
 const modules = import.meta.glob<{ default: Component }>('/src/widgets/**/*.vue')
 const root = ref<HTMLElement | null>(null)
 const preview = shallowRef<Component>()
+const insets = ref({ top: 0, right: 0, bottom: 0, left: 0 })
 const controller = new AbortController()
 const signal = controller.signal
 const frame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
@@ -105,14 +112,12 @@ useEventListener(window, 'message', async event => {
       return
     }
 
-    const content = root.value!.querySelector('[data-widget-preview-content]') ?? root.value!.firstElementChild
-    if (!content) throw new Error('Превью виджета пустое')
-    const bounds = content.getBoundingClientRect()
+    const size = measureWidgetPreview(root.value!)
+    insets.value = size.insets
     parent.postMessage({
       type: 'widget-preview-size',
       requestId,
-      width: Math.ceil(bounds.width),
-      height: Math.ceil(bounds.height),
+      ...size,
     }, event.origin)
   } catch (error) {
     sendError(error, requestId, event.origin)
@@ -131,7 +136,6 @@ onScopeDispose(() => controller.abort())
 .widget-only-preview {
   position: fixed;
   inset: 0;
-  overflow: hidden;
 
   :deep(.autoscale) {
     max-height: none !important;
