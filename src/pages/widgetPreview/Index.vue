@@ -77,6 +77,15 @@ async function waitForResources() {
   await frame()
   signal.throwIfAborted()
   if (renderError) throw renderError
+
+  let size = measureWidgetPreview(root.value!)
+  while (size.width === 0 || size.height === 0) {
+    await frame()
+    signal.throwIfAborted()
+    if (renderError) throw renderError
+    size = measureWidgetPreview(root.value!)
+  }
+  return size
 }
 
 onMounted(() => {
@@ -104,7 +113,7 @@ useEventListener(window, 'message', async event => {
 
   try {
     await preparation
-    await waitForResources()
+    const size = await waitForResources()
 
     if (type === 'widget-preview-settle') {
       document.getAnimations().forEach(animation => animation.pause())
@@ -112,7 +121,6 @@ useEventListener(window, 'message', async event => {
       return
     }
 
-    const size = measureWidgetPreview(root.value!)
     insets.value = size.insets
     parent.postMessage({
       type: 'widget-preview-size',
