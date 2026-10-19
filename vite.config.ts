@@ -10,6 +10,7 @@ import MarkdownIt from 'markdown-it'
 import { releaseNotesPlugin } from './releaseNotes'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { widgetCatalogPlugin } from './widgetCatalogPlugin'
 
 
 // https://vitejs.dev/config/
@@ -35,6 +36,7 @@ export default defineConfig({
         .use(align)
     }),
     releaseNotesPlugin(),
+    widgetCatalogPlugin(),
     visualizer({
       filename: 'bundle-stats.html',
       gzipSize: true,

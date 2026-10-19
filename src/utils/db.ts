@@ -37,6 +37,12 @@ export function isErrorStatus(status: Status): status is { status: typeof error,
 
 const activeQueries = new Map<string, Promise<unknown>>()
 const cachedResults = new Map<string, unknown>()
+const pendingQueries = new Set<Promise<unknown>>()
+
+export async function waitForQueries() {
+  while (pendingQueries.size) await Promise.all([...pendingQueries])
+}
+
 export async function query<T>(query: string, { allowCache = true, settings = {} as ClickHouseSettings } = {}) {
 
   if (activeQueries.has(query)) return activeQueries.get(query) as Promise<ResponseJSON<T>>
@@ -57,6 +63,8 @@ export async function query<T>(query: string, { allowCache = true, settings = {}
   })
 
   if (allowCache) activeQueries.set(query, current)
+  pendingQueries.add(current)
+  void current.then(() => pendingQueries.delete(current), () => pendingQueries.delete(current))
 
   return current
 }

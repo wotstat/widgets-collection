@@ -3,7 +3,7 @@
     <div class="autoscale" ref="containerElement" :style="{ aspectRatio: predictedAspectRatio }">
     </div>
     <div class="auto-scale-container" v-if="autoScale">
-      <div class="slot" :style="{ fontSize, width: width + 'px' }">
+      <div class="slot" data-widget-preview-content :style="{ fontSize, width: width + 'px' }">
         <slot></slot>
       </div>
     </div>

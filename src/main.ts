@@ -12,8 +12,10 @@ createApp(App)
   .use(routes)
   .mount('#app')
 
-setupYmMetrika({
-  clickmap: false,
-  trackLinks: true,
-  accurateTrackBounce: true,
-})
+if (!location.pathname.startsWith('/iframe/widget-preview/')) {
+  setupYmMetrika({
+    clickmap: false,
+    trackLinks: true,
+    accurateTrackBounce: true,
+  })
+}

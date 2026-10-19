@@ -11,5 +11,5 @@
     "noEmit": true,
     "types": ["node"],
   },
-  "include": ["vite.config.ts", "releaseNotes.ts"]
+  "include": ["vite.config.ts", "releaseNotes.ts", "widgetCatalogPlugin.ts"]
 }

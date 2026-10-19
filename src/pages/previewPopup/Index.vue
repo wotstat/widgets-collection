@@ -335,7 +335,9 @@ const RMC = defineAsyncComponent(async () => {
   emit('onLoaded', attributes)
   parent.postMessage({
     type: 'readme-loaded',
-    attributes
+    attributes,
+    name: currentOptions.value.options.name,
+    description: currentOptions.value.options.description,
   }, '*')
 
   return VueComponent

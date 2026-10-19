@@ -8,6 +8,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/', component: () => import('./pages/main/Index.vue') },
   { path: '/iframe/collection', component: CollectionList },
   { path: '/iframe/preview/:widget*', component: PreviewPopup },
+  { path: '/iframe/widget-preview/:widget*', component: () => import('./pages/widgetPreview/Index.vue') },
   { path: '/manual-install', component: () => import('./pages/manualInstall/Index.vue') },
   { path: '/preview/:widget*', component: () => import('./pages/main/Index.vue') },
   { path: '/demo-widget', redirect: '/tools/debug' },
