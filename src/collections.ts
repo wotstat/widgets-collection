@@ -5,6 +5,7 @@ export const collections = [
       // '/counters/farm',
       '/hangar/lootbox-universal',
       '/efficiency/comp7',
+      '/efficiency/comp7-leaderboard',
       '/nidin/equipments',
       '/shotnik/equipments',
       '/tournament/universal',
@@ -57,6 +58,7 @@ export const collections = [
     name: 'Прогрессия',
     widgets: [
       '/efficiency/comp7',
+      '/efficiency/comp7-leaderboard',
       // '/efficiency/gun-mark',
       '/efficiency/sum/solo/blocked',
       '/efficiency/sum/solo/assist-radio',
