@@ -4,8 +4,8 @@ export const collections = [
     widgets: [
       // '/counters/farm',
       '/hangar/lootbox-universal',
-      '/efficiency/comp7',
-      '/efficiency/comp7-leaderboard',
+      // '/efficiency/comp7',
+      // '/efficiency/comp7-leaderboard',
       '/nidin/equipments',
       '/shotnik/equipments',
       '/tournament/universal',
