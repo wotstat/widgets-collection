@@ -3,7 +3,7 @@
 
 **Установите мод**
 
-1. Установите мод  **"Виджеты" ИЛИ "Data Provider"** из раздела [Модификаций](https://wotstat.info/install?preset=widgets){target='_blank'} или скачайте и установите его вручную
+1. Установите мод  **"Виджеты" ИЛИ "Data Provider"** из раздела <analytics-link path="/install?preset=widgets" target="_blank">Модификаций</analytics-link> или скачайте и установите его вручную
 
 **Как сбросить накопленные данные**
 1. В OBS выберите источник виджета

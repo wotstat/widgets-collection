@@ -32,7 +32,7 @@
 
     <footer>
       <hr>
-      <h4>Основной сайт <a href="https://wotstat.info" target="_blank" rel="noopener noreferrer">wotstat.info</a></h4>
+      <h4>Основной сайт <AnalyticsLink target="_blank" rel="noopener noreferrer" /></h4>
     </footer>
   </div>
 
@@ -48,10 +48,11 @@
 
 <script setup lang="ts">
 import According from '@/components/According.vue'
+import AnalyticsLink from '@/components/AnalyticsLink.vue'
 import CollectionList from '../collectionList/Index.vue'
 import PreviewPopup from '../previewPopup/Index.vue'
 import { VueComponentWith as InstructionGameWith } from './instructionGame/index.md'
-import { VueComponent as InstructionOBS } from './instructionOBS/index.md'
+import { VueComponentWith as InstructionOBSWith } from './instructionOBS/index.md'
 import { useRoute, useRouter } from 'vue-router'
 import PopupWindow from '@/components/PopupWindow.vue'
 import { ref, watchEffect } from 'vue'
@@ -62,7 +63,8 @@ const router = useRouter()
 const title = ref('')
 const route = useRoute()
 
-const InstructionGame = InstructionGameWith({ CurrentLestaVersion, CurrentWgVersion })
+const InstructionGame = InstructionGameWith({ CurrentLestaVersion, CurrentWgVersion, 'analytics-link': AnalyticsLink })
+const InstructionOBS = InstructionOBSWith({ 'analytics-link': AnalyticsLink })
 
 function onClickToWidget(widget: { route: string, title: string }) {
   router.push('/preview' + widget.route)

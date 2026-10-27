@@ -20,6 +20,7 @@ import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams'
 
 import { styleParams } from './define.widget'
 import WidgetWrapper from '@/components/WidgetWrapper.vue'
+import { REMOTE_URL_WS } from '@/utils/externalUrl'
 
 
 
@@ -45,7 +46,7 @@ const shouldDisplay = computed(() => {
 
 const color = computed(() => styleParams(query.colorScheme, query.accent))
 
-const remote = new WidgetsRemote()
+const remote = new WidgetsRemote({ url: REMOTE_URL_WS })
 const currentTank = useReactiveRemoteValue<'ARMT' | 'TF-2 Clark' | 'Projet Murat' | 'Mausekönig'>(remote, 'Этап', 'ARMT', {
   type: {
     type: 'select',

@@ -2,7 +2,7 @@
 title: Позиция в Натиске
 ---
 
-Текущее место в таблице лидеров Натиска и изменение позиции, как в [таблице лидеров WotStat](https://wotstat.info/onslaught/leaderboard){target="_blank"}.
+Текущее место в таблице лидеров Натиска и изменение позиции, как в <analytics-link path="/onslaught/leaderboard" target="_blank">таблице лидеров WotStat</analytics-link>.
 
 Изменения показывает изменение позиции с прошлого пересчёта таблицы лидеров.
 

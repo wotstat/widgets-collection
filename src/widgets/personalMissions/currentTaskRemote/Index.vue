@@ -18,6 +18,7 @@ import { computed } from 'vue'
 import { oneOf, Color, useQueryParams } from '@/composition/useQueryParams'
 import i18n from './i18n.json'
 import { useI18n } from '@/composition/useI18n'
+import { REMOTE_URL_WS } from '@/utils/externalUrl'
 
 import PersonalMissionsI18n from '../assets/data/localizaiton/personal_missions_details_short.json'
 import PersonalMissionsConfig from '../assets/data/pm3/config.json'
@@ -135,7 +136,7 @@ const comp2 = filterPM('pm3_9_')
 const comp3 = filterPM('pm3_10_')
 const variants = new Map(Object.entries(translatedConfig))
 
-const remote = new WidgetsRemote()
+const remote = new WidgetsRemote({ url: REMOTE_URL_WS })
 const currentTask = useReactiveRemoteValue(remote, 'Задача', 'pm3_8_1_1' as string, {
   type: {
     type: 'select',

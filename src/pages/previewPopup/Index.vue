@@ -65,6 +65,7 @@ import { useWidgetPreviewStorage } from './useWidgetPreviewStorage'
 import { WidgetParam } from '@/utils/defineWidget'
 import { useElementScrollSize } from '@/composition/utils/useElementScrollSize'
 import ContextMenuRoot from '@/components/contextMenu/ContextMenuRoot.vue'
+import AnalyticsLink from '@/components/AnalyticsLink.vue'
 
 import Checkbox from './settings/Checkbox.vue'
 import Select from './settings/Select.vue'
@@ -331,7 +332,7 @@ const RMC = defineAsyncComponent(async () => {
 
   if (!widgetReadmes[readmePath]) return Unknown
 
-  const { VueComponent, attributes } = await widgetReadmes[readmePath]() as any
+  const { VueComponentWith, attributes } = await widgetReadmes[readmePath]() as any
   emit('onLoaded', attributes)
   parent.postMessage({
     type: 'readme-loaded',
@@ -340,7 +341,7 @@ const RMC = defineAsyncComponent(async () => {
     description: currentOptions.value.options.description,
   }, '*')
 
-  return VueComponent
+  return VueComponentWith({ 'analytics-link': AnalyticsLink })
 })
 
 onMounted(() => {

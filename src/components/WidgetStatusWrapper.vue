@@ -4,7 +4,7 @@
     <div class="card warning-text" v-if="!shouldShowContent" ref="warningOverlay">
       <div v-if="!isConnected && !allowWithoutSdk">
         <p class="primary">Ожидание клиента игры</p>
-        <p class="secondary">Для работы виджета необходим мод wotstat-widgets. Подробнее на сайте wotstat.info</p>
+        <p class="secondary">Для работы виджета необходим мод wotstat-widgets. Подробнее на сайте <AnalyticsLink target="_blank" /></p>
         <p class="secondary ellipsis">{{ ellipsis.join(' ') }}</p>
       </div>
       <div v-else-if="!isExtensionsReady && !allowWithoutSdk">
@@ -34,6 +34,7 @@ import { useElementBounding } from '@vueuse/core'
 import { computed, inject, ref, watchEffect } from 'vue'
 import ArrowUp from '@/assets/icons/arrow-up.svg'
 import { isInWidgetMod as isInWidgetModKey } from '@/utils/provides'
+import AnalyticsLink from '@/components/AnalyticsLink.vue'
 
 const warningOverlay = ref<HTMLElement | null>(null)
 const { height } = useElementBounding(warningOverlay)
