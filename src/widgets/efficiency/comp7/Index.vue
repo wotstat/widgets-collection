@@ -70,13 +70,29 @@ const arenas = queryComputed<{ id: number, name: string }>(() =>
 )
 
 async function reloadEliteRating() {
-  const res = await query<{ region: string, lastElite: number }>(`
-    select region, argMax(eliteRating, dateTime) as lastElite
-    from Event_OnComp7Info
-    group by region
-  `, { settings: LONG_CACHE_SETTINGS, allowCache: false })
+  try {
+    const res = await query<{ region: string, lastElite: number }>(`
+      with latestSnapshots as (
+        select region, max(lastRecalculationTime) as recalculationTime
+        from Comp7LeaderboardDaily
+        group by region
+      )
+      select region, min(rating) as lastElite
+      from Comp7LeaderboardByRank
+      where (region, recalculationTime) in (select region, recalculationTime from latestSnapshots)
+        and elite = true
+        and not startsWith(name, 'MT_COMP_QA_')
+      group by region
+      limit 100
+    `, {
+      settings: { ...LONG_CACHE_SETTINGS, max_execution_time: 10, max_rows_to_read: '10000000' },
+      allowCache: false
+    })
 
-  eliteRatingStats.value = new Map(res.data.map(r => [r.region, r.lastElite]))
+    eliteRatingStats.value = new Map(res.data.map(r => [r.region, r.lastElite]))
+  } catch (error) {
+    console.error('Failed to load the Comp7 legend threshold:', error)
+  }
 }
 
 async function reloadSeason() {
